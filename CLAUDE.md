@@ -127,7 +127,7 @@ Sıra kararı (15 Ekim 2026): GDD'deki F3 → F4 sırası yerine F3a (dağıtım
 Adımlar:
 
 - [x] Hassas kart taraması: kırmızı çizgilere göre 150 kart; card_lint'e incelenecek kelime denetimi
-- [ ] Uygulama ikonu ve açılış ekranı
+- [x] Uygulama ikonu ve açılış ekranı: portre yüzlü ikon (`tools/app_icon`, elle çalıştırılır), Android uyarlanabilir ikon, kâğıt rengi açılış
 - [ ] Android release imzası (anahtar ve şifreler depoya girmez)
 - [ ] iOS dSYM yükleme betiği (Mac'te kullanıcı ekler)
 - [ ] Gizlilik politikası taslağı; Play Data safety ve App Store gizlilik etiketi cevapları

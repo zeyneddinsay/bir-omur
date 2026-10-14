@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Uygulamadaki AppColors ile aynı: kırmızı ikon zemini, kâğıt rengi açılış. -->
+    <color name="ic_launcher_background">#C0392B</color>
+    <color name="splash_background">#FFF8F0</color>
+</resources>
