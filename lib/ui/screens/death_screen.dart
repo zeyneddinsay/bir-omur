@@ -107,6 +107,10 @@ class DeathScreen extends ConsumerWidget {
                         style: theme.textTheme.bodySmall,
                       ),
                       const SizedBox(height: 24),
+                      _EarnedBadges(
+                        earned: (content.achievements ?? AchievementBook.empty)
+                            .earnedBy(summary),
+                      ),
                       OutlinedButton.icon(
                         key: const Key('share_button'),
                         onPressed: () => Navigator.of(context).push(
@@ -134,6 +138,47 @@ class DeathScreen extends ConsumerWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+/// Bu hayatta kazanılan rozetler; ilk kez kazanılanlar "Yeni!" diye işaretli.
+class _EarnedBadges extends ConsumerWidget {
+  const _EarnedBadges({required this.earned});
+
+  final List<Achievement> earned;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    if (earned.isEmpty) return const SizedBox.shrink();
+    final l10n = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    final fresh = ref.watch(newBadgesProvider);
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: Column(
+        children: [
+          Text(l10n.deathBadgesTitle, style: theme.textTheme.labelLarge),
+          const SizedBox(height: 8),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            alignment: WrapAlignment.center,
+            children: [
+              for (final a in earned)
+                Chip(
+                  key: Key('earned_${a.id}'),
+                  avatar: const Icon(Icons.military_tech, size: 18),
+                  label: Text(
+                    fresh.contains(a.id)
+                        ? '${a.name} · ${l10n.badgeNew}'
+                        : a.name,
+                  ),
+                ),
+            ],
+          ),
+        ],
       ),
     );
   }

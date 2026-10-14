@@ -51,6 +51,10 @@ void main(List<String> args) {
       for (final f in careerFiles)
         f.uri.pathSegments.last: f.readAsStringSync(),
     },
+    achievementsSource: switch (File('${assetsDir.path}/achievements.json')) {
+      final f when f.existsSync() => f.readAsStringSync(),
+      _ => null,
+    },
   );
 
   for (final issue in result.issues) {
@@ -65,7 +69,7 @@ void main(List<String> args) {
     ..writeln()
     ..writeln(
       '${files.length} kart dosyası, ${result.cards.length} kart, '
-      '${result.careers.length} meslek',
+      '${result.careers.length} meslek, ${result.achievements.length} rozet',
     )
     ..writeln(perStage.entries.map((e) => '${e.key.id}: ${e.value}').join(', '))
     ..writeln('${result.errors.length} hata, ${result.warnings.length} uyarı');

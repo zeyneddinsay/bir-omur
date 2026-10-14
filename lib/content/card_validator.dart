@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import '../engine/achievements.dart';
 import '../models/models.dart';
 import 'content_registry.dart';
 
@@ -35,10 +36,16 @@ class SourcedCard {
 
 /// Kart dosyalarını okuma ve denetlemenin sonucu.
 class CardCheckResult {
-  const CardCheckResult(this.cards, this.issues, {this.careers = const []});
+  const CardCheckResult(
+    this.cards,
+    this.issues, {
+    this.careers = const [],
+    this.achievements = const [],
+  });
 
   final List<SourcedCard> cards;
   final List<Career> careers;
+  final List<Achievement> achievements;
   final List<CardIssue> issues;
 
   Iterable<CardIssue> get errors => issues.where((i) => i.isError);
@@ -61,6 +68,7 @@ class CardValidator {
   CardCheckResult check(
     Map<String, String> files, {
     Map<String, String> careerFiles = const {},
+    String? achievementsSource,
   }) {
     final issues = <CardIssue>[];
     final careers = _parseCareers(careerFiles, issues);
@@ -86,10 +94,14 @@ class CardValidator {
       _checkCard(sourced, ids, scheduledIds, addedFlags, issues);
     }
     _checkRegistry(issues);
+    final achievements = achievementsSource == null
+        ? const <Achievement>[]
+        : _parseAchievements(achievementsSource, ids, issues);
     return CardCheckResult(
       List.unmodifiable(cards),
       List.unmodifiable(issues),
       careers: List.unmodifiable(careers),
+      achievements: List.unmodifiable(achievements),
     );
   }
 
@@ -168,6 +180,85 @@ class CardValidator {
         }
       }
     }
+  }
+
+  static const String achievementsFile = 'achievements.json';
+  static const int maxAchievementName = 32;
+  static const int maxAchievementDescription = 100;
+
+  List<Achievement> _parseAchievements(
+    String source,
+    Set<String> cardIds,
+    List<CardIssue> issues,
+  ) {
+    void error(String path, String message) => issues.add(
+      CardIssue(IssueLevel.error, achievementsFile, path, message),
+    );
+    final Object? json;
+    try {
+      json = jsonDecode(source);
+    } on FormatException catch (e) {
+      error('-', 'JSON okunamadı: ${e.message}');
+      return const [];
+    }
+    if (json is! List) {
+      error('-', 'dosya bir rozet dizisi olmalı');
+      return const [];
+    }
+    final achievements = <Achievement>[];
+    final seen = <String>{};
+    for (var i = 0; i < json.length; i++) {
+      final raw = json[i];
+      if (raw is! Map<String, dynamic>) {
+        error('[$i]', 'rozet bir nesne olmalı');
+        continue;
+      }
+      final Achievement a;
+      try {
+        a = Achievement.fromJson(raw);
+      } on CardFormatException catch (e) {
+        error(e.path, e.message);
+        continue;
+      }
+      if (!seen.add(a.id)) error(a.id, 'tekrar eden rozet kimliği');
+      if (a.name.runes.length > maxAchievementName) {
+        error('${a.id}.name', 'en fazla $maxAchievementName karakter');
+      }
+      if (a.description.runes.length > maxAchievementDescription) {
+        error(
+          '${a.id}.description',
+          'en fazla $maxAchievementDescription karakter',
+        );
+      }
+      final req = a.requirement;
+      for (final flag in [
+        ...req.conditions.flags,
+        ...req.conditions.notFlags,
+      ]) {
+        if (!registry.knownFlags.contains(flag)) {
+          error(
+            '${a.id}.conditions',
+            'bilinmeyen bayrak "$flag" (registry.json)',
+          );
+        }
+      }
+      if (req.lastCareer case final id? when !_careersById.containsKey(id)) {
+        error('${a.id}.lastCareer', 'bilinmeyen meslek "$id"');
+      }
+      if (req.minLastTier case final tier?) {
+        final max = _careersById[req.lastCareer]?.maxTier ?? 5;
+        if (tier < 1 || tier > max) {
+          error('${a.id}.minLastTier', 'kademe 1–$max arasında olmalı');
+        }
+      }
+      for (final card in req.seenCards) {
+        if (!cardIds.contains(card)) {
+          error('${a.id}.seenCards', '"$card" diye bir kart yok');
+        }
+      }
+      achievements.add(a);
+    }
+    return achievements;
   }
 
   /// Koşullardaki ve etkilerdeki meslek kullanımlarını denetler.

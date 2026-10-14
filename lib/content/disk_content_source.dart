@@ -9,6 +9,7 @@ GameContent loadContentFromDisk([String assetsDir = 'assets']) {
     registrySource: File('$assetsDir/registry.json').readAsStringSync(),
     cardFiles: readJsonFiles('$assetsDir/cards'),
     careerFiles: readJsonFiles('$assetsDir/careers'),
+    achievementsSource: _readOptional('$assetsDir/achievements.json'),
   );
 }
 
@@ -25,4 +26,9 @@ Map<String, String> readJsonFiles(String dir) {
           .toList()
         ..sort((a, b) => a.path.compareTo(b.path));
   return {for (final f in files) f.uri.pathSegments.last: f.readAsStringSync()};
+}
+
+String? _readOptional(String path) {
+  final file = File(path);
+  return file.existsSync() ? file.readAsStringSync() : null;
 }

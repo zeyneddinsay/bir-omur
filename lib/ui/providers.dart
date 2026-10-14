@@ -43,6 +43,30 @@ final savedLifeProvider = FutureProvider<Map<String, dynamic>?>(
 );
 
 /// O an oynanan hayat; doğum ekranındayken null.
+/// Biten hayatlar (albüm); en yenisi sonda.
+final albumProvider = FutureProvider<List<LifeRecord>>(
+  (ref) => ref.watch(saveStoreProvider).loadAlbum(),
+  retry: (_, _) => null,
+);
+
+/// Kazanılmış rozetler: kimlik → ilerleme.
+final badgeProgressProvider = FutureProvider<Map<String, AchievementProgress>>(
+  (ref) => ref.watch(saveStoreProvider).loadAchievements(),
+  retry: (_, _) => null,
+);
+
+/// Son biten hayatta ilk kez kazanılan rozetler; ölüm ekranı "Yeni!" der.
+final newBadgesProvider = NotifierProvider<NewBadges, Set<String>>(
+  NewBadges.new,
+);
+
+class NewBadges extends Notifier<Set<String>> {
+  @override
+  Set<String> build() => const {};
+
+  void set(Set<String> ids) => state = ids;
+}
+
 final lifeProvider = NotifierProvider<LifeController, LifeState?>(
   LifeController.new,
 );
@@ -51,6 +75,7 @@ final lifeProvider = NotifierProvider<LifeController, LifeState?>(
 /// burada değil, motordadır.
 class LifeController extends Notifier<LifeState?> {
   LifeEngine? _engine;
+  GameContent? _content;
 
   /// Kayıtlar sırayla yazılsın diye zincirlenir.
   Future<void> _pendingWrites = Future.value();
@@ -76,6 +101,7 @@ class LifeController extends Notifier<LifeState?> {
       seed: seed ?? ref.read(seedGeneratorProvider)(),
     );
     _engine = engine;
+    _content = content;
     _update(engine.startLife(name: name, gender: gender));
   }
 
@@ -89,6 +115,7 @@ class LifeController extends Notifier<LifeState?> {
         snapshot: snapshot,
       );
       _engine = engine;
+      _content = content;
       state = engine.state;
       return true;
     } on Object {
@@ -107,6 +134,7 @@ class LifeController extends Notifier<LifeState?> {
   /// Doğum ekranına döner; yarım hayat kaydı silinir.
   void reset() {
     _engine = null;
+    ref.read(newBadgesProvider.notifier).set(const {});
     state = null;
     _write(_store.clearCurrentLife);
     ref.invalidate(savedLifeProvider);
@@ -133,7 +161,33 @@ class LifeController extends Notifier<LifeState?> {
       careerTier: next.character.careerJob?.tier,
     );
     _write(() => _store.addToAlbum(record));
+    _write(() => _recordAchievements(next.summary!, record.endedAt));
+    _write(() async {
+      ref.invalidate(albumProvider);
+      ref.invalidate(badgeProgressProvider);
+    });
     _write(_store.clearCurrentLife);
+  }
+
+  /// Rozetleri hesaplar, ilerlemeyi kaydeder ve ilk kez kazanılanları
+  /// bildirir.
+  Future<void> _recordAchievements(LifeSummary summary, DateTime at) async {
+    final book = _content?.achievements;
+    if (book == null) return;
+    final earned = book.earnedBy(summary);
+    final progress = await _store.loadAchievements();
+    final fresh = <String>{};
+    for (final a in earned) {
+      final before = progress[a.id];
+      if (before == null) {
+        fresh.add(a.id);
+        progress[a.id] = AchievementProgress(count: 1, firstEarnedAt: at);
+      } else {
+        progress[a.id] = before.earnedAgain();
+      }
+    }
+    await _store.saveAchievements(progress);
+    ref.read(newBadgesProvider.notifier).set(fresh);
   }
 
   /// Bir yazma hatası sonrakileri durdurmasın; hata raporlanır, sıra sürer.

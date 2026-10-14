@@ -5,6 +5,7 @@ import 'content_loader.dart';
 const String registryAsset = 'assets/registry.json';
 const String cardsAssetDir = 'assets/cards/';
 const String careersAssetDir = 'assets/careers/';
+const String achievementsAsset = 'assets/achievements.json';
 
 /// İçeriği uygulama paketinden okur. `assets/cards/` ve `assets/careers/`
 /// altındaki her JSON dosyası kendiliğinden yüklenir; yeni dosya için kod
@@ -23,5 +24,8 @@ Future<GameContent> loadContentFromAssets(AssetBundle bundle) async {
     registrySource: await bundle.loadString(registryAsset),
     cardFiles: await jsonFilesIn(cardsAssetDir),
     careerFiles: await jsonFilesIn(careersAssetDir),
+    achievementsSource: assets.contains(achievementsAsset)
+        ? await bundle.loadString(achievementsAsset)
+        : null,
   );
 }

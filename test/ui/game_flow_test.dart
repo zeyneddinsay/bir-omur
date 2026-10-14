@@ -156,6 +156,17 @@ void main() {
       await tester.tap(find.byKey(const Key('rebirth')));
       await tester.pumpAndSettle();
       expect(find.byKey(const Key('birth_button')), findsOneWidget);
+
+      // Albümde bu hayat ve rozetler görünür.
+      await tester.ensureVisible(find.byKey(const Key('album_button')));
+      await tester.tap(find.byKey(const Key('album_button')));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('album_life_0')), findsOneWidget);
+      expect(find.text('Mehmet'), findsOneWidget);
+      await tester.tap(find.text('Rozetler'));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('badges_summary')), findsOneWidget);
+      expect(tester.takeException(), isNull);
     });
   }
 

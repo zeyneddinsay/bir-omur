@@ -31,3 +31,4 @@ flutter:
     - assets/registry.json
     - assets/cards/
     - assets/careers/
+    - assets/achievements.json

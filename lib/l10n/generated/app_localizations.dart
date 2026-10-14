@@ -544,6 +544,72 @@ abstract class AppLocalizations {
   /// **'Hayatını paylaş'**
   String get shareButton;
 
+  /// No description provided for @deathBadgesTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu hayatta kazanılan rozetler'**
+  String get deathBadgesTitle;
+
+  /// No description provided for @badgeNew.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yeni!'**
+  String get badgeNew;
+
+  /// No description provided for @albumButton.
+  ///
+  /// In tr, this message translates to:
+  /// **'Hayat Albümü'**
+  String get albumButton;
+
+  /// No description provided for @albumTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Hayat Albümü'**
+  String get albumTitle;
+
+  /// No description provided for @albumTabLives.
+  ///
+  /// In tr, this message translates to:
+  /// **'Hayatlar'**
+  String get albumTabLives;
+
+  /// No description provided for @albumTabBadges.
+  ///
+  /// In tr, this message translates to:
+  /// **'Rozetler'**
+  String get albumTabBadges;
+
+  /// No description provided for @albumEmpty.
+  ///
+  /// In tr, this message translates to:
+  /// **'Henüz biten bir hayat yok. İlk hayatın burada duracak.'**
+  String get albumEmpty;
+
+  /// No description provided for @albumLifeLine.
+  ///
+  /// In tr, this message translates to:
+  /// **'{age} yaş · {nickname}'**
+  String albumLifeLine(int age, String nickname);
+
+  /// No description provided for @badgeCount.
+  ///
+  /// In tr, this message translates to:
+  /// **'{count, plural, =1{1 kez kazanıldı} other{{count} kez kazanıldı}}'**
+  String badgeCount(int count);
+
+  /// No description provided for @badgeLocked.
+  ///
+  /// In tr, this message translates to:
+  /// **'Henüz kazanılmadı'**
+  String get badgeLocked;
+
+  /// No description provided for @badgesSummary.
+  ///
+  /// In tr, this message translates to:
+  /// **'{earned} / {total} rozet'**
+  String badgesSummary(int earned, int total);
+
   /// No description provided for @sharePreviewTitle.
   ///
   /// In tr, this message translates to:

@@ -1,3 +1,4 @@
+export 'achievements.dart';
 export 'birth.dart';
 export 'careers.dart';
 export 'death_check.dart';

@@ -1,0 +1,118 @@
+[
+  {
+    "id": "bedelli_degil_asker",
+    "name": "Bedelli Değil Asker",
+    "description": "Askerliğini yaparak geçirdi; ömür boyu 'bizim bölükte' diye başladı.",
+    "requires": { "conditions": { "flags": ["asker_anilari"] } }
+  },
+  {
+    "id": "memlekete_dondu",
+    "name": "Memlekete Döndü",
+    "description": "Yaşlılığını memleketin bahçesinde geçirdi.",
+    "requires": { "conditions": { "flags": ["memlekete_dondu"] } }
+  },
+  {
+    "id": "her_bayram_elini_optu",
+    "name": "Her Bayram Elini Öptü",
+    "description": "Aile bağı 90'ın üstündeyken gözlerini yumdu.",
+    "requires": { "conditions": { "min": { "family": 90 } } }
+  },
+  {
+    "id": "kirasini_kendine_odeyen",
+    "name": "Kirasını Kendine Ödeyen",
+    "description": "Kendi evinde öldü.",
+    "requires": { "conditions": { "min": { "house": 1 } } }
+  },
+  {
+    "id": "dogdugu_evde",
+    "name": "Hiç Taşınmadı",
+    "description": "70 yaşını geçti ve bir kez bile taşınmadı.",
+    "requires": { "minDeathAge": 70, "counters": { "max": { "moves": 1 } } }
+  },
+  {
+    "id": "gocebe",
+    "name": "Koliler Hep Hazır",
+    "description": "Bir ömürde beş kez taşındı.",
+    "requires": { "counters": { "min": { "moves": 5 } } }
+  },
+  {
+    "id": "taki_defterinin_efendisi",
+    "name": "Takı Defterinin Efendisi",
+    "description": "Ömrü boyunca 100 gram altın takıldı.",
+    "rarity": "nadir",
+    "requires": { "counters": { "min": { "goldReceived": 100 } } }
+  },
+  {
+    "id": "ev_sahibine_bir_omur",
+    "name": "Ev Sahibine Bir Ömür",
+    "description": "Ömrü boyunca 4 milyon TL kira ödedi.",
+    "requires": { "counters": { "min": { "rentPaid": 4000000 } } }
+  },
+  {
+    "id": "hic_borca_girmedi",
+    "name": "Borç Yiğidin Kamçısı Değil",
+    "description": "60 yaşını geçti, bir kez bile borca düşmedi.",
+    "requires": { "minDeathAge": 60, "counters": { "max": { "debtSpells": 1 } } }
+  },
+  {
+    "id": "genel_mudur",
+    "name": "Devlet Kapısının Zirvesi",
+    "description": "Memuriyete başladı, genel müdür oldu.",
+    "rarity": "nadir",
+    "requires": { "lastCareer": "memur", "minLastTier": 5 }
+  },
+  {
+    "id": "zincirin_sahibi",
+    "name": "Çıraklıktan Zincire",
+    "description": "Esnaflığı zincir sahibine kadar götürdü.",
+    "rarity": "nadir",
+    "requires": { "lastCareer": "esnaf", "minLastTier": 5 }
+  },
+  {
+    "id": "plazanin_tepesi",
+    "name": "Plazanın En Üst Katı",
+    "description": "Stajyer başladı, direktör oldu.",
+    "rarity": "nadir",
+    "requires": { "lastCareer": "plaza", "minLastTier": 5 }
+  },
+  {
+    "id": "dipten_dondu",
+    "name": "Dipten Döndü",
+    "description": "Zor bir dönemde yardım istedi ve toparlandı.",
+    "requires": { "seenCards": ["bunalim_doktor"] }
+  },
+  {
+    "id": "akraba_ortakligi",
+    "name": "Akrabayla İş Olur mu?",
+    "description": "Kuzeniyle ortak oldu ve hesabı gördü.",
+    "requires": { "seenCards": ["kuzen_ortaklik_sonu"] }
+  },
+  {
+    "id": "sozu_dinlenen",
+    "name": "Sözü Dinlenen",
+    "description": "Mahalle onu sözüyle hatırladı.",
+    "rarity": "nadir",
+    "requires": { "nickname": "sozuDinlenen" }
+  },
+  {
+    "id": "mahallenin_zengini",
+    "name": "Mahallenin Zengini",
+    "description": "Geride 10 milyon TL'den fazla bıraktı.",
+    "rarity": "nadir",
+    "requires": { "nickname": "mahalleninZengini" }
+  },
+  {
+    "id": "asirlik_cinar",
+    "name": "Asırlık Çınar",
+    "description": "Yüzüncü yaş gününü kutladı.",
+    "rarity": "efsane",
+    "requires": { "minDeathAge": 100 }
+  },
+  {
+    "id": "dort_kusak",
+    "name": "Dört Kuşak Bir Fotoğrafta",
+    "description": "Torununun torununu kucağına aldı.",
+    "rarity": "efsane",
+    "requires": { "seenCards": ["torunun_torunu"] }
+  }
+]

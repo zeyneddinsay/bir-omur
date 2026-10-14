@@ -293,6 +293,52 @@ class AppLocalizationsTr extends AppLocalizations {
   String get shareButton => 'Hayatını paylaş';
 
   @override
+  String get deathBadgesTitle => 'Bu hayatta kazanılan rozetler';
+
+  @override
+  String get badgeNew => 'Yeni!';
+
+  @override
+  String get albumButton => 'Hayat Albümü';
+
+  @override
+  String get albumTitle => 'Hayat Albümü';
+
+  @override
+  String get albumTabLives => 'Hayatlar';
+
+  @override
+  String get albumTabBadges => 'Rozetler';
+
+  @override
+  String get albumEmpty =>
+      'Henüz biten bir hayat yok. İlk hayatın burada duracak.';
+
+  @override
+  String albumLifeLine(int age, String nickname) {
+    return '$age yaş · $nickname';
+  }
+
+  @override
+  String badgeCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count kez kazanıldı',
+      one: '1 kez kazanıldı',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get badgeLocked => 'Henüz kazanılmadı';
+
+  @override
+  String badgesSummary(int earned, int total) {
+    return '$earned / $total rozet';
+  }
+
+  @override
   String get sharePreviewTitle => 'Hayat özeti';
 
   @override

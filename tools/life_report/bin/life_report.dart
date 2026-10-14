@@ -33,6 +33,8 @@ void main(List<String> args) {
   final lastCareer = <String, int>{};
   final worthByBackground = <FamilyBackground, List<int>>{};
   var counterSum = LifeCounters.zero;
+  final badgeCounts = <String, int>{};
+  final badges = content.achievements ?? AchievementBook.empty;
   final statSums = <StatKind, int>{for (final k in StatKind.values) k: 0};
   final statHigh = <StatKind, int>{for (final k in StatKind.values) k: 0};
   final topTier = <String, int>{};
@@ -60,6 +62,9 @@ void main(List<String> args) {
     final c = summary.character;
     deathAges.add(summary.deathAge);
     netWorths.add(summary.netWorth);
+    for (final a in badges.earnedBy(summary)) {
+      badgeCounts.update(a.id, (n) => n + 1, ifAbsent: () => 1);
+    }
     final k = c.counters;
     counterSum = LifeCounters(
       moves: counterSum.moves + k.moves,
@@ -179,7 +184,12 @@ void main(List<String> args) {
     ..writeln()
     ..writeln(
       'Hiç gelmeyen kartlar (${unseen.length}): ${unseen.isEmpty ? '-' : unseen.join(', ')}',
-    );
+    )
+    ..writeln()
+    ..writeln('Rozetler (kazanan hayat oranı):');
+  for (final a in badges.all) {
+    stdout.writeln('  ${a.id.padRight(28)} ${pct(badgeCounts[a.id] ?? 0)}');
+  }
 }
 
 /// Her kartta rastgele bir yön seçen, yılların çoğunda rastgele aksiyon

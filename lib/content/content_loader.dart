@@ -7,12 +7,16 @@ class GameContent {
   const GameContent({
     required this.deck,
     required this.careers,
+    this.achievements,
     required this.registry,
     required this.warnings,
   });
 
   final EventDeck deck;
   final CareerBook careers;
+
+  /// Rozetler; içerikte yoksa boş.
+  final AchievementBook? achievements;
   final ContentRegistry registry;
   final List<CardIssue> warnings;
 }
@@ -34,14 +38,19 @@ GameContent loadContent({
   required String registrySource,
   required Map<String, String> cardFiles,
   Map<String, String> careerFiles = const {},
+  String? achievementsSource,
 }) {
   final registry = ContentRegistry.parse(registrySource);
-  final result = CardValidator(registry)
-      .check(cardFiles, careerFiles: careerFiles);
+  final result = CardValidator(registry).check(
+    cardFiles,
+    careerFiles: careerFiles,
+    achievementsSource: achievementsSource,
+  );
   if (result.hasErrors) throw ContentException(result.errors.toList());
   return GameContent(
     deck: EventDeck(result.cards.map((c) => c.card)),
     careers: CareerBook(result.careers),
+    achievements: AchievementBook(result.achievements),
     registry: registry,
     warnings: result.warnings.toList(),
   );

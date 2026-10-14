@@ -5,6 +5,7 @@ import '../../content/content_loader.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../models/models.dart';
 import '../providers.dart';
+import 'album_screen.dart';
 
 /// Doğum ekranı: isim ve cinsiyet; boş bırakılanlar rastgele seçilir.
 class BirthScreen extends ConsumerStatefulWidget {
@@ -120,6 +121,17 @@ class _BirthScreenState extends ConsumerState<BirthScreen> {
                     onPressed: _born,
                     icon: const Icon(Icons.child_care),
                     label: Text(l10n.birthButton),
+                  ),
+                  const SizedBox(height: 12),
+                  TextButton.icon(
+                    key: const Key('album_button'),
+                    onPressed: () => Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) => AlbumScreen(content: widget.content),
+                      ),
+                    ),
+                    icon: const Icon(Icons.photo_album_outlined),
+                    label: Text(l10n.albumButton),
                   ),
                 ],
               ),
