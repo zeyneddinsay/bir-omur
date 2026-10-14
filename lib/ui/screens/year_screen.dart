@@ -7,6 +7,7 @@ import '../../l10n/generated/app_localizations.dart';
 import '../../models/models.dart';
 import '../l10n_names.dart';
 import '../providers.dart';
+import '../widgets/life_status.dart';
 import '../widgets/stats_bar.dart';
 import '../widgets/swipe_card.dart';
 
@@ -24,11 +25,15 @@ class YearScreen extends ConsumerStatefulWidget {
 class _YearScreenState extends ConsumerState<YearScreen> {
   ChoiceSide? _lean;
 
+  /// Geçen yıl şeridinin kapatıldığı yaş; yeni yılda şerit yine görünür.
+  int? _closedSummaryAge;
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final state = widget.state;
     final c = state.character;
+    final engine = ref.read(lifeProvider.notifier).engine;
 
     final rolled = state.lastOutcome?.rollSucceeded;
     final leaning = switch ((state.currentCard, _lean)) {
@@ -44,7 +49,7 @@ class _YearScreenState extends ConsumerState<YearScreen> {
             Text(c.name),
             Text(
               '${l10n.ageLabel(c.age)} · ${l10n.stageName(c.stage)} · '
-              '${c.hometown} · ${l10n.backgroundName(c.background)}',
+              '${jobLabel(l10n, c, engine.careers)}',
               key: const Key('age_line'),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
@@ -52,6 +57,7 @@ class _YearScreenState extends ConsumerState<YearScreen> {
             ),
           ],
         ),
+        actions: [AssetsButton(engine: engine)],
       ),
       body: SafeArea(
         child: Column(
@@ -62,6 +68,13 @@ class _YearScreenState extends ConsumerState<YearScreen> {
               highlightMoney: leaning != null && affectsMoney(leaning),
             ),
             const Divider(height: 1),
+            if (engine.lastEconomy case final economy?
+                when _closedSummaryAge != c.age)
+              LastYearBanner(
+                economy: economy,
+                career: engine.lastCareer,
+                onClose: () => setState(() => _closedSummaryAge = c.age),
+              ),
             // Son kartın zar sonucu; alttaki düğmeleri örtmesin diye
             // SnackBar yerine burada durur.
             if (rolled != null)

@@ -6,6 +6,7 @@ import '../../engine/engine.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../l10n_names.dart';
 import '../providers.dart';
+import '../widgets/life_status.dart';
 
 /// Ölüm ve basit hayat özeti. Paylaşım görseli F2'de gelir.
 class DeathScreen extends ConsumerWidget {
@@ -51,6 +52,13 @@ class DeathScreen extends ConsumerWidget {
                       Text(
                         l10n.backgroundName(c.background),
                         key: const Key('death_background'),
+                      ),
+                      if (lastJobLabel(l10n, c, content.careers)
+                          case final job?)
+                        Text(job, key: const Key('death_career')),
+                      Text(
+                        l10n.deathNetWorth(l10n.money(summary.netWorth)),
+                        key: const Key('death_net_worth'),
                       ),
                       const SizedBox(height: 16),
                       Text(

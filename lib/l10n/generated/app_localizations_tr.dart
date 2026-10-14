@@ -285,6 +285,118 @@ class AppLocalizationsTr extends AppLocalizations {
   String get rebirthButton => 'Yeniden doğ';
 
   @override
+  String deathNetWorth(String amount) {
+    return 'Net servet: $amount';
+  }
+
+  @override
+  String get jobNone => 'İşsiz';
+
+  @override
+  String get jobStudent => 'Üniversite öğrencisi';
+
+  @override
+  String get jobRetired => 'Emekli';
+
+  @override
+  String get jobChild => 'Okul çağında';
+
+  @override
+  String jobTier(String career, String tier) {
+    return '$career · $tier';
+  }
+
+  @override
+  String get assetsButton => 'Varlıklar';
+
+  @override
+  String get assetsTitle => 'Varlıkların';
+
+  @override
+  String get assetCash => 'Nakit';
+
+  @override
+  String get assetGold => 'Altın';
+
+  @override
+  String assetGoldValue(int grams, String value) {
+    return '$grams gr · $value';
+  }
+
+  @override
+  String get assetHouse => 'Ev';
+
+  @override
+  String assetHouseValue(int count, String value) {
+    return '$count ev · $value';
+  }
+
+  @override
+  String get assetCar => 'Araba';
+
+  @override
+  String assetCarValue(int count, String value) {
+    return '$count araba · $value';
+  }
+
+  @override
+  String get assetRent => 'Yıllık kira';
+
+  @override
+  String get assetLoan => 'Kredi';
+
+  @override
+  String assetLoanValue(String payment, int years) {
+    return '$payment × $years yıl';
+  }
+
+  @override
+  String get assetPension => 'Emekli aylığı (yıllık)';
+
+  @override
+  String get assetNetWorth => 'Net servet';
+
+  @override
+  String assetGoldPrice(String price) {
+    return 'Altının gramı: $price';
+  }
+
+  @override
+  String get assetNone => 'Yok';
+
+  @override
+  String get lastYearTitle => 'Geçen yıl';
+
+  @override
+  String lastYearIncome(String amount) {
+    return 'Gelir $amount';
+  }
+
+  @override
+  String lastYearRent(String amount) {
+    return 'Kira $amount';
+  }
+
+  @override
+  String lastYearLoan(String amount) {
+    return 'Kredi $amount';
+  }
+
+  @override
+  String lastYearInflation(int percent, String amount) {
+    return 'Enflasyon %$percent; nakdinden $amount eridi';
+  }
+
+  @override
+  String get lastYearPromoted => 'Terfi aldın!';
+
+  @override
+  String get lastYearRetired => 'Emekli oldun.';
+
+  @override
+  String get closeTooltip => 'Kapat';
+
+  @override
   String get nickname_asirlikCinar => 'Asırlık Çınar';
 
   @override

@@ -213,6 +213,27 @@ class _CardFace extends StatelessWidget {
       null => null,
     };
 
+    final leanText = AnimatedOpacity(
+      opacity: leanLabel == null ? 0 : 1,
+      duration: const Duration(milliseconds: 120),
+      child: Text(
+        leanLabel ?? '',
+        style: theme.textTheme.titleMedium?.copyWith(
+          color: scheme.primary,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+    final speaker = speakerName == null
+        ? null
+        : Text(speakerName!, style: theme.textTheme.labelLarge);
+    final text = Text(
+      card.text,
+      key: const Key('card_text'),
+      style: theme.textTheme.titleMedium?.copyWith(height: 1.4),
+      textAlign: TextAlign.center,
+    );
+
     return ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 340),
       child: Card(
@@ -225,55 +246,44 @@ class _CardFace extends StatelessWidget {
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(
-                height: 28,
-                child: AnimatedOpacity(
-                  opacity: leanLabel == null ? 0 : 1,
-                  duration: const Duration(milliseconds: 120),
-                  child: Text(
-                    leanLabel ?? '',
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      color: scheme.primary,
-                      fontWeight: FontWeight.bold,
+          padding: EdgeInsets.all(compact ? 12 : 20),
+          child: compact
+              // Dar ekranda kartın tamamı kayar; hiçbir parça taşmaz.
+              ? SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      leanText,
+                      ?speaker,
+                      const SizedBox(height: 8),
+                      text,
+                    ],
+                  ),
+                )
+              : Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(height: 28, child: leanText),
+                    const SizedBox(height: 8),
+                    CircleAvatar(
+                      radius: 30,
+                      backgroundColor: scheme.primaryContainer,
+                      child: Icon(
+                        Icons.person,
+                        size: 34,
+                        color: scheme.onPrimaryContainer,
+                      ),
                     ),
-                  ),
+                    if (speaker != null) ...[
+                      const SizedBox(height: 8),
+                      speaker,
+                    ],
+                    const SizedBox(height: 16),
+                    // Metin sığmazsa kendi içinde kayar.
+                    Flexible(child: SingleChildScrollView(child: text)),
+                    const SizedBox(height: 12),
+                  ],
                 ),
-              ),
-              if (!compact) ...[
-                const SizedBox(height: 8),
-                CircleAvatar(
-                  radius: 30,
-                  backgroundColor: scheme.primaryContainer,
-                  child: Icon(
-                    Icons.person,
-                    size: 34,
-                    color: scheme.onPrimaryContainer,
-                  ),
-                ),
-              ],
-              if (speakerName != null) ...[
-                const SizedBox(height: 8),
-                Text(speakerName!, style: theme.textTheme.labelLarge),
-              ],
-              const SizedBox(height: 16),
-              // Küçük ekranda kart sığmazsa metin kendi içinde kayar.
-              Flexible(
-                child: SingleChildScrollView(
-                  child: Text(
-                    card.text,
-                    key: const Key('card_text'),
-                    style: theme.textTheme.titleMedium?.copyWith(height: 1.4),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 12),
-            ],
-          ),
         ),
       ),
     );

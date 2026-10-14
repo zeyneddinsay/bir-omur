@@ -1,0 +1,218 @@
+import 'package:flutter/material.dart';
+
+import '../../engine/engine.dart';
+import '../../l10n/generated/app_localizations.dart';
+import '../../models/models.dart';
+import '../l10n_names.dart';
+
+/// Karakterin iş durumu: "Memur · Şef", "İşsiz", "Emekli"…
+/// Meslek ve kademe adları içerikten (meslek dosyalarından) gelir.
+String jobLabel(AppLocalizations l10n, Character c, CareerBook careers) {
+  if (c.isRetired) return l10n.jobRetired;
+  if (c.job case final job?) {
+    final career = careers.byId(job.careerId);
+    if (career == null) return job.careerId;
+    return l10n.jobTier(career.name, career.tier(job.tier).name);
+  }
+  if (c.hasFlag(ActionCatalog.studentFlag)) return l10n.jobStudent;
+  if (c.age < EngineFlags.hardshipMinAge) return l10n.jobChild;
+  return l10n.jobNone;
+}
+
+/// Son iş: ölüm özeti için; hiç çalışmadıysa null.
+String? lastJobLabel(AppLocalizations l10n, Character c, CareerBook careers) {
+  final job = c.careerJob;
+  if (job == null) return null;
+  final career = careers.byId(job.careerId);
+  if (career == null) return job.careerId;
+  return l10n.jobTier(career.name, career.tier(job.tier).name);
+}
+
+/// Üst çubuktaki cüzdan düğmesi; varlıklar panelini açar.
+class AssetsButton extends StatelessWidget {
+  const AssetsButton({super.key, required this.engine});
+
+  final LifeEngine engine;
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      key: const Key('assets_button'),
+      tooltip: AppLocalizations.of(context).assetsButton,
+      onPressed: () => showModalBottomSheet<void>(
+        context: context,
+        showDragHandle: true,
+        isScrollControlled: true,
+        builder: (_) => AssetsSheet(engine: engine),
+      ),
+      icon: const Icon(Icons.account_balance_wallet_outlined),
+    );
+  }
+}
+
+/// Varlıklar paneli: nakit, altın, ev, araba, kira, kredi, net servet.
+class AssetsSheet extends StatelessWidget {
+  const AssetsSheet({super.key, required this.engine});
+
+  final LifeEngine engine;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    final c = engine.state.character;
+    final a = c.assets;
+    final market = engine.market;
+    String tl(int v) => l10n.money(v);
+
+    final rows = <(String, String)>[
+      (l10n.assetCash, tl(c.stats.money)),
+      (
+        l10n.assetGold,
+        a.goldGrams == 0
+            ? l10n.assetNone
+            : l10n.assetGoldValue(
+                a.goldGrams,
+                tl(a.goldGrams * market.goldPrice),
+              ),
+      ),
+      (
+        l10n.assetHouse,
+        a.houses == 0
+            ? l10n.assetNone
+            : l10n.assetHouseValue(a.houses, tl(a.houses * Economy.houseValue)),
+      ),
+      (
+        l10n.assetCar,
+        a.cars == 0
+            ? l10n.assetNone
+            : l10n.assetCarValue(a.cars, tl(a.carValue)),
+      ),
+      if (c.hasFlag(Economy.renterFlag) && a.houses == 0)
+        (l10n.assetRent, tl(a.rent)),
+      if (a.hasLoan)
+        (
+          l10n.assetLoan,
+          l10n.assetLoanValue(tl(a.loanPayment), a.loanYearsLeft),
+        ),
+      if (c.isRetired) (l10n.assetPension, tl(c.pension)),
+    ];
+
+    return SafeArea(
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(l10n.assetsTitle, style: theme.textTheme.titleLarge),
+            Text(
+              '${l10n.hometownLine(c.hometown, c.team)} · '
+              '${l10n.backgroundName(c.background)}',
+              key: const Key('sheet_background'),
+              style: theme.textTheme.bodySmall,
+            ),
+            const SizedBox(height: 12),
+            for (final (label, value) in rows)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 6),
+                child: Row(
+                  children: [
+                    Expanded(child: Text(label)),
+                    Text(value, style: theme.textTheme.titleSmall),
+                  ],
+                ),
+              ),
+            const Divider(height: 24),
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    l10n.assetNetWorth,
+                    style: theme.textTheme.titleMedium,
+                  ),
+                ),
+                Text(
+                  tl(Economy.netWorth(c, market)),
+                  key: const Key('net_worth'),
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    color: theme.colorScheme.primary,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Text(
+              l10n.assetGoldPrice(tl(market.goldPrice)),
+              style: theme.textTheme.bodySmall,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Yaşlandıktan sonra geçen yılın kısa dökümü. Kapatılabilir.
+class LastYearBanner extends StatelessWidget {
+  const LastYearBanner({
+    super.key,
+    required this.economy,
+    required this.career,
+    required this.onClose,
+  });
+
+  final EconomyReport economy;
+  final CareerReport? career;
+  final VoidCallback onClose;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    String tl(int v) => l10n.money(v);
+    final parts = [
+      if (career case final c? when c.income > 0)
+        l10n.lastYearIncome('+${tl(c.income)}'),
+      if (economy.rentPaid > 0) l10n.lastYearRent('−${tl(economy.rentPaid)}'),
+      if (economy.loanPaid > 0) l10n.lastYearLoan('−${tl(economy.loanPaid)}'),
+      if (economy.cashEroded > 0)
+        l10n.lastYearInflation(
+          (economy.inflation * 100).round(),
+          tl(economy.cashEroded),
+        ),
+      if (career?.promoted ?? false) l10n.lastYearPromoted,
+      if (career?.retired ?? false) l10n.lastYearRetired,
+    ];
+    if (parts.isEmpty) return const SizedBox.shrink();
+
+    return Container(
+      key: const Key('last_year_banner'),
+      margin: const EdgeInsets.fromLTRB(12, 4, 12, 0),
+      padding: const EdgeInsets.fromLTRB(12, 8, 4, 8),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.secondaryContainer,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Text(
+              '${l10n.lastYearTitle}: ${parts.join(' · ')}',
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: theme.textTheme.bodySmall,
+            ),
+          ),
+          IconButton(
+            key: const Key('last_year_close'),
+            tooltip: l10n.closeTooltip,
+            visualDensity: VisualDensity.compact,
+            onPressed: onClose,
+            icon: const Icon(Icons.close, size: 18),
+          ),
+        ],
+      ),
+    );
+  }
+}

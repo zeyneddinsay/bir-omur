@@ -532,6 +532,186 @@ abstract class AppLocalizations {
   /// **'Yeniden doğ'**
   String get rebirthButton;
 
+  /// No description provided for @deathNetWorth.
+  ///
+  /// In tr, this message translates to:
+  /// **'Net servet: {amount}'**
+  String deathNetWorth(String amount);
+
+  /// No description provided for @jobNone.
+  ///
+  /// In tr, this message translates to:
+  /// **'İşsiz'**
+  String get jobNone;
+
+  /// No description provided for @jobStudent.
+  ///
+  /// In tr, this message translates to:
+  /// **'Üniversite öğrencisi'**
+  String get jobStudent;
+
+  /// No description provided for @jobRetired.
+  ///
+  /// In tr, this message translates to:
+  /// **'Emekli'**
+  String get jobRetired;
+
+  /// No description provided for @jobChild.
+  ///
+  /// In tr, this message translates to:
+  /// **'Okul çağında'**
+  String get jobChild;
+
+  /// No description provided for @jobTier.
+  ///
+  /// In tr, this message translates to:
+  /// **'{career} · {tier}'**
+  String jobTier(String career, String tier);
+
+  /// No description provided for @assetsButton.
+  ///
+  /// In tr, this message translates to:
+  /// **'Varlıklar'**
+  String get assetsButton;
+
+  /// No description provided for @assetsTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Varlıkların'**
+  String get assetsTitle;
+
+  /// No description provided for @assetCash.
+  ///
+  /// In tr, this message translates to:
+  /// **'Nakit'**
+  String get assetCash;
+
+  /// No description provided for @assetGold.
+  ///
+  /// In tr, this message translates to:
+  /// **'Altın'**
+  String get assetGold;
+
+  /// No description provided for @assetGoldValue.
+  ///
+  /// In tr, this message translates to:
+  /// **'{grams} gr · {value}'**
+  String assetGoldValue(int grams, String value);
+
+  /// No description provided for @assetHouse.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ev'**
+  String get assetHouse;
+
+  /// No description provided for @assetHouseValue.
+  ///
+  /// In tr, this message translates to:
+  /// **'{count} ev · {value}'**
+  String assetHouseValue(int count, String value);
+
+  /// No description provided for @assetCar.
+  ///
+  /// In tr, this message translates to:
+  /// **'Araba'**
+  String get assetCar;
+
+  /// No description provided for @assetCarValue.
+  ///
+  /// In tr, this message translates to:
+  /// **'{count} araba · {value}'**
+  String assetCarValue(int count, String value);
+
+  /// No description provided for @assetRent.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yıllık kira'**
+  String get assetRent;
+
+  /// No description provided for @assetLoan.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kredi'**
+  String get assetLoan;
+
+  /// No description provided for @assetLoanValue.
+  ///
+  /// In tr, this message translates to:
+  /// **'{payment} × {years} yıl'**
+  String assetLoanValue(String payment, int years);
+
+  /// No description provided for @assetPension.
+  ///
+  /// In tr, this message translates to:
+  /// **'Emekli aylığı (yıllık)'**
+  String get assetPension;
+
+  /// No description provided for @assetNetWorth.
+  ///
+  /// In tr, this message translates to:
+  /// **'Net servet'**
+  String get assetNetWorth;
+
+  /// No description provided for @assetGoldPrice.
+  ///
+  /// In tr, this message translates to:
+  /// **'Altının gramı: {price}'**
+  String assetGoldPrice(String price);
+
+  /// No description provided for @assetNone.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yok'**
+  String get assetNone;
+
+  /// No description provided for @lastYearTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Geçen yıl'**
+  String get lastYearTitle;
+
+  /// No description provided for @lastYearIncome.
+  ///
+  /// In tr, this message translates to:
+  /// **'Gelir {amount}'**
+  String lastYearIncome(String amount);
+
+  /// No description provided for @lastYearRent.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kira {amount}'**
+  String lastYearRent(String amount);
+
+  /// No description provided for @lastYearLoan.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kredi {amount}'**
+  String lastYearLoan(String amount);
+
+  /// No description provided for @lastYearInflation.
+  ///
+  /// In tr, this message translates to:
+  /// **'Enflasyon %{percent}; nakdinden {amount} eridi'**
+  String lastYearInflation(int percent, String amount);
+
+  /// No description provided for @lastYearPromoted.
+  ///
+  /// In tr, this message translates to:
+  /// **'Terfi aldın!'**
+  String get lastYearPromoted;
+
+  /// No description provided for @lastYearRetired.
+  ///
+  /// In tr, this message translates to:
+  /// **'Emekli oldun.'**
+  String get lastYearRetired;
+
+  /// No description provided for @closeTooltip.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kapat'**
+  String get closeTooltip;
+
   /// No description provided for @nickname_asirlikCinar.
   ///
   /// In tr, this message translates to:
