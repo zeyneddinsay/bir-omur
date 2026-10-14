@@ -120,6 +120,8 @@ flutter build ipa              # iOS (yalnızca Mac)
 
 Bu aşamanın kapısı: 5 test oyuncusu üst üste 3 hayat oynuyor.
 
+Kapı durumu (14 Ekim 2026): Kod tamam; kullanıcı kendi Android telefonunda debug sürümünü denedi, her şey çalışıyor. Kullanıcının kararı: dış test oyuncularına dağıtım uygulama bitince yapılacak; o zamana kadar yalnızca kullanıcı test ediyor. Bu yüzden F1'in 5 kişilik kapısı şimdilik ertelendi ve sonraki aşamalara geçilebilir. Dağıtım zamanı gelince bu kapı ile F3'teki kapalı test birlikte ele alınır.
+
 Kararlar (14 Ekim 2026):
 
 - Ekonomi bugünün TL'si ile tutulur. Kart ve aksiyonlardaki tutarlar yıllar geçse de anlamını korur; enflasyon nakit TL birikiminin her yıl erimesiyle gösterilir. Altın enflasyona karşı kabaca korur ama dalgalanır, ev kirayı kaldırır.
