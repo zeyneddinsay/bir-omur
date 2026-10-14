@@ -305,7 +305,7 @@ tools/
 
 | Yaş | Kart | Sol seçenek → etki | Sağ seçenek → etki |
 | --- | --- | --- | --- |
-| 0 | Ailen isim koyamıyor. Deden kendi babasının adını, annen dizideki karakterin adını istiyor. | Dedenin dediği → A +10 | Annenin dediği → M +5, deden bir süre küs |
+| 0 | Adını koydular ama göbek adında anlaşamıyorlar. Deden kendi babasının adını, annen dizideki karakterin adını istiyor. | Dedenin dediği → A +10 | Annenin dediği → M +5, deden bir süre küs |
 | 8 | Karnende üç "iyi" var. Baban: "Komşunun oğlu hepsinden pekiyi almış." | Ağla → M −5, A +5 | "Ama resimden pekiyi aldım" → M +5, İ −2 |
 | 14 | LGS'ye 3 ay kaldı. Annen kurs kaydını çoktan yaptırmış. | Gitmem → M +5, B −5 | Hafta sonu dahil giderim → B +10, M −10 |
 | 18 | Tercih zamanı. Baban "Mühendislik" diyor, sen "Grafik tasarım". | Babayı dinle → A +10, M −5 | Kendi yolun → M +10, A −5 |

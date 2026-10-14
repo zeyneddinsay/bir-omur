@@ -52,7 +52,7 @@ void main() {
     expect(find.text('Zeynep'), findsOneWidget);
     expect(find.textContaining('0 yaş'), findsOneWidget);
     // 0 yaşın zorunlu kartı.
-    expect(find.textContaining('Ailen isim koyamıyor'), findsOneWidget);
+    expect(find.textContaining('göbek adında anlaşamıyorlar'), findsOneWidget);
   });
 
   testWidgets('cinsiyet etiketleri dar ekranda ve büyük yazıda tek satır', (
@@ -109,7 +109,7 @@ void main() {
       const Offset(-300, 0),
     );
     await tester.pumpAndSettle();
-    expect(find.textContaining('Ailen isim koyamıyor'), findsNothing);
+    expect(find.textContaining('göbek adında anlaşamıyorlar'), findsNothing);
     expect(find.byKey(const Key('age_up')), findsOneWidget);
   });
 
@@ -117,7 +117,7 @@ void main() {
     await _bornAs(tester, 'Ali');
     await tester.drag(find.byKey(const Key('card_text')), const Offset(-40, 0));
     await tester.pumpAndSettle();
-    expect(find.textContaining('Ailen isim koyamıyor'), findsOneWidget);
+    expect(find.textContaining('göbek adında anlaşamıyorlar'), findsOneWidget);
   });
 
   testWidgets('aksiyon hakkı düşer, Yaşlan yaşı artırır', (tester) async {

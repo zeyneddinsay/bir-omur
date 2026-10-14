@@ -7,7 +7,7 @@
     "once": true,
     "mandatory": true,
     "speaker": "dede",
-    "text": "Ailen isim koyamıyor. Deden kendi babasının adını, annen dizideki karakterin adını istiyor.",
+    "text": "Adını koydular ama göbek adında anlaşamıyorlar. Deden kendi babasının adını, annen dizideki karakterin adını istiyor.",
     "left": {
       "label": "Dedenin dediği",
       "effects": { "family": 10 }
@@ -29,7 +29,7 @@
     "chainOnly": true,
     "conditions": { "flags": ["deden_kus"] },
     "speaker": "dede",
-    "text": "Deden sonunda dayanamadı. Bayramda seni kucağına alıp 'Adın da güzelmiş aslında' dedi.",
+    "text": "Deden sonunda dayanamadı. Bayramda seni kucağına alıp 'Göbek adın da güzelmiş aslında' dedi.",
     "left": {
       "label": "Dedeme sarılırım",
       "effects": { "family": 8, "removeFlags": ["deden_kus"] }
