@@ -129,7 +129,7 @@ Adımlar:
 - [x] Hassas kart taraması: kırmızı çizgilere göre 150 kart; card_lint'e incelenecek kelime denetimi
 - [x] Uygulama ikonu ve açılış ekranı: portre yüzlü ikon (`tools/app_icon`, elle çalıştırılır), Android uyarlanabilir ikon, kâğıt rengi açılış
 - [x] Android release imzası: `android/key.properties` (depoya girmez), yoksa debug imzası; anahtar oluşturma ve yedek `docs/RELEASE.md`
-- [ ] iOS dSYM yükleme betiği (Mac'te kullanıcı ekler)
+- [ ] iOS dSYM yükleme betiği: adımlar `docs/RELEASE.md`; kullanıcı Mac'te Xcode'da ekleyip `flutter build ipa` ile doğrulayacak
 - [ ] Gizlilik politikası taslağı; Play Data safety ve App Store gizlilik etiketi cevapları
 
 Sonraki aşamalar `docs/GDD.md` dosyasındaki "MVP kapsamı ve yol haritası" bölümünde.
