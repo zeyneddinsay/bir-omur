@@ -538,6 +538,96 @@ abstract class AppLocalizations {
   /// **'Net servet: {amount}'**
   String deathNetWorth(String amount);
 
+  /// No description provided for @shareButton.
+  ///
+  /// In tr, this message translates to:
+  /// **'Hayatını paylaş'**
+  String get shareButton;
+
+  /// No description provided for @sharePreviewTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Hayat özeti'**
+  String get sharePreviewTitle;
+
+  /// No description provided for @shareAction.
+  ///
+  /// In tr, this message translates to:
+  /// **'Paylaş'**
+  String get shareAction;
+
+  /// No description provided for @shareText.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bir Ömür\'de {age} yıllık bir hayat yaşadım. Sen nasıl bir ömür yaşardın?'**
+  String shareText(int age);
+
+  /// No description provided for @shareFailed.
+  ///
+  /// In tr, this message translates to:
+  /// **'Paylaşım açılamadı.'**
+  String get shareFailed;
+
+  /// No description provided for @shareNumbersTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Hayatın sayıları'**
+  String get shareNumbersTitle;
+
+  /// No description provided for @shareFooter.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bir Ömür · Türkiye\'de bir hayat'**
+  String get shareFooter;
+
+  /// No description provided for @numMoves.
+  ///
+  /// In tr, this message translates to:
+  /// **'{count, plural, =1{1 kez taşındı} other{{count} kez taşındı}}'**
+  String numMoves(int count);
+
+  /// No description provided for @numRent.
+  ///
+  /// In tr, this message translates to:
+  /// **'{amount} kira ödedi'**
+  String numRent(String amount);
+
+  /// No description provided for @numGold.
+  ///
+  /// In tr, this message translates to:
+  /// **'{grams} gram altın takıldı'**
+  String numGold(int grams);
+
+  /// No description provided for @numPromotions.
+  ///
+  /// In tr, this message translates to:
+  /// **'{count, plural, =1{1 kez terfi aldı} other{{count} kez terfi aldı}}'**
+  String numPromotions(int count);
+
+  /// No description provided for @numYearsWorked.
+  ///
+  /// In tr, this message translates to:
+  /// **'{years} yıl çalıştı'**
+  String numYearsWorked(int years);
+
+  /// No description provided for @numNetWorth.
+  ///
+  /// In tr, this message translates to:
+  /// **'Geride {amount} bıraktı'**
+  String numNetWorth(String amount);
+
+  /// No description provided for @amountMillion.
+  ///
+  /// In tr, this message translates to:
+  /// **'{value} milyon TL'**
+  String amountMillion(String value);
+
+  /// No description provided for @amountThousand.
+  ///
+  /// In tr, this message translates to:
+  /// **'{value} bin TL'**
+  String amountThousand(String value);
+
   /// No description provided for @jobNone.
   ///
   /// In tr, this message translates to:

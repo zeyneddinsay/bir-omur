@@ -6,6 +6,7 @@ import '../../engine/engine.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../l10n_names.dart';
 import '../providers.dart';
+import '../share/share_preview_screen.dart';
 import '../widgets/life_status.dart';
 
 /// Ölüm ve basit hayat özeti. Paylaşım görseli F2'de gelir.
@@ -106,6 +107,20 @@ class DeathScreen extends ConsumerWidget {
                         style: theme.textTheme.bodySmall,
                       ),
                       const SizedBox(height: 24),
+                      OutlinedButton.icon(
+                        key: const Key('share_button'),
+                        onPressed: () => Navigator.of(context).push(
+                          MaterialPageRoute<void>(
+                            builder: (_) => SharePreviewScreen(
+                              summary: summary,
+                              content: content,
+                            ),
+                          ),
+                        ),
+                        icon: const Icon(Icons.ios_share),
+                        label: Text(l10n.shareButton),
+                      ),
+                      const SizedBox(height: 8),
                       FilledButton.icon(
                         key: const Key('rebirth'),
                         onPressed: controller.reset,

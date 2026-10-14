@@ -290,6 +290,81 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
+  String get shareButton => 'Hayatını paylaş';
+
+  @override
+  String get sharePreviewTitle => 'Hayat özeti';
+
+  @override
+  String get shareAction => 'Paylaş';
+
+  @override
+  String shareText(int age) {
+    return 'Bir Ömür\'de $age yıllık bir hayat yaşadım. Sen nasıl bir ömür yaşardın?';
+  }
+
+  @override
+  String get shareFailed => 'Paylaşım açılamadı.';
+
+  @override
+  String get shareNumbersTitle => 'Hayatın sayıları';
+
+  @override
+  String get shareFooter => 'Bir Ömür · Türkiye\'de bir hayat';
+
+  @override
+  String numMoves(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count kez taşındı',
+      one: '1 kez taşındı',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String numRent(String amount) {
+    return '$amount kira ödedi';
+  }
+
+  @override
+  String numGold(int grams) {
+    return '$grams gram altın takıldı';
+  }
+
+  @override
+  String numPromotions(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count kez terfi aldı',
+      one: '1 kez terfi aldı',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String numYearsWorked(int years) {
+    return '$years yıl çalıştı';
+  }
+
+  @override
+  String numNetWorth(String amount) {
+    return 'Geride $amount bıraktı';
+  }
+
+  @override
+  String amountMillion(String value) {
+    return '$value milyon TL';
+  }
+
+  @override
+  String amountThousand(String value) {
+    return '$value bin TL';
+  }
+
+  @override
   String get jobNone => 'İşsiz';
 
   @override

@@ -10,6 +10,7 @@ import '../engine/engine.dart';
 import '../engine/life_record.dart';
 import '../models/models.dart';
 import '../services/save_store.dart';
+import '../services/share_service.dart';
 
 /// Kart destesi ve kayıt. Hatalı kart dosyası tekrar denemekle düzelmez,
 /// bu yüzden yeniden deneme kapalıdır.
@@ -26,6 +27,11 @@ final seedGeneratorProvider = Provider<int Function()>(
 
 /// Yerel kayıt. `main` Hive'ı açıp bunu değiştirir; varsayılanı bellektir.
 final saveStoreProvider = Provider<SaveStore>((ref) => MemorySaveStore());
+
+/// Paylaşım menüsü; testler sahte bir servisle değiştirir.
+final shareServiceProvider = Provider<ShareService>(
+  (ref) => const SharePlusService(),
+);
 
 /// Gerçek saat; testler sabitler.
 final clockProvider = Provider<DateTime Function()>((ref) => DateTime.now);

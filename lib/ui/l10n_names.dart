@@ -67,3 +67,9 @@ extension L10nNames on AppLocalizations {
     DeathCause.natural => deathCauseNatural,
   };
 }
+
+/// Türkçe büyük harf: `toUpperCase()` "i" harfini "I" yapar; Türkçede
+/// "İ" olmalı (ve "ı" → "I").
+extension TurkishCase on String {
+  String toUpperTr() => replaceAll('i', 'İ').replaceAll('ı', 'I').toUpperCase();
+}
