@@ -249,5 +249,208 @@
         "happiness": -1
       }
     }
+  },
+  {
+    "id": "bebek_haberi",
+    "stage": "yetiskin",
+    "minAge": 30,
+    "maxAge": 42,
+    "once": true,
+    "conditions": {
+      "flags": [
+        "evli"
+      ]
+    },
+    "speaker": "kayinvalide",
+    "text": "Bebek haberi! Kayınvaliden isim listesi hazırlamış bile. Listenin ilk sırasında kendi adı var.",
+    "left": {
+      "label": "Listeye bakarız",
+      "effects": {
+        "family": 6,
+        "happiness": 5,
+        "addFlags": [
+          "cocuk_var"
+        ]
+      }
+    },
+    "right": {
+      "label": "İsmi biz koyarız",
+      "effects": {
+        "happiness": 6,
+        "family": -2,
+        "addFlags": [
+          "cocuk_var"
+        ]
+      }
+    }
+  },
+  {
+    "id": "veli_olarak_toplanti",
+    "stage": "yetiskin",
+    "minAge": 36,
+    "maxAge": 52,
+    "cooldown": 3,
+    "conditions": {
+      "flags": [
+        "cocuk_var"
+      ]
+    },
+    "speaker": "ogretmen",
+    "text": "Veli toplantısı. Öğretmen: 'Çocuğunuz çok zeki ama çalışmıyor.' Bu cümleyi bir yerden hatırlıyorsun.",
+    "left": {
+      "label": "Çocuğumu korurum",
+      "effects": {
+        "family": 4,
+        "reputation": -1
+      }
+    },
+    "right": {
+      "label": "Çalışacak hocam",
+      "effects": {
+        "reputation": 3,
+        "family": -2
+      }
+    }
+  },
+  {
+    "id": "kayinpederle_derbi",
+    "stage": "yetiskin",
+    "minAge": 30,
+    "maxAge": 65,
+    "cooldown": 3,
+    "conditions": {
+      "flags": [
+        "evli"
+      ]
+    },
+    "speaker": "kayinpeder",
+    "text": "Derbi akşamı kayınpederde yemek. O karşı takımı tutuyor. Skor 2-2, son dakika, herkes ayakta.",
+    "left": {
+      "label": "Sessizce izlerim",
+      "effects": {
+        "family": 4,
+        "happiness": -3
+      }
+    },
+    "right": {
+      "label": "Gol olunca bağırırım",
+      "effects": {
+        "happiness": 5,
+        "family": -4
+      }
+    }
+  },
+  {
+    "id": "on_iki_ev",
+    "stage": "yetiskin",
+    "minAge": 30,
+    "maxAge": 64,
+    "cooldown": 2,
+    "text": "Bayramda üç günde on iki ev. Her evde aynı lokum, aynı kolonya, aynı soru: 'Maaş ne kadar?'",
+    "left": {
+      "label": "Sadece büyüklere",
+      "effects": {
+        "family": 1,
+        "happiness": 3
+      }
+    },
+    "right": {
+      "label": "Hepsine giderim",
+      "effects": {
+        "family": 5,
+        "reputation": 2,
+        "health": -2
+      }
+    }
+  },
+  {
+    "id": "apartman_yoneticisi",
+    "stage": "yetiskin",
+    "minAge": 30,
+    "maxAge": 75,
+    "once": true,
+    "text": "Apartman toplantısında herkes aynı anda sana döndü: 'Yöneticiliği sen yaparsın, sen düzgün birisin.'",
+    "left": {
+      "label": "Toplantıya gelmedim",
+      "effects": {
+        "happiness": 2,
+        "reputation": -2
+      }
+    },
+    "right": {
+      "label": "Kabul ederim",
+      "effects": {
+        "reputation": 6,
+        "happiness": -4
+      }
+    }
+  },
+  {
+    "id": "komsunun_oglu_doktor",
+    "stage": "yetiskin",
+    "minAge": 30,
+    "maxAge": 45,
+    "cooldown": 5,
+    "speaker": "anne",
+    "text": "Annen telefonda: 'Komşunun oğlu doktor olmuş. Senin işler nasıl, hâlâ aynı yerde misin?'",
+    "left": {
+      "label": "Gayet iyiyim anne",
+      "effects": {
+        "family": 2,
+        "happiness": -2
+      }
+    },
+    "right": {
+      "label": "Konuyu değiştiririm",
+      "effects": {
+        "happiness": 2,
+        "family": -2
+      }
+    }
+  },
+  {
+    "id": "spor_salonu",
+    "stage": "yetiskin",
+    "minAge": 30,
+    "maxAge": 60,
+    "cooldown": 5,
+    "text": "Ocak ayı kampanyası: 'Yıllık üyelik yarı fiyat!' Geçen yılki üyelik kartın hâlâ cüzdanında, yepyeni.",
+    "left": {
+      "label": "Yürüyüş bedava",
+      "effects": {
+        "health": 2
+      }
+    },
+    "right": {
+      "label": "Bu sefer giderim",
+      "effects": {
+        "money": -10000,
+        "health": 6,
+        "happiness": -1
+      }
+    }
+  },
+  {
+    "id": "kayip_cuzdan",
+    "stage": "yetiskin",
+    "minAge": 30,
+    "maxAge": 70,
+    "rarity": "efsane",
+    "once": true,
+    "text": "Yolda bir cüzdan buldun: içinde bir servet ve sahibinin adresi. Adres, mahallenin en cimri adamının.",
+    "left": {
+      "label": "Karakola bırakırım",
+      "effects": {
+        "reputation": 4,
+        "knowledge": 1
+      }
+    },
+    "right": {
+      "label": "Kapısına götürürüm",
+      "effects": {
+        "reputation": 10,
+        "happiness": 4
+      }
+    }
   }
 ]

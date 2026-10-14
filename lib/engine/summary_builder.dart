@@ -75,6 +75,10 @@ class SummaryBuilder {
   /// Ev sahipliği ve askerlik anıları, eşiği bu kadar aşmış bir gösterge
   /// gibi sayılır: başka belirgin bir özellik yoksa lakap onlardan gelir.
   static const int homeOwnerScore = 5;
+
+  /// Mahalle seni sözünle hatırlar: itibar eşiği aştığında aşılan puan bu
+  /// kadar kat sayılır.
+  static const int reputationWeight = 2;
   static const int soldierScore = 3;
 
   /// Önce özel durumlar (asırlık, zengin, borçlu); sonra en belirgin özellik
@@ -88,7 +92,10 @@ class SummaryBuilder {
     if (worth < 0) return Nickname.borcYigidinKamcisi;
 
     final candidates = <(Nickname, int)>[
-      (Nickname.sozuDinlenen, s.reputation - statThreshold),
+      (
+        Nickname.sozuDinlenen,
+        (s.reputation - statThreshold) * reputationWeight,
+      ),
       (Nickname.bayramlarinBasKosesi, s.family - statThreshold),
       (Nickname.mahalleninProfesoru, s.knowledge - statThreshold),
       (Nickname.hepGulen, s.happiness - statThreshold),

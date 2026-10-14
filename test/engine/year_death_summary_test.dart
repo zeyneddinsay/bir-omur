@@ -191,6 +191,19 @@ void main() {
       expect(nick(testCharacter(happiness: 88)), Nickname.hepGulen);
     });
 
+    test('itibar eşiği aşınca iki kat sayılır', () {
+      // İtibar 86: (86-80)×2 = 12, aile 90: 10 → Sözü Dinlenen.
+      expect(
+        nick(testCharacter(reputation: 86, family: 90)),
+        Nickname.sozuDinlenen,
+      );
+      // İtibar 84: 8, aile 90: 10 → Bayramların Baş Köşesi.
+      expect(
+        nick(testCharacter(reputation: 84, family: 90)),
+        Nickname.bayramlarinBasKosesi,
+      );
+    });
+
     test('ev sahipliği küçük bir pay sayılır', () {
       const house = Assets(houses: 1);
       expect(

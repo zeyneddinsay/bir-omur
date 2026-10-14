@@ -598,5 +598,44 @@
         ]
       }
     }
+  },
+  {
+    "id": "ne_zaman_evleneceksin",
+    "stage": "genc",
+    "minAge": 25,
+    "maxAge": 40,
+    "cooldown": 3,
+    "conditions": {
+      "notFlags": [
+        "evli"
+      ]
+    },
+    "speaker": "teyze",
+    "text": "Teyzen düğünde yanına oturdu: 'Sıra sende. Bak, şu masada biri var; mühendis, ailesi de iyi.'",
+    "left": {
+      "label": "Sıra bende değil",
+      "effects": {
+        "happiness": 2,
+        "family": -3
+      }
+    },
+    "right": {
+      "label": "Tanışırım",
+      "roll": {
+        "stat": "luck",
+        "threshold": 50
+      },
+      "success": {
+        "happiness": 6,
+        "family": 4,
+        "addFlags": [
+          "evli"
+        ]
+      },
+      "fail": {
+        "happiness": -2,
+        "reputation": 1
+      }
+    }
   }
 ]

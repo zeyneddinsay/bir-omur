@@ -18,7 +18,9 @@
     "evli": "Evli",
     "kayinpeder_kus": "Altını bozdurduğu için kayınpeder küs",
     "memlekete_dondu": "Yaşlılığında memlekete döndü",
-    "kuzene_ortak": "Kuzeninin dükkânına ortak oldu, hesap henüz görülmedi"
+    "kuzene_ortak": "Kuzeninin dükkânına ortak oldu, hesap henüz görülmedi",
+    "cocuk_var": "Çocuğu var",
+    "torun_var": "Torunu var"
   },
   "speakers": {
     "anne": "Anne",
@@ -51,6 +53,7 @@
     "yegen": "Yeğen",
     "babaanne": "Babaanne",
     "koc": "Basketbol koçu",
-    "rehber_ogretmen": "Rehber öğretmen"
+    "rehber_ogretmen": "Rehber öğretmen",
+    "teyze": "Teyze"
   }
 }

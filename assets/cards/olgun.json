@@ -112,5 +112,193 @@
         ]
       }
     }
+  },
+  {
+    "id": "evlat_universiteye",
+    "stage": "olgun",
+    "minAge": 50,
+    "maxAge": 62,
+    "once": true,
+    "conditions": {
+      "flags": [
+        "cocuk_var"
+      ]
+    },
+    "text": "Çocuğun üniversiteyi kazandı, şehir dışında. Valizini sen hazırladın; içine üç kavanoz reçel koydun.",
+    "left": {
+      "label": "Ben götürürüm",
+      "effects": {
+        "family": 6,
+        "money": -30000
+      }
+    },
+    "right": {
+      "label": "Kavanozlar yeter",
+      "effects": {
+        "happiness": 3,
+        "family": 2
+      }
+    }
+  },
+  {
+    "id": "evladin_dugunu",
+    "stage": "olgun",
+    "minAge": 52,
+    "maxAge": 66,
+    "rarity": "nadir",
+    "once": true,
+    "conditions": {
+      "flags": [
+        "cocuk_var"
+      ]
+    },
+    "text": "Çocuğunun düğünü. Takı defterini açtın: kim ne takmıştı, şimdi kim ne takacak, hepsi yazıyor.",
+    "left": {
+      "label": "Deftere göre beklerim",
+      "effects": {
+        "gold": 30,
+        "reputation": -2
+      }
+    },
+    "right": {
+      "label": "Kimse bir şey getirmesin",
+      "effects": {
+        "reputation": 5,
+        "family": 4
+      }
+    }
+  },
+  {
+    "id": "yakin_gozlugu",
+    "stage": "olgun",
+    "minAge": 50,
+    "maxAge": 64,
+    "once": true,
+    "text": "Gazeteyi kolunun yettiği kadar uzaklaştırıyorsun. Gözlükçü: 'Yakın gözlüğü zamanı gelmiş.'",
+    "left": {
+      "label": "Kolum yeterince uzun",
+      "effects": {
+        "happiness": 1,
+        "health": -1
+      }
+    },
+    "right": {
+      "label": "Gözlük alırım",
+      "effects": {
+        "money": -5000,
+        "knowledge": 2
+      }
+    }
+  },
+  {
+    "id": "emeklilik_hayali",
+    "stage": "olgun",
+    "minAge": 50,
+    "maxAge": 58,
+    "once": true,
+    "conditions": {
+      "career": "any"
+    },
+    "text": "Emekliliğe birkaç yıl var. Hayalin hazır: Ege'de küçük bir bahçe, iki tavuk, bir de hamak.",
+    "left": {
+      "label": "Önce kredi bitsin",
+      "effects": {
+        "reputation": 1,
+        "happiness": -2
+      }
+    },
+    "right": {
+      "label": "Şimdiden bakarım",
+      "effects": {
+        "happiness": 3,
+        "money": -100000,
+        "schedule": {
+          "event": "hamak_ve_tavuk",
+          "inYears": 10
+        }
+      }
+    }
+  },
+  {
+    "id": "ilk_torun",
+    "stage": "olgun",
+    "minAge": 55,
+    "maxAge": 72,
+    "rarity": "nadir",
+    "once": true,
+    "conditions": {
+      "flags": [
+        "cocuk_var"
+      ]
+    },
+    "text": "İlk torunun doğdu. Hastane koridorunda herkes kime benzediğini tartışıyor.",
+    "left": {
+      "label": "Bana benziyor",
+      "effects": {
+        "happiness": 8,
+        "family": 3,
+        "addFlags": [
+          "torun_var"
+        ]
+      }
+    },
+    "right": {
+      "label": "Herkese benziyor",
+      "effects": {
+        "family": 6,
+        "reputation": 2,
+        "addFlags": [
+          "torun_var"
+        ]
+      }
+    }
+  },
+  {
+    "id": "sabah_yuruyusu",
+    "stage": "olgun",
+    "minAge": 55,
+    "maxAge": 80,
+    "once": true,
+    "text": "Sahilde sabah yürüyüşü yapan bir grup seni de çağırdı. Liderleri 82 yaşında ve hepsinden hızlı.",
+    "left": {
+      "label": "Sabah uykusu kutsal",
+      "effects": {
+        "happiness": 3
+      }
+    },
+    "right": {
+      "label": "Katılırım",
+      "effects": {
+        "health": 5,
+        "reputation": 3
+      }
+    }
+  },
+  {
+    "id": "mahalle_hakemi",
+    "stage": "olgun",
+    "minAge": 50,
+    "maxAge": 95,
+    "cooldown": 4,
+    "conditions": {
+      "min": {
+        "reputation": 65
+      }
+    },
+    "text": "İki komşu park yeri yüzünden küs. İkisi de aynı şeyi söylüyor: 'Sen ne dersen o.'",
+    "left": {
+      "label": "Karışmam",
+      "effects": {
+        "happiness": 1,
+        "reputation": -3
+      }
+    },
+    "right": {
+      "label": "Ortada buluştururum",
+      "effects": {
+        "reputation": 6,
+        "happiness": -1
+      }
+    }
   }
 ]
