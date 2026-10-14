@@ -20,7 +20,8 @@ void main() {
           removeFlags: ['kiraci'],
         ),
       );
-      expect(next.stats.happiness, 100);
+      // 95 iken +10, zirvede azalan kazançla +1 olarak işler.
+      expect(next.stats.happiness, 96);
       expect(next.stats.health, 45);
       expect(next.stats.money, -2000);
       expect(next.flags, {'tasindi'});

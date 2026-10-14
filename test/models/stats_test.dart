@@ -15,9 +15,19 @@ void main() {
     );
 
     test('göstergeler 0–100 aralığına sıkıştırılır', () {
-      expect(stats.withDelta(StatKind.health, 30).health, 100);
+      expect(stats.withDelta(StatKind.health, 30).health, 96);
       expect(stats.withDelta(StatKind.happiness, -30).happiness, 0);
       expect(stats.withDelta(StatKind.knowledge, 7).knowledge, 57);
+    });
+
+    test('zirveye yaklaştıkça kazanç azalır, kayıp azalmaz', () {
+      Stats at(int v) => stats.copyWith(knowledge: v);
+      expect(at(40).withDelta(StatKind.knowledge, 10).knowledge, 50);
+      expect(at(50).withDelta(StatKind.knowledge, 10).knowledge, 60);
+      expect(at(75).withDelta(StatKind.knowledge, 10).knowledge, 80);
+      expect(at(90).withDelta(StatKind.knowledge, 10).knowledge, 92);
+      expect(at(99).withDelta(StatKind.knowledge, 10).knowledge, 99);
+      expect(at(90).withDelta(StatKind.knowledge, -30).knowledge, 60);
     });
 
     test('yalnızca istenen gösterge değişir', () {

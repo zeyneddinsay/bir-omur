@@ -61,8 +61,9 @@ void main(List<String> args) {
     netWorths.add(summary.netWorth);
     for (final k in StatKind.values) {
       statSums.update(k, (v) => v + c.stats[k]);
-      if (c.stats[k] >= SummaryBuilder.statThreshold)
+      if (c.stats[k] >= SummaryBuilder.statThreshold) {
         statHigh.update(k, (v) => v + 1);
+      }
     }
     worthByBackground.putIfAbsent(c.background, () => []).add(summary.netWorth);
     nicknames.update(summary.nickname, (n) => n + 1, ifAbsent: () => 1);

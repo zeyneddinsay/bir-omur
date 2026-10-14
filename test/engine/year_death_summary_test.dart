@@ -24,17 +24,23 @@ void main() {
       expect(tick.apply(testCharacter(age: 85)).stats.health, 47);
     });
 
-    test('insan alışır: mutluluk her yıl bir puan 60a kayar', () {
-      expect(tick.apply(testCharacter(happiness: 95)).stats.happiness, 94);
-      expect(tick.apply(testCharacter(happiness: 0)).stats.happiness, 1);
-      expect(tick.apply(testCharacter(happiness: 60)).stats.happiness, 60);
-    });
+    test(
+      'insan alışır: mutluluk her yıl uzaklığının onda biri kadar 60a kayar',
+      () {
+        expect(tick.apply(testCharacter(happiness: 95)).stats.happiness, 91);
+        expect(tick.apply(testCharacter(happiness: 0)).stats.happiness, 6);
+        expect(tick.apply(testCharacter(happiness: 60)).stats.happiness, 60);
+      },
+    );
 
-    test('mahalle unutur: itibar her yıl bir puan 50ye kayar', () {
-      expect(tick.apply(testCharacter(reputation: 90)).stats.reputation, 89);
-      expect(tick.apply(testCharacter(reputation: 10)).stats.reputation, 11);
-      expect(tick.apply(testCharacter(reputation: 50)).stats.reputation, 50);
-    });
+    test(
+      'mahalle unutur: itibar her yıl uzaklığının onda biri kadar 50ye kayar',
+      () {
+        expect(tick.apply(testCharacter(reputation: 90)).stats.reputation, 86);
+        expect(tick.apply(testCharacter(reputation: 10)).stats.reputation, 14);
+        expect(tick.apply(testCharacter(reputation: 50)).stats.reputation, 50);
+      },
+    );
 
     test('çocuklukta aile bağı soğumaz, yetişkinlikte soğur', () {
       expect(tick.apply(testCharacter(age: 10)).stats.family, 50);

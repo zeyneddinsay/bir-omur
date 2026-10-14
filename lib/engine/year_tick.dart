@@ -50,17 +50,22 @@ class YearTick {
     return updateHardshipFlags(character.copyWith(age: age, stats: stats));
   }
 
-  /// Mahalle unutur: itibar her yıl bir puan ortaya ([reputationCenter])
-  /// doğru kayar. Yüksek itibar korunmak ister, kötü ün de zamanla silinir.
+  /// İtibar ve mutluluk her yıl ortaya uzaklıklarının bu kadarda biri kadar
+  /// yaklaşır (10: 90 itibar yılda 4 puan kaybeder).
+  static const int driftDivisor = 10;
+
+  /// Mahalle unutur: itibar her yıl ortaya ([reputationCenter])
+  /// doğru, uzaklığıyla orantılı kayar. Yüksek itibar korunmak ister, kötü
+  /// ün de zamanla silinir.
   static int reputationDrift(int reputation) =>
-      (reputationCenter - reputation).sign;
+      ((reputationCenter - reputation) / driftDivisor).round();
 
   static const int reputationCenter = 50;
 
-  /// İnsan alışır: mutluluk her yıl bir puan [happinessCenter] değerine
-  /// doğru kayar. Sürekli mutlu olmak için hayatın bir şey sunması gerekir.
+  /// İnsan alışır: mutluluk her yıl [happinessCenter] değerine, uzaklığıyla
+  /// orantılı kayar. Sürekli mutlu olmak için hayatın bir şey sunması gerekir.
   static int happinessDrift(int happiness) =>
-      (happinessCenter - happiness).sign;
+      ((happinessCenter - happiness) / driftDivisor).round();
 
   static const int happinessCenter = 60;
 

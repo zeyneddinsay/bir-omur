@@ -56,9 +56,20 @@ class Stats {
     StatKind.family => family,
   };
 
+  /// Bu değerin üstünde artışlar küçülür (bkz. [withDelta]).
+  static const int softCapStart = 50;
+
   /// [kind] göstergesine [delta] ekler; sonuç 0–100 aralığına sıkıştırılır.
+  ///
+  /// Zirveye yaklaştıkça kazanç azalır: gösterge [softCapStart]'ın
+  /// üstündeyken artış, kalan mesafeyle orantılı küçülür (90'da +10, +2
+  /// olarak işler). Kayıplar küçülmez; bir şeyi kaybetmek hep hissedilir.
   Stats withDelta(StatKind kind, int delta) {
-    final value = (this[kind] + delta).clamp(min, max);
+    final current = this[kind];
+    final effective = delta > 0 && current > softCapStart
+        ? (delta * (max - current) / (max - softCapStart)).round()
+        : delta;
+    final value = (current + effective).clamp(min, max);
     return switch (kind) {
       StatKind.health => copyWith(health: value),
       StatKind.happiness => copyWith(happiness: value),
