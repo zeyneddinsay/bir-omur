@@ -10,6 +10,7 @@ class LifeRecord {
     required this.gender,
     required this.hometown,
     required this.team,
+    required this.background,
     required this.deathAge,
     required this.cause,
     required this.nickname,
@@ -26,6 +27,7 @@ class LifeRecord {
   final String gender;
   final String hometown;
   final String team;
+  final String background;
   final int deathAge;
   final String cause;
   final String nickname;
@@ -54,6 +56,7 @@ class LifeRecord {
       gender: c.gender.id,
       hometown: c.hometown,
       team: c.team,
+      background: c.background.id,
       deathAge: summary.deathAge,
       cause: summary.cause.name,
       nickname: summary.nickname.name,
@@ -76,6 +79,7 @@ class LifeRecord {
     'gender': gender,
     'hometown': hometown,
     'team': team,
+    'background': background,
     'deathAge': deathAge,
     'cause': cause,
     'nickname': nickname,
@@ -93,6 +97,7 @@ class LifeRecord {
     gender: json['gender'] as String,
     hometown: json['hometown'] as String,
     team: json['team'] as String,
+    background: json['background'] as String? ?? 'orta',
     deathAge: json['deathAge'] as int,
     cause: json['cause'] as String,
     nickname: json['nickname'] as String,

@@ -39,6 +39,9 @@ class YearTick {
       StatKind.reputation,
       reputationDrift(stats.reputation),
     );
+    if (age == adulthoodAge) {
+      stats = stats.withMoneyDelta(character.background.adulthoodSupport);
+    }
     return updateHardshipFlags(character.copyWith(age: age, stats: stats));
   }
 
@@ -48,6 +51,9 @@ class YearTick {
       (reputationCenter - reputation).sign;
 
   static const int reputationCenter = 50;
+
+  /// Bu yaşa girerken aile, durumuna göre bir başlangıç desteği verir.
+  static const int adulthoodAge = 18;
 
   /// Gençken beden küçük yaraları kendi sarar; 50'den sonra yaşlanma
   /// sağlığı yavaşça düşürür.

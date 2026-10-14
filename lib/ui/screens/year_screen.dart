@@ -43,8 +43,11 @@ class _YearScreenState extends ConsumerState<YearScreen> {
           children: [
             Text(c.name),
             Text(
-              '${l10n.ageLabel(c.age)} · ${l10n.stageName(c.stage)} · ${c.hometown}',
+              '${l10n.ageLabel(c.age)} · ${l10n.stageName(c.stage)} · '
+              '${c.hometown} · ${l10n.backgroundName(c.background)}',
               key: const Key('age_line'),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: Theme.of(context).textTheme.bodySmall,
             ),
           ],

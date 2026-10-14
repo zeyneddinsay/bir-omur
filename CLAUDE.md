@@ -132,7 +132,7 @@ Adımlar:
 - [x] Ekonomi: altın, ev, araba; kira; enflasyonla eriyen nakit
 - [x] Kariyerler: Memur, Esnaf, Plaza çalışanı (`assets/careers/`), 5 kademe, maaş, terfi, emeklilik
 - [x] Hive kaydı: yarım kalan hayata devam, biten hayatların özetleri
-- [ ] Doğum: aile durumu (varlıklı, orta, dar gelirli)
+- [x] Doğum: aile durumu (varlıklı, orta, dar gelirli)
 - [ ] 150 kart (kariyer desteleri, ekonomi, zor dönem zincirleri), card_lint güncellemesi, `tools/life_report` denge raporu
 - [ ] Arayüz: meslek ve kademe, varlıklar paneli, "Devam et / Yeni hayat"
 

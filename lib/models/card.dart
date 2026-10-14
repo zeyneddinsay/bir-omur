@@ -30,6 +30,7 @@ class Conditions {
     this.notFlags = const [],
     this.gender,
     this.temperament,
+    this.background,
     this.career,
     this.minTier,
     this.min = const {},
@@ -61,6 +62,7 @@ class Conditions {
   final List<String> notFlags;
   final Gender? gender;
   final Temperament? temperament;
+  final FamilyBackground? background;
 
   /// Meslek kimliği; ayrıca [noCareer] (işsiz) ya da [anyCareer] (bir işi
   /// olan).
@@ -84,6 +86,7 @@ class Conditions {
     if (notFlags.any(c.hasFlag)) return false;
     if (gender != null && c.gender != gender) return false;
     if (temperament != null && c.temperament != temperament) return false;
+    if (background != null && c.background != background) return false;
     if (!_careerMatches(c)) return false;
     for (final entry in min.entries) {
       if (_valueOf(c, entry.key) < entry.value) return false;
@@ -129,6 +132,7 @@ class Conditions {
       'notFlags',
       'gender',
       'temperament',
+      'background',
       'career',
       'minTier',
       'min',
@@ -158,12 +162,24 @@ class Conditions {
         );
       }
     }
+    FamilyBackground? background;
+    final backgroundId = r.optionalString('background');
+    if (backgroundId != null) {
+      background = FamilyBackground.fromId(backgroundId);
+      if (background == null) {
+        throw CardFormatException(
+          '${r.path}.background',
+          'bilinmeyen aile durumu "$backgroundId"',
+        );
+      }
+    }
 
     return Conditions(
       flags: r.optionalStringList('flags'),
       notFlags: r.optionalStringList('notFlags'),
       gender: gender,
       temperament: temperament,
+      background: background,
       career: r.optionalString('career'),
       minTier: r.optionalInt('minTier'),
       min: _thresholds(r.optionalObject('min')),

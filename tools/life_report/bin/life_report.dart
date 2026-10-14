@@ -31,6 +31,7 @@ void main(List<String> args) {
   var goldOwners = 0;
   var carOwners = 0;
   final lastCareer = <String, int>{};
+  final worthByBackground = <FamilyBackground, List<int>>{};
   final topTier = <String, int>{};
   var retiredEarly = 0;
 
@@ -56,6 +57,7 @@ void main(List<String> args) {
     final c = summary.character;
     deathAges.add(summary.deathAge);
     netWorths.add(summary.netWorth);
+    worthByBackground.putIfAbsent(c.background, () => []).add(summary.netWorth);
     nicknames.update(summary.nickname, (n) => n + 1, ifAbsent: () => 1);
     causes.update(summary.cause, (n) => n + 1, ifAbsent: () => 1);
     for (final r in c.history) {
@@ -108,6 +110,16 @@ void main(List<String> args) {
     ..writeln(
       'Zor dönem   en az bir kez borçlu ${pct(everInDebt)}, bunalım ${pct(everDepressed)}',
     )
+    ..writeln()
+    ..writeln('Aileye göre medyan net servet:');
+  for (final b in FamilyBackground.values) {
+    final worths = (worthByBackground[b] ?? [])..sort();
+    if (worths.isEmpty) continue;
+    stdout.writeln(
+      '  ${b.id.padRight(24)} ${pct(worths.length)}, ${tl(at(worths, 0.5))} TL',
+    );
+  }
+  stdout
     ..writeln()
     ..writeln('Meslek (son iş, ortalama son kademe):');
   for (final e

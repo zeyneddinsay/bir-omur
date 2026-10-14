@@ -292,6 +292,24 @@ abstract class AppLocalizations {
   /// **'Yaşlılık'**
   String get stageYasli;
 
+  /// No description provided for @background_varlikli.
+  ///
+  /// In tr, this message translates to:
+  /// **'Varlıklı aile'**
+  String get background_varlikli;
+
+  /// No description provided for @background_orta.
+  ///
+  /// In tr, this message translates to:
+  /// **'Orta halli aile'**
+  String get background_orta;
+
+  /// No description provided for @background_dar.
+  ///
+  /// In tr, this message translates to:
+  /// **'Dar gelirli aile'**
+  String get background_dar;
+
   /// No description provided for @hometownLine.
   ///
   /// In tr, this message translates to:

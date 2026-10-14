@@ -46,6 +46,10 @@
   "stageOlgun": "Olgun",
   "stageYasli": "Yaşlılık",
 
+  "background_varlikli": "Varlıklı aile",
+  "background_orta": "Orta halli aile",
+  "background_dar": "Dar gelirli aile",
+
   "hometownLine": "{hometown} · {team}",
   "@hometownLine": { "placeholders": { "hometown": { "type": "String" }, "team": { "type": "String" } } },
 

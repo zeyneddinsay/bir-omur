@@ -124,6 +124,15 @@ class AppLocalizationsTr extends AppLocalizations {
   String get stageYasli => 'Yaşlılık';
 
   @override
+  String get background_varlikli => 'Varlıklı aile';
+
+  @override
+  String get background_orta => 'Orta halli aile';
+
+  @override
+  String get background_dar => 'Dar gelirli aile';
+
+  @override
   String hometownLine(String hometown, String team) {
     return '$hometown · $team';
   }

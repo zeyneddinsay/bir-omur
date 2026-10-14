@@ -42,6 +42,12 @@ extension L10nNames on AppLocalizations {
     _ => null,
   };
 
+  String backgroundName(FamilyBackground background) => switch (background) {
+    FamilyBackground.varlikli => background_varlikli,
+    FamilyBackground.orta => background_orta,
+    FamilyBackground.dar => background_dar,
+  };
+
   String nicknameName(Nickname nickname) => switch (nickname) {
     Nickname.asirlikCinar => nickname_asirlikCinar,
     Nickname.mahalleninZengini => nickname_mahalleninZengini,

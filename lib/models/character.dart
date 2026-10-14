@@ -38,6 +38,34 @@ enum Temperament {
   }
 }
 
+/// Doğulan ailenin maddi durumu. Gizli değildir; ekranda görünür.
+enum FamilyBackground {
+  varlikli('varlikli', weight: 20, adulthoodSupport: 400000),
+  orta('orta', weight: 55, adulthoodSupport: 100000),
+  dar('dar', weight: 25, adulthoodSupport: 0);
+
+  const FamilyBackground(
+    this.id, {
+    required this.weight,
+    required this.adulthoodSupport,
+  });
+
+  final String id;
+
+  /// Doğumda seçilme ağırlığı (toplam 100).
+  final int weight;
+
+  /// 18 yaşına girerken ailenin verdiği destek (TL).
+  final int adulthoodSupport;
+
+  static FamilyBackground? fromId(String id) {
+    for (final b in values) {
+      if (b.id == id) return b;
+    }
+    return null;
+  }
+}
+
 /// Seçilen kart seçeneğinin yönü.
 enum ChoiceSide { left, right, up }
 
@@ -85,6 +113,7 @@ class Character {
     required this.luck,
     required this.hometown,
     required this.team,
+    this.background = FamilyBackground.orta,
     Set<String> flags = const {},
     List<CardRecord> history = const [],
     this.assets = Assets.none,
@@ -109,6 +138,7 @@ class Character {
   final int luck;
   final String hometown;
   final String team;
+  final FamilyBackground background;
 
   /// Kalıcı izler: `kiraci`, `askerligini_yapti` gibi.
   final Set<String> flags;
@@ -169,6 +199,7 @@ class Character {
       luck: luck,
       hometown: hometown,
       team: team,
+      background: background,
       flags: flags ?? this.flags,
       history: history ?? this.history,
       assets: assets ?? this.assets,
@@ -191,6 +222,7 @@ class Character {
     'luck': luck,
     'hometown': hometown,
     'team': team,
+    'background': background.id,
     'flags': (flags.toList()..sort()),
     'history': [for (final r in history) r.toJson()],
     'assets': assets.toJson(),
@@ -215,6 +247,7 @@ class Character {
       luck: json['luck'] as int,
       hometown: json['hometown'] as String,
       team: json['team'] as String,
+      background: byId(FamilyBackground.fromId, 'background'),
       flags: {...(json['flags'] as List).cast<String>()},
       history: [
         for (final r in json['history'] as List)

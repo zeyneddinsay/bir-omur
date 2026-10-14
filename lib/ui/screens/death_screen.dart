@@ -48,6 +48,10 @@ class DeathScreen extends ConsumerWidget {
                         style: theme.textTheme.titleMedium,
                       ),
                       Text(l10n.hometownLine(c.hometown, c.team)),
+                      Text(
+                        l10n.backgroundName(c.background),
+                        key: const Key('death_background'),
+                      ),
                       const SizedBox(height: 16),
                       Text(
                         l10n.deathCauseText(summary.cause),

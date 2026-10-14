@@ -17,6 +17,7 @@ LifeRecord _record(String name) => LifeRecord(
   gender: 'kadin',
   hometown: 'Rize',
   team: 'Karadeniz Fırtınası',
+  background: 'dar',
   deathAge: 81,
   cause: 'natural',
   nickname: 'hepGulen',

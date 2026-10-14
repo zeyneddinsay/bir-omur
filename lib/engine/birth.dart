@@ -80,25 +80,48 @@ class BirthGenerator {
   Character generate({String? name, Gender? gender}) {
     final Gender g = gender ?? _pick(Gender.values);
     final trimmed = name?.trim();
+    final background = _pickBackground();
+    var stats = Stats(
+      health: _between(70, 95),
+      happiness: _between(60, 85),
+      knowledge: _between(0, 10),
+      reputation: _between(45, 60),
+      family: _between(60, 90),
+      money: 0,
+    );
+    backgroundStart(background)
+        .forEach((kind, delta) => stats = stats.withDelta(kind, delta));
     return Character(
       name: (trimmed == null || trimmed.isEmpty)
           ? _pick(g == Gender.erkek ? maleNames : femaleNames)
           : trimmed,
       gender: g,
       age: 0,
-      stats: Stats(
-        health: _between(70, 95),
-        happiness: _between(60, 85),
-        knowledge: _between(0, 10),
-        reputation: _between(45, 60),
-        family: _between(60, 90),
-        money: 0,
-      ),
+      stats: stats,
       temperament: _pick(Temperament.values),
       luck: _between(0, 100),
       hometown: _pick(hometowns),
       team: _pick(teams),
+      background: background,
     );
+  }
+
+  /// Aile durumunun doğumdaki etkisi: varlıklı ailede iyi okul, dar
+  /// gelirli ailede daha sıkı bağ ama daha az keyif.
+  static Map<StatKind, int> backgroundStart(FamilyBackground b) => switch (b) {
+    FamilyBackground.varlikli => {StatKind.happiness: 5, StatKind.knowledge: 5},
+    FamilyBackground.orta => const {},
+    FamilyBackground.dar => {StatKind.family: 5, StatKind.happiness: -5},
+  };
+
+  FamilyBackground _pickBackground() {
+    final total = FamilyBackground.values.fold(0, (s, b) => s + b.weight);
+    var roll = random.nextInt(total);
+    for (final b in FamilyBackground.values) {
+      roll -= b.weight;
+      if (roll < 0) return b;
+    }
+    return FamilyBackground.orta;
   }
 
   T _pick<T>(List<T> items) => items[random.nextInt(items.length)];
