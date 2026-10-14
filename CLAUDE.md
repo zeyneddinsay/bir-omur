@@ -117,25 +117,7 @@ flutter build ipa              # iOS (yalnızca Mac)
 - **F0 — Motor prototipi** (14 Ekim 2026): Android telefonda ve iPhone'da bir hayat baştan sona çökmeden oynandı.
 - **F1 — Dikey dilim** (14 Ekim 2026): kayda hazır motor, ekonomi (altın, ev, araba, kira, kredi, enflasyon), 3 meslek, aile durumu, Hive kaydı, 150 kart, `life_report`. Kullanıcı kendi telefonunda denedi. 5 kişilik dış test kapısı kullanıcının kararıyla ertelendi: dağıtım uygulama bitince, F3'teki kapalı testle birlikte yapılacak.
 - F1 denge kararları: altın yıllık %−15 / %+15; kira en fazla 240 bin; göstergelerde 50'nin üstünde azalan kazanç; itibar ve mutluluk her yıl ortaya uzaklıklarının onda biri kadar kayar; lakapta en belirgin özellik kazanır, itibar iki kat sayılır.
-
-## Mevcut aşama: F2 — Cila ve paylaşım (6.–7. hafta)
-
-Bu aşamanın kapısı: çökme yok, analitik olayları akıyor.
-
-Kararlar (14 Ekim 2026):
-
-- Portre SVG parçalarını Claude çizer (düz, basit). Parça biçimi sabittir; ileride illüstratör çizimleri aynı dosya adlarıyla yerine konabilir.
-- Telifsiz sesleri kullanıcı bulur ve lisansını kontrol eder; kod yer tutucu seslerle hazırlanır.
-- Yazı tipi uygulamaya gömülür (OFL lisanslı, Türkçe karakterleri tam).
-- Firebase projesi: `biromur-d0006`. Analitik, oyuncu onay verene kadar kapalıdır (doğum ekranında bir kez sorulur, Ayarlar'dan değişir); karakter adı gibi oyuncunun yazdığı hiçbir şey gönderilmez. Crashlytics yalnızca anonim çökme kaydı gönderir ve debug sürümünde kapalıdır.
-
-Adımlar:
-
-- [x] Hayatın sayıları: ömür boyu sayaçlar (taşınma, ödenen kira, takılan altın, terfi, çalışılan yıl, borç dönemleri)
-- [x] Paylaşım kartı: 9:16 hayat özeti görseli, `share_plus` ile paylaşım (ödülsüz)
-- [x] Başarımlar (`assets/achievements.json`) ve Hayat Albümü ekranı
-- [x] Görsel stil ve katmanlı SVG portreler
-- [x] Ses ve titreşim (`lib/services/`, ayarlardan kapatılabilir)
-- [x] Firebase Analytics ve Crashlytics (`lib/services/` arkasında)
+- **F2 — Cila ve paylaşım** (15 Ekim 2026): hayatın sayıları, 9:16 paylaşım kartı, 18 rozet ve Hayat Albümü, katmanlı SVG portreler, Nunito ve sıcak tema, ses ve titreşim (yer tutucu sesler), Firebase Analytics ve Crashlytics. Kapı: kullanıcı analitik olaylarının konsola aktığını doğruladı.
+- F2 kararları: portre parçalarını Claude çizdi (`assets/portraits/README.md`, illüstratör aynı adlarla değiştirebilir); gerçek sesleri kullanıcı bulacak (`assets/sounds/README.md`); Nunito gömülü (OFL). Firebase projesi `biromur-d0006`; analitik oyuncu onay verene kadar kapalı (doğum ekranında bir kez sorulur, Ayarlar'dan değişir), karakter adı gönderilmez; Crashlytics anonim ve debug sürümünde kapalı. iOS dSYM yükleme betiği F3'e kaldı.
 
 Sonraki aşamalar `docs/GDD.md` dosyasındaki "MVP kapsamı ve yol haritası" bölümünde.
