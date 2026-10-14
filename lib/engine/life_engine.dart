@@ -7,6 +7,7 @@ import 'effect_resolver.dart';
 import 'event_deck.dart';
 import 'life_action.dart';
 import 'schedule_queue.dart';
+import 'seeded_random.dart';
 import 'summary_builder.dart';
 import 'year_tick.dart';
 
@@ -58,14 +59,21 @@ class LifeState {
 
 /// Oyun motorunun cephesi. Bir hayatı doğumdan ölüme yürütür.
 ///
-/// Bütün rastgelelik tek bir `Random(seed)` üzerinden gelir: aynı tohum ve
-/// aynı seçimler aynı hayatı üretir.
+/// Bütün rastgelelik tek bir [SeededRandom] üzerinden gelir: aynı tohum ve
+/// aynı seçimler aynı hayatı üretir. Durum [toSnapshot] ile kaydedilir,
+/// [LifeEngine.restore] ile kaldığı yerden sürer.
 class LifeEngine {
-  LifeEngine({required this.deck, required this.seed}) : _random = Random(seed);
+  LifeEngine({required this.deck, required this.seed})
+    : _random = SeededRandom(seed);
+
+  LifeEngine._restored(this.deck, this.seed, this._random);
 
   final EventDeck deck;
   final int seed;
-  final Random _random;
+  final SeededRandom _random;
+
+  /// Kayıt biçimi değişirse artırılır; eski kayıtlar için dönüştürücü yazılır.
+  static const int snapshotVersion = 1;
 
   late final EffectResolver _resolver = EffectResolver(_random);
   late final DeathCheck _deathCheck = DeathCheck(_random);
@@ -188,6 +196,85 @@ class LifeEngine {
       );
     }
     return _state = _beginYear(_yearTick.apply(_state.character), _state.queue);
+  }
+
+  /// Hayatın tam durumu; JSON'a çevrilip kaydedilebilir. Son kartın zar
+  /// sonucu (lastOutcome) yalnızca arayüz içindir, kaydedilmez.
+  Map<String, Object?> toSnapshot() => {
+    'version': snapshotVersion,
+    'seed': seed,
+    'rng': _random.state,
+    'phase': _state.phase.name,
+    'character': _state.character.toJson(),
+    'queue': [
+      for (final e in _state.queue.entries) {'card': e.cardId, 'age': e.atAge},
+    ],
+    'pending': [for (final c in _state.pendingCards) c.id],
+    'actionsLeft': _state.actionsLeft,
+    'actionsUsed': _state.actionsUsed.toList(),
+    'cause': _state.summary?.cause.name,
+  };
+
+  /// [toSnapshot] ile kaydedilmiş hayatı kaldığı yerden sürdürür.
+  ///
+  /// Kayıttan sonra kart dosyaları değişmiş olabilir: artık olmayan bekleyen
+  /// kartlar atlanır; yıl kartsız kalırsa aksiyon aşamasına geçilir.
+  factory LifeEngine.restore({
+    required EventDeck deck,
+    required Map<String, dynamic> snapshot,
+  }) {
+    final version = snapshot['version'];
+    if (version != snapshotVersion) {
+      throw FormatException('Desteklenmeyen kayıt sürümü: $version');
+    }
+    final engine = LifeEngine._restored(
+      deck,
+      snapshot['seed'] as int,
+      SeededRandom.fromState(snapshot['rng'] as int),
+    );
+    final character = Character.fromJson(
+      snapshot['character'] as Map<String, dynamic>,
+    );
+    var queue = const ScheduleQueue();
+    for (final e in snapshot['queue'] as List) {
+      final entry = e as Map<String, dynamic>;
+      queue = queue.add(entry['card'] as String, atAge: entry['age'] as int);
+    }
+    final phase = YearPhase.values.byName(snapshot['phase'] as String);
+    final pending = [
+      for (final id in (snapshot['pending'] as List).cast<String>())
+        ?deck.byId(id),
+    ];
+
+    engine._state = switch (phase) {
+      YearPhase.dead => LifeState(
+        character: character,
+        phase: phase,
+        queue: queue,
+        summary: engine._summaryBuilder.build(
+          character,
+          DeathCause.values.byName(snapshot['cause'] as String),
+        ),
+      ),
+      YearPhase.cards when pending.isEmpty => engine._actionsPhase(
+        character,
+        queue,
+      ),
+      YearPhase.cards => LifeState(
+        character: character,
+        phase: phase,
+        queue: queue,
+        pendingCards: List.unmodifiable(pending),
+      ),
+      YearPhase.actions => LifeState(
+        character: character,
+        phase: phase,
+        queue: queue,
+        actionsLeft: snapshot['actionsLeft'] as int,
+        actionsUsed: {...(snapshot['actionsUsed'] as List).cast<String>()},
+      ),
+    };
+    return engine;
   }
 
   LifeState _beginYear(Character character, ScheduleQueue queue) {

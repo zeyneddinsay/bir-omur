@@ -88,6 +88,24 @@ class Stats {
     );
   }
 
+  Map<String, Object> toJson() => {
+    for (final kind in StatKind.values) kind.key: this[kind],
+    'money': money,
+  };
+
+  /// Kayıttan okunan değerler aralık dışındaysa sıkıştırılır.
+  factory Stats.fromJson(Map<String, dynamic> json) {
+    int stat(StatKind kind) => (json[kind.key] as int).clamp(min, max);
+    return Stats(
+      health: stat(StatKind.health),
+      happiness: stat(StatKind.happiness),
+      knowledge: stat(StatKind.knowledge),
+      reputation: stat(StatKind.reputation),
+      family: stat(StatKind.family),
+      money: json['money'] as int,
+    );
+  }
+
   @override
   bool operator ==(Object other) =>
       other is Stats &&

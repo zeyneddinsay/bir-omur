@@ -55,6 +55,20 @@ class CardRecord {
 
   /// Seçenekte zar yoksa null.
   final bool? rollSucceeded;
+
+  Map<String, Object> toJson() => {
+    'age': age,
+    'card': cardId,
+    'side': side.name,
+    'roll': ?rollSucceeded,
+  };
+
+  factory CardRecord.fromJson(Map<String, dynamic> json) => CardRecord(
+    age: json['age'] as int,
+    cardId: json['card'] as String,
+    side: ChoiceSide.values.byName(json['side'] as String),
+    rollSucceeded: json['roll'] as bool?,
+  );
 }
 
 /// Oyuncunun yaşadığı hayatın o anki durumu. Değişmezdir; her değişiklik
@@ -135,4 +149,42 @@ class Character {
 
   Character withRecord(CardRecord record) =>
       copyWith(history: [...history, record]);
+
+  Map<String, Object> toJson() => {
+    'name': name,
+    'gender': gender.id,
+    'age': age,
+    'stats': stats.toJson(),
+    'temperament': temperament.id,
+    'luck': luck,
+    'hometown': hometown,
+    'team': team,
+    'flags': (flags.toList()..sort()),
+    'history': [for (final r in history) r.toJson()],
+    'alive': isAlive,
+  };
+
+  factory Character.fromJson(Map<String, dynamic> json) {
+    T byId<T>(T? Function(String) parse, String key) {
+      final id = json[key] as String;
+      return parse(id) ?? (throw FormatException('bilinmeyen $key: $id'));
+    }
+
+    return Character(
+      name: json['name'] as String,
+      gender: byId(Gender.fromId, 'gender'),
+      age: json['age'] as int,
+      stats: Stats.fromJson(json['stats'] as Map<String, dynamic>),
+      temperament: byId(Temperament.fromId, 'temperament'),
+      luck: json['luck'] as int,
+      hometown: json['hometown'] as String,
+      team: json['team'] as String,
+      flags: {...(json['flags'] as List).cast<String>()},
+      history: [
+        for (final r in json['history'] as List)
+          CardRecord.fromJson(r as Map<String, dynamic>),
+      ],
+      isAlive: json['alive'] as bool,
+    );
+  }
 }

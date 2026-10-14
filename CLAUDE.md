@@ -111,16 +111,28 @@ flutter build ipa              # iOS (yalnızca Mac)
 - Kod GitHub üzerinden Windows ile Mac arasında taşınır. Platforma özgü bir şeye dokunduğunda (`android/`, `ios/` klasörleri, izinler, `Info.plist`) bunu kullanıcıya açıkça söyle ki iki platformda da denesin.
 - Commit mesajları Türkçe ve kısa olsun.
 
-## Mevcut aşama: F0 — Motor prototipi (1.–2. hafta)
+## Tamamlanan aşamalar
 
-Bu aşamanın kapısı: Bir hayat baştan sona çökmeden oynanabiliyor, hem Android telefonda hem iPhone'da.
+- **F0 — Motor prototipi** (14 Ekim 2026): Android telefonda ve iPhone'da bir hayat baştan sona çökmeden oynandı.
 
-- [x] Flutter projesi (proje adı `bir_omur`, paket kimliği `com.zeysoft.biromur`)
-- [x] Modeller: Character, Stats, Card, Choice, Effect
-- [x] Motor: YearTick, EventDeck, EffectResolver, ScheduleQueue, DeathCheck, basit SummaryBuilder
-- [x] 8 evreye dağıtılmış 40 kartlık JSON ve card_lint
-- [x] Ekranlar: doğum, yıl ve kart kaydırma, basit aksiyon menüsü, ölüm ve özet
-- [x] Motor testleri: sabit tohumlarla 100 hayat simüle et; çökme, geçersiz gösterge ya da sonsuz döngü olmasın
-- [ ] Kapı: Android telefonda ve iPhone'da bir hayat baştan sona oynandı
+## Mevcut aşama: F1 — Dikey dilim (3.–5. hafta)
+
+Bu aşamanın kapısı: 5 test oyuncusu üst üste 3 hayat oynuyor.
+
+Kararlar (14 Ekim 2026):
+
+- Ekonomi bugünün TL'si ile tutulur. Kart ve aksiyonlardaki tutarlar yıllar geçse de anlamını korur; enflasyon nakit TL birikiminin her yıl erimesiyle gösterilir. Altın enflasyona karşı kabaca korur ama dalgalanır, ev kirayı kaldırır.
+- Yerel kayıt `hive_ce` ile yapılır. Hayatın tam durumu kaydedilir; tohum ve karar listesi yeniden oynatılmaz, çünkü kart dosyaları değişince eski kayıtlar bozulurdu.
+- 110 yeni kart 25–30'luk partilerle yazılır ve her parti kullanıcının incelemesine sunulur.
+
+Adımlar:
+
+- [ ] Kayda hazır motor: durumu kaydedilebilen tohumlu rastgelelik, durumun JSON'a ve JSON'dan durumun geri kurulması
+- [ ] Ekonomi: altın, ev, araba; kira; enflasyonla eriyen nakit
+- [ ] Kariyerler: Memur, Esnaf, Plaza çalışanı (`assets/careers/`), 5 kademe, maaş, terfi, emeklilik
+- [ ] Hive kaydı: yarım kalan hayata devam, biten hayatların özetleri
+- [ ] Doğum: aile durumu (varlıklı, orta, dar gelirli)
+- [ ] 150 kart (kariyer desteleri, ekonomi, zor dönem zincirleri), card_lint güncellemesi, `tools/life_report` denge raporu
+- [ ] Arayüz: meslek ve kademe, varlıklar paneli, "Devam et / Yeni hayat"
 
 Sonraki aşamalar `docs/GDD.md` dosyasındaki "MVP kapsamı ve yol haritası" bölümünde.
