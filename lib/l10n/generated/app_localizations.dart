@@ -100,11 +100,419 @@ abstract class AppLocalizations {
   /// **'Bir Ömür'**
   String get appTitle;
 
-  /// F0 iskeletinde geçici ana ekran metni
+  /// No description provided for @loadingCards.
   ///
   /// In tr, this message translates to:
-  /// **'Motor hazırlanıyor…'**
-  String get comingSoon;
+  /// **'Kartlar karılıyor…'**
+  String get loadingCards;
+
+  /// No description provided for @contentError.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kartlar yüklenemedi.\n{details}'**
+  String contentError(String details);
+
+  /// No description provided for @birthTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yeni bir hayat'**
+  String get birthTitle;
+
+  /// No description provided for @birthSubtitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Türkiye\'de bir yerde, bir ailede doğmak üzeresin.'**
+  String get birthSubtitle;
+
+  /// No description provided for @birthNameLabel.
+  ///
+  /// In tr, this message translates to:
+  /// **'İsim'**
+  String get birthNameLabel;
+
+  /// No description provided for @birthNameHint.
+  ///
+  /// In tr, this message translates to:
+  /// **'Boş bırakırsan ailen seçer'**
+  String get birthNameHint;
+
+  /// No description provided for @birthGenderLabel.
+  ///
+  /// In tr, this message translates to:
+  /// **'Cinsiyet'**
+  String get birthGenderLabel;
+
+  /// No description provided for @genderMale.
+  ///
+  /// In tr, this message translates to:
+  /// **'Erkek'**
+  String get genderMale;
+
+  /// No description provided for @genderFemale.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kadın'**
+  String get genderFemale;
+
+  /// No description provided for @genderRandom.
+  ///
+  /// In tr, this message translates to:
+  /// **'Rastgele'**
+  String get genderRandom;
+
+  /// No description provided for @birthButton.
+  ///
+  /// In tr, this message translates to:
+  /// **'Doğ'**
+  String get birthButton;
+
+  /// No description provided for @statHealth.
+  ///
+  /// In tr, this message translates to:
+  /// **'Sağlık'**
+  String get statHealth;
+
+  /// No description provided for @statHappiness.
+  ///
+  /// In tr, this message translates to:
+  /// **'Mutluluk'**
+  String get statHappiness;
+
+  /// No description provided for @statKnowledge.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bilgi'**
+  String get statKnowledge;
+
+  /// No description provided for @statReputation.
+  ///
+  /// In tr, this message translates to:
+  /// **'İtibar'**
+  String get statReputation;
+
+  /// No description provided for @statFamily.
+  ///
+  /// In tr, this message translates to:
+  /// **'Aile Bağı'**
+  String get statFamily;
+
+  /// No description provided for @statMoney.
+  ///
+  /// In tr, this message translates to:
+  /// **'Para'**
+  String get statMoney;
+
+  /// No description provided for @money.
+  ///
+  /// In tr, this message translates to:
+  /// **'{amount} TL'**
+  String money(int amount);
+
+  /// No description provided for @ageLabel.
+  ///
+  /// In tr, this message translates to:
+  /// **'{age} yaş'**
+  String ageLabel(int age);
+
+  /// No description provided for @stageBebek.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bebeklik'**
+  String get stageBebek;
+
+  /// No description provided for @stageIlkokul.
+  ///
+  /// In tr, this message translates to:
+  /// **'İlkokul'**
+  String get stageIlkokul;
+
+  /// No description provided for @stageOrtaokul.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ortaokul'**
+  String get stageOrtaokul;
+
+  /// No description provided for @stageLise.
+  ///
+  /// In tr, this message translates to:
+  /// **'Lise'**
+  String get stageLise;
+
+  /// No description provided for @stageGenc.
+  ///
+  /// In tr, this message translates to:
+  /// **'Genç yetişkin'**
+  String get stageGenc;
+
+  /// No description provided for @stageYetiskin.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yetişkin'**
+  String get stageYetiskin;
+
+  /// No description provided for @stageOlgun.
+  ///
+  /// In tr, this message translates to:
+  /// **'Olgun'**
+  String get stageOlgun;
+
+  /// No description provided for @stageYasli.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yaşlılık'**
+  String get stageYasli;
+
+  /// No description provided for @hometownLine.
+  ///
+  /// In tr, this message translates to:
+  /// **'{hometown} · {team}'**
+  String hometownLine(String hometown, String team);
+
+  /// No description provided for @cardsLeft.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu yıl {count, plural, =1{son kart} other{{count} kart daha}}'**
+  String cardsLeft(int count);
+
+  /// No description provided for @swipeHint.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kartı sola ya da sağa kaydır'**
+  String get swipeHint;
+
+  /// No description provided for @swipeUpHint.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yukarı kaydır: {label}'**
+  String swipeUpHint(String label);
+
+  /// No description provided for @rollSuccess.
+  ///
+  /// In tr, this message translates to:
+  /// **'Şans yüzüne güldü.'**
+  String get rollSuccess;
+
+  /// No description provided for @rollFail.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu sefer olmadı.'**
+  String get rollFail;
+
+  /// No description provided for @actionsTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu yıl ne yapacaksın?'**
+  String get actionsTitle;
+
+  /// No description provided for @actionsLeft.
+  ///
+  /// In tr, this message translates to:
+  /// **'{count, plural, =0{Bu yılın hakları bitti} =1{1 hakkın kaldı} other{{count} hakkın kaldı}}'**
+  String actionsLeft(int count);
+
+  /// No description provided for @actionFree.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ücretsiz'**
+  String get actionFree;
+
+  /// No description provided for @ageUpButton.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yaşlan'**
+  String get ageUpButton;
+
+  /// No description provided for @action_oyun_oyna.
+  ///
+  /// In tr, this message translates to:
+  /// **'Oyun oyna'**
+  String get action_oyun_oyna;
+
+  /// No description provided for @action_ders_calis.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ders çalış'**
+  String get action_ders_calis;
+
+  /// No description provided for @action_fazla_mesai.
+  ///
+  /// In tr, this message translates to:
+  /// **'Fazla mesai'**
+  String get action_fazla_mesai;
+
+  /// No description provided for @action_aileyle_vakit.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ailenle vakit geçir'**
+  String get action_aileyle_vakit;
+
+  /// No description provided for @action_arkadaslarla_bulus.
+  ///
+  /// In tr, this message translates to:
+  /// **'Arkadaşlarınla buluş'**
+  String get action_arkadaslarla_bulus;
+
+  /// No description provided for @action_kitap_oku.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kitap oku'**
+  String get action_kitap_oku;
+
+  /// No description provided for @action_spor.
+  ///
+  /// In tr, this message translates to:
+  /// **'Spor yap'**
+  String get action_spor;
+
+  /// No description provided for @action_doktor_kontrolu.
+  ///
+  /// In tr, this message translates to:
+  /// **'Doktor kontrolü'**
+  String get action_doktor_kontrolu;
+
+  /// No description provided for @action_yuruyus.
+  ///
+  /// In tr, this message translates to:
+  /// **'Sahilde yürüyüş'**
+  String get action_yuruyus;
+
+  /// No description provided for @action_memleket_ziyareti.
+  ///
+  /// In tr, this message translates to:
+  /// **'Memleketi ziyaret et'**
+  String get action_memleket_ziyareti;
+
+  /// No description provided for @action_tatil.
+  ///
+  /// In tr, this message translates to:
+  /// **'Tatile çık'**
+  String get action_tatil;
+
+  /// No description provided for @action_birikim_yap.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kenara para koy'**
+  String get action_birikim_yap;
+
+  /// No description provided for @deathTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'{name}'**
+  String deathTitle(String name);
+
+  /// No description provided for @deathLifespan.
+  ///
+  /// In tr, this message translates to:
+  /// **'{age} yıllık bir ömür'**
+  String deathLifespan(int age);
+
+  /// No description provided for @deathCauseHealth.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bedeni daha fazla dayanamadı. Sevdikleri yanındaydı.'**
+  String get deathCauseHealth;
+
+  /// No description provided for @deathCauseNatural.
+  ///
+  /// In tr, this message translates to:
+  /// **'Zamanı geldiğinde, huzur içinde gözlerini yumdu.'**
+  String get deathCauseNatural;
+
+  /// No description provided for @nicknameTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Mahalle onu şöyle hatırlıyor'**
+  String get nicknameTitle;
+
+  /// No description provided for @biggestMomentTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'En büyük an'**
+  String get biggestMomentTitle;
+
+  /// No description provided for @biggestMomentAge.
+  ///
+  /// In tr, this message translates to:
+  /// **'{age} yaşında'**
+  String biggestMomentAge(int age);
+
+  /// No description provided for @cardsSeenLine.
+  ///
+  /// In tr, this message translates to:
+  /// **'{count} karar, bir ömür'**
+  String cardsSeenLine(int count);
+
+  /// No description provided for @seedLine.
+  ///
+  /// In tr, this message translates to:
+  /// **'Hayat tohumu: {seed}'**
+  String seedLine(int seed);
+
+  /// No description provided for @rebirthButton.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yeniden doğ'**
+  String get rebirthButton;
+
+  /// No description provided for @nickname_asirlikCinar.
+  ///
+  /// In tr, this message translates to:
+  /// **'Asırlık Çınar'**
+  String get nickname_asirlikCinar;
+
+  /// No description provided for @nickname_mahalleninZengini.
+  ///
+  /// In tr, this message translates to:
+  /// **'Mahallenin Zengini'**
+  String get nickname_mahalleninZengini;
+
+  /// No description provided for @nickname_evSahibi.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kirasını Kendine Ödeyen'**
+  String get nickname_evSahibi;
+
+  /// No description provided for @nickname_sozuDinlenen.
+  ///
+  /// In tr, this message translates to:
+  /// **'Sözü Dinlenen'**
+  String get nickname_sozuDinlenen;
+
+  /// No description provided for @nickname_bayramlarinBasKosesi.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bayramların Baş Köşesi'**
+  String get nickname_bayramlarinBasKosesi;
+
+  /// No description provided for @nickname_mahalleninProfesoru.
+  ///
+  /// In tr, this message translates to:
+  /// **'Mahallenin Profesörü'**
+  String get nickname_mahalleninProfesoru;
+
+  /// No description provided for @nickname_hepGulen.
+  ///
+  /// In tr, this message translates to:
+  /// **'Hep Gülen'**
+  String get nickname_hepGulen;
+
+  /// No description provided for @nickname_borcYigidinKamcisi.
+  ///
+  /// In tr, this message translates to:
+  /// **'Borç Yiğidin Kamçısı'**
+  String get nickname_borcYigidinKamcisi;
+
+  /// No description provided for @nickname_bizimBolukte.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bizim Bölükte'**
+  String get nickname_bizimBolukte;
+
+  /// No description provided for @nickname_mahalleninBildikYuzu.
+  ///
+  /// In tr, this message translates to:
+  /// **'Mahallenin Bildik Yüzü'**
+  String get nickname_mahalleninBildikYuzu;
 }
 
 class _AppLocalizationsDelegate

@@ -1,0 +1,196 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../content/content_registry.dart';
+import '../../engine/engine.dart';
+import '../../l10n/generated/app_localizations.dart';
+import '../../models/models.dart';
+import '../l10n_names.dart';
+import '../providers.dart';
+import '../widgets/stats_bar.dart';
+import '../widgets/swipe_card.dart';
+
+/// Bir yıl: üstte göstergeler, altta ya kart ya da aksiyon menüsü.
+class YearScreen extends ConsumerStatefulWidget {
+  const YearScreen({super.key, required this.state, required this.registry});
+
+  final LifeState state;
+  final ContentRegistry registry;
+
+  @override
+  ConsumerState<YearScreen> createState() => _YearScreenState();
+}
+
+class _YearScreenState extends ConsumerState<YearScreen> {
+  ChoiceSide? _lean;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final state = widget.state;
+    final c = state.character;
+
+    final rolled = state.lastOutcome?.rollSucceeded;
+    final leaning = switch ((state.currentCard, _lean)) {
+      (final card?, final side?) => card.choice(side),
+      _ => null,
+    };
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(c.name),
+            Text(
+              '${l10n.ageLabel(c.age)} · ${l10n.stageName(c.stage)} · ${c.hometown}',
+              key: const Key('age_line'),
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          ],
+        ),
+      ),
+      body: SafeArea(
+        child: Column(
+          children: [
+            StatsBar(
+              stats: c.stats,
+              highlight: leaning == null ? const {} : affectedStats(leaning),
+              highlightMoney: leaning != null && affectsMoney(leaning),
+            ),
+            const Divider(height: 1),
+            // Son kartın zar sonucu; alttaki düğmeleri örtmesin diye
+            // SnackBar yerine burada durur.
+            if (rolled != null)
+              Container(
+                key: const Key('roll_result'),
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(vertical: 6),
+                color: rolled
+                    ? Theme.of(context).colorScheme.primaryContainer
+                    : Theme.of(context).colorScheme.errorContainer,
+                child: Text(
+                  rolled ? l10n.rollSuccess : l10n.rollFail,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            Expanded(
+              child: switch (state.phase) {
+                YearPhase.cards => _cardPhase(state, l10n),
+                _ => _ActionMenu(state: state),
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _cardPhase(LifeState state, AppLocalizations l10n) {
+    final card = state.currentCard!;
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 8),
+          child: Text(l10n.cardsLeft(state.pendingCards.length)),
+        ),
+        Expanded(
+          child: SwipeCard(
+            // Her yeni kart sıfırdan başlasın.
+            key: ValueKey('${state.character.age}-${card.id}'),
+            card: card,
+            speakerName: widget.registry.speakers[card.speaker],
+            onLean: (side) => setState(() => _lean = side),
+            onChoose: (side) {
+              setState(() => _lean = null);
+              ref.read(lifeProvider.notifier).choose(side);
+            },
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// Seçeneğin dokunabileceği göstergeler (zarın iki dalı dahil).
+Set<StatKind> affectedStats(Choice choice) => {
+  for (final effect in choice.allEffects) ...effect.stats.keys,
+};
+
+bool affectsMoney(Choice choice) => choice.allEffects.any((e) => e.money != 0);
+
+class _ActionMenu extends ConsumerWidget {
+  const _ActionMenu({required this.state});
+
+  final LifeState state;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final controller = ref.read(lifeProvider.notifier);
+    final actions = controller.engine.availableActions();
+    final theme = Theme.of(context);
+
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
+          child: Text(l10n.actionsTitle, style: theme.textTheme.titleLarge),
+        ),
+        Text(
+          l10n.actionsLeft(state.actionsLeft),
+          key: const Key('actions_left'),
+        ),
+        const SizedBox(height: 8),
+        Expanded(
+          child: ListView(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            children: [
+              for (final (action, enabled) in actions)
+                Card(
+                  child: ListTile(
+                    key: Key('action_${action.id}'),
+                    enabled: enabled,
+                    leading: Icon(_categoryIcon(action.category)),
+                    title: Text(l10n.actionName(action.id) ?? action.id),
+                    subtitle: Text(
+                      action.cost == 0
+                          ? l10n.actionFree
+                          : l10n.money(action.cost),
+                    ),
+                    trailing: state.actionsUsed.contains(action.id)
+                        ? const Icon(Icons.check)
+                        : null,
+                    onTap: enabled
+                        ? () => controller.doAction(action.id)
+                        : null,
+                  ),
+                ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: SizedBox(
+            width: double.infinity,
+            child: FilledButton.icon(
+              key: const Key('age_up'),
+              onPressed: controller.advanceYear,
+              icon: const Icon(Icons.cake),
+              label: Text(l10n.ageUpButton),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  static IconData _categoryIcon(ActionCategory category) => switch (category) {
+    ActionCategory.okulIs => Icons.work_outline,
+    ActionCategory.iliskiler => Icons.people_outline,
+    ActionCategory.para => Icons.savings_outlined,
+    ActionCategory.saglik => Icons.health_and_safety_outlined,
+    ActionCategory.memleket => Icons.home_work_outlined,
+    ActionCategory.eglence => Icons.celebration_outlined,
+  };
+}

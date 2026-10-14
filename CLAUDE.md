@@ -115,11 +115,12 @@ flutter build ipa              # iOS (yalnızca Mac)
 
 Bu aşamanın kapısı: Bir hayat baştan sona çökmeden oynanabiliyor, hem Android telefonda hem iPhone'da.
 
-- [ ] Flutter projesi (proje adı `bir_omur`; paket kimliği kullanıcıya sorulacak, örnek `com.<ad>.biromur`)
-- [ ] Modeller: Character, Stats, Card, Choice, Effect
-- [ ] Motor: YearTick, EventDeck, EffectResolver, ScheduleQueue, DeathCheck, basit SummaryBuilder
-- [ ] 8 evreye dağıtılmış 40 kartlık JSON ve card_lint
-- [ ] Ekranlar: doğum, yıl ve kart kaydırma, basit aksiyon menüsü, ölüm ve özet
-- [ ] Motor testleri: sabit tohumlarla 100 hayat simüle et; çökme, geçersiz gösterge ya da sonsuz döngü olmasın
+- [x] Flutter projesi (proje adı `bir_omur`, paket kimliği `com.zeysoft.biromur`)
+- [x] Modeller: Character, Stats, Card, Choice, Effect
+- [x] Motor: YearTick, EventDeck, EffectResolver, ScheduleQueue, DeathCheck, basit SummaryBuilder
+- [x] 8 evreye dağıtılmış 40 kartlık JSON ve card_lint
+- [x] Ekranlar: doğum, yıl ve kart kaydırma, basit aksiyon menüsü, ölüm ve özet
+- [x] Motor testleri: sabit tohumlarla 100 hayat simüle et; çökme, geçersiz gösterge ya da sonsuz döngü olmasın
+- [ ] Kapı: Android telefonda ve iPhone'da bir hayat baştan sona oynandı
 
 Sonraki aşamalar `docs/GDD.md` dosyasındaki "MVP kapsamı ve yol haritası" bölümünde.

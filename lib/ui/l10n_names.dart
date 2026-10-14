@@ -1,0 +1,61 @@
+import '../engine/engine.dart';
+import '../l10n/generated/app_localizations.dart';
+import '../models/models.dart';
+
+/// Motorun döndürdüğü kimlikleri ARB metinlerine çevirir.
+extension L10nNames on AppLocalizations {
+  String statName(StatKind kind) => switch (kind) {
+    StatKind.health => statHealth,
+    StatKind.happiness => statHappiness,
+    StatKind.knowledge => statKnowledge,
+    StatKind.reputation => statReputation,
+    StatKind.family => statFamily,
+  };
+
+  String stageName(LifeStage stage) => switch (stage) {
+    LifeStage.bebek => stageBebek,
+    LifeStage.ilkokul => stageIlkokul,
+    LifeStage.ortaokul => stageOrtaokul,
+    LifeStage.lise => stageLise,
+    LifeStage.genc => stageGenc,
+    LifeStage.yetiskin => stageYetiskin,
+    LifeStage.olgun => stageOlgun,
+    LifeStage.yasli => stageYasli,
+  };
+
+  /// Aksiyon kimlikleri koddaki listeden gelir; karşılığı yoksa null döner
+  /// (testler her aksiyonun bir adı olduğunu denetler).
+  String? actionName(String id) => switch (id) {
+    'oyun_oyna' => action_oyun_oyna,
+    'ders_calis' => action_ders_calis,
+    'fazla_mesai' => action_fazla_mesai,
+    'aileyle_vakit' => action_aileyle_vakit,
+    'arkadaslarla_bulus' => action_arkadaslarla_bulus,
+    'kitap_oku' => action_kitap_oku,
+    'spor' => action_spor,
+    'doktor_kontrolu' => action_doktor_kontrolu,
+    'yuruyus' => action_yuruyus,
+    'memleket_ziyareti' => action_memleket_ziyareti,
+    'tatil' => action_tatil,
+    'birikim_yap' => action_birikim_yap,
+    _ => null,
+  };
+
+  String nicknameName(Nickname nickname) => switch (nickname) {
+    Nickname.asirlikCinar => nickname_asirlikCinar,
+    Nickname.mahalleninZengini => nickname_mahalleninZengini,
+    Nickname.evSahibi => nickname_evSahibi,
+    Nickname.sozuDinlenen => nickname_sozuDinlenen,
+    Nickname.bayramlarinBasKosesi => nickname_bayramlarinBasKosesi,
+    Nickname.mahalleninProfesoru => nickname_mahalleninProfesoru,
+    Nickname.hepGulen => nickname_hepGulen,
+    Nickname.borcYigidinKamcisi => nickname_borcYigidinKamcisi,
+    Nickname.bizimBolukte => nickname_bizimBolukte,
+    Nickname.mahalleninBildikYuzu => nickname_mahalleninBildikYuzu,
+  };
+
+  String deathCauseText(DeathCause cause) => switch (cause) {
+    DeathCause.health => deathCauseHealth,
+    DeathCause.natural => deathCauseNatural,
+  };
+}
