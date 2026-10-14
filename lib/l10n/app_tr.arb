@@ -1,0 +1,7 @@
+{
+  "@@locale": "tr",
+  "appTitle": "Bir Ömür",
+  "@appTitle": { "description": "Uygulamanın adı" },
+  "comingSoon": "Motor hazırlanıyor…",
+  "@comingSoon": { "description": "F0 iskeletinde geçici ana ekran metni" }
+}

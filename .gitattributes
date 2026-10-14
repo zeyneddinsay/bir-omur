@@ -1,0 +1,6 @@
+# Windows ve Mac arasında satır sonları hep LF kalsın
+* text=auto eol=lf
+*.bat text eol=crlf
+*.png binary
+*.jpg binary
+*.ttf binary
