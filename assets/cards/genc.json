@@ -77,7 +77,7 @@
     "maxAge": 45,
     "rarity": "siradan",
     "cooldown": 3,
-    "conditions": { "notFlags": ["ev_sahibi"], "flags": ["kiraci"] },
+    "conditions": { "notFlags": ["ev_sahibi", "emekli"], "flags": ["kiraci"] },
     "speaker": "ev_sahibi",
     "text": "Ev sahibi kirayı iki katına çıkarmak istiyor. Gerekçesi: 'Piyasa böyle.'",
     "left": {
@@ -205,11 +205,11 @@
     "text": "Bir süredir hiçbir şeyden tat almıyorsun. Kapı çaldı: en eski dostun, elinde poğaça. 'Bir çay koy.'",
     "left": {
       "label": "İçeri buyur",
-      "effects": { "happiness": 20, "reputation": 2 }
+      "effects": { "happiness": 20, "reputation": 2, "schedule": { "event": "bunalim_doktor", "inYears": 1 } }
     },
     "right": {
       "label": "Biraz yürüyelim",
-      "effects": { "health": 3, "happiness": 15 }
+      "effects": { "health": 3, "happiness": 15, "schedule": { "event": "bunalim_doktor", "inYears": 1 } }
     }
   },
   {
@@ -229,6 +229,374 @@
     "right": {
       "label": "Eşya satarım",
       "effects": { "money": 40000, "happiness": -5 }
+    }
+  },
+  {
+    "id": "bunalim_doktor",
+    "stage": "genc",
+    "minAge": 19,
+    "maxAge": 120,
+    "chainOnly": true,
+    "speaker": "arkadas",
+    "text": "Dostun seni bir doktora götürdü. Doktor sakin sakin dinledi: 'Utanılacak bir şey yok. Birlikte toparlarız.'",
+    "left": {
+      "label": "Tedaviye başlarım",
+      "effects": {
+        "happiness": 20,
+        "health": 3
+      }
+    },
+    "right": {
+      "label": "Biraz daha bekleyeyim",
+      "effects": {
+        "happiness": 5
+      }
+    }
+  },
+  {
+    "id": "zor_gunler",
+    "stage": "genc",
+    "minAge": 19,
+    "maxAge": 110,
+    "cooldown": 4,
+    "conditions": {
+      "max": {
+        "happiness": 25
+      }
+    },
+    "speaker": "komsu_teyze",
+    "text": "Son zamanlarda sabahları kalkmak zor. Komşu teyze kapıya bir tas çorba bıraktı: 'Yüzün solmuş, iç bunu.'",
+    "left": {
+      "label": "Teşekkür ederim",
+      "effects": {
+        "happiness": 8,
+        "reputation": 1
+      }
+    },
+    "right": {
+      "label": "Biraz yalnız kalırım",
+      "effects": {
+        "happiness": 3,
+        "health": 2
+      }
+    }
+  },
+  {
+    "id": "borc_yapilandirma",
+    "stage": "genc",
+    "minAge": 19,
+    "maxAge": 110,
+    "cooldown": 5,
+    "conditions": {
+      "flags": [
+        "borclu"
+      ]
+    },
+    "speaker": "banka",
+    "text": "Banka aradı: 'Borcunuzu yapılandırabiliriz.' Ses tonu çok tatlı, faiz oranı o kadar değil.",
+    "left": {
+      "label": "Kendim öderim",
+      "effects": {
+        "happiness": -4,
+        "reputation": 2
+      }
+    },
+    "right": {
+      "label": "Yapılandırırım",
+      "effects": {
+        "money": 150000,
+        "loan": {
+          "amount": 150000,
+          "years": 5
+        },
+        "happiness": 3
+      }
+    }
+  },
+  {
+    "id": "aileden_destek",
+    "stage": "genc",
+    "minAge": 19,
+    "maxAge": 55,
+    "cooldown": 5,
+    "conditions": {
+      "flags": [
+        "borclu"
+      ]
+    },
+    "speaker": "baba",
+    "text": "Baban seni kenara çekti: 'Bize söylemen gerekirdi.' Cebinden kalın bir zarf çıkardı.",
+    "left": {
+      "label": "Kendim hallederim",
+      "effects": {
+        "reputation": 3,
+        "happiness": -3
+      }
+    },
+    "right": {
+      "label": "Zarfı alırım",
+      "effects": {
+        "money": 80000,
+        "family": 5,
+        "happiness": -2
+      }
+    }
+  },
+  {
+    "id": "altin_dustu",
+    "stage": "genc",
+    "minAge": 22,
+    "maxAge": 90,
+    "cooldown": 5,
+    "conditions": {
+      "flags": [
+        "altin_var"
+      ]
+    },
+    "speaker": "kuyumcu",
+    "text": "Altın fiyatı düştü. Kuyumcu komşun vitrini silerken: 'Satma sakın, döner. Hep döner.'",
+    "left": {
+      "label": "Dokunmam",
+      "effects": {
+        "happiness": -2
+      }
+    },
+    "right": {
+      "label": "Üstüne alırım",
+      "effects": {
+        "gold": 10,
+        "money": -25000,
+        "happiness": 1
+      }
+    }
+  },
+  {
+    "id": "araba_muayene",
+    "stage": "genc",
+    "minAge": 25,
+    "maxAge": 85,
+    "cooldown": 5,
+    "conditions": {
+      "flags": [
+        "araba_var"
+      ]
+    },
+    "speaker": "tamirci",
+    "text": "Muayenede usta kaputa iki kez vurdu, dinledi, bir daha vurdu: 'Bu ses hiç iyi değil.'",
+    "left": {
+      "label": "Tamir ettiririm",
+      "effects": {
+        "money": -25000,
+        "happiness": 1
+      }
+    },
+    "right": {
+      "label": "Duymamış olayım",
+      "effects": {
+        "happiness": 1,
+        "schedule": {
+          "event": "araba_yolda_kaldi",
+          "inYears": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "araba_yolda_kaldi",
+    "stage": "genc",
+    "minAge": 26,
+    "maxAge": 86,
+    "chainOnly": true,
+    "conditions": {
+      "flags": [
+        "araba_var"
+      ]
+    },
+    "speaker": "tamirci",
+    "text": "Araba otobanın ortasında durdu. Çekici şoförü kaputu açıp sordu: 'Geçen sene bir ses yapıyor muydu?'",
+    "left": {
+      "label": "Tamire veririm",
+      "effects": {
+        "money": -40000,
+        "happiness": -4
+      }
+    },
+    "right": {
+      "label": "Satarım bu arabayı",
+      "effects": {
+        "car": -1,
+        "money": 200000,
+        "happiness": -2
+      }
+    }
+  },
+  {
+    "id": "ev_sahibi_satiyor",
+    "stage": "genc",
+    "minAge": 23,
+    "maxAge": 65,
+    "once": true,
+    "conditions": {
+      "flags": [
+        "kiraci"
+      ]
+    },
+    "speaker": "ev_sahibi",
+    "text": "Ev sahibi evi satıyormuş. Alıcı evi gezerken mutfağı göstermiş: 'Burası yıkılacak.' Sen o mutfakta yemek yiyorsun.",
+    "left": {
+      "label": "Taşınırım",
+      "effects": {
+        "money": -30000,
+        "happiness": -4,
+        "rentReset": true,
+        "addFlags": [
+          "tasindi"
+        ]
+      }
+    },
+    "right": {
+      "label": "Yeni sahiple konuşurum",
+      "effects": {
+        "rentChange": 24000,
+        "happiness": -2
+      }
+    }
+  },
+  {
+    "id": "kira_mesaji",
+    "stage": "genc",
+    "minAge": 25,
+    "maxAge": 64,
+    "cooldown": 5,
+    "conditions": { "flags": ["kiraci"], "notFlags": ["emekli"] },
+    "speaker": "ev_sahibi",
+    "text": "Ev sahibinden sabah yedide mesaj: 'Hayırlı sabahlar. Ufak bir güncelleme.' Altında yeni kira tutarı.",
+    "left": {
+      "label": "Peki diyorum",
+      "effects": {
+        "rentChange": 12000,
+        "happiness": -2
+      }
+    },
+    "right": {
+      "label": "Görüşelim",
+      "roll": {
+        "stat": "luck",
+        "threshold": 45
+      },
+      "success": {
+        "rentChange": 6000
+      },
+      "fail": {
+        "rentChange": 24000,
+        "reputation": -1
+      }
+    }
+  },
+  {
+    "id": "kart_teklifi",
+    "stage": "genc",
+    "minAge": 19,
+    "maxAge": 45,
+    "cooldown": 5,
+    "speaker": "banka",
+    "text": "Banka aradı: 'Size özel limitli bir kart tanımladık.' Sen bir şey istememiştin; o seni istemiş.",
+    "left": {
+      "label": "Kapatın lütfen",
+      "effects": {
+        "happiness": 1
+      }
+    },
+    "right": {
+      "label": "Olsun, dursun",
+      "effects": {
+        "money": 30000,
+        "loan": {
+          "amount": 30000,
+          "years": 2
+        },
+        "happiness": 3
+      }
+    }
+  },
+  {
+    "id": "kuzen_ortaklik",
+    "stage": "genc",
+    "minAge": 28,
+    "maxAge": 60,
+    "once": true,
+    "conditions": {
+      "min": {
+        "money": 200000
+      }
+    },
+    "speaker": "kuzen",
+    "text": "Kuzenin dükkân açıyor: 'Ortak ol, iki yılda katlarız. Hesap kitap bende, sen sadece arada uğra.'",
+    "left": {
+      "label": "Akrabayla iş olmaz",
+      "effects": {
+        "family": -2,
+        "reputation": 1
+      }
+    },
+    "right": {
+      "label": "Ortak olurum",
+      "effects": {
+        "money": -150000,
+        "family": 3,
+        "addFlags": [
+          "kuzene_ortak"
+        ],
+        "schedule": {
+          "event": "kuzen_ortaklik_sonu",
+          "inYears": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "kuzen_ortaklik_sonu",
+    "stage": "genc",
+    "minAge": 29,
+    "maxAge": 62,
+    "chainOnly": true,
+    "conditions": {
+      "flags": [
+        "kuzene_ortak"
+      ]
+    },
+    "speaker": "kuzen",
+    "text": "İki yıl oldu. Kuzenin elinde bir defter ve bir kutu lokumla geldi: 'Hesapları konuşalım.'",
+    "left": {
+      "label": "Hesabı açalım",
+      "roll": {
+        "stat": "luck",
+        "threshold": 50
+      },
+      "success": {
+        "money": 300000,
+        "family": 3,
+        "removeFlags": [
+          "kuzene_ortak"
+        ]
+      },
+      "fail": {
+        "family": -5,
+        "happiness": -4,
+        "removeFlags": [
+          "kuzene_ortak"
+        ]
+      }
+    },
+    "right": {
+      "label": "Payımı bırakırım",
+      "effects": {
+        "family": 6,
+        "happiness": -1,
+        "removeFlags": [
+          "kuzene_ortak"
+        ]
+      }
     }
   }
 ]

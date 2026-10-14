@@ -87,5 +87,84 @@
       "label": "Annem yardım etti",
       "effects": { "reputation": 2, "family": 2, "knowledge": -1 }
     }
+  },
+  {
+    "id": "harclik_hesabi",
+    "stage": "ilkokul",
+    "minAge": 8,
+    "maxAge": 14,
+    "cooldown": 3,
+    "conditions": {
+      "background": "dar"
+    },
+    "speaker": "baba",
+    "text": "Baban harçlığını verirken: 'Ben senin yaşındayken bunu bir haftada kazanırdım.' Elinde yirmi lira.",
+    "left": {
+      "label": "Biriktiririm",
+      "effects": {
+        "money": 200,
+        "family": 2,
+        "happiness": -1
+      }
+    },
+    "right": {
+      "label": "Kantinde harcarım",
+      "effects": {
+        "happiness": 4
+      }
+    }
+  },
+  {
+    "id": "tatil_nereye",
+    "stage": "ilkokul",
+    "minAge": 10,
+    "maxAge": 17,
+    "cooldown": 3,
+    "conditions": {
+      "background": "varlikli"
+    },
+    "speaker": "anne",
+    "text": "Yaz tatili toplantısı. Annen 'Ege' diyor, baban 'Bu sene yurt dışı' diyor, sen 'Evde kalsam?' diyorsun.",
+    "left": {
+      "label": "Annemin dediği olsun",
+      "effects": {
+        "family": 4,
+        "happiness": 3
+      }
+    },
+    "right": {
+      "label": "Evde kalırım",
+      "effects": {
+        "happiness": 2,
+        "knowledge": 2,
+        "family": -3
+      }
+    }
+  },
+  {
+    "id": "ozel_okul",
+    "stage": "ilkokul",
+    "minAge": 10,
+    "maxAge": 14,
+    "once": true,
+    "conditions": {
+      "background": "varlikli"
+    },
+    "speaker": "anne",
+    "text": "Annen özel okul broşürlerini masaya dizdi. 'Komşunun kızı da oraya gidiyor. Havuzu bile var.'",
+    "left": {
+      "label": "Özel okula giderim",
+      "effects": {
+        "knowledge": 6,
+        "family": -2
+      }
+    },
+    "right": {
+      "label": "Arkadaşlarım burada",
+      "effects": {
+        "happiness": 5,
+        "reputation": 1
+      }
+    }
   }
 ]

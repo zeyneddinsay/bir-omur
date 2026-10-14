@@ -90,5 +90,27 @@
       "label": "Pistte göbek atarım",
       "effects": { "reputation": 5, "happiness": 5 }
     }
+  },
+  {
+    "id": "bayram_harcligi",
+    "stage": "bebek",
+    "minAge": 5,
+    "maxAge": 12,
+    "cooldown": 2,
+    "text": "Bayram sabahı el öpme turu. Cebin doldu, ama dayın yine bozuk para verdi ve 'Hepsi senin' dedi.",
+    "left": {
+      "label": "Anneme veririm",
+      "effects": {
+        "family": 5,
+        "happiness": -2
+      }
+    },
+    "right": {
+      "label": "Bakkala koşarım",
+      "effects": {
+        "happiness": 6,
+        "health": -1
+      }
+    }
   }
 ]

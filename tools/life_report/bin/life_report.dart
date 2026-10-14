@@ -32,6 +32,8 @@ void main(List<String> args) {
   var carOwners = 0;
   final lastCareer = <String, int>{};
   final worthByBackground = <FamilyBackground, List<int>>{};
+  final statSums = <StatKind, int>{for (final k in StatKind.values) k: 0};
+  final statHigh = <StatKind, int>{for (final k in StatKind.values) k: 0};
   final topTier = <String, int>{};
   var retiredEarly = 0;
 
@@ -57,6 +59,11 @@ void main(List<String> args) {
     final c = summary.character;
     deathAges.add(summary.deathAge);
     netWorths.add(summary.netWorth);
+    for (final k in StatKind.values) {
+      statSums.update(k, (v) => v + c.stats[k]);
+      if (c.stats[k] >= SummaryBuilder.statThreshold)
+        statHigh.update(k, (v) => v + 1);
+    }
     worthByBackground.putIfAbsent(c.background, () => []).add(summary.netWorth);
     nicknames.update(summary.nickname, (n) => n + 1, ifAbsent: () => 1);
     causes.update(summary.cause, (n) => n + 1, ifAbsent: () => 1);
@@ -109,6 +116,11 @@ void main(List<String> args) {
     )
     ..writeln(
       'Zor dönem   en az bir kez borçlu ${pct(everInDebt)}, bunalım ${pct(everDepressed)}',
+    )
+    ..writeln()
+    ..writeln(
+      'Ölürken gösterge ortalaması (80 ve üstü olanlar): '
+      '${StatKind.values.map((k) => '${k.key} ${(statSums[k]! / lives).round()} (${pct(statHigh[k]!)})').join(', ')}',
     )
     ..writeln()
     ..writeln('Aileye göre medyan net servet:');

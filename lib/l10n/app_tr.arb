@@ -82,6 +82,10 @@
   "action_tatil": "Tatile çık",
   "action_altin_al": "10 gram altın al",
   "action_altin_sat": "10 gram altın sat",
+  "action_is_ara": "İş ara",
+  "jobFound": "İş buldun: {career}",
+  "@jobFound": { "placeholders": { "career": { "type": "String" } } },
+  "jobNotFound": "Bu yıl iş çıkmadı. Belki seneye.",
 
   "deathTitle": "{name}",
   "@deathTitle": { "placeholders": { "name": { "type": "String" } } },

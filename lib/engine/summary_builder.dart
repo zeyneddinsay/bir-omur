@@ -69,20 +69,41 @@ class SummaryBuilder {
   /// denetler.
   static const Set<String> referencedFlags = {soldierFlag};
 
-  /// Kurallar öncelik sırasıyla denenir; ilk tutan lakap olur.
+  /// Göstergeye bağlı lakapların eşiği.
+  static const int statThreshold = 80;
+
+  /// Ev sahipliği ve askerlik anıları, eşiği bu kadar aşmış bir gösterge
+  /// gibi sayılır: başka belirgin bir özellik yoksa lakap onlardan gelir.
+  static const int homeOwnerScore = 5;
+  static const int soldierScore = 3;
+
+  /// Önce özel durumlar (asırlık, zengin, borçlu); sonra en belirgin özellik
+  /// kazanır: her aday için eşiğin ne kadar aşıldığına bakılır, en büyüğü
+  /// seçilir. Eşitlikte listedeki sıra geçerlidir.
   static Nickname nicknameFor(Character c, Market market) {
     final s = c.stats;
     final worth = Economy.netWorth(c, market);
     if (c.age >= 95) return Nickname.asirlikCinar;
     if (worth >= richThreshold) return Nickname.mahalleninZengini;
-    if (c.assets.houses > 0) return Nickname.evSahibi;
-    if (s.reputation >= 80) return Nickname.sozuDinlenen;
-    if (s.family >= 80) return Nickname.bayramlarinBasKosesi;
-    if (s.knowledge >= 80) return Nickname.mahalleninProfesoru;
-    if (s.happiness >= 80) return Nickname.hepGulen;
     if (worth < 0) return Nickname.borcYigidinKamcisi;
-    if (c.hasFlag(soldierFlag)) return Nickname.bizimBolukte;
-    return Nickname.mahalleninBildikYuzu;
+
+    final candidates = <(Nickname, int)>[
+      (Nickname.sozuDinlenen, s.reputation - statThreshold),
+      (Nickname.bayramlarinBasKosesi, s.family - statThreshold),
+      (Nickname.mahalleninProfesoru, s.knowledge - statThreshold),
+      (Nickname.hepGulen, s.happiness - statThreshold),
+      if (c.assets.houses > 0) (Nickname.evSahibi, homeOwnerScore),
+      if (c.hasFlag(soldierFlag)) (Nickname.bizimBolukte, soldierScore),
+    ];
+    var best = Nickname.mahalleninBildikYuzu;
+    var bestScore = -1;
+    for (final (nickname, score) in candidates) {
+      if (score > bestScore) {
+        best = nickname;
+        bestScore = score;
+      }
+    }
+    return best;
   }
 
   /// En nadir kart; eşitlikte ilk görülen.

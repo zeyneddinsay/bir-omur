@@ -1,6 +1,11 @@
 {
   "id": "plaza",
   "name": "Plaza çalışanı",
+  "jobSearch": {
+    "roll": { "stat": "knowledge", "threshold": 45 },
+    "requires": { "flags": ["universite_mezunu"] },
+    "maxAge": 40
+  },
   "tiers": [
     {
       "name": "Stajyer",

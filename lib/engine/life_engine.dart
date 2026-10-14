@@ -107,6 +107,11 @@ class LifeEngine {
   /// Son yaşlanmadaki iş dökümü (gelir, terfi, emeklilik). Kaydedilmez.
   CareerReport? get lastCareer => _lastCareer;
 
+  JobSearchResult? _lastJobSearch;
+
+  /// Bu yılki "İş ara" aksiyonunun sonucu; yapılmadıysa null. Kaydedilmez.
+  JobSearchResult? get lastJobSearch => _lastJobSearch;
+
   /// Yeni bir hayat başlatır ve 0 yaşının kartlarını çeker.
   LifeState startLife({String? name, Gender? gender}) {
     final character = BirthGenerator(_random)
@@ -180,8 +185,8 @@ class LifeEngine {
     if (_state.actionsLeft <= 0) {
       throw StateError('Bu yılın aksiyon hakkı bitti');
     }
-    if (!action.isAvailableAt(c.age)) {
-      throw StateError('$actionId bu yaşta yapılamaz');
+    if (!action.isAvailableFor(c)) {
+      throw StateError('$actionId şu an yapılamaz');
     }
     if (!action.canAfford(c, _market)) {
       throw StateError('$actionId için para yetmiyor');
@@ -195,6 +200,15 @@ class LifeEngine {
       action.totalEffect(_market),
       careers: careers,
     );
+    if (action.searchesJob) {
+      final (hired, result) = searchJob(
+        character,
+        careers,
+        (roll) => _resolver.rollSucceeds(character, roll),
+      );
+      character = hired;
+      _lastJobSearch = result;
+    }
     character = YearTick.updateHardshipFlags(character);
     return _state = LifeState(
       character: character,
@@ -233,6 +247,7 @@ class LifeEngine {
       _yearTick.apply(afterEconomy),
     );
     _lastCareer = careerReport;
+    _lastJobSearch = null;
     final character = Economy.syncDerivedFlags(
       YearTick.updateHardshipFlags(afterCareer),
     );

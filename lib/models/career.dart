@@ -1,4 +1,6 @@
 import 'card.dart';
+import 'character.dart';
+import 'effect.dart';
 import 'json_reader.dart';
 
 /// Bir meslek: kademeleri, maaşları ve terfi şartları. İçerik olarak
@@ -9,6 +11,7 @@ class Career {
     required this.name,
     required this.tiers,
     this.incomeVariance = 0,
+    this.jobSearch,
   });
 
   final String id;
@@ -22,6 +25,9 @@ class Career {
   /// Gelirin yıldan yıla oynama payı: 0,5 ise maaş ×0,5 ile ×1,5 arası.
   final double incomeVariance;
 
+  /// "İş ara" aksiyonuyla bu mesleğe girilebiliyorsa nasıl girileceği.
+  final JobSearch? jobSearch;
+
   int get maxTier => tiers.length;
 
   /// [tier] 1'den başlar.
@@ -29,7 +35,13 @@ class Career {
 
   factory Career.fromJson(Map<String, dynamic> json, {required String file}) {
     final r = JsonReader(json, file);
-    r.rejectUnknownKeys(const {'id', 'name', 'incomeVariance', 'tiers'});
+    r.rejectUnknownKeys(const {
+      'id',
+      'name',
+      'incomeVariance',
+      'tiers',
+      'jobSearch',
+    });
     final rawTiers = json['tiers'];
     if (rawTiers is! List || rawTiers.isEmpty) {
       throw CardFormatException('$file.tiers', 'en az bir kademe olmalı');
@@ -57,6 +69,39 @@ class Career {
       name: r.requireString('name'),
       tiers: List.unmodifiable(tiers),
       incomeVariance: variance.toDouble(),
+      jobSearch: switch (r.optionalObject('jobSearch')) {
+        final js? => JobSearch.fromJson(js),
+        null => null,
+      },
+    );
+  }
+}
+
+/// "İş ara" aksiyonunda bu mesleğe başvuru: [requires] tutan ve en fazla
+/// [maxAge] yaşındaki karakter [roll] zarını geçerse 1. kademeden girer.
+class JobSearch {
+  const JobSearch({
+    required this.roll,
+    this.requires = Conditions.none,
+    this.maxAge,
+  });
+
+  final Roll roll;
+  final Conditions requires;
+  final int? maxAge;
+
+  bool isOpenTo(Character c) =>
+      (maxAge == null || c.age <= maxAge!) && requires.isMetBy(c);
+
+  factory JobSearch.fromJson(JsonReader r) {
+    r.rejectUnknownKeys(const {'roll', 'requires', 'maxAge'});
+    final requires = r.optionalObject('requires');
+    return JobSearch(
+      roll: Roll.fromJson(r.requireObject('roll')),
+      requires: requires == null
+          ? Conditions.none
+          : Conditions.fromJson(requires),
+      maxAge: r.optionalInt('maxAge'),
     );
   }
 }

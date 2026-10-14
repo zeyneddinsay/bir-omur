@@ -87,5 +87,32 @@
       "label": "Pahalısı olsun",
       "effects": { "money": -1500, "happiness": 6, "reputation": 2 }
     }
+  },
+  {
+    "id": "yaz_isi",
+    "stage": "lise",
+    "minAge": 15,
+    "maxAge": 18,
+    "once": true,
+    "conditions": {
+      "background": "dar"
+    },
+    "speaker": "usta",
+    "text": "Yaz tatili sanayide geçti. Usta son gün yağlı ellerini sildi: 'Okul bitince gel, yerin hazır.'",
+    "left": {
+      "label": "Yine gelirim usta",
+      "effects": {
+        "money": 15000,
+        "reputation": 2,
+        "knowledge": -2
+      }
+    },
+    "right": {
+      "label": "Derse dönerim",
+      "effects": {
+        "knowledge": 5,
+        "happiness": -2
+      }
+    }
   }
 ]

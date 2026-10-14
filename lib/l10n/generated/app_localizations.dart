@@ -454,6 +454,24 @@ abstract class AppLocalizations {
   /// **'10 gram altın sat'**
   String get action_altin_sat;
 
+  /// No description provided for @action_is_ara.
+  ///
+  /// In tr, this message translates to:
+  /// **'İş ara'**
+  String get action_is_ara;
+
+  /// No description provided for @jobFound.
+  ///
+  /// In tr, this message translates to:
+  /// **'İş buldun: {career}'**
+  String jobFound(String career);
+
+  /// No description provided for @jobNotFound.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu yıl iş çıkmadı. Belki seneye.'**
+  String get jobNotFound;
+
   /// No description provided for @deathTitle.
   ///
   /// In tr, this message translates to:

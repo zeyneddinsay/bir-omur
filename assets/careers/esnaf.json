@@ -2,6 +2,7 @@
   "id": "esnaf",
   "name": "Esnaf",
   "incomeVariance": 0.5,
+  "jobSearch": { "roll": { "stat": "luck", "threshold": 35 }, "maxAge": 35 },
   "tiers": [
     {
       "name": "Çırak",

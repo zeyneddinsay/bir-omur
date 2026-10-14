@@ -56,5 +56,198 @@
       "label": "Bir hafta küsüm",
       "effects": { "happiness": 2, "reputation": -3 }
     }
+  },
+  {
+    "id": "babadan_daire",
+    "stage": "yetiskin",
+    "minAge": 30,
+    "maxAge": 55,
+    "rarity": "nadir",
+    "once": true,
+    "conditions": {
+      "background": "varlikli"
+    },
+    "speaker": "baba",
+    "text": "Baban emekli oldu: 'Biz yazlığa taşınıyoruz. Şehirdeki daire artık senin, yalnız çiçeklerimi sula.'",
+    "left": {
+      "label": "Taşınırım",
+      "effects": {
+        "house": 1,
+        "family": 6,
+        "addFlags": [
+          "tasindi"
+        ]
+      }
+    },
+    "right": {
+      "label": "Satıp bölüşelim",
+      "effects": {
+        "money": 700000,
+        "family": -3
+      }
+    }
+  },
+  {
+    "id": "altin_gunu",
+    "stage": "yetiskin",
+    "minAge": 30,
+    "maxAge": 75,
+    "cooldown": 6,
+    "text": "Komşuların altın günü bu ay sende. Herkes bir çeyrek getirdi; börekler de bitti, sözler de.",
+    "left": {
+      "label": "Altını saklarım",
+      "effects": {
+        "gold": 12,
+        "happiness": 3
+      }
+    },
+    "right": {
+      "label": "Bozdurup tatile",
+      "effects": {
+        "money": 35000,
+        "happiness": 6,
+        "reputation": -1
+      }
+    }
+  },
+  {
+    "id": "ikinci_el_araba",
+    "stage": "yetiskin",
+    "minAge": 30,
+    "maxAge": 65,
+    "once": true,
+    "conditions": {
+      "notFlags": [
+        "araba_var"
+      ],
+      "min": {
+        "money": 400000
+      }
+    },
+    "speaker": "galerici",
+    "text": "Galerici: 'Bu fiyata bu araba yok. Altmış bin kilometrede, emekli bir öğretmenden. Sadece pazar günleri binmiş.'",
+    "left": {
+      "label": "Otobüs iyidir",
+      "effects": {
+        "health": 1,
+        "happiness": -1
+      }
+    },
+    "right": {
+      "label": "Alırım",
+      "effects": {
+        "money": -400000,
+        "car": 1,
+        "happiness": 5
+      }
+    }
+  },
+  {
+    "id": "komsu_evini_satiyor",
+    "stage": "yetiskin",
+    "minAge": 30,
+    "maxAge": 60,
+    "once": true,
+    "conditions": {
+      "flags": [
+        "kiraci"
+      ],
+      "min": {
+        "money": 500000
+      }
+    },
+    "speaker": "komsu_teyze",
+    "text": "Alt kattaki komşu evini satıyor: 'Sana uygun fiyata veririm. Yabancı biri gelmesin, sen bizdensin.'",
+    "left": {
+      "label": "Kirada rahatım",
+      "effects": {
+        "happiness": -1
+      }
+    },
+    "right": {
+      "label": "Alırım",
+      "effects": {
+        "money": -500000,
+        "house": 1,
+        "loan": {
+          "amount": 800000,
+          "years": 10
+        },
+        "happiness": 8,
+        "reputation": 2
+      }
+    }
+  },
+  {
+    "id": "taki_karsiligi",
+    "stage": "yetiskin",
+    "minAge": 30,
+    "maxAge": 70,
+    "cooldown": 6,
+    "text": "Arkadaşının düğünü. Takı defterine baktın: senin düğününde bilezik takmış. Cüzdana baktın: çeyreklik bir durum.",
+    "left": {
+      "label": "Bilezik takarım",
+      "effects": {
+        "money": -25000,
+        "reputation": 4
+      }
+    },
+    "right": {
+      "label": "Çeyrek yeter",
+      "effects": {
+        "money": -6000,
+        "reputation": -3
+      }
+    }
+  },
+  {
+    "id": "memlekette_tarla",
+    "stage": "yetiskin",
+    "minAge": 35,
+    "maxAge": 75,
+    "once": true,
+    "speaker": "amca",
+    "text": "Memleketten amcan aradı: 'Dedenden kalan tarla için imzan lazım. Satalım mı, ekelim mi?'",
+    "left": {
+      "label": "Satalım",
+      "effects": {
+        "money": 200000,
+        "family": -2
+      }
+    },
+    "right": {
+      "label": "Kalsın, ekeriz",
+      "effects": {
+        "family": 5,
+        "happiness": 2
+      }
+    }
+  },
+  {
+    "id": "erken_rezervasyon",
+    "stage": "yetiskin",
+    "minAge": 30,
+    "maxAge": 70,
+    "cooldown": 4,
+    "conditions": {
+      "min": {
+        "money": 100000
+      }
+    },
+    "text": "Erken rezervasyon kampanyası: 'Yedi gece, her şey dahil. Peşin ödersen yarı fiyat.' Tarih: on ay sonra.",
+    "left": {
+      "label": "Peşin öderim",
+      "effects": {
+        "money": -40000,
+        "happiness": 8,
+        "health": 1
+      }
+    },
+    "right": {
+      "label": "Balkonda tatil",
+      "effects": {
+        "happiness": -1
+      }
+    }
   }
 ]

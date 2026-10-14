@@ -49,5 +49,68 @@
       "label": "Gönlümden geleni",
       "effects": { "money": -30000, "family": 6, "happiness": 2 }
     }
+  },
+  {
+    "id": "emekli_ikramiyesi",
+    "stage": "olgun",
+    "minAge": 58,
+    "maxAge": 70,
+    "once": true,
+    "conditions": {
+      "flags": [
+        "emekli"
+      ]
+    },
+    "speaker": "banka",
+    "text": "Emekli ikramiyen yattı. Aynı gün çocukların, torunların ve bankadaki görevli arka arkaya aradı.",
+    "left": {
+      "label": "Altına yatırırım",
+      "effects": {
+        "gold": 40,
+        "money": 180000,
+        "happiness": 3
+      }
+    },
+    "right": {
+      "label": "Herkese bir hediye",
+      "effects": {
+        "money": 240000,
+        "family": 8
+      }
+    }
+  },
+  {
+    "id": "kardes_yanina_gel",
+    "stage": "olgun",
+    "minAge": 58,
+    "maxAge": 110,
+    "once": true,
+    "mandatory": true,
+    "conditions": {
+      "flags": [
+        "kiraci",
+        "emekli"
+      ]
+    },
+    "text": "Kardeşin aradı: 'Bizim alt kat boş duruyor. Gel otur, kira da isteme. Akşamları çay demleriz.'",
+    "left": {
+      "label": "Kendi evimde kalırım",
+      "effects": {
+        "happiness": 2
+      }
+    },
+    "right": {
+      "label": "Gelirim",
+      "effects": {
+        "family": 5,
+        "happiness": -1,
+        "removeFlags": [
+          "kiraci"
+        ],
+        "addFlags": [
+          "tasindi"
+        ]
+      }
+    }
   }
 ]

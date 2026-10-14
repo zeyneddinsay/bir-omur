@@ -13,6 +13,7 @@ class LifeAction {
     this.effect = Effect.none,
     this.cost = 0,
     this.goldGrams = 0,
+    this.searchesJob = false,
     this.minAge = 0,
     this.maxAge,
   });
@@ -27,8 +28,20 @@ class LifeAction {
   /// Altın alım (artı) ya da satımı (eksi), gram. Tutarı o yılın altın
   /// fiyatından hesaplanır.
   final int goldGrams;
+
+  /// "İş ara": işsiz, emekli ya da öğrenci olmayan yetişkine açık.
+  final bool searchesJob;
   final int minAge;
   final int? maxAge;
+
+  /// Yaşa ve (iş arama için) duruma göre bu karakter yapabilir mi.
+  bool isAvailableFor(Character c) {
+    if (!isAvailableAt(c.age)) return false;
+    if (!searchesJob) return true;
+    return c.job == null &&
+        !c.isRetired &&
+        !c.hasFlag(ActionCatalog.studentFlag);
+  }
 
   bool isAvailableAt(int age) =>
       age >= minAge && (maxAge == null || age <= maxAge!);
@@ -58,6 +71,8 @@ abstract final class ActionCatalog {
 
   /// Altın aksiyonlarında bir seferde alınıp satılan gram.
   static const int goldLot = 10;
+
+  static const String jobSearchId = 'is_ara';
 
   static const List<LifeAction> all = [
     LifeAction(
@@ -135,6 +150,13 @@ abstract final class ActionCatalog {
       effect: Effect(stats: {StatKind.happiness: 10, StatKind.health: 2}),
     ),
     LifeAction(
+      id: ActionCatalog.jobSearchId,
+      category: ActionCategory.okulIs,
+      minAge: 19,
+      maxAge: 60,
+      searchesJob: true,
+    ),
+    LifeAction(
       id: 'altin_al',
       category: ActionCategory.para,
       minAge: 19,
@@ -157,7 +179,7 @@ abstract final class ActionCatalog {
 
   static List<LifeAction> availableFor(Character c) => [
     for (final a in all)
-      if (a.isAvailableAt(c.age)) a,
+      if (a.isAvailableFor(c)) a,
   ];
 
   /// Yıllık aksiyon hakkı: çocuk 2, öğrenci 4, çalışan 2, emekli 4.

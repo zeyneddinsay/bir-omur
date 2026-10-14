@@ -1,6 +1,7 @@
 {
   "id": "memur",
   "name": "Memur",
+  "jobSearch": { "roll": { "stat": "knowledge", "threshold": 55 }, "maxAge": 45 },
   "tiers": [
     {
       "name": "Memur",

@@ -17,7 +17,8 @@
     "komsuya_borc_verdi": "Komşunun oğluna borç verdi, henüz dönmedi",
     "evli": "Evli",
     "kayinpeder_kus": "Altını bozdurduğu için kayınpeder küs",
-    "memlekete_dondu": "Yaşlılığında memlekete döndü"
+    "memlekete_dondu": "Yaşlılığında memlekete döndü",
+    "kuzene_ortak": "Kuzeninin dükkânına ortak oldu, hesap henüz görülmedi"
   },
   "speakers": {
     "anne": "Anne",
@@ -37,6 +38,13 @@
     "ik_uzmani": "İnsan kaynakları uzmanı",
     "doktor": "Doktor",
     "eski_komsu": "Memleketteki eski komşu",
-    "torun": "Torun"
+    "torun": "Torun",
+    "banka": "Banka görevlisi",
+    "kuyumcu": "Kuyumcu komşu",
+    "galerici": "Galerici",
+    "kuzen": "Kuzen",
+    "amca": "Amca",
+    "komsu_teyze": "Komşu teyze",
+    "tamirci": "Tamirci usta"
   }
 }

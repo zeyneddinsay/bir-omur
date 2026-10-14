@@ -144,6 +144,25 @@ class _ActionMenu extends ConsumerWidget {
           l10n.actionsLeft(state.actionsLeft),
           key: const Key('actions_left'),
         ),
+        if (controller.engine.lastJobSearch case final search?)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+            child: Text(
+              switch (search.careerId) {
+                final id? => l10n.jobFound(
+                  controller.engine.careers.byId(id)?.name ?? id,
+                ),
+                null => l10n.jobNotFound,
+              },
+              key: const Key('job_search_result'),
+              textAlign: TextAlign.center,
+              style: theme.textTheme.titleSmall?.copyWith(
+                color: search.found
+                    ? theme.colorScheme.primary
+                    : theme.colorScheme.error,
+              ),
+            ),
+          ),
         const SizedBox(height: 8),
         Expanded(
           child: ListView(

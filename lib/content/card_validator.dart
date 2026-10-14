@@ -129,6 +129,7 @@ class CardValidator {
           continue;
         }
         seen[career.id] = file;
+        _checkCareerFlags(career, file, issues);
         careers.add(career);
       } on FormatException catch (e) {
         issues.add(
@@ -144,6 +145,29 @@ class CardValidator {
       }
     }
     return careers;
+  }
+
+  /// Meslek dosyasındaki şartlarda (terfi, iş arama) geçen bayraklar da
+  /// kayıtta olmalı.
+  void _checkCareerFlags(Career career, String file, List<CardIssue> issues) {
+    final conditions = [
+      ?career.jobSearch?.requires,
+      for (final tier in career.tiers) ?tier.promotion?.requires,
+    ];
+    for (final c in conditions) {
+      for (final flag in [...c.flags, ...c.notFlags]) {
+        if (!registry.knownFlags.contains(flag)) {
+          issues.add(
+            CardIssue(
+              IssueLevel.error,
+              file,
+              career.id,
+              'bilinmeyen bayrak "$flag" (registry.json)',
+            ),
+          );
+        }
+      }
+    }
   }
 
   /// Koşullardaki ve etkilerdeki meslek kullanımlarını denetler.

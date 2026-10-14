@@ -161,3 +161,35 @@ class CareerTick {
     return (c.copyWith(job: job.copyWith(yearsInTier: years)), false);
   }
 }
+
+/// "İş ara" aksiyonunun sonucu; arayüz bildirir. Kaydedilmez.
+class JobSearchResult {
+  const JobSearchResult(this.careerId);
+
+  /// Girilen meslek; bu yıl iş çıkmadıysa null.
+  final String? careerId;
+
+  bool get found => careerId != null;
+}
+
+/// İş arama: başvurusu açık meslekler en yüksek giriş maaşından başlayarak
+/// denenir; ilk tutan zarda o mesleğin 1. kademesine girilir.
+(Character, JobSearchResult) searchJob(
+  Character c,
+  CareerBook book,
+  bool Function(Roll roll) rollSucceeds,
+) {
+  final open = [
+    for (final career in book.all)
+      if (career.jobSearch case final js? when js.isOpenTo(c)) (career, js),
+  ]..sort((a, b) => b.$1.tier(1).salary.compareTo(a.$1.tier(1).salary));
+  for (final (career, js) in open) {
+    if (rollSucceeds(js.roll)) {
+      return (
+        Careers.applyChange(c, JoinCareer(career.id), book),
+        JobSearchResult(career.id),
+      );
+    }
+  }
+  return (c, const JobSearchResult(null));
+}

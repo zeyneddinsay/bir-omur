@@ -39,6 +39,7 @@ extension L10nNames on AppLocalizations {
     'tatil' => action_tatil,
     'altin_al' => action_altin_al,
     'altin_sat' => action_altin_sat,
+    'is_ara' => action_is_ara,
     _ => null,
   };
 

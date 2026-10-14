@@ -24,6 +24,12 @@ void main() {
       expect(tick.apply(testCharacter(age: 85)).stats.health, 47);
     });
 
+    test('insan alışır: mutluluk her yıl bir puan 60a kayar', () {
+      expect(tick.apply(testCharacter(happiness: 95)).stats.happiness, 94);
+      expect(tick.apply(testCharacter(happiness: 0)).stats.happiness, 1);
+      expect(tick.apply(testCharacter(happiness: 60)).stats.happiness, 60);
+    });
+
     test('mahalle unutur: itibar her yıl bir puan 50ye kayar', () {
       expect(tick.apply(testCharacter(reputation: 90)).stats.reputation, 89);
       expect(tick.apply(testCharacter(reputation: 10)).stats.reputation, 11);
@@ -151,26 +157,53 @@ void main() {
       );
     });
 
-    test('lakap kuralları öncelik sırasıyla işler', () {
+    Nickname nick(Character c) => SummaryBuilder.nicknameFor(c, Market.initial);
+
+    test('özel durumlar önce gelir: asırlık, zengin, borçlu', () {
+      expect(nick(testCharacter(age: 97, money: -10)), Nickname.asirlikCinar);
       expect(
-        SummaryBuilder.nicknameFor(testCharacter(age: 97), Market.initial),
-        Nickname.asirlikCinar,
+        nick(
+          testCharacter(money: SummaryBuilder.richThreshold, reputation: 99),
+        ),
+        Nickname.mahalleninZengini,
       );
       expect(
-        SummaryBuilder.nicknameFor(
-          testCharacter(assets: const Assets(houses: 1), reputation: 90),
-          Market.initial,
-        ),
+        nick(testCharacter(money: -10, family: 99)),
+        Nickname.borcYigidinKamcisi,
+      );
+    });
+
+    test('en belirgin özellik kazanır', () {
+      expect(
+        nick(testCharacter(family: 95, reputation: 85)),
+        Nickname.bayramlarinBasKosesi,
+      );
+      expect(
+        nick(testCharacter(family: 82, knowledge: 90)),
+        Nickname.mahalleninProfesoru,
+      );
+      expect(nick(testCharacter(happiness: 88)), Nickname.hepGulen);
+    });
+
+    test('ev sahipliği küçük bir pay sayılır', () {
+      const house = Assets(houses: 1);
+      expect(
+        nick(testCharacter(assets: house, reputation: 82)),
         Nickname.evSahibi,
       );
       expect(
-        SummaryBuilder.nicknameFor(testCharacter(money: -10), Market.initial),
-        Nickname.borcYigidinKamcisi,
+        nick(testCharacter(assets: house, reputation: 90)),
+        Nickname.sozuDinlenen,
       );
       expect(
-        SummaryBuilder.nicknameFor(testCharacter(), Market.initial),
-        Nickname.mahalleninBildikYuzu,
+        nick(testCharacter(assets: house, flags: {SummaryBuilder.soldierFlag})),
+        Nickname.evSahibi,
       );
+      expect(
+        nick(testCharacter(flags: {SummaryBuilder.soldierFlag})),
+        Nickname.bizimBolukte,
+      );
+      expect(nick(testCharacter()), Nickname.mahalleninBildikYuzu);
     });
   });
 

@@ -21,7 +21,8 @@ abstract final class EngineFlags {
 /// Yaşlanma: yaş 1 artar ve pasif değişimler uygulanır.
 ///
 /// Gençlikte hafif sağlık toparlanması, yaşa bağlı sağlık kaybı ve
-/// yetişkinlikte aile bağının yavaşça soğuması, itibarın ortaya kayması.
+/// yetişkinlikte aile bağının yavaşça soğuması; itibarın ve mutluluğun
+/// ortaya kayması.
 /// Gelir [CareerTick], enflasyon, kira ve kredi [EconomyTick] içindedir.
 class YearTick {
   const YearTick();
@@ -39,6 +40,10 @@ class YearTick {
       StatKind.reputation,
       reputationDrift(stats.reputation),
     );
+    stats = stats.withDelta(
+      StatKind.happiness,
+      happinessDrift(stats.happiness),
+    );
     if (age == adulthoodAge) {
       stats = stats.withMoneyDelta(character.background.adulthoodSupport);
     }
@@ -51,6 +56,13 @@ class YearTick {
       (reputationCenter - reputation).sign;
 
   static const int reputationCenter = 50;
+
+  /// İnsan alışır: mutluluk her yıl bir puan [happinessCenter] değerine
+  /// doğru kayar. Sürekli mutlu olmak için hayatın bir şey sunması gerekir.
+  static int happinessDrift(int happiness) =>
+      (happinessCenter - happiness).sign;
+
+  static const int happinessCenter = 60;
 
   /// Bu yaşa girerken aile, durumuna göre bir başlangıç desteği verir.
   static const int adulthoodAge = 18;

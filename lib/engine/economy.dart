@@ -53,7 +53,7 @@ abstract final class Economy {
 
   static const int initialGoldPrice = 3000;
   static const double goldMinChange = -0.15;
-  static const double goldMaxChange = 0.25;
+  static const double goldMaxChange = 0.15;
 
   /// Evin bugünkü değeri; reel olarak sabit kalır.
   static const int houseValue = 1500000;
@@ -61,6 +61,10 @@ abstract final class Economy {
   static const int newCarValue = 600000;
   static const double carYearlyDepreciation = 0.05;
   static const int carYearlyCost = 15000;
+
+  /// Kira, taban kiranın bu katını geçmez; zamlar bugünün parasıyla
+  /// sınırsız büyümesin.
+  static const int maxRent = 2 * Assets.defaultRent;
 
   /// Araba sahibine her yıl küçük bir keyif ve itibar verir.
   static const Effect carYearlyBonus = Effect(
@@ -107,10 +111,9 @@ abstract final class Economy {
     a = a.copyWith(
       goldGrams: max(0, a.goldGrams + effect.gold),
       houses: max(0, a.houses + effect.house),
-      rent: max(
-        0,
-        (effect.rentReset ? Assets.defaultRent : a.rent) + effect.rentChange,
-      ),
+      rent:
+          ((effect.rentReset ? Assets.defaultRent : a.rent) + effect.rentChange)
+              .clamp(0, maxRent),
     );
     if (effect.car > 0) {
       a = a.copyWith(

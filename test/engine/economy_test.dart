@@ -139,12 +139,12 @@ void main() {
       expect(c.stats.reputation, 51);
     });
 
-    test('altın fiyatı %-15 ile %+25 arasında oynar', () {
+    test('altın fiyatı %-15 ile %+15 arasında oynar', () {
       for (var seed = 0; seed < 50; seed++) {
         final (_, market, report) = EconomyTick(SeededRandom(seed))
             .apply(testCharacter(), Market.initial);
-        expect(report.goldPriceChange, inInclusiveRange(-0.15, 0.25));
-        expect(market.goldPrice, inInclusiveRange(2550, 3750));
+        expect(report.goldPriceChange, inInclusiveRange(-0.15, 0.15));
+        expect(market.goldPrice, inInclusiveRange(2550, 3450));
       }
     });
   });

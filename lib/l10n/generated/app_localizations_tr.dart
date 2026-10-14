@@ -232,6 +232,17 @@ class AppLocalizationsTr extends AppLocalizations {
   String get action_altin_sat => '10 gram altın sat';
 
   @override
+  String get action_is_ara => 'İş ara';
+
+  @override
+  String jobFound(String career) {
+    return 'İş buldun: $career';
+  }
+
+  @override
+  String get jobNotFound => 'Bu yıl iş çıkmadı. Belki seneye.';
+
+  @override
   String deathTitle(String name) {
     return '$name';
   }
