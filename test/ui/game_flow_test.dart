@@ -49,6 +49,26 @@ void main() {
     expect(find.textContaining('Ailen isim koyamıyor'), findsOneWidget);
   });
 
+  testWidgets('cinsiyet etiketleri dar ekranda ve büyük yazıda tek satır', (
+    tester,
+  ) async {
+    _phone(tester, size: const Size(320, 568));
+    tester.platformDispatcher.textScaleFactorTestValue = 1.3;
+    addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
+    await tester.pumpWidget(_app());
+    await tester.pumpAndSettle();
+
+    final lineHeight = tester.getSize(find.text('Kadın')).height;
+    for (final label in ['Erkek', 'Rastgele']) {
+      expect(
+        tester.getSize(find.text(label)).height,
+        lineHeight,
+        reason: label,
+      );
+    }
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('kart sürüklenerek seçilir', (tester) async {
     await _bornAs(tester, 'Ali');
     await tester.drag(

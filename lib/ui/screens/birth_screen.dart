@@ -79,19 +79,22 @@ class _BirthScreenState extends ConsumerState<BirthScreen> {
                   ),
                   const SizedBox(height: 8),
                   SegmentedButton<Gender?>(
+                    // Seçili segment renginden belli olur; tik işareti dar
+                    // ekranda "Rastgele" etiketini iki satıra bölüyordu.
+                    showSelectedIcon: false,
                     segments: [
-                      ButtonSegment(
-                        value: Gender.kadin,
-                        label: Text(l10n.genderFemale),
-                      ),
-                      ButtonSegment(
-                        value: Gender.erkek,
-                        label: Text(l10n.genderMale),
-                      ),
-                      ButtonSegment(
-                        value: null,
-                        label: Text(l10n.genderRandom),
-                      ),
+                      for (final (value, label) in [
+                        (Gender.kadin, l10n.genderFemale),
+                        (Gender.erkek, l10n.genderMale),
+                        (null, l10n.genderRandom),
+                      ])
+                        ButtonSegment(
+                          value: value,
+                          label: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(label, maxLines: 1),
+                          ),
+                        ),
                     ],
                     selected: {_gender},
                     onSelectionChanged: (s) =>
