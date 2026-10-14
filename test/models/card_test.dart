@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:bir_omur/models/models.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'test_character.dart';
+import '../helpers/test_character.dart';
 
 /// docs/GDD.md "Kart veri formatı" bölümündeki örnek, birebir.
 const _gddSample = '''

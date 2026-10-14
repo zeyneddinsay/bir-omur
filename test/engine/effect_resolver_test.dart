@@ -1,0 +1,119 @@
+import 'dart:math';
+
+import 'package:bir_omur/engine/engine.dart';
+import 'package:bir_omur/models/models.dart';
+import 'package:flutter_test/flutter_test.dart';
+
+import '../helpers/test_cards.dart';
+import '../helpers/test_character.dart';
+
+void main() {
+  group('EffectResolver.applyEffect', () {
+    test('göstergeleri, parayı ve bayrakları uygular', () {
+      final c = testCharacter(happiness: 95, money: 1000, flags: {'kiraci'});
+      final next = EffectResolver.applyEffect(
+        c,
+        const Effect(
+          stats: {StatKind.happiness: 10, StatKind.health: -5},
+          money: -3000,
+          addFlags: ['tasindi'],
+          removeFlags: ['kiraci'],
+        ),
+      );
+      expect(next.stats.happiness, 100);
+      expect(next.stats.health, 45);
+      expect(next.stats.money, -2000);
+      expect(next.flags, {'tasindi'});
+    });
+
+    test('boş etki karakteri değiştirmez', () {
+      final c = testCharacter();
+      expect(identical(EffectResolver.applyEffect(c, Effect.none), c), isTrue);
+    });
+  });
+
+  group('EffectResolver.resolve', () {
+    final card = testCard(
+      'pazarlik',
+      left: {
+        'label': 'Taşınırım',
+        'effects': {
+          'money': -15000,
+          'addFlags': ['tasindi'],
+        },
+      },
+      right: {
+        'label': 'Pazarlık',
+        'effects': {'happiness': -1},
+        'roll': {'stat': 'luck', 'threshold': 50},
+        'success': {'money': -3000},
+        'fail': {
+          'money': -8000,
+          'schedule': {'event': 'ihtar', 'inYears': 1},
+        },
+      },
+    );
+
+    test('zarsız seçenek etkileri uygular ve geçmişe yazar', () {
+      final resolver = EffectResolver(Random(1));
+      final outcome = resolver.resolve(testCharacter(), card, ChoiceSide.left);
+      expect(outcome.rollSucceeded, isNull);
+      expect(outcome.character.stats.money, 10000 - 15000);
+      expect(outcome.character.hasFlag('tasindi'), isTrue);
+      expect(outcome.character.history.single.cardId, 'pazarlik');
+      expect(outcome.character.history.single.side, ChoiceSide.left);
+      expect(outcome.scheduled, isEmpty);
+    });
+
+    test('zarlı seçenekte temel etki her zaman, dal zara göre uygulanır', () {
+      var successes = 0;
+      for (var seed = 0; seed < 200; seed++) {
+        final outcome = EffectResolver(Random(seed))
+            .resolve(testCharacter(), card, ChoiceSide.right);
+        expect(outcome.character.stats.happiness, 49);
+        if (outcome.rollSucceeded!) {
+          successes++;
+          expect(outcome.character.stats.money, 7000);
+          expect(outcome.scheduled, isEmpty);
+        } else {
+          expect(outcome.character.stats.money, 2000);
+          expect(outcome.scheduled.single.cardId, 'ihtar');
+        }
+        expect(
+          outcome.character.history.single.rollSucceeded,
+          outcome.rollSucceeded,
+        );
+      }
+      // Şans 50, eşik 50: kabaca yarı yarıya.
+      expect(successes, inInclusiveRange(70, 130));
+    });
+
+    test('yüksek değer zarı kolaylaştırır', () {
+      int countSuccesses(int luck) {
+        var n = 0;
+        for (var seed = 0; seed < 300; seed++) {
+          final resolver = EffectResolver(Random(seed));
+          if (resolver.rollSucceeds(
+            testCharacter(luck: luck),
+            const Roll(stat: RollStat.luck, threshold: 50),
+          )) {
+            n++;
+          }
+        }
+        return n;
+      }
+
+      expect(countSuccesses(90), greaterThan(countSuccesses(10)));
+      expect(countSuccesses(100), 300);
+    });
+
+    test('aynı tohum aynı zarı atar', () {
+      final a = EffectResolver(Random(42))
+          .resolve(testCharacter(), card, ChoiceSide.right);
+      final b = EffectResolver(Random(42))
+          .resolve(testCharacter(), card, ChoiceSide.right);
+      expect(a.rollSucceeded, b.rollSucceeded);
+      expect(a.character.stats, b.character.stats);
+    });
+  });
+}
