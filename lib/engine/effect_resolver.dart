@@ -33,14 +33,20 @@ class EffectResolver {
     final choice = card.choice(side);
     final scheduled = <ScheduledEvent>[];
 
-    var next = applyEffect(character, choice.effects, careers: careers);
+    var next = _countCardEffect(
+      applyEffect(character, choice.effects, careers: careers),
+      choice.effects,
+    );
     if (choice.effects.schedule case final s?) scheduled.add(s);
 
     bool? succeeded;
     if (choice.roll case final roll?) {
       succeeded = rollSucceeds(next, roll);
       final branch = succeeded ? choice.success! : choice.fail!;
-      next = applyEffect(next, branch, careers: careers);
+      next = _countCardEffect(
+        applyEffect(next, branch, careers: careers),
+        branch,
+      );
       if (branch.schedule case final s?) scheduled.add(s);
     }
 
@@ -83,6 +89,21 @@ class EffectResolver {
       next = Careers.applyChange(next, change, careers ?? CareerBook.empty);
     }
     return Economy.syncDerivedFlags(next);
+  }
+
+  /// Kartın etkisini hayatın sayılarına yazar: taşınma ve kartla gelen
+  /// altın. Aksiyonlarla alınan altın sayılmaz.
+  static Character _countCardEffect(Character c, Effect effect) {
+    final moved = effect.addFlags.contains(Economy.movedFlag);
+    final gold = effect.gold > 0 ? effect.gold : 0;
+    if (!moved && gold == 0) return c;
+    final counters = c.counters;
+    return c.copyWith(
+      counters: counters.copyWith(
+        moves: counters.moves + (moved ? 1 : 0),
+        goldReceived: counters.goldReceived + gold,
+      ),
+    );
   }
 
   /// Zar: 0–100 arası bir atış ile bakılan değerin ortalaması eşiği

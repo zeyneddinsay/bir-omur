@@ -79,6 +79,9 @@ abstract final class Economy {
   static const String goldOwnerFlag = 'altin_var';
   static const String renterFlag = 'kiraci';
 
+  /// Bir kart bu bayrağı her eklediğinde taşınma sayacı artar.
+  static const String movedFlag = 'tasindi';
+
   static const Set<String> derivedFlags = {
     homeOwnerFlag,
     carOwnerFlag,
@@ -213,7 +216,11 @@ class EconomyTick {
     }
 
     return (
-      c.copyWith(stats: stats, assets: a),
+      c.copyWith(
+        stats: stats,
+        assets: a,
+        counters: c.counters.copyWith(rentPaid: c.counters.rentPaid + rentPaid),
+      ),
       nextMarket,
       EconomyReport(
         inflation: inflation,

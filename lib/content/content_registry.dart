@@ -32,6 +32,7 @@ class ContentRegistry {
   static const Set<String> engineReferencedFlags = {
     ActionCatalog.studentFlag,
     ...SummaryBuilder.referencedFlags,
+    Economy.movedFlag,
   };
 
   factory ContentRegistry.parse(String source) {

@@ -269,7 +269,7 @@ void main() {
 
   group('card_lint meslek denetimi', () {
     final registry = ContentRegistry(
-      flags: {'universite_ogrencisi': '', 'asker_anilari': ''},
+      flags: {'universite_ogrencisi': '', 'asker_anilari': '', 'tasindi': ''},
       speakers: const {},
     );
     final careerFiles = {'test.json': jsonEncode(_careerJson())};

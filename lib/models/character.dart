@@ -1,5 +1,6 @@
 import 'assets.dart';
 import 'career.dart';
+import 'life_counters.dart';
 import 'life_stage.dart';
 import 'stats.dart';
 
@@ -120,6 +121,7 @@ class Character {
     this.job,
     this.lastJob,
     this.pension = 0,
+    this.counters = LifeCounters.zero,
     this.isAlive = true,
   }) : assert(age >= 0),
        assert(luck >= 0 && luck <= 100),
@@ -161,6 +163,9 @@ class Character {
   final int pension;
 
   bool get isRetired => pension > 0;
+
+  /// Ömür boyu sayaçlar (hayatın sayıları).
+  final LifeCounters counters;
   final bool isAlive;
 
   LifeStage get stage => LifeStage.forAge(age);
@@ -188,6 +193,7 @@ class Character {
     bool clearJob = false,
     Job? lastJob,
     int? pension,
+    LifeCounters? counters,
     bool? isAlive,
   }) {
     return Character(
@@ -206,6 +212,7 @@ class Character {
       job: clearJob ? null : (job ?? this.job),
       lastJob: lastJob ?? (clearJob ? this.job ?? this.lastJob : this.lastJob),
       pension: pension ?? this.pension,
+      counters: counters ?? this.counters,
       isAlive: isAlive ?? this.isAlive,
     );
   }
@@ -229,6 +236,7 @@ class Character {
     'job': ?job?.toJson(),
     'lastJob': ?lastJob?.toJson(),
     'pension': pension,
+    'counters': counters.toJson(),
     'alive': isAlive,
   };
 
@@ -261,6 +269,9 @@ class Character {
           ? null
           : Job.fromJson(json['lastJob'] as Map<String, dynamic>),
       pension: json['pension'] as int,
+      counters: LifeCounters.fromJson(
+        json['counters'] as Map<String, dynamic>?,
+      ),
       isAlive: json['alive'] as bool,
     );
   }

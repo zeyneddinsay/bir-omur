@@ -77,7 +77,12 @@ abstract final class Careers {
         final maxTier = book.require(job.careerId).maxTier;
         final tier = (job.tier + steps).clamp(1, maxTier);
         if (tier == job.tier) return c;
-        return c.copyWith(job: job.copyWith(tier: tier, yearsInTier: 0));
+        return c.copyWith(
+          job: job.copyWith(tier: tier, yearsInTier: 0),
+          counters: tier > job.tier
+              ? c.counters.copyWith(promotions: c.counters.promotions + 1)
+              : null,
+        );
       case QuitCareer():
         return c.copyWith(clearJob: true);
       case RetireCareer():
@@ -122,6 +127,7 @@ class CareerTick {
     }
 
     final int income;
+    var worked = false;
     if (c.isRetired) {
       income = c.pension;
     } else if (c.job case final job?) {
@@ -131,12 +137,23 @@ class CareerTick {
           ? 1.0
           : 1 + variance * (2 * random.nextDouble() - 1);
       income = (career.tier(job.tier).salary * factor).round();
+      worked = true;
       (c, promoted) = _tryPromotion(c, career, job);
     } else {
       income = Careers.baseIncome(c);
     }
 
-    c = c.copyWith(stats: c.stats.withMoneyDelta(income));
+    // Ömür boyu kazanç yalnızca maaş ve emekli aylığıdır; harçlık sayılmaz.
+    final earned = worked || c.isRetired ? income : 0;
+    final counters = c.counters;
+    c = c.copyWith(
+      stats: c.stats.withMoneyDelta(income),
+      counters: counters.copyWith(
+        yearsWorked: counters.yearsWorked + (worked ? 1 : 0),
+        lifetimeIncome: counters.lifetimeIncome + earned,
+        promotions: counters.promotions + (promoted ? 1 : 0),
+      ),
+    );
     return (
       c,
       CareerReport(income: income, promoted: promoted, retired: retired),

@@ -32,6 +32,7 @@ void main(List<String> args) {
   var carOwners = 0;
   final lastCareer = <String, int>{};
   final worthByBackground = <FamilyBackground, List<int>>{};
+  var counterSum = LifeCounters.zero;
   final statSums = <StatKind, int>{for (final k in StatKind.values) k: 0};
   final statHigh = <StatKind, int>{for (final k in StatKind.values) k: 0};
   final topTier = <String, int>{};
@@ -59,6 +60,16 @@ void main(List<String> args) {
     final c = summary.character;
     deathAges.add(summary.deathAge);
     netWorths.add(summary.netWorth);
+    final k = c.counters;
+    counterSum = LifeCounters(
+      moves: counterSum.moves + k.moves,
+      rentPaid: counterSum.rentPaid + k.rentPaid,
+      goldReceived: counterSum.goldReceived + k.goldReceived,
+      promotions: counterSum.promotions + k.promotions,
+      yearsWorked: counterSum.yearsWorked + k.yearsWorked,
+      lifetimeIncome: counterSum.lifetimeIncome + k.lifetimeIncome,
+      debtSpells: counterSum.debtSpells + k.debtSpells,
+    );
     for (final k in StatKind.values) {
       statSums.update(k, (v) => v + c.stats[k]);
       if (c.stats[k] >= SummaryBuilder.statThreshold) {
@@ -122,6 +133,13 @@ void main(List<String> args) {
     ..writeln(
       'Ölürken gösterge ortalaması (80 ve üstü olanlar): '
       '${StatKind.values.map((k) => '${k.key} ${(statSums[k]! / lives).round()} (${pct(statHigh[k]!)})').join(', ')}',
+    )
+    ..writeln()
+    ..writeln(
+      'Hayatın sayıları (ortalama): taşınma ${(counterSum.moves / lives).toStringAsFixed(1)}, '
+      'kira ${tl(counterSum.rentPaid ~/ lives)}, takılan altın ${counterSum.goldReceived ~/ lives} gr, '
+      'terfi ${(counterSum.promotions / lives).toStringAsFixed(1)}, çalışılan yıl ${counterSum.yearsWorked ~/ lives}, '
+      'borç dönemi ${(counterSum.debtSpells / lives).toStringAsFixed(1)}',
     )
     ..writeln()
     ..writeln('Aileye göre medyan net servet:');

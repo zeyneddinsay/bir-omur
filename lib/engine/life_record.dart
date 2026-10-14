@@ -1,3 +1,4 @@
+import '../models/models.dart';
 import 'death_check.dart';
 import 'summary_builder.dart';
 
@@ -21,6 +22,7 @@ class LifeRecord {
     this.careerId,
     this.careerTier,
     this.biggestMomentCardId,
+    this.counters = LifeCounters.zero,
   });
 
   final String name;
@@ -42,6 +44,9 @@ class LifeRecord {
   final String? careerId;
   final int? careerTier;
   final String? biggestMomentCardId;
+
+  /// Hayatın sayıları (taşınma, kira, altın, terfi…).
+  final LifeCounters counters;
 
   factory LifeRecord.fromSummary(
     LifeSummary summary, {
@@ -67,6 +72,7 @@ class LifeRecord {
       careerId: careerId,
       careerTier: careerTier,
       biggestMomentCardId: summary.biggestMoment?.cardId,
+      counters: c.counters,
     );
   }
 
@@ -90,6 +96,7 @@ class LifeRecord {
     'career': careerId,
     'tier': careerTier,
     'moment': biggestMomentCardId,
+    'counters': counters.toJson(),
   };
 
   factory LifeRecord.fromJson(Map<String, dynamic> json) => LifeRecord(
@@ -108,5 +115,6 @@ class LifeRecord {
     careerId: json['career'] as String?,
     careerTier: json['tier'] as int?,
     biggestMomentCardId: json['moment'] as String?,
+    counters: LifeCounters.fromJson(json['counters'] as Map<String, dynamic>?),
   );
 }

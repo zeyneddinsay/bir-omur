@@ -115,27 +115,27 @@ flutter build ipa              # iOS (yalnızca Mac)
 ## Tamamlanan aşamalar
 
 - **F0 — Motor prototipi** (14 Ekim 2026): Android telefonda ve iPhone'da bir hayat baştan sona çökmeden oynandı.
+- **F1 — Dikey dilim** (14 Ekim 2026): kayda hazır motor, ekonomi (altın, ev, araba, kira, kredi, enflasyon), 3 meslek, aile durumu, Hive kaydı, 150 kart, `life_report`. Kullanıcı kendi telefonunda denedi. 5 kişilik dış test kapısı kullanıcının kararıyla ertelendi: dağıtım uygulama bitince, F3'teki kapalı testle birlikte yapılacak.
+- F1 denge kararları: altın yıllık %−15 / %+15; kira en fazla 240 bin; göstergelerde 50'nin üstünde azalan kazanç; itibar ve mutluluk her yıl ortaya uzaklıklarının onda biri kadar kayar; lakapta en belirgin özellik kazanır, itibar iki kat sayılır.
 
-## Mevcut aşama: F1 — Dikey dilim (3.–5. hafta)
+## Mevcut aşama: F2 — Cila ve paylaşım (6.–7. hafta)
 
-Bu aşamanın kapısı: 5 test oyuncusu üst üste 3 hayat oynuyor.
-
-Kapı durumu (14 Ekim 2026): Kod tamam; kullanıcı kendi Android telefonunda debug sürümünü denedi, her şey çalışıyor. Kullanıcının kararı: dış test oyuncularına dağıtım uygulama bitince yapılacak; o zamana kadar yalnızca kullanıcı test ediyor. Bu yüzden F1'in 5 kişilik kapısı şimdilik ertelendi ve sonraki aşamalara geçilebilir. Dağıtım zamanı gelince bu kapı ile F3'teki kapalı test birlikte ele alınır.
+Bu aşamanın kapısı: çökme yok, analitik olayları akıyor.
 
 Kararlar (14 Ekim 2026):
 
-- Ekonomi bugünün TL'si ile tutulur. Kart ve aksiyonlardaki tutarlar yıllar geçse de anlamını korur; enflasyon nakit TL birikiminin her yıl erimesiyle gösterilir. Altın enflasyona karşı kabaca korur ama dalgalanır, ev kirayı kaldırır.
-- Yerel kayıt `hive_ce` ile yapılır. Hayatın tam durumu kaydedilir; tohum ve karar listesi yeniden oynatılmaz, çünkü kart dosyaları değişince eski kayıtlar bozulurdu.
-- 110 yeni kart 25–30'luk partilerle yazılır ve her parti kullanıcının incelemesine sunulur.
+- Portre SVG parçalarını Claude çizer (düz, basit). Parça biçimi sabittir; ileride illüstratör çizimleri aynı dosya adlarıyla yerine konabilir.
+- Telifsiz sesleri kullanıcı bulur ve lisansını kontrol eder; kod yer tutucu seslerle hazırlanır.
+- Yazı tipi uygulamaya gömülür (OFL lisanslı, Türkçe karakterleri tam).
+- Firebase en sona kalır; proje ve yapılandırma dosyaları kullanıcıdan gelir. Analitik onay ekranının zamanı o adımda konuşulur.
 
 Adımlar:
 
-- [x] Kayda hazır motor: durumu kaydedilebilen tohumlu rastgelelik, durumun JSON'a ve JSON'dan durumun geri kurulması
-- [x] Ekonomi: altın, ev, araba; kira; enflasyonla eriyen nakit
-- [x] Kariyerler: Memur, Esnaf, Plaza çalışanı (`assets/careers/`), 5 kademe, maaş, terfi, emeklilik
-- [x] Hive kaydı: yarım kalan hayata devam, biten hayatların özetleri
-- [x] Doğum: aile durumu (varlıklı, orta, dar gelirli)
-- [x] 150 kart (kariyer desteleri, ekonomi, zor dönem zincirleri), card_lint güncellemesi, `tools/life_report` denge raporu
-- [x] Arayüz: meslek ve kademe, varlıklar paneli, "Devam et / Yeni hayat"
+- [x] Hayatın sayıları: ömür boyu sayaçlar (taşınma, ödenen kira, takılan altın, terfi, çalışılan yıl, borç dönemleri)
+- [ ] Paylaşım kartı: 9:16 hayat özeti görseli, `share_plus` ile paylaşım (ödülsüz)
+- [ ] Başarımlar (`assets/achievements.json`) ve Hayat Albümü ekranı
+- [ ] Görsel stil ve katmanlı SVG portreler
+- [ ] Ses ve titreşim (`lib/services/`, ayarlardan kapatılabilir)
+- [ ] Firebase Analytics ve Crashlytics (`lib/services/` arkasında)
 
 Sonraki aşamalar `docs/GDD.md` dosyasındaki "MVP kapsamı ve yol haritası" bölümünde.

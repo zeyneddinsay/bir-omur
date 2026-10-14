@@ -11,6 +11,7 @@ final _registry = ContentRegistry(
     'ev_sahibi': '',
     'universite_ogrencisi': '',
     'asker_anilari': '',
+    'tasindi': '',
   },
   speakers: {'anne': ''},
 );
@@ -296,7 +297,7 @@ void main() {
 
   test('loadContent hatada durur, temizse desteyi kurar', () {
     const registry =
-        '{"flags": {"universite_ogrencisi": "", "ev_sahibi": "", "asker_anilari": ""}, "speakers": {}}';
+        '{"flags": {"universite_ogrencisi": "", "ev_sahibi": "", "asker_anilari": "", "tasindi": ""}, "speakers": {}}';
     expect(
       () => loadContent(
         registrySource: registry,

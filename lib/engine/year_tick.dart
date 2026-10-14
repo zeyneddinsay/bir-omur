@@ -105,6 +105,16 @@ class YearTick {
         flags.containsAll(character.flags)) {
       return character;
     }
-    return character.copyWith(flags: flags);
+    final fellIntoDebt =
+        flags.contains(EngineFlags.borclu) &&
+        !character.hasFlag(EngineFlags.borclu);
+    return character.copyWith(
+      flags: flags,
+      counters: fellIntoDebt
+          ? character.counters.copyWith(
+              debtSpells: character.counters.debtSpells + 1,
+            )
+          : null,
+    );
   }
 }
