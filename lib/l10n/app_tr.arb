@@ -55,6 +55,8 @@
   "actionsLeft": "{count, plural, =0{Bu yılın hakları bitti} =1{1 hakkın kaldı} other{{count} hakkın kaldı}}",
   "@actionsLeft": { "placeholders": { "count": { "type": "int" } } },
   "actionFree": "Ücretsiz",
+  "moneyGain": "+{amount} TL",
+  "@moneyGain": { "placeholders": { "amount": { "type": "int", "format": "decimalPattern" } } },
   "ageUpButton": "Yaşlan",
 
   "action_oyun_oyna": "Oyun oyna",
@@ -68,7 +70,8 @@
   "action_yuruyus": "Sahilde yürüyüş",
   "action_memleket_ziyareti": "Memleketi ziyaret et",
   "action_tatil": "Tatile çık",
-  "action_birikim_yap": "Kenara para koy",
+  "action_altin_al": "10 gram altın al",
+  "action_altin_sat": "10 gram altın sat",
 
   "deathTitle": "{name}",
   "@deathTitle": { "placeholders": { "name": { "type": "String" } } },

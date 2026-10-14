@@ -14,7 +14,7 @@
     },
     "right": {
       "label": "Biraz daha çalışırım",
-      "effects": { "money": 40000, "health": -3, "reputation": 2 }
+      "effects": { "money": 100000, "health": -3, "reputation": 2 }
     }
   },
   {
@@ -43,11 +43,11 @@
     "text": "Yeğeninin düğünü. Takı defterini açtın; kim, ne zaman, ne takmış, tek tek bakıyorsun.",
     "left": {
       "label": "Deftere göre takarım",
-      "effects": { "money": -10000, "reputation": 5 }
+      "effects": { "money": -15000, "reputation": 5 }
     },
     "right": {
       "label": "Gönlümden geleni",
-      "effects": { "money": -20000, "family": 6, "happiness": 2 }
+      "effects": { "money": -30000, "family": 6, "happiness": 2 }
     }
   }
 ]

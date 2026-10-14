@@ -316,6 +316,12 @@ abstract class AppLocalizations {
   /// **'Ücretsiz'**
   String get actionFree;
 
+  /// No description provided for @moneyGain.
+  ///
+  /// In tr, this message translates to:
+  /// **'+{amount} TL'**
+  String moneyGain(int amount);
+
   /// No description provided for @ageUpButton.
   ///
   /// In tr, this message translates to:
@@ -388,11 +394,17 @@ abstract class AppLocalizations {
   /// **'Tatile çık'**
   String get action_tatil;
 
-  /// No description provided for @action_birikim_yap.
+  /// No description provided for @action_altin_al.
   ///
   /// In tr, this message translates to:
-  /// **'Kenara para koy'**
-  String get action_birikim_yap;
+  /// **'10 gram altın al'**
+  String get action_altin_al;
+
+  /// No description provided for @action_altin_sat.
+  ///
+  /// In tr, this message translates to:
+  /// **'10 gram altın sat'**
+  String get action_altin_sat;
 
   /// No description provided for @deathTitle.
   ///

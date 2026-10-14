@@ -100,6 +100,7 @@ flutter analyze
 flutter test
 flutter run
 dart run tools/card_lint/bin/card_lint.dart
+dart run tools/life_report/bin/life_report.dart [hayat sayısı]   # denge raporu
 flutter build appbundle        # Android (Windows)
 flutter build ipa              # iOS (yalnızca Mac)
 ```
@@ -128,7 +129,7 @@ Kararlar (14 Ekim 2026):
 Adımlar:
 
 - [x] Kayda hazır motor: durumu kaydedilebilen tohumlu rastgelelik, durumun JSON'a ve JSON'dan durumun geri kurulması
-- [ ] Ekonomi: altın, ev, araba; kira; enflasyonla eriyen nakit
+- [x] Ekonomi: altın, ev, araba; kira; enflasyonla eriyen nakit
 - [ ] Kariyerler: Memur, Esnaf, Plaza çalışanı (`assets/careers/`), 5 kademe, maaş, terfi, emeklilik
 - [ ] Hive kaydı: yarım kalan hayata devam, biten hayatların özetleri
 - [ ] Doğum: aile durumu (varlıklı, orta, dar gelirli)

@@ -20,6 +20,9 @@ class DeathCheck {
   /// Bu yaşta herkes ölür; sonsuz hayatı engelleyen sigortadır.
   static const int maxAge = 120;
 
+  /// Yaşa bağlı ölüm ihtimali bu yaştan önce sıfırdır.
+  static const int adultAge = 18;
+
   DeathCause? check(Character character) {
     if (character.stats.health <= 0) return DeathCause.health;
     if (random.nextDouble() < probability(character)) return DeathCause.natural;
@@ -30,6 +33,9 @@ class DeathCheck {
   static double probability(Character character) {
     final age = character.age;
     if (age >= maxAge) return 1;
+    // Çocuklar ve gençler yaşa bağlı ihtimalle ölmez; oyunun tonu bunu
+    // kaldırmaz. Sağlık 0'a düşerse [check] yine ölüm verir.
+    if (age < adultAge) return 0;
     final health = character.stats.health;
     final lowHealth = health < 20 ? 0.1 * (20 - health) / 20 : 0.0;
     return min(1, _ageBase(age) + lowHealth);

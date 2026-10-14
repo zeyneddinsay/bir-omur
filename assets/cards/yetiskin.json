@@ -27,7 +27,7 @@
     "text": "Cuma 18.00. Patrondan e-posta: 'Acil değil ama pazartesi sabaha yetişsin.'",
     "left": {
       "label": "Hafta sonu çalışırım",
-      "effects": { "money": 8000, "happiness": -6, "health": -2, "reputation": 2 }
+      "effects": { "money": 15000, "happiness": -6, "health": -2, "reputation": 2 }
     },
     "right": {
       "label": "Pazartesi bakarım",
@@ -40,19 +40,20 @@
     "minAge": 30,
     "maxAge": 49,
     "once": true,
-    "conditions": { "notFlags": ["ev_sahibi"], "min": { "money": 50000 } },
+    "conditions": { "notFlags": ["ev_sahibi"], "min": { "money": 300000 } },
     "text": "Bankadaki görevli gülümsüyor: 'Krediniz onaylandı. Sadece 20 yıl.' Hesap makinesi de gülümsüyor.",
     "left": {
       "label": "Kirada devam",
-      "effects": { "happiness": -2, "money": 5000 }
+      "effects": { "happiness": -2 }
     },
     "right": {
       "label": "Krediyi çekerim",
       "effects": {
-        "money": -150000,
+        "money": -300000,
+        "house": 1,
+        "loan": { "amount": 1200000, "years": 20 },
         "happiness": 8,
-        "addFlags": ["ev_sahibi", "tasindi"],
-        "removeFlags": ["kiraci"]
+        "addFlags": ["tasindi"]
       }
     }
   },

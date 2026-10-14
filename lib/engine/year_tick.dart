@@ -1,4 +1,5 @@
 import '../models/models.dart';
+import 'life_action.dart';
 
 /// Motorun kendisinin açıp kapattığı bayraklar. Kartlar bunlara koşul
 /// olarak bakabilir (örnek: zor dönem destek kartları).
@@ -20,17 +21,16 @@ abstract final class EngineFlags {
 
 /// Yaşlanma: yaş 1 artar ve pasif değişimler uygulanır.
 ///
-/// F0 sürümü basittir: evreye göre net gelir, gençlikte hafif sağlık
-/// toparlanması, yaşa bağlı sağlık kaybı ve yetişkinlikte aile bağının
-/// yavaşça soğuması. Maaş, kira ve enflasyon
-/// F1'de kariyer ve ekonomi ile gelir.
+/// Evreye göre gelir, gençlikte hafif sağlık toparlanması, yaşa bağlı
+/// sağlık kaybı ve yetişkinlikte aile bağının yavaşça soğuması. Enflasyon,
+/// kira ve kredi [EconomyTick] içindedir; maaş F1 kariyer adımında gelir.
 class YearTick {
   const YearTick();
 
   Character apply(Character character) {
     final age = character.age + 1;
     var stats = character.stats
-        .withMoneyDelta(yearlyIncome(age))
+        .withMoneyDelta(yearlyIncome(character, age))
         .withDelta(StatKind.health, yearlyHealthChange(age));
     if (age >= EngineFlags.hardshipMinAge) {
       stats = stats.withDelta(StatKind.family, -1);
@@ -38,16 +38,26 @@ class YearTick {
     return updateHardshipFlags(character.copyWith(age: age, stats: stats));
   }
 
-  /// Yıllık net gelir (TL): maaştan geçim düşülmüş hâli. Kariyer, kira ve
-  /// enflasyon F1'de gelene kadar evreye bağlı sabit bir değerdir.
-  static int yearlyIncome(int age) => switch (LifeStage.forAge(age)) {
-    LifeStage.bebek || LifeStage.ilkokul || LifeStage.ortaokul => 0,
-    LifeStage.lise => 2000,
-    LifeStage.genc => 12000,
-    LifeStage.yetiskin => 20000,
-    LifeStage.olgun => 20000,
-    LifeStage.yasli => 8000,
-  };
+  /// Yıllık gelir (TL): maaştan kira dışındaki geçim düşülmüş hâli. Kira
+  /// ve kredi ekonomide ayrıca ödenir. Kariyer sistemi gelene kadar evreye
+  /// bağlı sabit bir değerdir.
+  static int yearlyIncome(Character c, int age) {
+    final stage = LifeStage.forAge(age);
+    if (stage == LifeStage.genc && c.hasFlag(ActionCatalog.studentFlag)) {
+      return studentIncome;
+    }
+    return switch (stage) {
+      LifeStage.bebek || LifeStage.ilkokul || LifeStage.ortaokul => 0,
+      LifeStage.lise => 2000,
+      LifeStage.genc => 140000,
+      LifeStage.yetiskin => 200000,
+      LifeStage.olgun => 220000,
+      LifeStage.yasli => 140000,
+    };
+  }
+
+  /// Burs ve harçlık.
+  static const int studentIncome = 30000;
 
   /// Gençken beden küçük yaraları kendi sarar; 50'den sonra yaşlanma
   /// sağlığı yavaşça düşürür.

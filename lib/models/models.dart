@@ -1,3 +1,4 @@
+export 'assets.dart';
 export 'card.dart';
 export 'character.dart';
 export 'effect.dart';

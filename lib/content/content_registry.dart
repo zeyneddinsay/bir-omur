@@ -19,7 +19,14 @@ class ContentRegistry {
   final Map<String, String> speakers;
 
   /// Kayıttakiler ve motorun kendi açıp kapattığı bayraklar.
-  Set<String> get knownFlags => {...flags.keys, ...EngineFlags.all};
+  Set<String> get knownFlags => {...flags.keys, ...engineOwnedFlags};
+
+  /// Motorun kendisinin açıp kapattığı bayraklar: zor dönem ve varlıklardan
+  /// türetilenler. Kartlar bunlara bakabilir ama değiştiremez.
+  static final Set<String> engineOwnedFlags = {
+    ...EngineFlags.all,
+    ...Economy.derivedFlags,
+  };
 
   /// Motorun koddan baktığı bayraklar; kayıtta bulunmaları gerekir.
   static const Set<String> engineReferencedFlags = {

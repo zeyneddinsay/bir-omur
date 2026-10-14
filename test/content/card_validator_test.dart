@@ -118,6 +118,32 @@ void main() {
       ]);
     });
 
+    test('kartlar motorun bayraklarını ekleyip kaldıramaz', () {
+      final card = _card(
+        'a',
+        extra: {
+          'left': {
+            'label': 'Sol',
+            'effects': {
+              'addFlags': ['ev_sahibi'],
+            },
+          },
+          'right': {
+            'label': 'Sağ',
+            'effects': {
+              'removeFlags': ['borclu'],
+            },
+          },
+        },
+      );
+      final result = _check([card]);
+      expect(result.errors, hasLength(2));
+      expect(
+        result.errors.map((e) => e.message),
+        everyElement(contains('motorun bayrağı')),
+      );
+    });
+
     test('motor bayrakları kayıtta olmadan da bilinir', () {
       final card = _card(
         'a',

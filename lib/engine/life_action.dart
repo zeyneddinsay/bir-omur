@@ -1,4 +1,5 @@
 import '../models/models.dart';
+import 'economy.dart';
 
 /// Aksiyon menüsünün kategorileri.
 enum ActionCategory { okulIs, iliskiler, para, saglik, memleket, eglence }
@@ -9,8 +10,9 @@ class LifeAction {
   const LifeAction({
     required this.id,
     required this.category,
-    required this.effect,
+    this.effect = Effect.none,
     this.cost = 0,
+    this.goldGrams = 0,
     this.minAge = 0,
     this.maxAge,
   });
@@ -19,21 +21,43 @@ class LifeAction {
   final ActionCategory category;
   final Effect effect;
 
-  /// TL. Para yetmiyorsa aksiyon yapılamaz.
+  /// Sabit ücret (TL).
   final int cost;
+
+  /// Altın alım (artı) ya da satımı (eksi), gram. Tutarı o yılın altın
+  /// fiyatından hesaplanır.
+  final int goldGrams;
   final int minAge;
   final int? maxAge;
 
   bool isAvailableAt(int age) =>
       age >= minAge && (maxAge == null || age <= maxAge!);
 
-  bool canAfford(Character c) => cost <= 0 || c.stats.money >= cost;
+  /// Aksiyonun nakde etkisi: ücret ve altın alımı eksi, altın satışı artı.
+  int moneyChange(Market market) => -cost - goldGrams * market.goldPrice;
+
+  /// Para (ya da satılacak altın) yetiyor mu.
+  bool canAfford(Character c, Market market) {
+    if (goldGrams < 0 && c.assets.goldGrams < -goldGrams) return false;
+    final change = moneyChange(market);
+    return change >= 0 || c.stats.money >= -change;
+  }
+
+  /// Aksiyonun tam etkisi: ücret, altın ve kendi etkisi.
+  Effect totalEffect(Market market) => Effect(
+    stats: effect.stats,
+    money: effect.money + moneyChange(market),
+    gold: effect.gold + goldGrams,
+  );
 }
 
 /// F0'ın basit aksiyon listesi ve yıllık hak kuralları.
 abstract final class ActionCatalog {
   /// Genç yetişkinlikte bu bayrak varsa öğrenci sayılır (4 hak).
   static const String studentFlag = 'universite_ogrencisi';
+
+  /// Altın aksiyonlarında bir seferde alınıp satılan gram.
+  static const int goldLot = 10;
 
   static const List<LifeAction> all = [
     LifeAction(
@@ -55,7 +79,7 @@ abstract final class ActionCatalog {
       minAge: 19,
       maxAge: 64,
       effect: Effect(
-        money: 10000,
+        money: 20000,
         stats: {StatKind.health: -2, StatKind.happiness: -2},
       ),
     ),
@@ -111,10 +135,16 @@ abstract final class ActionCatalog {
       effect: Effect(stats: {StatKind.happiness: 10, StatKind.health: 2}),
     ),
     LifeAction(
-      id: 'birikim_yap',
+      id: 'altin_al',
       category: ActionCategory.para,
       minAge: 19,
-      effect: Effect(money: 3000, stats: {StatKind.happiness: -1}),
+      goldGrams: ActionCatalog.goldLot,
+    ),
+    LifeAction(
+      id: 'altin_sat',
+      category: ActionCategory.para,
+      minAge: 19,
+      goldGrams: -ActionCatalog.goldLot,
     ),
   ];
 

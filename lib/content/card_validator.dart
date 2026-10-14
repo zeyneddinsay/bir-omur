@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import '../engine/engine.dart';
 import '../models/models.dart';
 import 'content_registry.dart';
 
@@ -206,7 +205,7 @@ class CardValidator {
     for (final flag in card.conditions.flags) {
       if (known.contains(flag) &&
           !addedFlags.contains(flag) &&
-          !EngineFlags.all.contains(flag)) {
+          !ContentRegistry.engineOwnedFlags.contains(flag)) {
         warning(
           '.conditions',
           '"$flag" bayrağını hiçbir kart açmıyor, kart hiç gelmez',
@@ -226,7 +225,12 @@ class CardValidator {
       }
       for (final effect in choice.allEffects) {
         for (final flag in [...effect.addFlags, ...effect.removeFlags]) {
-          if (!known.contains(flag)) {
+          if (ContentRegistry.engineOwnedFlags.contains(flag)) {
+            error(
+              '.$side',
+              '"$flag" motorun bayrağı; kartlar ekleyip kaldıramaz',
+            );
+          } else if (!known.contains(flag)) {
             error('.$side', 'bilinmeyen bayrak "$flag" (registry.json)');
           }
         }

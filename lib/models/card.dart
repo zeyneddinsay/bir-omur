@@ -38,12 +38,18 @@ class Conditions {
 
   static const String moneyKey = 'money';
   static const String luckKey = 'luck';
+  static const String goldKey = 'gold';
+  static const String houseKey = 'house';
+  static const String carKey = 'car';
 
   /// `min` ve `max` içinde kullanılabilecek değer adları.
   static final Set<String> thresholdKeys = {
     for (final kind in StatKind.values) kind.key,
     moneyKey,
     luckKey,
+    goldKey,
+    houseKey,
+    carKey,
   };
 
   /// Hepsi bulunmalı.
@@ -78,6 +84,9 @@ class Conditions {
   static int _valueOf(Character c, String key) {
     if (key == moneyKey) return c.stats.money;
     if (key == luckKey) return c.luck;
+    if (key == goldKey) return c.assets.goldGrams;
+    if (key == houseKey) return c.assets.houses;
+    if (key == carKey) return c.assets.cars;
     final kind = StatKind.fromKey(key);
     if (kind == null) throw StateError('bilinmeyen koşul değeri: $key');
     return c.stats[kind];

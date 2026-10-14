@@ -14,7 +14,7 @@ void main() {
     test('yaşı artırır ve evre gelirini ekler', () {
       final next = tick.apply(testCharacter(age: 29, money: 0));
       expect(next.age, 30);
-      expect(next.stats.money, YearTick.yearlyIncome(30));
+      expect(next.stats.money, YearTick.yearlyIncome(next, 30));
     });
 
     test('gençlikte sağlık hafifçe toparlanır, yaşlılıkta azalır', () {
@@ -100,6 +100,16 @@ void main() {
       );
     });
 
+    test('çocuklar yaşa bağlı ihtimalle ölmez, sağlık 0 ise ölür', () {
+      for (var age = 0; age < DeathCheck.adultAge; age++) {
+        expect(DeathCheck.probability(testCharacter(age: age, health: 5)), 0);
+      }
+      expect(
+        DeathCheck(SeededRandom(1)).check(testCharacter(age: 10, health: 0)),
+        DeathCause.health,
+      );
+    });
+
     test('üst yaş sınırında herkes ölür', () {
       expect(DeathCheck.probability(testCharacter(age: DeathCheck.maxAge)), 1);
     });
@@ -119,7 +129,8 @@ void main() {
       final c = testCharacter(
         history: [seen('a', 3), seen('n', 10), seen('e', 40), seen('n', 50)],
       );
-      final summary = SummaryBuilder(deck).build(c, DeathCause.natural);
+      final summary = SummaryBuilder(deck)
+          .build(c, DeathCause.natural, Market.initial);
       expect(summary.biggestMoment!.cardId, 'e');
       expect(summary.cardsSeen, 4);
     });
@@ -127,28 +138,31 @@ void main() {
     test('nadir kart yoksa en büyük an boştur', () {
       final c = testCharacter(history: [seen('a', 3)]);
       expect(
-        SummaryBuilder(deck).build(c, DeathCause.natural).biggestMoment,
+        SummaryBuilder(deck)
+            .build(c, DeathCause.natural, Market.initial)
+            .biggestMoment,
         isNull,
       );
     });
 
     test('lakap kuralları öncelik sırasıyla işler', () {
       expect(
-        SummaryBuilder.nicknameFor(testCharacter(age: 97)),
+        SummaryBuilder.nicknameFor(testCharacter(age: 97), Market.initial),
         Nickname.asirlikCinar,
       );
       expect(
         SummaryBuilder.nicknameFor(
-          testCharacter(flags: {'ev_sahibi'}, reputation: 90),
+          testCharacter(assets: const Assets(houses: 1), reputation: 90),
+          Market.initial,
         ),
         Nickname.evSahibi,
       );
       expect(
-        SummaryBuilder.nicknameFor(testCharacter(money: -10)),
+        SummaryBuilder.nicknameFor(testCharacter(money: -10), Market.initial),
         Nickname.borcYigidinKamcisi,
       );
       expect(
-        SummaryBuilder.nicknameFor(testCharacter()),
+        SummaryBuilder.nicknameFor(testCharacter(), Market.initial),
         Nickname.mahalleninBildikYuzu,
       );
     });
@@ -173,7 +187,8 @@ void main() {
       expect(ActionCatalog.byId('spor')!.cost, 500);
       expect(ActionCatalog.byId('tatil')!.cost, 25000);
       expect(
-        ActionCatalog.byId('tatil')!.canAfford(testCharacter(money: 24999)),
+        ActionCatalog.byId('tatil')!
+            .canAfford(testCharacter(money: 24999), Market.initial),
         isFalse,
       );
     });

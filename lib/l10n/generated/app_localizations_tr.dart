@@ -153,6 +153,15 @@ class AppLocalizationsTr extends AppLocalizations {
   String get actionFree => 'Ücretsiz';
 
   @override
+  String moneyGain(int amount) {
+    final intl.NumberFormat amountNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String amountString = amountNumberFormat.format(amount);
+
+    return '+$amountString TL';
+  }
+
+  @override
   String get ageUpButton => 'Yaşlan';
 
   @override
@@ -189,7 +198,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get action_tatil => 'Tatile çık';
 
   @override
-  String get action_birikim_yap => 'Kenara para koy';
+  String get action_altin_al => '10 gram altın al';
+
+  @override
+  String get action_altin_sat => '10 gram altın sat';
 
   @override
   String deathTitle(String name) {

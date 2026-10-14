@@ -3,6 +3,7 @@ import 'dart:math';
 import '../models/models.dart';
 import 'birth.dart';
 import 'death_check.dart';
+import 'economy.dart';
 import 'effect_resolver.dart';
 import 'event_deck.dart';
 import 'life_action.dart';
@@ -77,12 +78,22 @@ class LifeEngine {
 
   late final EffectResolver _resolver = EffectResolver(_random);
   late final DeathCheck _deathCheck = DeathCheck(_random);
+  late final EconomyTick _economyTick = EconomyTick(_random);
   late final SummaryBuilder _summaryBuilder = SummaryBuilder(deck);
   static const YearTick _yearTick = YearTick();
 
   late LifeState _state;
 
   LifeState get state => _state;
+
+  Market _market = Market.initial;
+  EconomyReport? _lastEconomy;
+
+  /// Altın fiyatı ve son yılın enflasyonu.
+  Market get market => _market;
+
+  /// Son yaşlanmadaki ekonomik döküm; ilk yılda null. Kaydedilmez.
+  EconomyReport? get lastEconomy => _lastEconomy;
 
   /// Yeni bir hayat başlatır ve 0 yaşının kartlarını çeker.
   LifeState startLife({String? name, Gender? gender}) {
@@ -139,7 +150,7 @@ class LifeEngine {
         (
           action,
           canAct &&
-              action.canAfford(c) &&
+              action.canAfford(c, _market) &&
               !_state.actionsUsed.contains(action.id),
         ),
     ];
@@ -160,15 +171,14 @@ class LifeEngine {
     if (!action.isAvailableAt(c.age)) {
       throw StateError('$actionId bu yaşta yapılamaz');
     }
-    if (!action.canAfford(c)) {
+    if (!action.canAfford(c, _market)) {
       throw StateError('$actionId için para yetmiyor');
     }
     if (_state.actionsUsed.contains(actionId)) {
       throw StateError('$actionId bu yıl zaten yapıldı');
     }
 
-    var character = EffectResolver.applyEffect(c, Effect(money: -action.cost));
-    character = EffectResolver.applyEffect(character, action.effect);
+    var character = EffectResolver.applyEffect(c, action.totalEffect(_market));
     character = YearTick.updateHardshipFlags(character);
     return _state = LifeState(
       character: character,
@@ -192,10 +202,18 @@ class LifeEngine {
         character: dead,
         phase: YearPhase.dead,
         queue: _state.queue,
-        summary: _summaryBuilder.build(dead, cause),
+        summary: _summaryBuilder.build(dead, cause, _market),
       );
     }
-    return _state = _beginYear(_yearTick.apply(_state.character), _state.queue);
+    // Önce geçen yılın ekonomisi (erime, kira, kredi), sonra yeni yaşın
+    // geliri; böylece yılın geliri o yıl erimez.
+    final (afterEconomy, market, report) = _economyTick.apply(
+      _state.character,
+      _market,
+    );
+    _market = market;
+    _lastEconomy = report;
+    return _state = _beginYear(_yearTick.apply(afterEconomy), _state.queue);
   }
 
   /// Hayatın tam durumu; JSON'a çevrilip kaydedilebilir. Son kartın zar
@@ -204,6 +222,7 @@ class LifeEngine {
     'version': snapshotVersion,
     'seed': seed,
     'rng': _random.state,
+    'market': _market.toJson(),
     'phase': _state.phase.name,
     'character': _state.character.toJson(),
     'queue': [
@@ -231,7 +250,7 @@ class LifeEngine {
       deck,
       snapshot['seed'] as int,
       SeededRandom.fromState(snapshot['rng'] as int),
-    );
+    ).._market = Market.fromJson(snapshot['market'] as Map<String, dynamic>);
     final character = Character.fromJson(
       snapshot['character'] as Map<String, dynamic>,
     );
@@ -254,6 +273,7 @@ class LifeEngine {
         summary: engine._summaryBuilder.build(
           character,
           DeathCause.values.byName(snapshot['cause'] as String),
+          engine._market,
         ),
       ),
       YearPhase.cards when pending.isEmpty => engine._actionsPhase(

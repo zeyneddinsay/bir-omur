@@ -14,6 +14,7 @@ Character testCharacter({
   Temperament temperament = Temperament.sakin,
   Set<String> flags = const {},
   List<CardRecord> history = const [],
+  Assets assets = Assets.none,
 }) {
   return Character(
     name: 'Deneme',
@@ -33,5 +34,6 @@ Character testCharacter({
     team: 'Boğaziçi Martıları',
     flags: flags,
     history: history,
+    assets: assets,
   );
 }

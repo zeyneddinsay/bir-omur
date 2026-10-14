@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import '../models/models.dart';
+import 'economy.dart';
 
 /// Bir seçimin sonucu: yeni karakter, zar sonucu ve planlanan zincir kartları.
 class ChoiceOutcome {
@@ -56,8 +57,8 @@ class EffectResolver {
     );
   }
 
-  /// Gösterge, para ve bayrak değişikliklerini uygular. Zincir kartını
-  /// uygulamaz; o sıra (ScheduleQueue) motorun işidir.
+  /// Gösterge, para, varlık ve bayrak değişikliklerini uygular. Zincir
+  /// kartını uygulamaz; o sıra (ScheduleQueue) motorun işidir.
   static Character applyEffect(Character character, Effect effect) {
     if (effect.isEmpty) return character;
     var stats = character.stats.withMoneyDelta(effect.money);
@@ -65,7 +66,11 @@ class EffectResolver {
     final flags = {...character.flags}
       ..addAll(effect.addFlags)
       ..removeAll(effect.removeFlags);
-    return character.copyWith(stats: stats, flags: flags);
+    final next = Economy.applyAssetEffect(
+      character.copyWith(stats: stats, flags: flags),
+      effect,
+    );
+    return Economy.syncDerivedFlags(next);
   }
 
   /// Zar: 0–100 arası bir atış ile bakılan değerin ortalaması eşiği

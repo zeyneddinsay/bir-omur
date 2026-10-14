@@ -37,7 +37,8 @@ extension L10nNames on AppLocalizations {
     'yuruyus' => action_yuruyus,
     'memleket_ziyareti' => action_memleket_ziyareti,
     'tatil' => action_tatil,
-    'birikim_yap' => action_birikim_yap,
+    'altin_al' => action_altin_al,
+    'altin_sat' => action_altin_sat,
     _ => null,
   };
 

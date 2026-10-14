@@ -1,5 +1,6 @@
 export 'birth.dart';
 export 'death_check.dart';
+export 'economy.dart';
 export 'effect_resolver.dart';
 export 'event_deck.dart';
 export 'life_action.dart';

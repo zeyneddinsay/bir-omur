@@ -1,3 +1,4 @@
+import 'assets.dart';
 import 'life_stage.dart';
 import 'stats.dart';
 
@@ -85,6 +86,7 @@ class Character {
     required this.team,
     Set<String> flags = const {},
     List<CardRecord> history = const [],
+    this.assets = Assets.none,
     this.isAlive = true,
   }) : assert(age >= 0),
        assert(luck >= 0 && luck <= 100),
@@ -104,10 +106,13 @@ class Character {
   final String hometown;
   final String team;
 
-  /// Kalıcı izler: `ev_sahibi`, `askerligini_yapti` gibi.
+  /// Kalıcı izler: `kiraci`, `askerligini_yapti` gibi.
   final Set<String> flags;
 
   final List<CardRecord> history;
+
+  /// Altın, ev, araba, kira ve kredi. Nakit para [stats] içindedir.
+  final Assets assets;
   final bool isAlive;
 
   LifeStage get stage => LifeStage.forAge(age);
@@ -130,6 +135,7 @@ class Character {
     Stats? stats,
     Set<String>? flags,
     List<CardRecord>? history,
+    Assets? assets,
     bool? isAlive,
   }) {
     return Character(
@@ -143,6 +149,7 @@ class Character {
       team: team,
       flags: flags ?? this.flags,
       history: history ?? this.history,
+      assets: assets ?? this.assets,
       isAlive: isAlive ?? this.isAlive,
     );
   }
@@ -161,6 +168,7 @@ class Character {
     'team': team,
     'flags': (flags.toList()..sort()),
     'history': [for (final r in history) r.toJson()],
+    'assets': assets.toJson(),
     'alive': isAlive,
   };
 
@@ -184,6 +192,7 @@ class Character {
         for (final r in json['history'] as List)
           CardRecord.fromJson(r as Map<String, dynamic>),
       ],
+      assets: Assets.fromJson(json['assets'] as Map<String, dynamic>),
       isAlive: json['alive'] as bool,
     );
   }

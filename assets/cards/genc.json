@@ -11,7 +11,7 @@
     "text": "Askerlik zamanı geldi. Annen şimdiden kınayı almış, baban 'Adam olup dönecek' diyor.",
     "left": {
       "label": "Bedelli",
-      "effects": { "money": -40000, "addFlags": ["askerligini_yapti", "bedelli"] }
+      "effects": { "money": -120000, "addFlags": ["askerligini_yapti", "bedelli"] }
     },
     "right": {
       "label": "Yaparım",
@@ -63,11 +63,11 @@
     "text": "İlk kiralık ev. Ev sahibi: 'Evcil hayvan yok, misafir az, kira her ayın biri. Ben de çok iyi biriyimdir.'",
     "left": {
       "label": "Ailemle kalırım",
-      "effects": { "family": 3, "happiness": -3, "money": 5000 }
+      "effects": { "family": 3, "happiness": -3, "money": 20000 }
     },
     "right": {
       "label": "Kiralarım",
-      "effects": { "money": -10000, "happiness": 6, "addFlags": ["kiraci", "tasindi"] }
+      "effects": { "money": -40000, "happiness": 6, "addFlags": ["kiraci", "tasindi"] }
     }
   },
   {
@@ -82,13 +82,13 @@
     "text": "Ev sahibi kirayı iki katına çıkarmak istiyor. Gerekçesi: 'Piyasa böyle.'",
     "left": {
       "label": "Taşınırım",
-      "effects": { "money": -15000, "happiness": -5, "addFlags": ["tasindi"] }
+      "effects": { "money": -30000, "happiness": -5, "rentReset": true, "addFlags": ["tasindi"] }
     },
     "right": {
       "label": "Pazarlık ederim",
       "roll": { "stat": "luck", "threshold": 50 },
-      "success": { "money": -3000, "happiness": 3 },
-      "fail": { "money": -8000, "reputation": -2, "schedule": { "event": "ev_sahibi_ihtar", "inYears": 1 } }
+      "success": { "rentChange": 12000, "happiness": 3 },
+      "fail": { "rentChange": 36000, "reputation": -2, "schedule": { "event": "ev_sahibi_ihtar", "inYears": 1 } }
     }
   },
   {
@@ -102,7 +102,7 @@
     "text": "Ev sahibinden ihtar geldi: 'Kira gecikti.' Altına elle not düşmüş: 'Sana kırgınım.'",
     "left": {
       "label": "Hemen öderim",
-      "effects": { "money": -5000, "reputation": 2 }
+      "effects": { "money": -20000, "reputation": 2 }
     },
     "right": {
       "label": "Bir konuşalım",
@@ -116,7 +116,7 @@
     "maxAge": 35,
     "once": true,
     "speaker": "komsu_oglu",
-    "text": "Komşunun oğlu kapıda: 'Ay sonu kuruşu kuruşuna getiririm, söz.' 5.000 TL istiyor.",
+    "text": "Komşunun oğlu kapıda: 'Ay sonu kuruşu kuruşuna getiririm, söz.' 20.000 TL istiyor.",
     "left": {
       "label": "Veremem",
       "effects": { "reputation": -3 }
@@ -124,7 +124,7 @@
     "right": {
       "label": "Veririm",
       "effects": {
-        "money": -5000,
+        "money": -20000,
         "reputation": 2,
         "addFlags": ["komsuya_borc_verdi"],
         "schedule": { "event": "borc_geldi_mi", "inYears": 2 }
@@ -143,7 +143,7 @@
     "left": {
       "label": "Borcu sorarım",
       "roll": { "stat": "luck", "threshold": 50 },
-      "success": { "money": 5000, "reputation": 2, "removeFlags": ["komsuya_borc_verdi"] },
+      "success": { "money": 20000, "reputation": 2, "removeFlags": ["komsuya_borc_verdi"] },
       "fail": { "reputation": -4, "happiness": -3, "removeFlags": ["komsuya_borc_verdi"] }
     },
     "right": {
@@ -180,11 +180,17 @@
     "text": "Düğünde 14 çeyrek ve 2 bilezik takıldı. Kayınpeder: 'Altını bozdurmayın.'",
     "left": {
       "label": "Kenara koyarım",
-      "effects": { "money": 20000, "family": 3, "addFlags": ["altin_var"] }
+      "effects": { "gold": 50, "family": 3 }
     },
     "right": {
       "label": "Araba peşinatı",
-      "effects": { "happiness": 6, "family": -5, "addFlags": ["araba_var", "kayinpeder_kus"] }
+      "effects": {
+        "car": 1,
+        "loan": { "amount": 450000, "years": 4 },
+        "happiness": 6,
+        "family": -5,
+        "addFlags": ["kayinpeder_kus"]
+      }
     }
   },
   {
@@ -218,11 +224,11 @@
     "text": "Postacı imzalı bir zarf uzattı: icra. Akşam eski bir dostun aradı: 'Utanma, ne kadar lazım?'",
     "left": {
       "label": "Dosttan isterim",
-      "effects": { "money": 25000, "family": 3, "reputation": -3 }
+      "effects": { "money": 60000, "family": 3, "reputation": -3 }
     },
     "right": {
       "label": "Eşya satarım",
-      "effects": { "money": 15000, "happiness": -5 }
+      "effects": { "money": 40000, "happiness": -5 }
     }
   }
 ]

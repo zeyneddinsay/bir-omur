@@ -153,11 +153,13 @@ class _ActionMenu extends ConsumerWidget {
                     enabled: enabled,
                     leading: Icon(_categoryIcon(action.category)),
                     title: Text(l10n.actionName(action.id) ?? action.id),
-                    subtitle: Text(
-                      action.cost == 0
-                          ? l10n.actionFree
-                          : l10n.money(action.cost),
-                    ),
+                    subtitle: Text(switch (action.moneyChange(
+                      controller.engine.market,
+                    )) {
+                      0 => l10n.actionFree,
+                      < 0 && final change => l10n.money(-change),
+                      final change => l10n.moneyGain(change),
+                    }),
                     trailing: state.actionsUsed.contains(action.id)
                         ? const Icon(Icons.check)
                         : null,
