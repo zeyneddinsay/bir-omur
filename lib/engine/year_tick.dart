@@ -21,8 +21,8 @@ abstract final class EngineFlags {
 /// Yaşlanma: yaş 1 artar ve pasif değişimler uygulanır.
 ///
 /// Gençlikte hafif sağlık toparlanması, yaşa bağlı sağlık kaybı ve
-/// yetişkinlikte aile bağının yavaşça soğuması. Gelir [CareerTick],
-/// enflasyon, kira ve kredi [EconomyTick] içindedir.
+/// yetişkinlikte aile bağının yavaşça soğuması, itibarın ortaya kayması.
+/// Gelir [CareerTick], enflasyon, kira ve kredi [EconomyTick] içindedir.
 class YearTick {
   const YearTick();
 
@@ -35,8 +35,19 @@ class YearTick {
     if (age >= EngineFlags.hardshipMinAge) {
       stats = stats.withDelta(StatKind.family, -1);
     }
+    stats = stats.withDelta(
+      StatKind.reputation,
+      reputationDrift(stats.reputation),
+    );
     return updateHardshipFlags(character.copyWith(age: age, stats: stats));
   }
+
+  /// Mahalle unutur: itibar her yıl bir puan ortaya ([reputationCenter])
+  /// doğru kayar. Yüksek itibar korunmak ister, kötü ün de zamanla silinir.
+  static int reputationDrift(int reputation) =>
+      (reputationCenter - reputation).sign;
+
+  static const int reputationCenter = 50;
 
   /// Gençken beden küçük yaraları kendi sarar; 50'den sonra yaşlanma
   /// sağlığı yavaşça düşürür.

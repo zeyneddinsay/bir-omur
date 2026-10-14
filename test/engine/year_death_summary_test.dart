@@ -24,6 +24,12 @@ void main() {
       expect(tick.apply(testCharacter(age: 85)).stats.health, 47);
     });
 
+    test('mahalle unutur: itibar her yıl bir puan 50ye kayar', () {
+      expect(tick.apply(testCharacter(reputation: 90)).stats.reputation, 89);
+      expect(tick.apply(testCharacter(reputation: 10)).stats.reputation, 11);
+      expect(tick.apply(testCharacter(reputation: 50)).stats.reputation, 50);
+    });
+
     test('çocuklukta aile bağı soğumaz, yetişkinlikte soğur', () {
       expect(tick.apply(testCharacter(age: 10)).stats.family, 50);
       expect(tick.apply(testCharacter(age: 30)).stats.family, 49);
