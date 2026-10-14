@@ -1,0 +1,76 @@
+[
+  {
+    "id": "torun_story",
+    "stage": "yasli",
+    "minAge": 68,
+    "maxAge": 95,
+    "rarity": "efsane",
+    "once": true,
+    "speaker": "torun",
+    "text": "Torunun telefonu uzatıyor: 'Hadi bir story at!' Ekranda bir sürü düğme var, hepsi yanıp sönüyor.",
+    "left": {
+      "label": "Çay fotoğrafı atarım",
+      "effects": { "happiness": 5, "reputation": 3 }
+    },
+    "right": {
+      "label": "Rehbere bayram mesajı",
+      "effects": { "family": 10, "reputation": 8 }
+    },
+    "up": {
+      "label": "Dans videosu çekeriz",
+      "effects": { "happiness": 10, "reputation": 10, "health": -2 }
+    }
+  },
+  {
+    "id": "kahvehane_gundemi",
+    "stage": "yasli",
+    "minAge": 65,
+    "maxAge": 110,
+    "cooldown": 2,
+    "speaker": "arkadas",
+    "text": "Kahvehanede günün konusu: kimin torunu daha zeki. Sıra sana geldi, herkes susmuş bekliyor.",
+    "left": {
+      "label": "Abartırım",
+      "effects": { "happiness": 5, "reputation": -2 }
+    },
+    "right": {
+      "label": "Mütevazı olurum",
+      "effects": { "reputation": 4, "happiness": -1 }
+    }
+  },
+  {
+    "id": "memlekete_donus",
+    "stage": "yasli",
+    "minAge": 65,
+    "maxAge": 85,
+    "once": true,
+    "conditions": { "notFlags": ["memlekete_dondu"] },
+    "speaker": "eski_komsu",
+    "text": "Memleketteki eski komşun aradı: 'Bahçedeki domatesler seni soruyor. Dön artık.'",
+    "left": {
+      "label": "Torunların yanında",
+      "effects": { "family": 6, "happiness": -2 }
+    },
+    "right": {
+      "label": "Memlekete dönerim",
+      "effects": { "health": 5, "happiness": 6, "family": -3, "addFlags": ["memlekete_dondu"] }
+    }
+  },
+  {
+    "id": "miras_sohbeti",
+    "stage": "yasli",
+    "minAge": 75,
+    "maxAge": 110,
+    "once": true,
+    "conditions": { "flags": ["ev_sahibi"] },
+    "text": "Bayram sofrası. Konu nasıl olduysa yine evin tapusuna geldi. Herkes birden çok sessiz.",
+    "left": {
+      "label": "Şimdi paylaştırırım",
+      "effects": { "family": 6, "money": -20000 }
+    },
+    "right": {
+      "label": "Daha erken",
+      "effects": { "happiness": 3, "family": -5 }
+    }
+  }
+]

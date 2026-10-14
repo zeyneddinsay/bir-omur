@@ -1,0 +1,91 @@
+[
+  {
+    "id": "yks_sabahi",
+    "stage": "lise",
+    "minAge": 18,
+    "maxAge": 18,
+    "once": true,
+    "mandatory": true,
+    "speaker": "anne",
+    "text": "YKS sabahı. Annen kahvaltıya üç yumurta koydu: 'Beyin için.' Baban arabayı çoktan ısıtıyor.",
+    "left": {
+      "label": "Sakin girerim",
+      "roll": { "stat": "knowledge", "threshold": 45 },
+      "success": { "happiness": 10, "family": 5, "addFlags": ["yks_kazandi"] },
+      "fail": { "happiness": -10, "addFlags": ["yks_kaybetti"] }
+    },
+    "right": {
+      "label": "Son bir tekrar yaparım",
+      "effects": { "knowledge": 5, "happiness": -3 },
+      "roll": { "stat": "knowledge", "threshold": 45 },
+      "success": { "happiness": 10, "family": 5, "addFlags": ["yks_kazandi"] },
+      "fail": { "happiness": -10, "addFlags": ["yks_kaybetti"] }
+    }
+  },
+  {
+    "id": "tercih_zamani",
+    "stage": "lise",
+    "minAge": 18,
+    "maxAge": 19,
+    "once": true,
+    "mandatory": true,
+    "conditions": { "flags": ["yks_kazandi"] },
+    "speaker": "baba",
+    "text": "Tercih zamanı. Baban 'Mühendislik' diyor, sen 'Grafik tasarım'.",
+    "left": {
+      "label": "Babamı dinlerim",
+      "effects": {
+        "family": 10,
+        "happiness": -5,
+        "addFlags": ["universite_ogrencisi", "muhendislik"],
+        "schedule": { "event": "mezuniyet_toreni", "inYears": 4 }
+      }
+    },
+    "right": {
+      "label": "Kendi yolum",
+      "effects": {
+        "happiness": 10,
+        "family": -5,
+        "addFlags": ["universite_ogrencisi", "grafik_tasarim"],
+        "schedule": { "event": "mezuniyet_toreni", "inYears": 4 }
+      }
+    }
+  },
+  {
+    "id": "ehliyet_sinavi",
+    "stage": "lise",
+    "minAge": 18,
+    "maxAge": 30,
+    "once": true,
+    "speaker": "ehliyet_hocasi",
+    "text": "Ehliyet sınavı. Hoca: 'Aynaya bak, sinyal ver, bir daha aynaya bak.' Elin titriyor.",
+    "left": {
+      "label": "Sonraya bırakırım",
+      "effects": { "happiness": -1 }
+    },
+    "right": {
+      "label": "Girerim",
+      "effects": { "money": -1500 },
+      "roll": { "stat": "luck", "threshold": 40 },
+      "success": { "happiness": 6, "addFlags": ["ehliyet_var"] },
+      "fail": { "happiness": -5, "reputation": -1 }
+    }
+  },
+  {
+    "id": "mezuniyet_balosu",
+    "stage": "lise",
+    "minAge": 17,
+    "maxAge": 18,
+    "once": true,
+    "speaker": "anne",
+    "text": "Mezuniyet balosu. Annen seni terziye götürdü. Terzi: 'Bu kumaş pahalı ama değer.'",
+    "left": {
+      "label": "Sade olsun",
+      "effects": { "money": -300, "happiness": 2 }
+    },
+    "right": {
+      "label": "Pahalısı olsun",
+      "effects": { "money": -1500, "happiness": 6, "reputation": 2 }
+    }
+  }
+]

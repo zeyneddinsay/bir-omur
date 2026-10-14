@@ -1,0 +1,94 @@
+[
+  {
+    "id": "isim_koyma",
+    "stage": "bebek",
+    "minAge": 0,
+    "maxAge": 0,
+    "once": true,
+    "mandatory": true,
+    "speaker": "dede",
+    "text": "Ailen isim koyamıyor. Deden kendi babasının adını, annen dizideki karakterin adını istiyor.",
+    "left": {
+      "label": "Dedenin dediği",
+      "effects": { "family": 10 }
+    },
+    "right": {
+      "label": "Annenin dediği",
+      "effects": {
+        "happiness": 5,
+        "addFlags": ["deden_kus"],
+        "schedule": { "event": "dede_barisma", "inYears": 2 }
+      }
+    }
+  },
+  {
+    "id": "dede_barisma",
+    "stage": "bebek",
+    "minAge": 0,
+    "maxAge": 6,
+    "chainOnly": true,
+    "conditions": { "flags": ["deden_kus"] },
+    "speaker": "dede",
+    "text": "Deden sonunda dayanamadı. Bayramda seni kucağına alıp 'Adın da güzelmiş aslında' dedi.",
+    "left": {
+      "label": "Dedeme sarılırım",
+      "effects": { "family": 8, "removeFlags": ["deden_kus"] }
+    },
+    "right": {
+      "label": "Harçlığı alıp kaçarım",
+      "effects": { "happiness": 4, "money": 200, "removeFlags": ["deden_kus"] }
+    }
+  },
+  {
+    "id": "ilk_kelime",
+    "stage": "bebek",
+    "minAge": 1,
+    "maxAge": 2,
+    "once": true,
+    "speaker": "anne",
+    "text": "İlk kelimeni söylemek üzeresin. Annen 'anne' diye fısıldıyor, baban arkadan 'baba' diye işaret ediyor.",
+    "left": {
+      "label": "Anne",
+      "effects": { "family": 5 }
+    },
+    "right": {
+      "label": "Baba",
+      "effects": { "family": 3, "happiness": 2 }
+    }
+  },
+  {
+    "id": "kres_ilk_gun",
+    "stage": "bebek",
+    "minAge": 3,
+    "maxAge": 5,
+    "once": true,
+    "speaker": "anne",
+    "text": "Kreşte ilk gün. Annen kapıda: 'Bak, kimse ağlamıyor.' Arkadaki üç çocuk ağlıyor.",
+    "left": {
+      "label": "Ben de ağlarım",
+      "effects": { "family": 5, "happiness": -3 }
+    },
+    "right": {
+      "label": "Koşa koşa girerim",
+      "effects": { "knowledge": 3, "reputation": 2 }
+    }
+  },
+  {
+    "id": "sunnet_dugunu",
+    "stage": "bebek",
+    "minAge": 5,
+    "maxAge": 7,
+    "rarity": "nadir",
+    "once": true,
+    "conditions": { "gender": "erkek" },
+    "text": "Sünnet düğünün var. Kuzenler pastaya, sen masadaki hediye zarflarına bakıyorsun.",
+    "left": {
+      "label": "Zarfları sayarım",
+      "effects": { "money": 2000, "happiness": 3 }
+    },
+    "right": {
+      "label": "Pistte göbek atarım",
+      "effects": { "reputation": 5, "happiness": 5 }
+    }
+  }
+]

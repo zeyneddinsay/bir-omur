@@ -1,0 +1,76 @@
+[
+  {
+    "id": "kayinvalide_ziyareti",
+    "stage": "yetiskin",
+    "minAge": 30,
+    "maxAge": 70,
+    "cooldown": 3,
+    "conditions": { "flags": ["evli"] },
+    "speaker": "kayinvalide",
+    "text": "Kayınvaliden üçüncü kez 'Yemekler biraz tuzsuz olmuş ama elinize sağlık' dedi.",
+    "left": {
+      "label": "Tuzu uzatırım",
+      "effects": { "family": 4, "happiness": -3 }
+    },
+    "right": {
+      "label": "Bir dahakine siz yapın",
+      "effects": { "happiness": 5, "family": -5 }
+    }
+  },
+  {
+    "id": "cuma_epostasi",
+    "stage": "yetiskin",
+    "minAge": 30,
+    "maxAge": 60,
+    "cooldown": 3,
+    "speaker": "patron",
+    "text": "Cuma 18.00. Patrondan e-posta: 'Acil değil ama pazartesi sabaha yetişsin.'",
+    "left": {
+      "label": "Hafta sonu çalışırım",
+      "effects": { "money": 8000, "happiness": -6, "health": -2, "reputation": 2 }
+    },
+    "right": {
+      "label": "Pazartesi bakarım",
+      "effects": { "happiness": 4, "reputation": -4 }
+    }
+  },
+  {
+    "id": "ev_kredisi",
+    "stage": "yetiskin",
+    "minAge": 30,
+    "maxAge": 49,
+    "once": true,
+    "conditions": { "notFlags": ["ev_sahibi"], "min": { "money": 50000 } },
+    "text": "Bankadaki görevli gülümsüyor: 'Krediniz onaylandı. Sadece 20 yıl.' Hesap makinesi de gülümsüyor.",
+    "left": {
+      "label": "Kirada devam",
+      "effects": { "happiness": -2, "money": 5000 }
+    },
+    "right": {
+      "label": "Krediyi çekerim",
+      "effects": {
+        "money": -150000,
+        "happiness": 8,
+        "addFlags": ["ev_sahibi", "tasindi"],
+        "removeFlags": ["kiraci"]
+      }
+    }
+  },
+  {
+    "id": "derbi_aksami",
+    "stage": "yetiskin",
+    "minAge": 30,
+    "maxAge": 75,
+    "cooldown": 3,
+    "speaker": "arkadas",
+    "text": "Derbi akşamı. Takımın son dakikada gol yedi. Karşı takımı tutan iş arkadaşın masana sessizce çay bıraktı.",
+    "left": {
+      "label": "Çayı içerim",
+      "effects": { "reputation": 3, "happiness": -3 }
+    },
+    "right": {
+      "label": "Bir hafta küsüm",
+      "effects": { "happiness": 2, "reputation": -3 }
+    }
+  }
+]

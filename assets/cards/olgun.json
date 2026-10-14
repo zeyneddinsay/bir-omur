@@ -1,0 +1,53 @@
+[
+  {
+    "id": "emeklilik_hesabi",
+    "stage": "olgun",
+    "minAge": 58,
+    "maxAge": 64,
+    "once": true,
+    "mandatory": true,
+    "conditions": { "notFlags": ["emekli"] },
+    "text": "Emekliliğin geldi. Hesap makinesi bir şey, mahalledeki emekliler başka bir şey söylüyor.",
+    "left": {
+      "label": "Emekli olurum",
+      "effects": { "happiness": 8, "addFlags": ["emekli"] }
+    },
+    "right": {
+      "label": "Biraz daha çalışırım",
+      "effects": { "money": 40000, "health": -3, "reputation": 2 }
+    }
+  },
+  {
+    "id": "saglik_kontrolu",
+    "stage": "olgun",
+    "minAge": 50,
+    "maxAge": 75,
+    "cooldown": 3,
+    "speaker": "doktor",
+    "text": "Doktor tahlillere baktı: 'Tuzu ve çayı azaltacağız.' Çay kısmını duymamış gibi yaptın.",
+    "left": {
+      "label": "Söz, azaltırım",
+      "effects": { "health": 6, "happiness": -3 }
+    },
+    "right": {
+      "label": "Çaysız olmaz",
+      "effects": { "happiness": 3, "health": -4 }
+    }
+  },
+  {
+    "id": "yegen_dugunu",
+    "stage": "olgun",
+    "minAge": 50,
+    "maxAge": 64,
+    "once": true,
+    "text": "Yeğeninin düğünü. Takı defterini açtın; kim, ne zaman, ne takmış, tek tek bakıyorsun.",
+    "left": {
+      "label": "Deftere göre takarım",
+      "effects": { "money": -10000, "reputation": 5 }
+    },
+    "right": {
+      "label": "Gönlümden geleni",
+      "effects": { "money": -20000, "family": 6, "happiness": 2 }
+    }
+  }
+]

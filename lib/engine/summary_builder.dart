@@ -52,18 +52,25 @@ class SummaryBuilder {
     );
   }
 
+  static const String homeOwnerFlag = 'ev_sahibi';
+  static const String soldierFlag = 'asker_anilari';
+
+  /// Lakap kurallarının baktığı bayraklar; card_lint kayıtta olduklarını
+  /// denetler.
+  static const Set<String> referencedFlags = {homeOwnerFlag, soldierFlag};
+
   /// Kurallar öncelik sırasıyla denenir; ilk tutan lakap olur.
   static Nickname nicknameFor(Character c) {
     final s = c.stats;
     if (c.age >= 95) return Nickname.asirlikCinar;
     if (s.money >= 1000000) return Nickname.mahalleninZengini;
-    if (c.hasFlag('ev_sahibi')) return Nickname.evSahibi;
+    if (c.hasFlag(homeOwnerFlag)) return Nickname.evSahibi;
     if (s.reputation >= 80) return Nickname.sozuDinlenen;
     if (s.family >= 80) return Nickname.bayramlarinBasKosesi;
     if (s.knowledge >= 80) return Nickname.mahalleninProfesoru;
     if (s.happiness >= 80) return Nickname.hepGulen;
     if (s.money < 0) return Nickname.borcYigidinKamcisi;
-    if (c.hasFlag('askerligini_yapti')) return Nickname.bizimBolukte;
+    if (c.hasFlag(soldierFlag)) return Nickname.bizimBolukte;
     return Nickname.mahalleninBildikYuzu;
   }
 

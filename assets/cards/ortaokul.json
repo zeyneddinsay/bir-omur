@@ -1,0 +1,75 @@
+[
+  {
+    "id": "lgs_kursu",
+    "stage": "ortaokul",
+    "minAge": 14,
+    "maxAge": 14,
+    "once": true,
+    "mandatory": true,
+    "speaker": "anne",
+    "text": "LGS'ye 3 ay kaldı. Annen kurs kaydını çoktan yaptırmış.",
+    "left": {
+      "label": "Gitmem",
+      "effects": { "happiness": 5, "knowledge": -5 }
+    },
+    "right": {
+      "label": "Hafta sonu dahil giderim",
+      "effects": { "knowledge": 10, "happiness": -10 }
+    }
+  },
+  {
+    "id": "kalpli_silgi",
+    "stage": "ortaokul",
+    "minAge": 12,
+    "maxAge": 14,
+    "rarity": "nadir",
+    "once": true,
+    "text": "Sınıftan biri sana kalpli bir silgi uzattı. Arkadaşların koro hâlinde 'Uuuu' diyor.",
+    "left": {
+      "label": "Görmezden gelirim",
+      "effects": { "reputation": 2, "happiness": -3 }
+    },
+    "right": {
+      "label": "Silgiyi alırım",
+      "effects": { "happiness": 8, "reputation": -2 }
+    },
+    "up": {
+      "label": "Kendi silgimi veririm",
+      "effects": { "happiness": 6, "reputation": 3 }
+    }
+  },
+  {
+    "id": "telefon_kavgasi",
+    "stage": "ortaokul",
+    "minAge": 11,
+    "maxAge": 14,
+    "cooldown": 2,
+    "speaker": "anne",
+    "text": "Annen: 'O telefonu bir bırak, gözlerin bozulacak.' Kendi elinde de telefon var.",
+    "left": {
+      "label": "Bırakırım",
+      "effects": { "health": 3, "family": 2, "happiness": -3 }
+    },
+    "right": {
+      "label": "Önce sen bırak",
+      "effects": { "happiness": 3, "family": -4 }
+    }
+  },
+  {
+    "id": "veli_toplantisi",
+    "stage": "ortaokul",
+    "minAge": 11,
+    "maxAge": 14,
+    "once": true,
+    "speaker": "anne",
+    "text": "Veli toplantısından dönen annen: 'Öğretmenin, zeki ama çalışmıyor dedi.' Gururlu mu kızgın mı, belli değil.",
+    "left": {
+      "label": "Çalışacağım",
+      "effects": { "knowledge": 5, "happiness": -2 }
+    },
+    "right": {
+      "label": "Demek zekiyim",
+      "effects": { "happiness": 4, "knowledge": -2 }
+    }
+  }
+]

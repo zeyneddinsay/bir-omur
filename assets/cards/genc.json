@@ -1,0 +1,228 @@
+[
+  {
+    "id": "askerlik_zamani",
+    "stage": "genc",
+    "minAge": 20,
+    "maxAge": 29,
+    "once": true,
+    "mandatory": true,
+    "conditions": { "gender": "erkek", "notFlags": ["askerligini_yapti"] },
+    "speaker": "baba",
+    "text": "Askerlik zamanı geldi. Annen şimdiden kınayı almış, baban 'Adam olup dönecek' diyor.",
+    "left": {
+      "label": "Bedelli",
+      "effects": { "money": -40000, "addFlags": ["askerligini_yapti", "bedelli"] }
+    },
+    "right": {
+      "label": "Yaparım",
+      "effects": {
+        "health": 5,
+        "happiness": -5,
+        "reputation": 3,
+        "addFlags": ["askerligini_yapti", "asker_anilari"]
+      }
+    }
+  },
+  {
+    "id": "mezuniyet_toreni",
+    "stage": "genc",
+    "minAge": 21,
+    "maxAge": 29,
+    "chainOnly": true,
+    "conditions": { "flags": ["universite_ogrencisi"] },
+    "speaker": "anne",
+    "text": "Mezuniyet töreni. Kep atarken annen ağlıyor, baban fotoğrafta parmağını objektife koymuş.",
+    "left": {
+      "label": "Fotoğrafı saklarım",
+      "effects": {
+        "family": 5,
+        "happiness": 5,
+        "removeFlags": ["universite_ogrencisi"],
+        "addFlags": ["universite_mezunu"]
+      }
+    },
+    "right": {
+      "label": "Yeniden çektiririm",
+      "effects": {
+        "happiness": 2,
+        "reputation": 2,
+        "knowledge": 3,
+        "removeFlags": ["universite_ogrencisi"],
+        "addFlags": ["universite_mezunu"]
+      }
+    }
+  },
+  {
+    "id": "ilk_kiralik_ev",
+    "stage": "genc",
+    "minAge": 22,
+    "maxAge": 29,
+    "once": true,
+    "conditions": { "notFlags": ["kiraci", "ev_sahibi"] },
+    "speaker": "ev_sahibi",
+    "text": "İlk kiralık ev. Ev sahibi: 'Evcil hayvan yok, misafir az, kira her ayın biri. Ben de çok iyi biriyimdir.'",
+    "left": {
+      "label": "Ailemle kalırım",
+      "effects": { "family": 3, "happiness": -3, "money": 5000 }
+    },
+    "right": {
+      "label": "Kiralarım",
+      "effects": { "money": -10000, "happiness": 6, "addFlags": ["kiraci", "tasindi"] }
+    }
+  },
+  {
+    "id": "kira_zammi_01",
+    "stage": "genc",
+    "minAge": 19,
+    "maxAge": 45,
+    "rarity": "siradan",
+    "cooldown": 3,
+    "conditions": { "notFlags": ["ev_sahibi"], "flags": ["kiraci"] },
+    "speaker": "ev_sahibi",
+    "text": "Ev sahibi kirayı iki katına çıkarmak istiyor. Gerekçesi: 'Piyasa böyle.'",
+    "left": {
+      "label": "Taşınırım",
+      "effects": { "money": -15000, "happiness": -5, "addFlags": ["tasindi"] }
+    },
+    "right": {
+      "label": "Pazarlık ederim",
+      "roll": { "stat": "luck", "threshold": 50 },
+      "success": { "money": -3000, "happiness": 3 },
+      "fail": { "money": -8000, "reputation": -2, "schedule": { "event": "ev_sahibi_ihtar", "inYears": 1 } }
+    }
+  },
+  {
+    "id": "ev_sahibi_ihtar",
+    "stage": "genc",
+    "minAge": 20,
+    "maxAge": 46,
+    "chainOnly": true,
+    "conditions": { "flags": ["kiraci"] },
+    "speaker": "ev_sahibi",
+    "text": "Ev sahibinden ihtar geldi: 'Kira gecikti.' Altına elle not düşmüş: 'Sana kırgınım.'",
+    "left": {
+      "label": "Hemen öderim",
+      "effects": { "money": -5000, "reputation": 2 }
+    },
+    "right": {
+      "label": "Bir konuşalım",
+      "effects": { "reputation": -3, "happiness": -2 }
+    }
+  },
+  {
+    "id": "komsu_borc_istedi",
+    "stage": "genc",
+    "minAge": 22,
+    "maxAge": 35,
+    "once": true,
+    "speaker": "komsu_oglu",
+    "text": "Komşunun oğlu kapıda: 'Ay sonu kuruşu kuruşuna getiririm, söz.' 5.000 TL istiyor.",
+    "left": {
+      "label": "Veremem",
+      "effects": { "reputation": -3 }
+    },
+    "right": {
+      "label": "Veririm",
+      "effects": {
+        "money": -5000,
+        "reputation": 2,
+        "addFlags": ["komsuya_borc_verdi"],
+        "schedule": { "event": "borc_geldi_mi", "inYears": 2 }
+      }
+    }
+  },
+  {
+    "id": "borc_geldi_mi",
+    "stage": "genc",
+    "minAge": 24,
+    "maxAge": 37,
+    "chainOnly": true,
+    "conditions": { "flags": ["komsuya_borc_verdi"] },
+    "speaker": "komsu_oglu",
+    "text": "İki yıl oldu. Komşunun oğlu kapıda, elinde bir kutu baklava. Zarf da var mı acaba?",
+    "left": {
+      "label": "Borcu sorarım",
+      "roll": { "stat": "luck", "threshold": 50 },
+      "success": { "money": 5000, "reputation": 2, "removeFlags": ["komsuya_borc_verdi"] },
+      "fail": { "reputation": -4, "happiness": -3, "removeFlags": ["komsuya_borc_verdi"] }
+    },
+    "right": {
+      "label": "Baklavayı alırım",
+      "effects": { "happiness": 2, "reputation": 3, "removeFlags": ["komsuya_borc_verdi"] }
+    }
+  },
+  {
+    "id": "isteme_gunu",
+    "stage": "genc",
+    "minAge": 24,
+    "maxAge": 35,
+    "once": true,
+    "conditions": { "notFlags": ["evli"] },
+    "text": "İsteme günü. Kahvene bolca tuz konmuş, iki aile de yüzüne bakıyor.",
+    "left": {
+      "label": "Yüzümü bozmadan içerim",
+      "effects": { "reputation": 10, "addFlags": ["evli"] }
+    },
+    "right": {
+      "label": "Bunda tuz var galiba",
+      "effects": { "happiness": 5, "reputation": -5, "addFlags": ["evli"] }
+    }
+  },
+  {
+    "id": "dugun_takilari",
+    "stage": "genc",
+    "minAge": 25,
+    "maxAge": 36,
+    "rarity": "nadir",
+    "once": true,
+    "conditions": { "flags": ["evli"] },
+    "speaker": "kayinpeder",
+    "text": "Düğünde 14 çeyrek ve 2 bilezik takıldı. Kayınpeder: 'Altını bozdurmayın.'",
+    "left": {
+      "label": "Kenara koyarım",
+      "effects": { "money": 20000, "family": 3, "addFlags": ["altin_var"] }
+    },
+    "right": {
+      "label": "Araba peşinatı",
+      "effects": { "happiness": 6, "family": -5, "addFlags": ["araba_var", "kayinpeder_kus"] }
+    }
+  },
+  {
+    "id": "bunalim_destegi",
+    "stage": "genc",
+    "minAge": 19,
+    "maxAge": 120,
+    "mandatory": true,
+    "cooldown": 3,
+    "conditions": { "flags": ["bunalim"] },
+    "speaker": "arkadas",
+    "text": "Bir süredir hiçbir şeyden tat almıyorsun. Kapı çaldı: en eski dostun, elinde poğaça. 'Bir çay koy.'",
+    "left": {
+      "label": "İçeri buyur",
+      "effects": { "happiness": 20, "reputation": 2 }
+    },
+    "right": {
+      "label": "Biraz yürüyelim",
+      "effects": { "health": 3, "happiness": 15 }
+    }
+  },
+  {
+    "id": "icra_kagidi",
+    "stage": "genc",
+    "minAge": 19,
+    "maxAge": 120,
+    "mandatory": true,
+    "cooldown": 2,
+    "conditions": { "flags": ["borclu"] },
+    "speaker": "arkadas",
+    "text": "Postacı imzalı bir zarf uzattı: icra. Akşam eski bir dostun aradı: 'Utanma, ne kadar lazım?'",
+    "left": {
+      "label": "Dosttan isterim",
+      "effects": { "money": 25000, "family": 3, "reputation": -3 }
+    },
+    "right": {
+      "label": "Eşya satarım",
+      "effects": { "money": 15000, "happiness": -5 }
+    }
+  }
+]

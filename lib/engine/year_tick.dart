@@ -38,14 +38,15 @@ class YearTick {
     return updateHardshipFlags(character.copyWith(age: age, stats: stats));
   }
 
-  /// Yıllık net gelir (TL). Kariyer sistemi gelene kadar evreye bağlı.
+  /// Yıllık net gelir (TL): maaştan geçim düşülmüş hâli. Kariyer, kira ve
+  /// enflasyon F1'de gelene kadar evreye bağlı sabit bir değerdir.
   static int yearlyIncome(int age) => switch (LifeStage.forAge(age)) {
     LifeStage.bebek || LifeStage.ilkokul || LifeStage.ortaokul => 0,
     LifeStage.lise => 2000,
-    LifeStage.genc => 30000,
-    LifeStage.yetiskin => 60000,
-    LifeStage.olgun => 70000,
-    LifeStage.yasli => 40000,
+    LifeStage.genc => 12000,
+    LifeStage.yetiskin => 20000,
+    LifeStage.olgun => 20000,
+    LifeStage.yasli => 8000,
   };
 
   /// Gençken beden küçük yaraları kendi sarar; 50'den sonra yaşlanma

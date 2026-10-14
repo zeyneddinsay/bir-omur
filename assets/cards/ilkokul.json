@@ -1,0 +1,91 @@
+[
+  {
+    "id": "karne_gunu",
+    "stage": "ilkokul",
+    "minAge": 7,
+    "maxAge": 10,
+    "cooldown": 2,
+    "speaker": "baba",
+    "text": "Karnende üç 'iyi' var. Baban: 'Komşunun oğlu hepsinden pekiyi almış.'",
+    "left": {
+      "label": "Ağlarım",
+      "effects": { "happiness": -5, "family": 5 }
+    },
+    "right": {
+      "label": "Resimden pekiyi aldım",
+      "effects": { "happiness": 5, "reputation": -2 }
+    }
+  },
+  {
+    "id": "mahalle_maci",
+    "stage": "ilkokul",
+    "minAge": 7,
+    "maxAge": 12,
+    "cooldown": 2,
+    "speaker": "arkadas",
+    "text": "Mahalle maçında kale direği iki taş. Top taşa mı çarptı, gol mü? Herkes sana bakıyor.",
+    "left": {
+      "label": "Gol değil",
+      "effects": { "reputation": 3, "happiness": -2 }
+    },
+    "right": {
+      "label": "Goldü abi",
+      "effects": { "happiness": 4, "reputation": -2 }
+    }
+  },
+  {
+    "id": "bakkal_veresiye",
+    "stage": "ilkokul",
+    "minAge": 7,
+    "maxAge": 10,
+    "once": true,
+    "speaker": "bakkal",
+    "text": "Bakkal Hüsnü Amca: 'Paran eksik ama olsun, babana yazarım.' Sakız hâlâ elinde.",
+    "left": {
+      "label": "Yazsın",
+      "effects": {
+        "happiness": 3,
+        "addFlags": ["veresiye_yazdi"],
+        "schedule": { "event": "veresiye_defteri", "inYears": 1 }
+      }
+    },
+    "right": {
+      "label": "Geri bırakırım",
+      "effects": { "reputation": 3, "happiness": -2 }
+    }
+  },
+  {
+    "id": "veresiye_defteri",
+    "stage": "ilkokul",
+    "minAge": 8,
+    "maxAge": 11,
+    "chainOnly": true,
+    "speaker": "baba",
+    "text": "Baban bakkalın defterinde adını görmüş. Yanında: '14 sakız.' Sana bakıyor.",
+    "left": {
+      "label": "İtiraf ederim",
+      "effects": { "family": 3, "happiness": -2 }
+    },
+    "right": {
+      "label": "Bakkal yanlış yazmış",
+      "effects": { "happiness": 2, "reputation": -3 }
+    }
+  },
+  {
+    "id": "odev_kim_yapti",
+    "stage": "ilkokul",
+    "minAge": 7,
+    "maxAge": 10,
+    "cooldown": 2,
+    "speaker": "ogretmen",
+    "text": "Öğretmen: 'Bu ödevi kim yaptı?' Defterde annenin el yazısı apaçık duruyor.",
+    "left": {
+      "label": "Ben yaptım",
+      "effects": { "happiness": 2, "reputation": -3 }
+    },
+    "right": {
+      "label": "Annem yardım etti",
+      "effects": { "reputation": 2, "family": 2, "knowledge": -1 }
+    }
+  }
+]
