@@ -1,4 +1,5 @@
 import 'assets.dart';
+import 'career.dart';
 import 'json_reader.dart';
 import 'stats.dart';
 
@@ -14,6 +15,7 @@ class Effect {
     this.rentChange = 0,
     this.rentReset = false,
     this.loan,
+    this.career,
     this.addFlags = const [],
     this.removeFlags = const [],
     this.schedule,
@@ -28,6 +30,7 @@ class Effect {
   static const String rentChangeKey = 'rentChange';
   static const String rentResetKey = 'rentReset';
   static const String loanKey = 'loan';
+  static const String careerKey = 'career';
   static const String addFlagsKey = 'addFlags';
   static const String removeFlagsKey = 'removeFlags';
   static const String scheduleKey = 'schedule';
@@ -42,6 +45,7 @@ class Effect {
     rentChangeKey,
     rentResetKey,
     loanKey,
+    careerKey,
     addFlagsKey,
     removeFlagsKey,
     scheduleKey,
@@ -65,6 +69,9 @@ class Effect {
   /// Taşınınca kira piyasa değerine ([Assets.defaultRent]) döner.
   final bool rentReset;
   final LoanTerms? loan;
+
+  /// İşe girme, terfi, istifa ya da emeklilik.
+  final CareerChange? career;
   final List<String> addFlags;
   final List<String> removeFlags;
   final ScheduledEvent? schedule;
@@ -78,6 +85,7 @@ class Effect {
       rentChange == 0 &&
       !rentReset &&
       loan == null &&
+      career == null &&
       addFlags.isEmpty &&
       removeFlags.isEmpty &&
       schedule == null;
@@ -91,6 +99,7 @@ class Effect {
     }
     final schedule = r.optionalObject(scheduleKey);
     final loan = r.optionalObject(loanKey);
+    final career = r.optionalObject(careerKey);
     return Effect(
       stats: Map.unmodifiable(stats),
       money: r.optionalInt(moneyKey) ?? 0,
@@ -100,6 +109,7 @@ class Effect {
       rentChange: r.optionalInt(rentChangeKey) ?? 0,
       rentReset: r.optionalBool(rentResetKey),
       loan: loan == null ? null : LoanTerms.fromJson(loan),
+      career: career == null ? null : CareerChange.fromJson(career),
       addFlags: r.optionalStringList(addFlagsKey),
       removeFlags: r.optionalStringList(removeFlagsKey),
       schedule: schedule == null ? null : ScheduledEvent.fromJson(schedule),

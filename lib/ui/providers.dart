@@ -37,9 +37,15 @@ class LifeController extends Notifier<LifeState?> {
       _engine ?? (throw StateError('Henüz bir hayat başlamadı'));
 
   /// Tohum verilmezse rastgele seçilir; ölüm ekranında gösterilir.
-  void startLife(EventDeck deck, {String? name, Gender? gender, int? seed}) {
+  void startLife(
+    GameContent content, {
+    String? name,
+    Gender? gender,
+    int? seed,
+  }) {
     final engine = LifeEngine(
-      deck: deck,
+      deck: content.deck,
+      careers: content.careers,
       seed: seed ?? ref.read(seedGeneratorProvider)(),
     );
     _engine = engine;

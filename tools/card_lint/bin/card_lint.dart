@@ -39,9 +39,19 @@ void main(List<String> args) {
           .where((f) => f.path.endsWith('.json'))
           .toList()
         ..sort((a, b) => a.path.compareTo(b.path));
-  final result = CardValidator(registry).check({
-    for (final f in files) f.uri.pathSegments.last: f.readAsStringSync(),
-  });
+  final careerDir = Directory('${assetsDir.path}/careers');
+  final careerFiles = careerDir.existsSync()
+      ? careerDir.listSync().whereType<File>().where(
+          (f) => f.path.endsWith('.json'),
+        )
+      : const <File>[];
+  final result = CardValidator(registry).check(
+    {for (final f in files) f.uri.pathSegments.last: f.readAsStringSync()},
+    careerFiles: {
+      for (final f in careerFiles)
+        f.uri.pathSegments.last: f.readAsStringSync(),
+    },
+  );
 
   for (final issue in result.issues) {
     (issue.isError ? stderr : stdout).writeln(issue);
@@ -53,7 +63,10 @@ void main(List<String> args) {
   }
   stdout
     ..writeln()
-    ..writeln('${files.length} dosya, ${result.cards.length} kart')
+    ..writeln(
+      '${files.length} kart dosyası, ${result.cards.length} kart, '
+      '${result.careers.length} meslek',
+    )
     ..writeln(perStage.entries.map((e) => '${e.key.id}: ${e.value}').join(', '))
     ..writeln('${result.errors.length} hata, ${result.warnings.length} uyarı');
 

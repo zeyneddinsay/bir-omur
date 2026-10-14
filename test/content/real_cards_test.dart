@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'package:bir_omur/content/disk_content_source.dart';
 
 import 'package:bir_omur/content/content_loader.dart';
 import 'package:bir_omur/engine/engine.dart';
@@ -7,20 +7,8 @@ import 'package:flutter_test/flutter_test.dart';
 
 import '../helpers/simulation.dart';
 
-/// `assets/` altındaki gerçek kart dosyalarını diskten okur. Testler proje
-/// kökünden çalışır.
-GameContent loadRealContent() {
-  final files = Directory('assets/cards')
-      .listSync()
-      .whereType<File>()
-      .where((f) => f.path.endsWith('.json'));
-  return loadContent(
-    registrySource: File('assets/registry.json').readAsStringSync(),
-    cardFiles: {
-      for (final f in files) f.uri.pathSegments.last: f.readAsStringSync(),
-    },
-  );
-}
+/// `assets/` altındaki gerçek içerik. Testler proje kökünden çalışır.
+GameContent loadRealContent() => loadContentFromDisk();
 
 void main() {
   final content = loadRealContent();
@@ -30,14 +18,32 @@ void main() {
     expect(content.warnings, isEmpty, reason: content.warnings.join('\n'));
   });
 
-  test('40 kart, her evrede en az 3 kart', () {
-    expect(deck.cards, hasLength(40));
+  test('en az 40 kart, her evrede en az 3 kart', () {
+    expect(deck.cards.length, greaterThanOrEqualTo(40));
     for (final stage in LifeStage.values) {
       expect(
         deck.cards.where((c) => c.stage == stage).length,
         greaterThanOrEqualTo(3),
         reason: stage.id,
       );
+    }
+  });
+
+  test('MVP meslekleri var ve her birine giriş kartı var', () {
+    for (final id in ['memur', 'esnaf', 'plaza']) {
+      final career = content.careers.byId(id);
+      expect(career, isNotNull, reason: id);
+      expect(career!.maxTier, 5, reason: id);
+      final entry = deck.cards.where(
+        (card) => card.choices.any(
+          (choice) => choice.allEffects.any(
+            (e) =>
+                e.career is JoinCareer &&
+                (e.career as JoinCareer).careerId == id,
+          ),
+        ),
+      );
+      expect(entry, isNotEmpty, reason: '$id için giriş kartı yok');
     }
   });
 
@@ -73,7 +79,8 @@ void main() {
     late List<LifeState> lives;
     setUpAll(
       () => lives = [
-        for (var seed = 0; seed < 100; seed++) simulateLife(deck, seed),
+        for (var seed = 0; seed < 100; seed++)
+          simulateLife(deck, seed, careers: content.careers),
       ],
     );
 

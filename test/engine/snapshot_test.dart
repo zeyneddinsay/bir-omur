@@ -35,6 +35,7 @@ void main() {
         age: 33,
         money: -1200,
         luck: 81,
+        job: const Job(careerId: 'memur', tier: 2, yearsInTier: 3),
         gender: Gender.kadin,
         temperament: Temperament.hayalperest,
         flags: {'kiraci', 'evli'},
@@ -53,6 +54,7 @@ void main() {
       );
       expect(back.toJson(), c.toJson());
       expect(back.stats, c.stats);
+      expect(back.job, c.job);
       expect(back.history[1].rollSucceeded, isFalse);
       expect(back.history[0].rollSucceeded, isNull);
     });
@@ -64,13 +66,15 @@ void main() {
   });
 
   group('LifeEngine kayıt', () {
-    final deck = loadRealContent().deck;
+    final content = loadRealContent();
+    final deck = content.deck;
+    final careers = content.careers;
 
     test('hayatın ortasında kaydedip yüklemek sonucu değiştirmez', () {
       for (final seed in [3, 11, 58]) {
         for (final splitAt in [1, 40, 150]) {
           // Kesintisiz hayat.
-          final straight = LifeEngine(deck: deck, seed: seed);
+          final straight = LifeEngine(deck: deck, seed: seed, careers: careers);
           final straightPlayer = AutoPlayer(seed);
           straight.startLife();
           while (!straight.state.isOver) {
@@ -78,7 +82,7 @@ void main() {
           }
 
           // Aynı hayat, splitAt adımda kaydedilip yeni bir motorda sürdürülür.
-          var engine = LifeEngine(deck: deck, seed: seed);
+          var engine = LifeEngine(deck: deck, seed: seed, careers: careers);
           final player = AutoPlayer(seed);
           engine.startLife();
           for (var i = 0; i < splitAt && !engine.state.isOver; i++) {
@@ -86,6 +90,7 @@ void main() {
           }
           engine = LifeEngine.restore(
             deck: deck,
+            careers: careers,
             snapshot: _throughJson(engine.toSnapshot()),
           );
           while (!engine.state.isOver) {
@@ -102,10 +107,11 @@ void main() {
     });
 
     test('ölmüş hayat özetiyle birlikte geri yüklenir', () {
-      final engine = LifeEngine(deck: deck, seed: 5);
+      final engine = LifeEngine(deck: deck, seed: 5, careers: careers);
       AutoPlayer(5).play(engine);
       final restored = LifeEngine.restore(
         deck: deck,
+        careers: careers,
         snapshot: _throughJson(engine.toSnapshot()),
       );
       expect(restored.state.isOver, isTrue);

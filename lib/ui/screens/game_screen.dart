@@ -22,7 +22,7 @@ class GameScreen extends ConsumerWidget {
       AsyncData(:final value) => AnimatedSwitcher(
         duration: const Duration(milliseconds: 300),
         child: switch (life) {
-          null => BirthScreen(deck: value.deck),
+          null => BirthScreen(content: value),
           LifeState(phase: YearPhase.dead) => DeathScreen(
             state: life,
             content: value,

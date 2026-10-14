@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../engine/engine.dart';
+import '../../content/content_loader.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../models/models.dart';
 import '../providers.dart';
 
 /// Doğum ekranı: isim ve cinsiyet; boş bırakılanlar rastgele seçilir.
 class BirthScreen extends ConsumerStatefulWidget {
-  const BirthScreen({super.key, required this.deck});
+  const BirthScreen({super.key, required this.content});
 
-  final EventDeck deck;
+  final GameContent content;
 
   @override
   ConsumerState<BirthScreen> createState() => _BirthScreenState();
@@ -29,7 +29,7 @@ class _BirthScreenState extends ConsumerState<BirthScreen> {
   void _born() {
     ref
         .read(lifeProvider.notifier)
-        .startLife(widget.deck, name: _name.text, gender: _gender);
+        .startLife(widget.content, name: _name.text, gender: _gender);
   }
 
   @override

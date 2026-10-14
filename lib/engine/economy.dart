@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import '../models/models.dart';
+import 'careers.dart';
 
 /// Hayat boyunca değişen piyasa: altın fiyatı ve son yılın enflasyonu.
 /// Değişmezdir; kayda girer.
@@ -78,6 +79,7 @@ abstract final class Economy {
     homeOwnerFlag,
     carOwnerFlag,
     goldOwnerFlag,
+    Careers.retiredFlag,
   };
 
   /// Nakit, altın, ev ve arabanın toplamından kalan kredi borcu düşülür.
@@ -135,7 +137,7 @@ abstract final class Economy {
     return c.copyWith(assets: a);
   }
 
-  /// Türetilen bayrakları varlıklarla uyumlu hâle getirir. Ev sahibi
+  /// Türetilen bayrakları varlıklarla ve emeklilikle uyumlu hâle getirir. Ev sahibi
   /// kiracı sayılmaz.
   static Character syncDerivedFlags(Character c) {
     final a = c.assets;
@@ -144,6 +146,7 @@ abstract final class Economy {
     set(homeOwnerFlag, a.houses > 0);
     set(carOwnerFlag, a.cars > 0);
     set(goldOwnerFlag, a.goldGrams > 0);
+    set(Careers.retiredFlag, c.isRetired);
     if (a.houses > 0) flags.remove(renterFlag);
     if (flags.length == c.flags.length && flags.containsAll(c.flags)) return c;
     return c.copyWith(flags: flags);

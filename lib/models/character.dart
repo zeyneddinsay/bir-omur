@@ -1,4 +1,5 @@
 import 'assets.dart';
+import 'career.dart';
 import 'life_stage.dart';
 import 'stats.dart';
 
@@ -87,6 +88,8 @@ class Character {
     Set<String> flags = const {},
     List<CardRecord> history = const [],
     this.assets = Assets.none,
+    this.job,
+    this.pension = 0,
     this.isAlive = true,
   }) : assert(age >= 0),
        assert(luck >= 0 && luck <= 100),
@@ -113,6 +116,14 @@ class Character {
 
   /// Altın, ev, araba, kira ve kredi. Nakit para [stats] içindedir.
   final Assets assets;
+
+  /// Şu anki iş; işsizse ya da emekliyse null.
+  final Job? job;
+
+  /// Yıllık emekli aylığı (TL); emekli değilse 0.
+  final int pension;
+
+  bool get isRetired => pension > 0;
   final bool isAlive;
 
   LifeStage get stage => LifeStage.forAge(age);
@@ -136,6 +147,9 @@ class Character {
     Set<String>? flags,
     List<CardRecord>? history,
     Assets? assets,
+    Job? job,
+    bool clearJob = false,
+    int? pension,
     bool? isAlive,
   }) {
     return Character(
@@ -150,6 +164,8 @@ class Character {
       flags: flags ?? this.flags,
       history: history ?? this.history,
       assets: assets ?? this.assets,
+      job: clearJob ? null : (job ?? this.job),
+      pension: pension ?? this.pension,
       isAlive: isAlive ?? this.isAlive,
     );
   }
@@ -169,6 +185,8 @@ class Character {
     'flags': (flags.toList()..sort()),
     'history': [for (final r in history) r.toJson()],
     'assets': assets.toJson(),
+    'job': ?job?.toJson(),
+    'pension': pension,
     'alive': isAlive,
   };
 
@@ -193,6 +211,10 @@ class Character {
           CardRecord.fromJson(r as Map<String, dynamic>),
       ],
       assets: Assets.fromJson(json['assets'] as Map<String, dynamic>),
+      job: json['job'] == null
+          ? null
+          : Job.fromJson(json['job'] as Map<String, dynamic>),
+      pension: json['pension'] as int,
       isAlive: json['alive'] as bool,
     );
   }

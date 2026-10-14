@@ -11,10 +11,10 @@ void main() {
   group('YearTick', () {
     const tick = YearTick();
 
-    test('yaşı artırır ve evre gelirini ekler', () {
+    test('yaşı artırır; gelir CareerTick işidir', () {
       final next = tick.apply(testCharacter(age: 29, money: 0));
       expect(next.age, 30);
-      expect(next.stats.money, YearTick.yearlyIncome(next, 30));
+      expect(next.stats.money, 0);
     });
 
     test('gençlikte sağlık hafifçe toparlanır, yaşlılıkta azalır', () {
@@ -180,7 +180,15 @@ void main() {
         4,
       );
       expect(ActionCatalog.allowanceFor(testCharacter(age: 40)), 2);
-      expect(ActionCatalog.allowanceFor(testCharacter(age: 70)), 4);
+      expect(
+        ActionCatalog.allowanceFor(testCharacter(age: 70, pension: 140000)),
+        4,
+      );
+      expect(
+        ActionCatalog.allowanceFor(testCharacter(age: 60, pension: 140000)),
+        4,
+        reason: 'erken emekli',
+      );
     });
 
     test('ücretli aksiyonlar: spor 500 TL, tatil 25.000 TL', () {

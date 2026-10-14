@@ -130,7 +130,7 @@ Adımlar:
 
 - [x] Kayda hazır motor: durumu kaydedilebilen tohumlu rastgelelik, durumun JSON'a ve JSON'dan durumun geri kurulması
 - [x] Ekonomi: altın, ev, araba; kira; enflasyonla eriyen nakit
-- [ ] Kariyerler: Memur, Esnaf, Plaza çalışanı (`assets/careers/`), 5 kademe, maaş, terfi, emeklilik
+- [x] Kariyerler: Memur, Esnaf, Plaza çalışanı (`assets/careers/`), 5 kademe, maaş, terfi, emeklilik
 - [ ] Hive kaydı: yarım kalan hayata devam, biten hayatların özetleri
 - [ ] Doğum: aile durumu (varlıklı, orta, dar gelirli)
 - [ ] 150 kart (kariyer desteleri, ekonomi, zor dönem zincirleri), card_lint güncellemesi, `tools/life_report` denge raporu

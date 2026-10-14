@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import '../models/models.dart';
+import 'careers.dart';
 import 'economy.dart';
 
 /// Bir seçimin sonucu: yeni karakter, zar sonucu ve planlanan zincir kartları.
@@ -22,22 +23,24 @@ class ChoiceOutcome {
 
 /// Seçilen seçeneğin etkilerini karaktere uygular.
 class EffectResolver {
-  const EffectResolver(this.random);
+  EffectResolver(this.random, {CareerBook? careers})
+    : careers = careers ?? CareerBook.empty;
 
   final Random random;
+  final CareerBook careers;
 
   ChoiceOutcome resolve(Character character, EventCard card, ChoiceSide side) {
     final choice = card.choice(side);
     final scheduled = <ScheduledEvent>[];
 
-    var next = applyEffect(character, choice.effects);
+    var next = applyEffect(character, choice.effects, careers: careers);
     if (choice.effects.schedule case final s?) scheduled.add(s);
 
     bool? succeeded;
     if (choice.roll case final roll?) {
       succeeded = rollSucceeds(next, roll);
       final branch = succeeded ? choice.success! : choice.fail!;
-      next = applyEffect(next, branch);
+      next = applyEffect(next, branch, careers: careers);
       if (branch.schedule case final s?) scheduled.add(s);
     }
 
@@ -57,19 +60,28 @@ class EffectResolver {
     );
   }
 
-  /// Gösterge, para, varlık ve bayrak değişikliklerini uygular. Zincir
+  /// Gösterge, para, varlık, iş ve bayrak değişikliklerini uygular. Zincir
   /// kartını uygulamaz; o sıra (ScheduleQueue) motorun işidir.
-  static Character applyEffect(Character character, Effect effect) {
+  ///
+  /// İş değişikliği olan bir etki [careers] ister.
+  static Character applyEffect(
+    Character character,
+    Effect effect, {
+    CareerBook? careers,
+  }) {
     if (effect.isEmpty) return character;
     var stats = character.stats.withMoneyDelta(effect.money);
     effect.stats.forEach((kind, delta) => stats = stats.withDelta(kind, delta));
     final flags = {...character.flags}
       ..addAll(effect.addFlags)
       ..removeAll(effect.removeFlags);
-    final next = Economy.applyAssetEffect(
+    var next = Economy.applyAssetEffect(
       character.copyWith(stats: stats, flags: flags),
       effect,
     );
+    if (effect.career case final change?) {
+      next = Careers.applyChange(next, change, careers ?? CareerBook.empty);
+    }
     return Economy.syncDerivedFlags(next);
   }
 

@@ -1,0 +1,30 @@
+{
+  "id": "plaza",
+  "name": "Plaza çalışanı",
+  "tiers": [
+    {
+      "name": "Stajyer",
+      "salary": 160000,
+      "promotion": { "minYears": 2, "chance": 0.7, "requires": { "min": { "knowledge": 40 } } }
+    },
+    {
+      "name": "Uzman",
+      "salary": 250000,
+      "promotion": { "minYears": 3, "chance": 0.6, "requires": { "min": { "knowledge": 50 } } }
+    },
+    {
+      "name": "Kıdemli uzman",
+      "salary": 350000,
+      "promotion": { "minYears": 3, "chance": 0.5, "requires": { "min": { "knowledge": 60, "reputation": 50 } } }
+    },
+    {
+      "name": "Yönetici",
+      "salary": 500000,
+      "promotion": { "minYears": 4, "chance": 0.4, "requires": { "min": { "knowledge": 65, "reputation": 60 } } }
+    },
+    {
+      "name": "Direktör",
+      "salary": 750000
+    }
+  ]
+}

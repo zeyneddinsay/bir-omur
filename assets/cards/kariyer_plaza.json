@@ -1,0 +1,81 @@
+[
+  {
+    "id": "is_gorusmesi",
+    "stage": "genc",
+    "minAge": 22,
+    "maxAge": 35,
+    "cooldown": 2,
+    "conditions": { "career": "none", "flags": ["universite_mezunu"] },
+    "speaker": "ik_uzmani",
+    "text": "İş görüşmesi. İK uzmanı soruyor: 'Kendinizi beş yıl sonra nerede görüyorsunuz?' Aklından geçen tek yer: tatil.",
+    "left": {
+      "label": "Ezber cevap",
+      "roll": { "stat": "knowledge", "threshold": 45 },
+      "success": { "happiness": 6, "career": { "join": "plaza" } },
+      "fail": { "happiness": -4 }
+    },
+    "right": {
+      "label": "Dürüst cevap",
+      "roll": { "stat": "luck", "threshold": 50 },
+      "success": { "happiness": 8, "reputation": 2, "career": { "join": "plaza" } },
+      "fail": { "happiness": -2 }
+    }
+  },
+  {
+    "id": "cuma_epostasi",
+    "stage": "genc",
+    "minAge": 23,
+    "maxAge": 64,
+    "cooldown": 3,
+    "conditions": { "career": "plaza" },
+    "speaker": "patron",
+    "text": "Cuma 18.00. Patrondan e-posta: 'Acil değil ama pazartesi sabaha yetişsin.'",
+    "left": {
+      "label": "Hafta sonu çalışırım",
+      "effects": { "money": 15000, "happiness": -6, "health": -2, "reputation": 2 }
+    },
+    "right": {
+      "label": "Pazartesi bakarım",
+      "effects": { "happiness": 4, "reputation": -4 }
+    }
+  },
+  {
+    "id": "yil_sonu_degerlendirmesi",
+    "stage": "genc",
+    "minAge": 23,
+    "maxAge": 64,
+    "cooldown": 3,
+    "conditions": { "career": "plaza" },
+    "speaker": "mudur",
+    "text": "Yıl sonu değerlendirmesi. Müdürün: 'Beklentileri karşıladın.' Bunun iyi mi kötü mü olduğunu kimse bilmiyor.",
+    "left": {
+      "label": "Teşekkür ederim",
+      "effects": { "happiness": 2 }
+    },
+    "right": {
+      "label": "Zam isterim",
+      "roll": { "stat": "reputation", "threshold": 55 },
+      "success": { "happiness": 6, "career": { "promote": 1 } },
+      "fail": { "happiness": -3, "reputation": -3 }
+    }
+  },
+  {
+    "id": "yeniden_yapilanma",
+    "stage": "genc",
+    "minAge": 26,
+    "maxAge": 64,
+    "once": true,
+    "conditions": { "career": "plaza", "minTier": 2 },
+    "text": "Şirket 'yeniden yapılanıyor'. Takvimine on beş dakikalık bir toplantı düşmüş: 'Kısa bir görüşme.'",
+    "left": {
+      "label": "Sessizce beklerim",
+      "roll": { "stat": "luck", "threshold": 45 },
+      "success": { "happiness": 3 },
+      "fail": { "money": 200000, "happiness": -10, "career": { "quit": true } }
+    },
+    "right": {
+      "label": "Önce ben giderim",
+      "effects": { "money": 100000, "happiness": 4, "career": { "quit": true } }
+    }
+  }
+]

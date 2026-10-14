@@ -18,23 +18,6 @@
     }
   },
   {
-    "id": "cuma_epostasi",
-    "stage": "yetiskin",
-    "minAge": 30,
-    "maxAge": 60,
-    "cooldown": 3,
-    "speaker": "patron",
-    "text": "Cuma 18.00. Patrondan e-posta: 'Acil değil ama pazartesi sabaha yetişsin.'",
-    "left": {
-      "label": "Hafta sonu çalışırım",
-      "effects": { "money": 15000, "happiness": -6, "health": -2, "reputation": 2 }
-    },
-    "right": {
-      "label": "Pazartesi bakarım",
-      "effects": { "happiness": 4, "reputation": -4 }
-    }
-  },
-  {
     "id": "ev_kredisi",
     "stage": "yetiskin",
     "minAge": 30,

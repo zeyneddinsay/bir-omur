@@ -15,6 +15,8 @@ Character testCharacter({
   Set<String> flags = const {},
   List<CardRecord> history = const [],
   Assets assets = Assets.none,
+  Job? job,
+  int pension = 0,
 }) {
   return Character(
     name: 'Deneme',
@@ -35,5 +37,7 @@ Character testCharacter({
     flags: flags,
     history: history,
     assets: assets,
+    job: job,
+    pension: pension,
   );
 }

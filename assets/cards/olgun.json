@@ -6,15 +6,15 @@
     "maxAge": 64,
     "once": true,
     "mandatory": true,
-    "conditions": { "notFlags": ["emekli"] },
+    "conditions": { "career": "any", "notFlags": ["emekli"] },
     "text": "Emekliliğin geldi. Hesap makinesi bir şey, mahalledeki emekliler başka bir şey söylüyor.",
     "left": {
       "label": "Emekli olurum",
-      "effects": { "happiness": 8, "addFlags": ["emekli"] }
+      "effects": { "happiness": 8, "career": { "retire": true } }
     },
     "right": {
       "label": "Biraz daha çalışırım",
-      "effects": { "money": 100000, "health": -3, "reputation": 2 }
+      "effects": { "health": -3, "reputation": 2 }
     }
   },
   {

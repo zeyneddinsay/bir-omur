@@ -9,7 +9,7 @@
 import 'dart:io';
 import 'dart:math';
 
-import 'package:bir_omur/content/content_loader.dart';
+import 'package:bir_omur/content/disk_content_source.dart';
 import 'package:bir_omur/engine/engine.dart';
 import 'package:bir_omur/models/models.dart';
 
@@ -17,16 +17,7 @@ void main(List<String> args) {
   final lives = args.isNotEmpty ? int.parse(args[0]) : 500;
   final firstSeed = args.length > 1 ? int.parse(args[1]) : 0;
 
-  final cardFiles = Directory('assets/cards')
-      .listSync()
-      .whereType<File>()
-      .where((f) => f.path.endsWith('.json'));
-  final content = loadContent(
-    registrySource: File('assets/registry.json').readAsStringSync(),
-    cardFiles: {
-      for (final f in cardFiles) f.uri.pathSegments.last: f.readAsStringSync(),
-    },
-  );
+  final content = loadContentFromDisk();
   final deck = content.deck;
 
   final deathAges = <int>[];
@@ -39,19 +30,27 @@ void main(List<String> args) {
   var homeOwners = 0;
   var goldOwners = 0;
   var carOwners = 0;
+  final lastCareer = <String, int>{};
+  final topTier = <String, int>{};
+  var retiredEarly = 0;
 
   for (var i = 0; i < lives; i++) {
     final seed = firstSeed + i;
-    final engine = LifeEngine(deck: deck, seed: seed);
+    final engine = LifeEngine(deck: deck, seed: seed, careers: content.careers);
     final player = _RandomPlayer(seed);
     var inDebt = false;
     var depressed = false;
+    Job? lastJob;
+    var retireAge = 0;
     engine.startLife();
     while (!engine.state.isOver) {
       player.step(engine);
       final flags = engine.state.character.flags;
       inDebt |= flags.contains(EngineFlags.borclu);
       depressed |= flags.contains(EngineFlags.bunalim);
+      final c = engine.state.character;
+      if (c.job != null) lastJob = c.job;
+      if (c.isRetired && retireAge == 0) retireAge = c.age;
     }
     final summary = engine.state.summary!;
     final c = summary.character;
@@ -67,6 +66,16 @@ void main(List<String> args) {
     if (c.assets.houses > 0) homeOwners++;
     if (c.assets.goldGrams > 0) goldOwners++;
     if (c.assets.cars > 0) carOwners++;
+    final careerId = lastJob?.careerId ?? '(hiç çalışmadı)';
+    lastCareer.update(careerId, (n) => n + 1, ifAbsent: () => 1);
+    if (lastJob != null) {
+      topTier.update(
+        careerId,
+        (n) => n + lastJob!.tier,
+        ifAbsent: () => lastJob!.tier,
+      );
+    }
+    if (retireAge > 0 && retireAge < Careers.retireAge) retiredEarly++;
   }
 
   String pct(int n) => '%${(100 * n / lives).toStringAsFixed(0)}';
@@ -99,6 +108,18 @@ void main(List<String> args) {
     ..writeln(
       'Zor dönem   en az bir kez borçlu ${pct(everInDebt)}, bunalım ${pct(everDepressed)}',
     )
+    ..writeln()
+    ..writeln('Meslek (son iş, ortalama son kademe):');
+  for (final e
+      in lastCareer.entries.toList()
+        ..sort((a, b) => b.value.compareTo(a.value))) {
+    final avgTier = topTier[e.key] == null
+        ? ''
+        : ', kademe ${(topTier[e.key]! / e.value).toStringAsFixed(1)}';
+    stdout.writeln('  ${e.key.padRight(24)} ${pct(e.value)}$avgTier');
+  }
+  stdout
+    ..writeln('Erken emekli ${pct(retiredEarly)}')
     ..writeln()
     ..writeln('Lakaplar:');
   for (final e

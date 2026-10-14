@@ -1,0 +1,71 @@
+[
+  {
+    "id": "ciraklik_teklifi",
+    "stage": "genc",
+    "minAge": 19,
+    "maxAge": 26,
+    "once": true,
+    "conditions": { "career": "none", "notFlags": ["universite_ogrencisi"] },
+    "speaker": "usta",
+    "text": "Mahallenin ustası çay ısmarladı: 'Gel yanımda zanaat öğren. El emeği, göz nuru; ekmeğini taştan çıkarırsın.'",
+    "left": {
+      "label": "Başka kapı ararım",
+      "effects": { "happiness": 1 }
+    },
+    "right": {
+      "label": "Çırak olurum",
+      "effects": { "happiness": 3, "reputation": 2, "career": { "join": "esnaf" } }
+    }
+  },
+  {
+    "id": "dukkan_devri",
+    "stage": "genc",
+    "minAge": 25,
+    "maxAge": 55,
+    "once": true,
+    "conditions": { "career": "none", "min": { "money": 800000 } },
+    "text": "Köşedeki dükkân devren satılık. Eski sahibi: 'Müşterisi hazır. Sadece biraz tadilat lazım, bir de tabela.'",
+    "left": {
+      "label": "Para bankada kalsın",
+      "effects": { "happiness": -1 }
+    },
+    "right": {
+      "label": "Devralırım",
+      "effects": { "money": -800000, "happiness": 6, "career": { "join": "esnaf", "tier": 3 } }
+    }
+  },
+  {
+    "id": "veresiye_defteri_esnaf",
+    "stage": "genc",
+    "minAge": 25,
+    "maxAge": 85,
+    "cooldown": 3,
+    "conditions": { "career": "esnaf", "minTier": 3 },
+    "text": "Veresiye defteri doldu. En kalın sayfa, her sabah 'Akşama veririm' diyen emekli komşunun.",
+    "left": {
+      "label": "Silerim gitsin",
+      "effects": { "money": -30000, "reputation": 6, "happiness": 2 }
+    },
+    "right": {
+      "label": "Kibarca hatırlatırım",
+      "effects": { "money": 15000, "reputation": -3 }
+    }
+  },
+  {
+    "id": "zincir_market",
+    "stage": "genc",
+    "minAge": 25,
+    "maxAge": 85,
+    "once": true,
+    "conditions": { "career": "esnaf", "minTier": 3 },
+    "text": "Sokağın başına zincir market açıldı. Önünde balonlar, rafında senin sattıklarının yarı fiyatı.",
+    "left": {
+      "label": "Fiyat kırarım",
+      "effects": { "money": -60000, "reputation": 3 }
+    },
+    "right": {
+      "label": "Dükkânı kapatırım",
+      "effects": { "money": 200000, "happiness": -10, "career": { "quit": true } }
+    }
+  }
+]

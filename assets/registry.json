@@ -17,7 +17,6 @@
     "komsuya_borc_verdi": "Komşunun oğluna borç verdi, henüz dönmedi",
     "evli": "Evli",
     "kayinpeder_kus": "Altını bozdurduğu için kayınpeder küs",
-    "emekli": "Emekli oldu",
     "memlekete_dondu": "Yaşlılığında memlekete döndü"
   },
   "speakers": {
@@ -33,6 +32,9 @@
     "kayinvalide": "Kayınvalide",
     "kayinpeder": "Kayınpeder",
     "patron": "Patron",
+    "mudur": "Müdür",
+    "usta": "Mahallenin ustası",
+    "ik_uzmani": "İnsan kaynakları uzmanı",
     "doktor": "Doktor",
     "eski_komsu": "Memleketteki eski komşu",
     "torun": "Torun"

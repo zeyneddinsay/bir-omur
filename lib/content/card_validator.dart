@@ -35,9 +35,10 @@ class SourcedCard {
 
 /// Kart dosyalarını okuma ve denetlemenin sonucu.
 class CardCheckResult {
-  const CardCheckResult(this.cards, this.issues);
+  const CardCheckResult(this.cards, this.issues, {this.careers = const []});
 
   final List<SourcedCard> cards;
+  final List<Career> careers;
   final List<CardIssue> issues;
 
   Iterable<CardIssue> get errors => issues.where((i) => i.isError);
@@ -56,12 +57,18 @@ class CardValidator {
   static const int maxLabelLength = 24;
 
   /// [files]: dosya adı → JSON içeriği. Her dosya bir kart dizisidir.
-  CardCheckResult check(Map<String, String> files) {
+  /// [careerFiles]: her dosya tek bir meslek tanımıdır.
+  CardCheckResult check(
+    Map<String, String> files, {
+    Map<String, String> careerFiles = const {},
+  }) {
     final issues = <CardIssue>[];
+    final careers = _parseCareers(careerFiles, issues);
     final cards = <SourcedCard>[];
     for (final MapEntry(key: file, value: source) in files.entries) {
       cards.addAll(_parseFile(file, source, issues));
     }
+    _careersById = {for (final c in careers) c.id: c};
     _checkDuplicates(cards, issues);
     final ids = {for (final c in cards) c.card.id};
     final scheduledIds = {
@@ -79,7 +86,103 @@ class CardValidator {
       _checkCard(sourced, ids, scheduledIds, addedFlags, issues);
     }
     _checkRegistry(issues);
-    return CardCheckResult(List.unmodifiable(cards), List.unmodifiable(issues));
+    return CardCheckResult(
+      List.unmodifiable(cards),
+      List.unmodifiable(issues),
+      careers: List.unmodifiable(careers),
+    );
+  }
+
+  Map<String, Career> _careersById = const {};
+
+  List<Career> _parseCareers(
+    Map<String, String> files,
+    List<CardIssue> issues,
+  ) {
+    final careers = <Career>[];
+    final seen = <String, String>{};
+    for (final MapEntry(key: file, value: source) in files.entries) {
+      try {
+        final json = jsonDecode(source);
+        if (json is! Map<String, dynamic>) {
+          issues.add(
+            CardIssue(
+              IssueLevel.error,
+              file,
+              '-',
+              'meslek dosyası bir nesne olmalı',
+            ),
+          );
+          continue;
+        }
+        final career = Career.fromJson(json, file: file);
+        final previous = seen[career.id];
+        if (previous != null) {
+          issues.add(
+            CardIssue(
+              IssueLevel.error,
+              file,
+              career.id,
+              'tekrar eden meslek (ilki: $previous)',
+            ),
+          );
+          continue;
+        }
+        seen[career.id] = file;
+        careers.add(career);
+      } on FormatException catch (e) {
+        issues.add(
+          CardIssue(
+            IssueLevel.error,
+            file,
+            '-',
+            'JSON okunamadı: ${e.message}',
+          ),
+        );
+      } on CardFormatException catch (e) {
+        issues.add(CardIssue(IssueLevel.error, file, e.path, e.message));
+      }
+    }
+    return careers;
+  }
+
+  /// Koşullardaki ve etkilerdeki meslek kullanımlarını denetler.
+  void _checkCareerUse(
+    EventCard card,
+    void Function(String path, String message) error,
+  ) {
+    final conditionCareer = card.conditions.career;
+    var maxTier = 5;
+    if (conditionCareer != null &&
+        conditionCareer != Conditions.noCareer &&
+        conditionCareer != Conditions.anyCareer) {
+      final career = _careersById[conditionCareer];
+      if (career == null) {
+        error('.conditions.career', 'bilinmeyen meslek "$conditionCareer"');
+      } else {
+        maxTier = career.maxTier;
+      }
+    }
+    if (card.conditions.minTier case final tier?) {
+      if (conditionCareer == Conditions.noCareer) {
+        error('.conditions.minTier', 'işsiz koşuluyla kademe istenemez');
+      } else if (tier < 1 || tier > maxTier) {
+        error('.conditions.minTier', 'kademe 1–$maxTier arasında olmalı');
+      }
+    }
+    final sides = {'left': card.left, 'right': card.right, 'up': ?card.up};
+    for (final MapEntry(key: side, value: choice) in sides.entries) {
+      for (final effect in choice.allEffects) {
+        if (effect.career case JoinCareer(:final careerId, :final tier)) {
+          final career = _careersById[careerId];
+          if (career == null) {
+            error('.$side.career', 'bilinmeyen meslek "$careerId"');
+          } else if (tier > career.maxTier) {
+            error('.$side.career', '"$careerId" mesleğinde $tier. kademe yok');
+          }
+        }
+      }
+    }
   }
 
   List<SourcedCard> _parseFile(
@@ -153,6 +256,8 @@ class CardValidator {
     void warning(String path, String message) => issues.add(
       CardIssue(IssueLevel.warning, sourced.file, '${card.id}$path', message),
     );
+
+    _checkCareerUse(card, error);
 
     final textLength = card.text.runes.length;
     if (card.text.trim().isEmpty) error('.text', 'boş metin');

@@ -161,11 +161,14 @@ abstract final class ActionCatalog {
   ];
 
   /// Yıllık aksiyon hakkı: çocuk 2, öğrenci 4, çalışan 2, emekli 4.
-  static int allowanceFor(Character c) => switch (c.stage) {
-    LifeStage.bebek || LifeStage.ilkokul => 2,
-    LifeStage.ortaokul || LifeStage.lise => 4,
-    LifeStage.genc => c.hasFlag(studentFlag) ? 4 : 2,
-    LifeStage.yetiskin || LifeStage.olgun => 2,
-    LifeStage.yasli => 4,
-  };
+  /// Erken emekli olan da emekli sayılır.
+  static int allowanceFor(Character c) {
+    if (c.isRetired) return 4;
+    return switch (c.stage) {
+      LifeStage.bebek || LifeStage.ilkokul => 2,
+      LifeStage.ortaokul || LifeStage.lise => 4,
+      LifeStage.genc => c.hasFlag(studentFlag) ? 4 : 2,
+      LifeStage.yetiskin || LifeStage.olgun || LifeStage.yasli => 2,
+    };
+  }
 }

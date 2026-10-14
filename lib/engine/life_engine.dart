@@ -2,6 +2,7 @@ import 'dart:math';
 
 import '../models/models.dart';
 import 'birth.dart';
+import 'careers.dart';
 import 'death_check.dart';
 import 'economy.dart';
 import 'effect_resolver.dart';
@@ -64,21 +65,27 @@ class LifeState {
 /// aynı seçimler aynı hayatı üretir. Durum [toSnapshot] ile kaydedilir,
 /// [LifeEngine.restore] ile kaldığı yerden sürer.
 class LifeEngine {
-  LifeEngine({required this.deck, required this.seed})
-    : _random = SeededRandom(seed);
+  LifeEngine({required this.deck, required this.seed, CareerBook? careers})
+    : careers = careers ?? CareerBook.empty,
+      _random = SeededRandom(seed);
 
-  LifeEngine._restored(this.deck, this.seed, this._random);
+  LifeEngine._restored(this.deck, this.careers, this.seed, this._random);
 
   final EventDeck deck;
+  final CareerBook careers;
   final int seed;
   final SeededRandom _random;
 
   /// Kayıt biçimi değişirse artırılır; eski kayıtlar için dönüştürücü yazılır.
   static const int snapshotVersion = 1;
 
-  late final EffectResolver _resolver = EffectResolver(_random);
+  late final EffectResolver _resolver = EffectResolver(
+    _random,
+    careers: careers,
+  );
   late final DeathCheck _deathCheck = DeathCheck(_random);
   late final EconomyTick _economyTick = EconomyTick(_random);
+  late final CareerTick _careerTick = CareerTick(_random, careers);
   late final SummaryBuilder _summaryBuilder = SummaryBuilder(deck);
   static const YearTick _yearTick = YearTick();
 
@@ -94,6 +101,11 @@ class LifeEngine {
 
   /// Son yaşlanmadaki ekonomik döküm; ilk yılda null. Kaydedilmez.
   EconomyReport? get lastEconomy => _lastEconomy;
+
+  CareerReport? _lastCareer;
+
+  /// Son yaşlanmadaki iş dökümü (gelir, terfi, emeklilik). Kaydedilmez.
+  CareerReport? get lastCareer => _lastCareer;
 
   /// Yeni bir hayat başlatır ve 0 yaşının kartlarını çeker.
   LifeState startLife({String? name, Gender? gender}) {
@@ -178,7 +190,11 @@ class LifeEngine {
       throw StateError('$actionId bu yıl zaten yapıldı');
     }
 
-    var character = EffectResolver.applyEffect(c, action.totalEffect(_market));
+    var character = EffectResolver.applyEffect(
+      c,
+      action.totalEffect(_market),
+      careers: careers,
+    );
     character = YearTick.updateHardshipFlags(character);
     return _state = LifeState(
       character: character,
@@ -213,7 +229,14 @@ class LifeEngine {
     );
     _market = market;
     _lastEconomy = report;
-    return _state = _beginYear(_yearTick.apply(afterEconomy), _state.queue);
+    final (afterCareer, careerReport) = _careerTick.apply(
+      _yearTick.apply(afterEconomy),
+    );
+    _lastCareer = careerReport;
+    final character = Economy.syncDerivedFlags(
+      YearTick.updateHardshipFlags(afterCareer),
+    );
+    return _state = _beginYear(character, _state.queue);
   }
 
   /// Hayatın tam durumu; JSON'a çevrilip kaydedilebilir. Son kartın zar
@@ -240,6 +263,7 @@ class LifeEngine {
   /// kartlar atlanır; yıl kartsız kalırsa aksiyon aşamasına geçilir.
   factory LifeEngine.restore({
     required EventDeck deck,
+    CareerBook? careers,
     required Map<String, dynamic> snapshot,
   }) {
     final version = snapshot['version'];
@@ -248,6 +272,7 @@ class LifeEngine {
     }
     final engine = LifeEngine._restored(
       deck,
+      careers ?? CareerBook.empty,
       snapshot['seed'] as int,
       SeededRandom.fromState(snapshot['rng'] as int),
     ).._market = Market.fromJson(snapshot['market'] as Map<String, dynamic>);

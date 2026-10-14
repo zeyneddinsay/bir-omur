@@ -30,6 +30,8 @@ class Conditions {
     this.notFlags = const [],
     this.gender,
     this.temperament,
+    this.career,
+    this.minTier,
     this.min = const {},
     this.max = const {},
   });
@@ -60,6 +62,16 @@ class Conditions {
   final Gender? gender;
   final Temperament? temperament;
 
+  /// Meslek kimliği; ayrıca [noCareer] (işsiz) ya da [anyCareer] (bir işi
+  /// olan).
+  final String? career;
+
+  /// İşteki kademe en az bu olmalı (1'den başlar). Bir işi olmayı gerektirir.
+  final int? minTier;
+
+  static const String noCareer = 'none';
+  static const String anyCareer = 'any';
+
   /// Değer en az bu kadar olmalı (dahil).
   final Map<String, int> min;
 
@@ -72,11 +84,30 @@ class Conditions {
     if (notFlags.any(c.hasFlag)) return false;
     if (gender != null && c.gender != gender) return false;
     if (temperament != null && c.temperament != temperament) return false;
+    if (!_careerMatches(c)) return false;
     for (final entry in min.entries) {
       if (_valueOf(c, entry.key) < entry.value) return false;
     }
     for (final entry in max.entries) {
       if (_valueOf(c, entry.key) >= entry.value) return false;
+    }
+    return true;
+  }
+
+  bool _careerMatches(Character c) {
+    final job = c.job;
+    switch (career) {
+      case null:
+        break;
+      case noCareer:
+        if (job != null) return false;
+      case anyCareer:
+        if (job == null) return false;
+      case final id:
+        if (job?.careerId != id) return false;
+    }
+    if (minTier case final tier?) {
+      if (job == null || job.tier < tier) return false;
     }
     return true;
   }
@@ -98,6 +129,8 @@ class Conditions {
       'notFlags',
       'gender',
       'temperament',
+      'career',
+      'minTier',
       'min',
       'max',
     });
@@ -131,6 +164,8 @@ class Conditions {
       notFlags: r.optionalStringList('notFlags'),
       gender: gender,
       temperament: temperament,
+      career: r.optionalString('career'),
+      minTier: r.optionalInt('minTier'),
       min: _thresholds(r.optionalObject('min')),
       max: _thresholds(r.optionalObject('max')),
     );

@@ -6,11 +6,13 @@ import 'content_registry.dart';
 class GameContent {
   const GameContent({
     required this.deck,
+    required this.careers,
     required this.registry,
     required this.warnings,
   });
 
   final EventDeck deck;
+  final CareerBook careers;
   final ContentRegistry registry;
   final List<CardIssue> warnings;
 }
@@ -26,17 +28,20 @@ class ContentException implements Exception {
       'Kart dosyalarında ${errors.length} hata var:\n${errors.join('\n')}';
 }
 
-/// Kayıt ve kart dosyalarını okur, denetler ve desteyi kurar. Saf Dart'tır;
+/// Kayıt, meslek ve kart dosyalarını okur, denetler ve desteyi kurar. Saf Dart'tır;
 /// dosyaların nereden geldiğini (asset, disk) çağıran bilir.
 GameContent loadContent({
   required String registrySource,
   required Map<String, String> cardFiles,
+  Map<String, String> careerFiles = const {},
 }) {
   final registry = ContentRegistry.parse(registrySource);
-  final result = CardValidator(registry).check(cardFiles);
+  final result = CardValidator(registry)
+      .check(cardFiles, careerFiles: careerFiles);
   if (result.hasErrors) throw ContentException(result.errors.toList());
   return GameContent(
     deck: EventDeck(result.cards.map((c) => c.card)),
+    careers: CareerBook(result.careers),
     registry: registry,
     warnings: result.warnings.toList(),
   );
