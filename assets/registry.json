@@ -55,5 +55,11 @@
     "koc": "Basketbol koçu",
     "rehber_ogretmen": "Rehber öğretmen",
     "teyze": "Teyze"
+  },
+  "reviewedTerms": {
+    "sunnet_dugunu": ["sünnet"],
+    "bir_level_daha": ["ezan"],
+    "dukkan_kirasi": ["maşallah"],
+    "bas_kose": ["dua"]
   }
 }

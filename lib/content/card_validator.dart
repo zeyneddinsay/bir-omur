@@ -3,6 +3,7 @@ import 'dart:convert';
 import '../engine/achievements.dart';
 import '../models/models.dart';
 import 'content_registry.dart';
+import 'sensitive_terms.dart';
 
 enum IssueLevel { error, warning }
 
@@ -97,6 +98,7 @@ class CardValidator {
     final achievements = achievementsSource == null
         ? const <Achievement>[]
         : _parseAchievements(achievementsSource, ids, issues);
+    _checkSensitiveTerms(cards, achievements, issues);
     return CardCheckResult(
       List.unmodifiable(cards),
       List.unmodifiable(issues),
@@ -157,6 +159,59 @@ class CardValidator {
       }
     }
     return careers;
+  }
+
+  /// Kart ve rozet metinlerinde incelenecek kelimeleri arar. İncelenmiş
+  /// kullanımlar (`registry.json` → `reviewedTerms`) uyarı vermez; artık
+  /// metinde geçmeyen onaylar da uyarı verir ki liste temiz kalsın.
+  void _checkSensitiveTerms(
+    List<SourcedCard> cards,
+    List<Achievement> achievements,
+    List<CardIssue> issues,
+  ) {
+    final texts = <String, (String file, String text)>{
+      for (final c in cards)
+        c.card.id: (
+          c.file,
+          [
+            c.card.text,
+            for (final choice in c.card.choices) choice.label,
+          ].join('\n'),
+        ),
+      for (final a in achievements)
+        a.id: (achievementsFile, '${a.name}\n${a.description}'),
+    };
+    for (final MapEntry(key: id, value: (file, text)) in texts.entries) {
+      final reviewed = registry.reviewedTerms[id] ?? const {};
+      for (final term in findSensitiveTerms(text)) {
+        if (reviewed.contains(term.term)) continue;
+        issues.add(
+          CardIssue(
+            IssueLevel.warning,
+            file,
+            id,
+            'incelenecek kelime "${term.term}" (${term.category}); uygunsa '
+            'registry.json → reviewedTerms listesine ekle',
+          ),
+        );
+      }
+    }
+    for (final MapEntry(key: id, value: terms)
+        in registry.reviewedTerms.entries) {
+      final found = {
+        for (final t in findSensitiveTerms(texts[id]?.$2 ?? '')) t.term,
+      };
+      for (final term in terms.difference(found)) {
+        issues.add(
+          CardIssue(
+            IssueLevel.warning,
+            'registry.json',
+            'reviewedTerms.$id',
+            '"$term" artık bu metinde geçmiyor; onayı kaldır',
+          ),
+        );
+      }
+    }
   }
 
   /// Meslek dosyasındaki şartlarda (terfi, iş arama) geçen bayraklar da

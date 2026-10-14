@@ -9,14 +9,20 @@ class ContentRegistry {
   ContentRegistry({
     required Map<String, String> flags,
     required Map<String, String> speakers,
+    Map<String, Set<String>> reviewedTerms = const {},
   }) : flags = Map.unmodifiable(flags),
-       speakers = Map.unmodifiable(speakers);
+       speakers = Map.unmodifiable(speakers),
+       reviewedTerms = Map.unmodifiable(reviewedTerms);
 
   /// Bayrak adı → açıklama.
   final Map<String, String> flags;
 
   /// Konuşmacı kimliği → açıklama.
   final Map<String, String> speakers;
+
+  /// İncelenip uygun bulunan hassas kelime kullanımları: kart ya da rozet
+  /// kimliği → kelimeler (bkz. `sensitive_terms.dart`).
+  final Map<String, Set<String>> reviewedTerms;
 
   /// Kayıttakiler ve motorun kendi açıp kapattığı bayraklar.
   Set<String> get knownFlags => {...flags.keys, ...engineOwnedFlags};
@@ -43,7 +49,22 @@ class ContentRegistry {
     return ContentRegistry(
       flags: _stringMap(json, 'flags'),
       speakers: _stringMap(json, 'speakers'),
+      reviewedTerms: _reviewedTerms(json['reviewedTerms']),
     );
+  }
+
+  static Map<String, Set<String>> _reviewedTerms(Object? value) {
+    if (value == null) return const {};
+    if (value is! Map<String, dynamic> ||
+        value.values.any((v) => v is! List || v.any((t) => t is! String))) {
+      throw const FormatException(
+        'registry.json: "reviewedTerms" kimlik → kelime listesi olmalı',
+      );
+    }
+    return {
+      for (final MapEntry(:key, :value) in value.entries)
+        key: {...(value as List).cast<String>()},
+    };
   }
 
   static Map<String, String> _stringMap(Map<String, dynamic> json, String key) {

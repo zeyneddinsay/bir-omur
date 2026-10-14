@@ -45,7 +45,7 @@ Canlı tasarım dokümanı: https://claude.ai/code/artifact/5e791558-0c95-419c-a
 - `lib/engine/` saf Dart'tır ve Flutter import etmez. Oyun mantığının tamamı buradadır ve `test/engine/` altında birim testleri vardır.
 - Rastgelelik tohumlu (`Random(seed)`) çalışır: aynı tohum aynı hayatı üretir. Testler sabit tohum kullanır.
 - İçerik veridir. Kartlar `assets/cards/*.json` dosyalarındadır ve yeni kart eklemek için kod değiştirilmez. Şema için `docs/GDD.md` dosyasındaki "Kart veri formatı" bölümüne bak.
-- Kartlar yüklenirken doğrulanır. `tools/card_lint` tüm kart dosyalarını şu açılardan kontrol eder:
+- Kartlar yüklenirken doğrulanır. `tools/card_lint` tüm kart dosyalarını şu açılardan kontrol eder (ayrıca kırmızı çizgilere giren kelimeler için uyarı verir; incelenen kullanımlar `registry.json` → `reviewedTerms`):
   - eksik alanlar
   - bilinmeyen bayrak ya da etki adları
   - kart metni en fazla 140, seçenek metni en fazla 24 karakter
@@ -126,7 +126,7 @@ Sıra kararı (15 Ekim 2026): GDD'deki F3 → F4 sırası yerine F3a (dağıtım
 
 Adımlar:
 
-- [ ] Hassas kart taraması: kırmızı çizgilere göre 150 kart; card_lint'e incelenecek kelime denetimi
+- [x] Hassas kart taraması: kırmızı çizgilere göre 150 kart; card_lint'e incelenecek kelime denetimi
 - [ ] Uygulama ikonu ve açılış ekranı
 - [ ] Android release imzası (anahtar ve şifreler depoya girmez)
 - [ ] iOS dSYM yükleme betiği (Mac'te kullanıcı ekler)
