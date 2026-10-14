@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../content/content_loader.dart';
 import '../../engine/engine.dart';
 import '../../l10n/generated/app_localizations.dart';
+import '../../services/analytics_service.dart';
 import '../providers.dart';
 import 'life_share_card.dart';
 
@@ -54,6 +55,10 @@ class _SharePreviewScreenState extends ConsumerState<SharePreviewScreen> {
                 ? null
                 : box.localToGlobal(Offset.zero) & box.size,
           );
+      ref.read(analyticsServiceProvider).logEvent(AnalyticsEvents.shareCard, {
+        'age': widget.summary.deathAge,
+        'nickname': widget.summary.nickname.name,
+      });
     } on Object catch (error, stack) {
       FlutterError.reportError(
         FlutterErrorDetails(

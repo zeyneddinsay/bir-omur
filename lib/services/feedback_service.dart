@@ -19,24 +19,41 @@ enum HapticStrength { light, medium, heavy }
 
 /// Kullanıcının ses ve titreşim tercihi.
 class GameSettings {
-  const GameSettings({this.sound = true, this.haptics = true});
+  const GameSettings({
+    this.sound = true,
+    this.haptics = true,
+    this.analyticsConsent,
+  });
 
   static const GameSettings defaults = GameSettings();
 
   final bool sound;
   final bool haptics;
 
-  GameSettings copyWith({bool? sound, bool? haptics}) => GameSettings(
-    sound: sound ?? this.sound,
-    haptics: haptics ?? this.haptics,
-  );
+  /// Kullanım verisi onayı: null ise henüz sorulmadı; sorulana ve kabul
+  /// edilene kadar analitik kapalıdır.
+  final bool? analyticsConsent;
 
-  Map<String, Object> toJson() => {'sound': sound, 'haptics': haptics};
+  bool get analyticsEnabled => analyticsConsent ?? false;
+
+  GameSettings copyWith({bool? sound, bool? haptics, bool? analyticsConsent}) =>
+      GameSettings(
+        sound: sound ?? this.sound,
+        haptics: haptics ?? this.haptics,
+        analyticsConsent: analyticsConsent ?? this.analyticsConsent,
+      );
+
+  Map<String, Object> toJson() => {
+    'sound': sound,
+    'haptics': haptics,
+    'analytics': ?analyticsConsent,
+  };
 
   /// Eksik alan açık sayılır.
   factory GameSettings.fromJson(Map<String, dynamic> json) => GameSettings(
     sound: json['sound'] as bool? ?? true,
     haptics: json['haptics'] as bool? ?? true,
+    analyticsConsent: json['analytics'] as bool?,
   );
 }
 

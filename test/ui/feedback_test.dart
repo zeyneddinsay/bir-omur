@@ -11,6 +11,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../content/real_cards_test.dart' show loadRealContent;
+import '../helpers/stores.dart';
 
 class _Recorder implements FeedbackService {
   final sounds = <GameSound>[];
@@ -38,7 +39,7 @@ void main() {
         overrides: [
           contentProvider.overrideWith((ref) async => content),
           seedGeneratorProvider.overrideWithValue(() => 7),
-          saveStoreProvider.overrideWithValue(MemorySaveStore()),
+          saveStoreProvider.overrideWithValue(answeredStore()),
           feedbackServiceProvider.overrideWithValue(recorder),
         ],
         child: const BirOmurApp(),

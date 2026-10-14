@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "954783681198",
+    "project_id": "biromur-d0006",
+    "storage_bucket": "biromur-d0006.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:954783681198:android:1c704ca25127e783863b3f",
+        "android_client_info": {
+          "package_name": "com.zeysoft.biromur"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXccR6SUuSf0mNrCXoRAle9FQ0da7EFLQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

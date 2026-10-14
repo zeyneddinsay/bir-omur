@@ -9,6 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../content/real_cards_test.dart' show loadRealContent;
+import '../helpers/stores.dart';
 
 final _content = loadRealContent();
 
@@ -19,7 +20,7 @@ Widget _app({int seed = 7, SaveStore? store}) => ProviderScope(
   overrides: [
     contentProvider.overrideWith((ref) async => _content),
     seedGeneratorProvider.overrideWithValue(() => seed),
-    saveStoreProvider.overrideWithValue(store ?? MemorySaveStore()),
+    saveStoreProvider.overrideWithValue(store ?? answeredStore()),
   ],
   child: const BirOmurApp(),
 );
@@ -78,7 +79,7 @@ void main() {
     tester,
   ) async {
     _phone(tester);
-    final store = MemorySaveStore();
+    final store = answeredStore();
     await tester.pumpWidget(_app(store: store));
     await tester.pumpAndSettle();
     expect(find.byKey(const Key('resume_button')), findsNothing);

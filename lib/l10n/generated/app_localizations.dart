@@ -574,6 +574,48 @@ abstract class AppLocalizations {
   /// **'Lisanslar'**
   String get settingsLicenses;
 
+  /// No description provided for @settingsAnalytics.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kullanım verisi paylaş'**
+  String get settingsAnalytics;
+
+  /// No description provided for @settingsAnalyticsHint.
+  ///
+  /// In tr, this message translates to:
+  /// **'Oyunu dengelemek için; adın ya da iletişim bilgilerin gönderilmez'**
+  String get settingsAnalyticsHint;
+
+  /// No description provided for @settingsCrashNote.
+  ///
+  /// In tr, this message translates to:
+  /// **'Uygulama çökerse, hatayı bulabilmemiz için anonim bir çökme kaydı gönderilir.'**
+  String get settingsCrashNote;
+
+  /// No description provided for @consentTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Oyunu birlikte geliştirelim'**
+  String get consentTitle;
+
+  /// No description provided for @consentBody.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bir hayatın ne kadar sürdüğünü, hangi rozetlerin kazanıldığını ve oyunun nerede zorlaştığını görmek için kullanım verisi toplamak istiyoruz. Adını ya da iletişim bilgilerini toplamayız. Kararını istediğin zaman Ayarlar\'dan değiştirebilirsin.'**
+  String get consentBody;
+
+  /// No description provided for @consentAccept.
+  ///
+  /// In tr, this message translates to:
+  /// **'Olur'**
+  String get consentAccept;
+
+  /// No description provided for @consentDecline.
+  ///
+  /// In tr, this message translates to:
+  /// **'Hayır, teşekkürler'**
+  String get consentDecline;
+
   /// No description provided for @deathNetWorth.
   ///
   /// In tr, this message translates to:

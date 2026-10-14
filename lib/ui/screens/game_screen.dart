@@ -17,6 +17,8 @@ class GameScreen extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
     final content = ref.watch(contentProvider);
     final life = ref.watch(lifeProvider);
+    // Ayarlar açılışta yüklensin; kayıttaki analitik onayı hemen uygulanır.
+    ref.watch(settingsProvider);
 
     return switch (content) {
       AsyncData(:final value) => AnimatedSwitcher(

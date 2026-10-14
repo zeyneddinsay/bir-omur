@@ -3,6 +3,10 @@
         android:label="Bir Ömür"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <!-- Analitik, oyuncu onay verene kadar kapalı başlar (KVKK). -->
+        <meta-data
+            android:name="firebase_analytics_collection_enabled"
+            android:value="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

@@ -40,6 +40,20 @@ class SettingsScreen extends ConsumerWidget {
             value: settings.haptics,
             onChanged: controller.setHaptics,
           ),
+          SwitchListTile(
+            key: const Key('setting_analytics'),
+            title: Text(l10n.settingsAnalytics),
+            subtitle: Text(l10n.settingsAnalyticsHint),
+            value: settings.analyticsEnabled,
+            onChanged: controller.setAnalyticsConsent,
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
+            child: Text(
+              l10n.settingsCrashNote,
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          ),
           const Divider(),
           ListTile(
             leading: const Icon(Icons.description_outlined),

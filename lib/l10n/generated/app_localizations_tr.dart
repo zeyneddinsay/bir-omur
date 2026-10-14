@@ -308,6 +308,30 @@ class AppLocalizationsTr extends AppLocalizations {
   String get settingsLicenses => 'Lisanslar';
 
   @override
+  String get settingsAnalytics => 'Kullanım verisi paylaş';
+
+  @override
+  String get settingsAnalyticsHint =>
+      'Oyunu dengelemek için; adın ya da iletişim bilgilerin gönderilmez';
+
+  @override
+  String get settingsCrashNote =>
+      'Uygulama çökerse, hatayı bulabilmemiz için anonim bir çökme kaydı gönderilir.';
+
+  @override
+  String get consentTitle => 'Oyunu birlikte geliştirelim';
+
+  @override
+  String get consentBody =>
+      'Bir hayatın ne kadar sürdüğünü, hangi rozetlerin kazanıldığını ve oyunun nerede zorlaştığını görmek için kullanım verisi toplamak istiyoruz. Adını ya da iletişim bilgilerini toplamayız. Kararını istediğin zaman Ayarlar\'dan değiştirebilirsin.';
+
+  @override
+  String get consentAccept => 'Olur';
+
+  @override
+  String get consentDecline => 'Hayır, teşekkürler';
+
+  @override
   String deathNetWorth(String amount) {
     return 'Net servet: $amount';
   }

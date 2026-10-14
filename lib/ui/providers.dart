@@ -9,6 +9,7 @@ import '../content/content_loader.dart';
 import '../engine/engine.dart';
 import '../engine/life_record.dart';
 import '../models/models.dart';
+import '../services/analytics_service.dart';
 import '../services/feedback_service.dart';
 import '../services/save_store.dart';
 import '../services/share_service.dart';
@@ -49,17 +50,48 @@ class SettingsController extends Notifier<GameSettings> {
   Future<void> _load() async {
     final saved = await ref.read(saveStoreProvider).loadSettings();
     state = saved;
+    ref.read(settingsLoadedProvider.notifier).markLoaded();
+    _applyAnalytics(saved);
   }
 
   void setSound(bool on) => _save(state.copyWith(sound: on));
 
   void setHaptics(bool on) => _save(state.copyWith(haptics: on));
 
+  /// Kullanım verisi onayı; analitik hemen açılır ya da kapanır.
+  void setAnalyticsConsent(bool consent) {
+    final next = state.copyWith(analyticsConsent: consent);
+    _save(next);
+    _applyAnalytics(next);
+  }
+
+  void _applyAnalytics(GameSettings settings) => ref
+      .read(analyticsServiceProvider)
+      .setCollectionEnabled(settings.analyticsEnabled);
+
   void _save(GameSettings next) {
     state = next;
     ref.read(saveStoreProvider).saveSettings(next);
   }
 }
+
+/// Ayarlar kayıttan okundu mu; onay sorusu ancak ondan sonra sorulur.
+final settingsLoadedProvider = NotifierProvider<SettingsLoaded, bool>(
+  SettingsLoaded.new,
+);
+
+class SettingsLoaded extends Notifier<bool> {
+  @override
+  bool build() => false;
+
+  void markLoaded() => state = true;
+}
+
+/// Kullanım verisi; `main` Firebase açılırsa değiştirir, yoksa hiçbir şey
+/// göndermez.
+final analyticsServiceProvider = Provider<AnalyticsService>(
+  (ref) => const NoopAnalytics(),
+);
 
 /// Ses ve titreşim; testler sahte bir servisle değiştirir.
 final feedbackServiceProvider = Provider<FeedbackService>(
@@ -109,6 +141,13 @@ final lifeProvider = NotifierProvider<LifeController, LifeState?>(
 class LifeController extends Notifier<LifeState?> {
   LifeEngine? _engine;
   GameContent? _content;
+  DateTime? _lifeStartedAt;
+
+  /// Bu oturumda hayatın başladığı ya da sürdürüldüğü an; süre ölçümü için.
+  DateTime? get lifeStartedAt => _lifeStartedAt;
+
+  void _log(String event, Map<String, Object> parameters) =>
+      ref.read(analyticsServiceProvider).logEvent(event, parameters);
 
   /// Kayıtlar sırayla yazılsın diye zincirlenir.
   Future<void> _pendingWrites = Future.value();
@@ -136,6 +175,12 @@ class LifeController extends Notifier<LifeState?> {
     _engine = engine;
     _content = content;
     _update(engine.startLife(name: name, gender: gender));
+    _lifeStartedAt = ref.read(clockProvider)();
+    final c = engine.state.character;
+    _log(AnalyticsEvents.lifeStart, {
+      'background': c.background.id,
+      'gender': c.gender.id,
+    });
   }
 
   /// Kaydedilmiş hayatı sürdürür. Kayıt bozuksa ya da artık okunamıyorsa
@@ -150,6 +195,8 @@ class LifeController extends Notifier<LifeState?> {
       _engine = engine;
       _content = content;
       state = engine.state;
+      _lifeStartedAt = ref.read(clockProvider)();
+      _log(AnalyticsEvents.lifeResume, {'age': engine.state.character.age});
       return true;
     } on Object {
       _write(_store.clearCurrentLife);

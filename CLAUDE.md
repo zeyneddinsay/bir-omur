@@ -127,7 +127,7 @@ Kararlar (14 Ekim 2026):
 - Portre SVG parçalarını Claude çizer (düz, basit). Parça biçimi sabittir; ileride illüstratör çizimleri aynı dosya adlarıyla yerine konabilir.
 - Telifsiz sesleri kullanıcı bulur ve lisansını kontrol eder; kod yer tutucu seslerle hazırlanır.
 - Yazı tipi uygulamaya gömülür (OFL lisanslı, Türkçe karakterleri tam).
-- Firebase en sona kalır; proje ve yapılandırma dosyaları kullanıcıdan gelir. Analitik onay ekranının zamanı o adımda konuşulur.
+- Firebase projesi: `biromur-d0006`. Analitik, oyuncu onay verene kadar kapalıdır (doğum ekranında bir kez sorulur, Ayarlar'dan değişir); karakter adı gibi oyuncunun yazdığı hiçbir şey gönderilmez. Crashlytics yalnızca anonim çökme kaydı gönderir ve debug sürümünde kapalıdır.
 
 Adımlar:
 
@@ -136,6 +136,6 @@ Adımlar:
 - [x] Başarımlar (`assets/achievements.json`) ve Hayat Albümü ekranı
 - [x] Görsel stil ve katmanlı SVG portreler
 - [x] Ses ve titreşim (`lib/services/`, ayarlardan kapatılabilir)
-- [ ] Firebase Analytics ve Crashlytics (`lib/services/` arkasında)
+- [x] Firebase Analytics ve Crashlytics (`lib/services/` arkasında)
 
 Sonraki aşamalar `docs/GDD.md` dosyasındaki "MVP kapsamı ve yol haritası" bölümünde.
