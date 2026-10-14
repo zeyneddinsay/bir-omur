@@ -10,11 +10,11 @@
     "text": "LGS'ye 3 ay kaldı. Annen kurs kaydını çoktan yaptırmış.",
     "left": {
       "label": "Gitmem",
-      "effects": { "happiness": 5, "knowledge": -5 }
+      "effects": { "happiness": 5, "knowledge": -5, "schedule": { "event": "lgs_sonucu", "inYears": 1 } }
     },
     "right": {
       "label": "Hafta sonu dahil giderim",
-      "effects": { "knowledge": 10, "happiness": -10 }
+      "effects": { "knowledge": 10, "happiness": -10, "schedule": { "event": "lgs_sonucu", "inYears": 1 } }
     }
   },
   {
@@ -70,6 +70,143 @@
     "right": {
       "label": "Demek zekiyim",
       "effects": { "happiness": 4, "knowledge": -2 }
+    }
+  },
+  {
+    "id": "sinif_grubu",
+    "stage": "ortaokul",
+    "minAge": 12,
+    "maxAge": 14,
+    "cooldown": 2,
+    "text": "Sınıfın mesaj grubunda biri senin fotoğrafını paylaştı. Saçın havalanmış, ağzın açık kalmış.",
+    "left": {
+      "label": "Gülüp geçerim",
+      "effects": {
+        "reputation": 3,
+        "happiness": -1
+      }
+    },
+    "right": {
+      "label": "Daha kötüsünü atarım",
+      "effects": {
+        "happiness": 3,
+        "reputation": -3
+      }
+    }
+  },
+  {
+    "id": "ilk_telefon",
+    "stage": "ortaokul",
+    "minAge": 11,
+    "maxAge": 13,
+    "once": true,
+    "text": "Doğum gününde ilk telefonun geldi. Şifresini annen biliyor, konumunu baban.",
+    "left": {
+      "label": "Kurallara uyarım",
+      "effects": {
+        "family": 5,
+        "happiness": -1
+      }
+    },
+    "right": {
+      "label": "Şifreyi değiştiririm",
+      "effects": {
+        "happiness": 4,
+        "family": -3
+      }
+    }
+  },
+  {
+    "id": "bilim_fuari",
+    "stage": "ortaokul",
+    "minAge": 11,
+    "maxAge": 14,
+    "once": true,
+    "speaker": "baba",
+    "text": "Bilim fuarı projesi: yanardağ. Baban 'Ben hallederim' dedi. Mutfakta köpük, tavanda köpük.",
+    "left": {
+      "label": "Babamla yaparız",
+      "effects": {
+        "family": 5,
+        "knowledge": 1
+      }
+    },
+    "right": {
+      "label": "Kendim yaparım",
+      "effects": {
+        "knowledge": 5,
+        "happiness": -1
+      }
+    }
+  },
+  {
+    "id": "ilk_mac",
+    "stage": "ortaokul",
+    "minAge": 11,
+    "maxAge": 14,
+    "once": true,
+    "speaker": "baba",
+    "text": "Babanla ilk kez stada gittin. Takım yenildi; baban yine de 'Seneye şampiyonuz' dedi.",
+    "left": {
+      "label": "Ben de inanırım",
+      "effects": {
+        "family": 5,
+        "happiness": 2
+      }
+    },
+    "right": {
+      "label": "Takım değiştiririm",
+      "effects": {
+        "happiness": 2,
+        "family": -4
+      }
+    }
+  },
+  {
+    "id": "dershane_mi_basketbol_mu",
+    "stage": "ortaokul",
+    "minAge": 12,
+    "maxAge": 14,
+    "once": true,
+    "speaker": "koc",
+    "text": "Hafta sonu ya dershane ya basketbol. Annen dershane diyor, koç seni takımda istiyor.",
+    "left": {
+      "label": "Dershane",
+      "effects": {
+        "knowledge": 6,
+        "happiness": -2
+      }
+    },
+    "right": {
+      "label": "Basketbol",
+      "effects": {
+        "health": 5,
+        "reputation": 2,
+        "knowledge": -1
+      }
+    }
+  },
+  {
+    "id": "kitaba_biyik",
+    "stage": "ortaokul",
+    "minAge": 11,
+    "maxAge": 14,
+    "once": true,
+    "speaker": "ogretmen",
+    "text": "Ders kitabındaki bütün resimlere bıyık çizmiştin. Öğretmen tam o sayfayı açtı.",
+    "left": {
+      "label": "İtiraf ederim",
+      "effects": {
+        "reputation": 2,
+        "happiness": -2
+      }
+    },
+    "right": {
+      "label": "Kitap ikinci eldi",
+      "effects": {
+        "happiness": 2,
+        "reputation": -2
+      }
     }
   }
 ]

@@ -112,5 +112,119 @@
         "health": -1
       }
     }
+  },
+  {
+    "id": "ilk_dis",
+    "stage": "bebek",
+    "minAge": 0,
+    "maxAge": 1,
+    "once": true,
+    "speaker": "babaanne",
+    "text": "İlk dişin çıktı! Babaannen hemen diş buğdayı kaynatmaya başladı. Bütün akraba davetli.",
+    "left": {
+      "label": "Ağlayarak katılırım",
+      "effects": {
+        "family": 4,
+        "happiness": -1
+      }
+    },
+    "right": {
+      "label": "Herkese gülümserim",
+      "effects": {
+        "reputation": 3,
+        "happiness": 2
+      }
+    }
+  },
+  {
+    "id": "tablet_mi_top_mu",
+    "stage": "bebek",
+    "minAge": 3,
+    "maxAge": 6,
+    "cooldown": 2,
+    "text": "Misafirlikte ev sahibi sana tablet uzattı. Annen arkadan 'Bahçede top var' bakışı atıyor.",
+    "left": {
+      "label": "Bahçeye koşarım",
+      "effects": {
+        "health": 3,
+        "happiness": 2
+      }
+    },
+    "right": {
+      "label": "Tableti alırım",
+      "effects": {
+        "happiness": 4,
+        "health": -1,
+        "family": -2
+      }
+    }
+  },
+  {
+    "id": "kres_gosterisi",
+    "stage": "bebek",
+    "minAge": 4,
+    "maxAge": 6,
+    "once": true,
+    "text": "Kreşin yıl sonu gösterisinde sana 'ağaç' rolü düştü. Repliğin yok, ama baban kamerayla en önde.",
+    "left": {
+      "label": "Kıpırdamadan dururum",
+      "effects": {
+        "family": 3,
+        "reputation": 2
+      }
+    },
+    "right": {
+      "label": "Dans etmeye başlarım",
+      "effects": {
+        "happiness": 6,
+        "family": -1
+      }
+    }
+  },
+  {
+    "id": "ispanak",
+    "stage": "bebek",
+    "minAge": 2,
+    "maxAge": 6,
+    "cooldown": 2,
+    "speaker": "anne",
+    "text": "Tabakta ıspanak var. Annen: 'Bunu bitirmeden masadan kalkmak yok. Kocaman olman için lazım.'",
+    "left": {
+      "label": "Burnumu tıkar, yerim",
+      "effects": {
+        "health": 3,
+        "happiness": -2
+      }
+    },
+    "right": {
+      "label": "Kediye veririm",
+      "effects": {
+        "happiness": 2,
+        "health": -1,
+        "family": -1
+      }
+    }
+  },
+  {
+    "id": "kardes_ister_misin",
+    "stage": "bebek",
+    "minAge": 3,
+    "maxAge": 6,
+    "once": true,
+    "speaker": "anne",
+    "text": "Annen, sanki karar sendeymiş gibi soruyor: 'Bir kardeşin olsun ister misin?'",
+    "left": {
+      "label": "Oyuncaklarım bana",
+      "effects": {
+        "happiness": 2,
+        "family": -2
+      }
+    },
+    "right": {
+      "label": "Olsun!",
+      "effects": {
+        "family": 5
+      }
+    }
   }
 ]

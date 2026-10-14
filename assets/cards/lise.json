@@ -114,5 +114,215 @@
         "happiness": -2
       }
     }
+  },
+  {
+    "id": "lgs_sonucu",
+    "stage": "lise",
+    "minAge": 15,
+    "maxAge": 15,
+    "chainOnly": true,
+    "speaker": "anne",
+    "text": "LGS sonuçları açıklandı. Annen sonucu, sana söylemeden önce teyzene söyledi.",
+    "left": {
+      "label": "Kendim bakarım",
+      "roll": {
+        "stat": "knowledge",
+        "threshold": 55
+      },
+      "success": {
+        "knowledge": 4,
+        "happiness": 8,
+        "reputation": 3
+      },
+      "fail": {
+        "happiness": -6
+      }
+    },
+    "right": {
+      "label": "Annem söylesin",
+      "effects": {
+        "family": 3
+      },
+      "roll": {
+        "stat": "knowledge",
+        "threshold": 55
+      },
+      "success": {
+        "knowledge": 4,
+        "happiness": 6,
+        "family": 3
+      },
+      "fail": {
+        "happiness": -4
+      }
+    }
+  },
+  {
+    "id": "kafeye_gidelim_mi",
+    "stage": "lise",
+    "minAge": 15,
+    "maxAge": 17,
+    "rarity": "nadir",
+    "once": true,
+    "text": "Okul çıkışı biri sana çekinerek bir not uzattı: 'Kafeye gidelim mi?' Arkada arkadaşları kıkırdıyor.",
+    "left": {
+      "label": "Sınav haftası",
+      "effects": {
+        "knowledge": 2,
+        "happiness": -2
+      }
+    },
+    "right": {
+      "label": "Giderim",
+      "effects": {
+        "happiness": 8,
+        "knowledge": -1
+      }
+    },
+    "up": {
+      "label": "Arkadaşlarla gelelim",
+      "effects": {
+        "happiness": 4,
+        "reputation": 3
+      }
+    }
+  },
+  {
+    "id": "mavi_sac",
+    "stage": "lise",
+    "minAge": 15,
+    "maxAge": 17,
+    "once": true,
+    "speaker": "dede",
+    "text": "Saçını maviye boyadın. Annen sustu, baban sustu. Deden 'Bu ne?' dedi, sonra o da sustu.",
+    "left": {
+      "label": "Mavi kalsın",
+      "effects": {
+        "happiness": 6,
+        "reputation": 1,
+        "family": -3
+      }
+    },
+    "right": {
+      "label": "Bayrama kadar düzelir",
+      "effects": {
+        "family": 4,
+        "happiness": -2
+      }
+    }
+  },
+  {
+    "id": "deneme_sinavi",
+    "stage": "lise",
+    "minAge": 16,
+    "maxAge": 18,
+    "cooldown": 2,
+    "speaker": "anne",
+    "text": "Deneme sınavı sonucun geldi. Annen aile grubuna attı; teyzen hemen 'Bizimki daha iyi' yazdı.",
+    "left": {
+      "label": "Daha çok çalışırım",
+      "effects": {
+        "knowledge": 5,
+        "happiness": -3
+      }
+    },
+    "right": {
+      "label": "Grubu sessize alırım",
+      "effects": {
+        "happiness": 3,
+        "family": -2
+      }
+    }
+  },
+  {
+    "id": "yilliga_yazi",
+    "stage": "lise",
+    "minAge": 17,
+    "maxAge": 18,
+    "once": true,
+    "text": "Yıllığa herkes senin için bir cümle yazdı. En çok yazılan cümle: 'Hiç değişme.'",
+    "left": {
+      "label": "Ben de duygusal yazarım",
+      "effects": {
+        "reputation": 3,
+        "happiness": 3
+      }
+    },
+    "right": {
+      "label": "Sadece 'kib' yazarım",
+      "effects": {
+        "happiness": 2,
+        "reputation": -1
+      }
+    }
+  },
+  {
+    "id": "hangi_bolum",
+    "stage": "lise",
+    "minAge": 15,
+    "maxAge": 18,
+    "cooldown": 2,
+    "text": "Bayramda akrabalar sırayla soruyor: 'Hangi bölümü düşünüyorsun?' Dün karar vermiştin, bugün değişti.",
+    "left": {
+      "label": "Doktor diyorum",
+      "effects": {
+        "family": 3,
+        "happiness": -1
+      }
+    },
+    "right": {
+      "label": "Bilmiyorum diyorum",
+      "effects": {
+        "happiness": 2,
+        "family": -2
+      }
+    }
+  },
+  {
+    "id": "sadece_park",
+    "stage": "lise",
+    "minAge": 16,
+    "maxAge": 17,
+    "once": true,
+    "speaker": "baba",
+    "text": "Baban arabayı park etmen için anahtarı verdi. Sadece park. Bütün komşular camda.",
+    "left": {
+      "label": "Dikkatle park ederim",
+      "effects": {
+        "family": 3,
+        "reputation": 2
+      }
+    },
+    "right": {
+      "label": "Mahallede bir tur",
+      "effects": {
+        "happiness": 5,
+        "family": -3,
+        "reputation": -1
+      }
+    }
+  },
+  {
+    "id": "sinav_kaygisi",
+    "stage": "lise",
+    "minAge": 17,
+    "maxAge": 18,
+    "once": true,
+    "speaker": "rehber_ogretmen",
+    "text": "Sınava bir ay kala geceleri uyku tutmuyor. Rehber öğretmenin koridorda yanına geldi: 'Kapım hep açık.'",
+    "left": {
+      "label": "Konuşmaya giderim",
+      "effects": {
+        "happiness": 6,
+        "health": 2
+      }
+    },
+    "right": {
+      "label": "Kendim hallederim",
+      "effects": {
+        "knowledge": 2,
+        "happiness": -3
+      }
+    }
   }
 ]

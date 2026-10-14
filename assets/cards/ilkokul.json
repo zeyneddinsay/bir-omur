@@ -166,5 +166,143 @@
         "reputation": 1
       }
     }
+  },
+  {
+    "id": "okulun_ilk_gunu",
+    "stage": "ilkokul",
+    "minAge": 7,
+    "maxAge": 7,
+    "once": true,
+    "speaker": "anne",
+    "text": "Okulun ilk günü. Annen önlüğünü üçüncü kez düzeltti. Öğretmenin elinde bir düdük var.",
+    "left": {
+      "label": "Annemin elini tutarım",
+      "effects": {
+        "family": 4,
+        "happiness": -2
+      }
+    },
+    "right": {
+      "label": "Sıraya geçerim",
+      "effects": {
+        "reputation": 3,
+        "knowledge": 2
+      }
+    }
+  },
+  {
+    "id": "son_tost",
+    "stage": "ilkokul",
+    "minAge": 7,
+    "maxAge": 10,
+    "cooldown": 2,
+    "text": "Kantinde son tost kaldı. Arkandaki çocuk senden küçük ve gözleri dolu dolu.",
+    "left": {
+      "label": "Ona veririm",
+      "effects": {
+        "reputation": 4,
+        "happiness": -1
+      }
+    },
+    "right": {
+      "label": "Tost benim",
+      "effects": {
+        "happiness": 3,
+        "reputation": -2
+      }
+    }
+  },
+  {
+    "id": "beslenme_takasi",
+    "stage": "ilkokul",
+    "minAge": 7,
+    "maxAge": 10,
+    "cooldown": 3,
+    "speaker": "arkadas",
+    "text": "Sıra arkadaşın, beslenmendeki börek için en değerli çıkartmasını teklif ediyor.",
+    "left": {
+      "label": "Takas!",
+      "effects": {
+        "happiness": 4,
+        "health": -1
+      }
+    },
+    "right": {
+      "label": "Böreğimi yerim",
+      "effects": {
+        "health": 2,
+        "happiness": 1
+      }
+    }
+  },
+  {
+    "id": "bir_level_daha",
+    "stage": "ilkokul",
+    "minAge": 8,
+    "maxAge": 10,
+    "cooldown": 2,
+    "speaker": "baba",
+    "text": "Bütün gün oyun oynamak istiyorsun. Baban: 'Bizim zamanımızda akşam ezanına kadar sokaktaydık.'",
+    "left": {
+      "label": "Sokağa çıkarım",
+      "effects": {
+        "health": 3,
+        "reputation": 1,
+        "happiness": 1
+      }
+    },
+    "right": {
+      "label": "Bir level daha",
+      "effects": {
+        "happiness": 4,
+        "health": -2,
+        "family": -2
+      }
+    }
+  },
+  {
+    "id": "ogretmenler_gunu",
+    "stage": "ilkokul",
+    "minAge": 8,
+    "maxAge": 10,
+    "once": true,
+    "speaker": "ogretmen",
+    "text": "Öğretmenler Günü. Annen öğretmenine kolonya almış; sen de bütün gece bir resim çizmişsin.",
+    "left": {
+      "label": "Resmimi veririm",
+      "effects": {
+        "reputation": 3,
+        "happiness": 3
+      }
+    },
+    "right": {
+      "label": "Kolonyayı veririm",
+      "effects": {
+        "family": 2,
+        "reputation": 1
+      }
+    }
+  },
+  {
+    "id": "sut_disi",
+    "stage": "ilkokul",
+    "minAge": 7,
+    "maxAge": 8,
+    "once": true,
+    "text": "Sallanan dişin sonunda düştü. Baban 'Yastığın altına koy' diyor, annen 'Çatıya at, dileğin olsun' diyor.",
+    "left": {
+      "label": "Yastığın altına",
+      "effects": {
+        "money": 100,
+        "happiness": 3
+      }
+    },
+    "right": {
+      "label": "Çatıya atarım",
+      "effects": {
+        "family": 2,
+        "happiness": 2
+      }
+    }
   }
 ]
