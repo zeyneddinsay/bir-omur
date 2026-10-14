@@ -4,6 +4,7 @@ import '../../content/content_loader.dart';
 import '../../engine/engine.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../l10n_names.dart';
+import '../theme.dart';
 import '../widgets/life_status.dart';
 
 /// Büyük tutarları okunur yazar: "2,8 milyon TL", "640 bin TL".
@@ -52,10 +53,10 @@ class LifeShareCard extends StatelessWidget {
   static const Size size = Size(360, 640);
   static const double pixelRatio = 3;
 
-  static const Color _paper = Color(0xFFFFF8F0);
-  static const Color _ink = Color(0xFF2B1D16);
-  static const Color _accent = Color(0xFFC0392B);
-  static const Color _muted = Color(0xFF7A6458);
+  static const Color _paper = AppColors.paper;
+  static const Color _ink = AppColors.ink;
+  static const Color _accent = AppColors.accent;
+  static const Color _muted = AppColors.muted;
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +65,7 @@ class LifeShareCard extends StatelessWidget {
     final job = lastJobLabel(l10n, c, content.careers);
     final moment = summary.biggestMoment;
     final momentCard = moment == null ? null : content.deck.byId(moment.cardId);
-    const base = TextStyle(color: _ink, fontFamilyFallback: ['Roboto']);
+    const base = TextStyle(color: _ink, fontFamily: appFontFamily);
 
     return SizedBox.fromSize(
       size: size,

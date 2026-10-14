@@ -213,7 +213,7 @@ class _CardFace extends StatelessWidget {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
     final rarityColor = switch (card.rarity) {
-      Rarity.siradan => scheme.outlineVariant,
+      Rarity.siradan => scheme.onSurface.withValues(alpha: 0.18),
       Rarity.nadir => scheme.tertiary,
       Rarity.efsane => const Color(0xFFD4A017),
     };
@@ -248,12 +248,12 @@ class _CardFace extends StatelessWidget {
     return ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 340),
       child: Card(
-        elevation: 6,
+        elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(24),
           side: BorderSide(
             color: rarityColor,
-            width: card.rarity == Rarity.siradan ? 1 : 3,
+            width: card.rarity == Rarity.siradan ? 1.5 : 3,
           ),
         ),
         child: Padding(

@@ -10,6 +10,7 @@ import '../l10n_names.dart';
 import '../portrait/portrait.dart';
 import '../portrait/portrait_spec.dart';
 import '../providers.dart';
+import '../widgets/life_status.dart';
 
 /// Hayat Albümü: biten hayatlar ve hayatlar boyunca biriken rozetler.
 class AlbumScreen extends ConsumerWidget {
@@ -73,9 +74,9 @@ class _LivesTab extends ConsumerWidget {
         };
         final background = FamilyBackground.fromId(life.background);
         final career = content.careers.byId(life.careerId ?? '');
-        final careerLine = career == null || life.careerTier == null
+        final careerText = career == null || life.careerTier == null
             ? null
-            : l10n.jobTier(career.name, career.tier(life.careerTier!).name);
+            : careerLine(l10n, career, life.careerTier!);
         return ListTile(
           key: Key('album_life_$i'),
           leading: Portrait(
@@ -93,7 +94,7 @@ class _LivesTab extends ConsumerWidget {
               l10n.albumLifeLine(life.deathAge, nickname),
               [
                 life.hometown,
-                ?careerLine,
+                ?careerText,
                 if (background != null) l10n.backgroundName(background),
               ].join(' · '),
             ].join('\n'),

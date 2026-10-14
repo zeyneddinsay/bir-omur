@@ -95,6 +95,8 @@
   "deathCauseNatural": "Zamanı geldiğinde, huzur içinde gözlerini yumdu.",
   "nicknameTitle": "Mahalle onu şöyle hatırlıyor",
   "biggestMomentTitle": "En büyük an",
+  "momentChoice": "Seçimin: {label}",
+  "@momentChoice": { "placeholders": { "label": { "type": "String" } } },
   "biggestMomentAge": "{age} yaşında",
   "@biggestMomentAge": { "placeholders": { "age": { "type": "int" } } },
   "cardsSeenLine": "{count} karar, bir ömür",

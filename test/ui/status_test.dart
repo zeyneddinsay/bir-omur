@@ -35,6 +35,13 @@ void main() {
         job: const Job(careerId: 'memur', tier: 2),
       );
       expect(label(c), 'Memur · Şef');
+      // 1. kademenin adı meslek adıyla aynı: tekrar yazılmaz.
+      expect(
+        label(
+          testCharacter(age: 25, job: const Job(careerId: 'memur', tier: 1)),
+        ),
+        'Memur',
+      );
     });
 
     test('işsiz, öğrenci, emekli, çocuk', () {

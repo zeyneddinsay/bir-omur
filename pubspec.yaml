@@ -34,3 +34,7 @@ flutter:
     - assets/careers/
     - assets/achievements.json
     - assets/portraits/
+  fonts:
+    - family: Nunito
+      fonts:
+        - asset: assets/fonts/Nunito.ttf

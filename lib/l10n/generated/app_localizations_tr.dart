@@ -267,6 +267,11 @@ class AppLocalizationsTr extends AppLocalizations {
   String get biggestMomentTitle => 'En büyük an';
 
   @override
+  String momentChoice(String label) {
+    return 'Seçimin: $label';
+  }
+
+  @override
   String biggestMomentAge(int age) {
     return '$age yaşında';
   }

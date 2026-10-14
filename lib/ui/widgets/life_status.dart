@@ -5,6 +5,14 @@ import '../../l10n/generated/app_localizations.dart';
 import '../../models/models.dart';
 import '../l10n_names.dart';
 
+/// "Memur · Şef"; kademe adı meslek adıyla aynıysa yalnızca biri
+/// ("Memur · Memur" değil "Memur").
+String careerLine(AppLocalizations l10n, Career career, int tier) {
+  final tierName = career.tier(tier).name;
+  if (tierName == career.name) return career.name;
+  return l10n.jobTier(career.name, tierName);
+}
+
 /// Karakterin iş durumu: "Memur · Şef", "İşsiz", "Emekli"…
 /// Meslek ve kademe adları içerikten (meslek dosyalarından) gelir.
 String jobLabel(AppLocalizations l10n, Character c, CareerBook careers) {
@@ -12,7 +20,7 @@ String jobLabel(AppLocalizations l10n, Character c, CareerBook careers) {
   if (c.job case final job?) {
     final career = careers.byId(job.careerId);
     if (career == null) return job.careerId;
-    return l10n.jobTier(career.name, career.tier(job.tier).name);
+    return careerLine(l10n, career, job.tier);
   }
   if (c.hasFlag(ActionCatalog.studentFlag)) return l10n.jobStudent;
   if (c.age < EngineFlags.hardshipMinAge) return l10n.jobChild;
@@ -25,7 +33,7 @@ String? lastJobLabel(AppLocalizations l10n, Character c, CareerBook careers) {
   if (job == null) return null;
   final career = careers.byId(job.careerId);
   if (career == null) return job.careerId;
-  return l10n.jobTier(career.name, career.tier(job.tier).name);
+  return careerLine(l10n, career, job.tier);
 }
 
 /// Üst çubuktaki cüzdan düğmesi; varlıklar panelini açar.

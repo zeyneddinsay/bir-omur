@@ -102,7 +102,9 @@ class DeathScreen extends ConsumerWidget {
                         Text(momentCard.text, textAlign: TextAlign.center),
                         const SizedBox(height: 4),
                         Text(
-                          '→ ${momentCard.choice(moment.side).label}',
+                          l10n.momentChoice(
+                            momentCard.choice(moment.side).label,
+                          ),
                           style: theme.textTheme.titleSmall,
                         ),
                       ],

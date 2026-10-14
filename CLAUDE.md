@@ -134,7 +134,7 @@ Adımlar:
 - [x] Hayatın sayıları: ömür boyu sayaçlar (taşınma, ödenen kira, takılan altın, terfi, çalışılan yıl, borç dönemleri)
 - [x] Paylaşım kartı: 9:16 hayat özeti görseli, `share_plus` ile paylaşım (ödülsüz)
 - [x] Başarımlar (`assets/achievements.json`) ve Hayat Albümü ekranı
-- [ ] Görsel stil ve katmanlı SVG portreler
+- [x] Görsel stil ve katmanlı SVG portreler
 - [ ] Ses ve titreşim (`lib/services/`, ayarlardan kapatılabilir)
 - [ ] Firebase Analytics ve Crashlytics (`lib/services/` arkasında)
 

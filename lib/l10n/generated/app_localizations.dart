@@ -508,6 +508,12 @@ abstract class AppLocalizations {
   /// **'En büyük an'**
   String get biggestMomentTitle;
 
+  /// No description provided for @momentChoice.
+  ///
+  /// In tr, this message translates to:
+  /// **'Seçimin: {label}'**
+  String momentChoice(String label);
+
   /// No description provided for @biggestMomentAge.
   ///
   /// In tr, this message translates to:
