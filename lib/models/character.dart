@@ -89,6 +89,7 @@ class Character {
     List<CardRecord> history = const [],
     this.assets = Assets.none,
     this.job,
+    this.lastJob,
     this.pension = 0,
     this.isAlive = true,
   }) : assert(age >= 0),
@@ -120,6 +121,12 @@ class Character {
   /// Şu anki iş; işsizse ya da emekliyse null.
   final Job? job;
 
+  /// Bırakılan ya da emekli olunan son iş; özet ve albüm için.
+  final Job? lastJob;
+
+  /// Şu anki ya da en son iş.
+  Job? get careerJob => job ?? lastJob;
+
   /// Yıllık emekli aylığı (TL); emekli değilse 0.
   final int pension;
 
@@ -149,6 +156,7 @@ class Character {
     Assets? assets,
     Job? job,
     bool clearJob = false,
+    Job? lastJob,
     int? pension,
     bool? isAlive,
   }) {
@@ -165,6 +173,7 @@ class Character {
       history: history ?? this.history,
       assets: assets ?? this.assets,
       job: clearJob ? null : (job ?? this.job),
+      lastJob: lastJob ?? (clearJob ? this.job ?? this.lastJob : this.lastJob),
       pension: pension ?? this.pension,
       isAlive: isAlive ?? this.isAlive,
     );
@@ -186,6 +195,7 @@ class Character {
     'history': [for (final r in history) r.toJson()],
     'assets': assets.toJson(),
     'job': ?job?.toJson(),
+    'lastJob': ?lastJob?.toJson(),
     'pension': pension,
     'alive': isAlive,
   };
@@ -214,6 +224,9 @@ class Character {
       job: json['job'] == null
           ? null
           : Job.fromJson(json['job'] as Map<String, dynamic>),
+      lastJob: json['lastJob'] == null
+          ? null
+          : Job.fromJson(json['lastJob'] as Map<String, dynamic>),
       pension: json['pension'] as int,
       isAlive: json['alive'] as bool,
     );

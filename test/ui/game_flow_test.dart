@@ -1,6 +1,7 @@
 import 'package:bir_omur/engine/engine.dart';
 import 'package:bir_omur/l10n/generated/app_localizations_tr.dart';
 import 'package:bir_omur/main.dart';
+import 'package:bir_omur/services/save_store.dart';
 import 'package:bir_omur/ui/l10n_names.dart';
 import 'package:bir_omur/ui/providers.dart';
 import 'package:flutter/material.dart';
@@ -11,10 +12,14 @@ import '../content/real_cards_test.dart' show loadRealContent;
 
 final _content = loadRealContent();
 
-Widget _app({int seed = 7}) => ProviderScope(
+Widget _app({int seed = 7, SaveStore? store}) => ProviderScope(
+  // Her uygulama açılışı ayrı bir kapsam; aynı [store] verilirse kayıt
+  // açılışlar arasında taşınır.
+  key: UniqueKey(),
   overrides: [
     contentProvider.overrideWith((ref) async => _content),
     seedGeneratorProvider.overrideWithValue(() => seed),
+    saveStoreProvider.overrideWithValue(store ?? MemorySaveStore()),
   ],
   child: const BirOmurApp(),
 );
@@ -67,6 +72,33 @@ void main() {
       );
     }
     expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('uygulama kapanıp açılınca yarım hayata devam edilir', (
+    tester,
+  ) async {
+    _phone(tester);
+    final store = MemorySaveStore();
+    await tester.pumpWidget(_app(store: store));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('resume_button')), findsNothing);
+    await tester.enterText(find.byKey(const Key('birth_name')), 'Defne');
+    await tester.tap(find.byKey(const Key('birth_button')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('choose_left')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('age_up')));
+    await tester.pumpAndSettle();
+    expect(find.textContaining('1 yaş'), findsOneWidget);
+
+    // Uygulamayı "kapatıp" aynı kayıtla yeniden aç.
+    await tester.pumpWidget(_app(store: store));
+    await tester.pumpAndSettle();
+    expect(find.text('Defne, 1 yaşında'), findsOneWidget);
+    await tester.tap(find.byKey(const Key('resume_button')));
+    await tester.pumpAndSettle();
+    expect(find.text('Defne'), findsOneWidget);
+    expect(find.textContaining('1 yaş'), findsOneWidget);
   });
 
   testWidgets('kart sürüklenerek seçilir', (tester) async {

@@ -17,6 +17,12 @@
   "genderFemale": "Kadın",
   "genderRandom": "Rastgele",
   "birthButton": "Doğ",
+  "resumeTitle": "Yarım kalan bir hayat var",
+  "resumeLine": "{name}, {age} yaşında",
+  "@resumeLine": { "placeholders": { "name": { "type": "String" }, "age": { "type": "int" } } },
+  "resumeButton": "Kaldığın yerden devam et",
+  "resumeOrNew": "Ya da yeni bir hayata başla; yarım kalan hayat silinir.",
+  "resumeFailed": "Kayıt açılamadı. Yeni bir hayata başlayabilirsin.",
 
   "statHealth": "Sağlık",
   "statHappiness": "Mutluluk",

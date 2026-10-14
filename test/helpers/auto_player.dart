@@ -33,24 +33,31 @@ class AutoPlayer {
     final state = engine.state;
     switch (state.phase) {
       case YearPhase.cards:
-        final card = state.currentCard!;
-        final sides = [
-          ChoiceSide.left,
-          ChoiceSide.right,
-          if (card.up != null) ChoiceSide.up,
-        ];
-        return engine.choose(sides[_random.nextInt(sides.length)]);
+        return engine.choose(pickSide(state.currentCard!));
       case YearPhase.actions:
-        final enabled = [
-          for (final (action, ok) in engine.availableActions())
-            if (ok) action,
-        ];
-        if (enabled.isNotEmpty && _random.nextInt(4) > 0) {
-          return engine.doAction(enabled[_random.nextInt(enabled.length)].id);
-        }
-        return engine.advanceYear();
+        final action = pickAction(engine);
+        return action == null ? engine.advanceYear() : engine.doAction(action);
       case YearPhase.dead:
         return state;
     }
+  }
+
+  ChoiceSide pickSide(EventCard card) {
+    final sides = [
+      ChoiceSide.left,
+      ChoiceSide.right,
+      if (card.up != null) ChoiceSide.up,
+    ];
+    return sides[_random.nextInt(sides.length)];
+  }
+
+  /// Yapılacak aksiyonun kimliği; null ise yaşlanma zamanı.
+  String? pickAction(LifeEngine engine) {
+    final enabled = [
+      for (final (action, ok) in engine.availableActions())
+        if (ok) action,
+    ];
+    if (enabled.isEmpty || _random.nextInt(4) == 0) return null;
+    return enabled[_random.nextInt(enabled.length)].id;
   }
 }

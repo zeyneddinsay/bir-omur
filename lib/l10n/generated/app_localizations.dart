@@ -166,6 +166,36 @@ abstract class AppLocalizations {
   /// **'Doğ'**
   String get birthButton;
 
+  /// No description provided for @resumeTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yarım kalan bir hayat var'**
+  String get resumeTitle;
+
+  /// No description provided for @resumeLine.
+  ///
+  /// In tr, this message translates to:
+  /// **'{name}, {age} yaşında'**
+  String resumeLine(String name, int age);
+
+  /// No description provided for @resumeButton.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kaldığın yerden devam et'**
+  String get resumeButton;
+
+  /// No description provided for @resumeOrNew.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ya da yeni bir hayata başla; yarım kalan hayat silinir.'**
+  String get resumeOrNew;
+
+  /// No description provided for @resumeFailed.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kayıt açılamadı. Yeni bir hayata başlayabilirsin.'**
+  String get resumeFailed;
+
   /// No description provided for @statHealth.
   ///
   /// In tr, this message translates to:

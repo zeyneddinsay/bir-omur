@@ -49,6 +49,25 @@ class AppLocalizationsTr extends AppLocalizations {
   String get birthButton => 'Doğ';
 
   @override
+  String get resumeTitle => 'Yarım kalan bir hayat var';
+
+  @override
+  String resumeLine(String name, int age) {
+    return '$name, $age yaşında';
+  }
+
+  @override
+  String get resumeButton => 'Kaldığın yerden devam et';
+
+  @override
+  String get resumeOrNew =>
+      'Ya da yeni bir hayata başla; yarım kalan hayat silinir.';
+
+  @override
+  String get resumeFailed =>
+      'Kayıt açılamadı. Yeni bir hayata başlayabilirsin.';
+
+  @override
   String get statHealth => 'Sağlık';
 
   @override

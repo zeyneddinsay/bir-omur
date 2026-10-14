@@ -32,6 +32,15 @@ class _BirthScreenState extends ConsumerState<BirthScreen> {
         .startLife(widget.content, name: _name.text, gender: _gender);
   }
 
+  void _resume(Map<String, dynamic> snapshot) {
+    final ok = ref.read(lifeProvider.notifier).resume(widget.content, snapshot);
+    if (!ok) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(AppLocalizations.of(context).resumeFailed)),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
@@ -59,6 +68,11 @@ class _BirthScreenState extends ConsumerState<BirthScreen> {
                   ),
                   const SizedBox(height: 4),
                   Text(l10n.birthSubtitle, textAlign: TextAlign.center),
+                  if (ref.watch(savedLifeProvider).value case final saved?)
+                    _ResumeCard(
+                      snapshot: saved,
+                      onResume: () => _resume(saved),
+                    ),
                   const SizedBox(height: 32),
                   TextField(
                     key: const Key('birth_name'),
@@ -110,6 +124,49 @@ class _BirthScreenState extends ConsumerState<BirthScreen> {
                 ],
               ),
             ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Yarım kalan hayatı gösterir; isim ve yaş kaydın içinden okunur.
+class _ResumeCard extends StatelessWidget {
+  const _ResumeCard({required this.snapshot, required this.onResume});
+
+  final Map<String, dynamic> snapshot;
+  final VoidCallback onResume;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    final character = snapshot['character'];
+    final name = character is Map ? character['name'] : null;
+    final age = character is Map ? character['age'] : null;
+    return Padding(
+      padding: const EdgeInsets.only(top: 24),
+      child: Card(
+        color: theme.colorScheme.primaryContainer,
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(l10n.resumeTitle, style: theme.textTheme.titleMedium),
+              if (name is String && age is int)
+                Text(l10n.resumeLine(name, age)),
+              const SizedBox(height: 12),
+              FilledButton.icon(
+                key: const Key('resume_button'),
+                onPressed: onResume,
+                icon: const Icon(Icons.play_arrow),
+                label: Text(l10n.resumeButton),
+              ),
+              const SizedBox(height: 8),
+              Text(l10n.resumeOrNew, style: theme.textTheme.bodySmall),
+            ],
           ),
         ),
       ),
