@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_ce_flutter/hive_ce_flutter.dart';
@@ -6,12 +8,14 @@ import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 import 'l10n/generated/app_localizations.dart';
 import 'services/hive_save_store.dart';
 import 'services/save_store.dart';
+import 'ui/feedback_listener.dart';
 import 'ui/providers.dart';
 import 'ui/screens/game_screen.dart';
 import 'ui/theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  _registerFontLicense();
   runApp(
     ProviderScope(
       overrides: [saveStoreProvider.overrideWithValue(await _openSaveStore())],
@@ -51,7 +55,16 @@ class BirOmurApp extends StatelessWidget {
       ],
       theme: buildAppTheme(Brightness.light),
       darkTheme: buildAppTheme(Brightness.dark),
-      home: const GameScreen(),
+      home: const FeedbackListener(child: GameScreen()),
     );
   }
+}
+
+/// Nunito (OFL) lisansı, yazı tipiyle birlikte dağıtılmalı; Ayarlar →
+/// Lisanslar sayfasında görünür.
+void _registerFontLicense() {
+  LicenseRegistry.addLicense(() async* {
+    final text = await rootBundle.loadString('assets/fonts/OFL.txt');
+    yield LicenseEntryWithLineBreaks(['Nunito'], text);
+  });
 }

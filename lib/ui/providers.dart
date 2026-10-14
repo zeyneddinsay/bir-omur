@@ -9,6 +9,7 @@ import '../content/content_loader.dart';
 import '../engine/engine.dart';
 import '../engine/life_record.dart';
 import '../models/models.dart';
+import '../services/feedback_service.dart';
 import '../services/save_store.dart';
 import '../services/share_service.dart';
 
@@ -31,6 +32,38 @@ final saveStoreProvider = Provider<SaveStore>((ref) => MemorySaveStore());
 /// Paylaşım menüsü; testler sahte bir servisle değiştirir.
 final shareServiceProvider = Provider<ShareService>(
   (ref) => const SharePlusService(),
+);
+
+/// Ses ve titreşim tercihi; açılışta kayıttan okunur.
+final settingsProvider = NotifierProvider<SettingsController, GameSettings>(
+  SettingsController.new,
+);
+
+class SettingsController extends Notifier<GameSettings> {
+  @override
+  GameSettings build() {
+    _load();
+    return GameSettings.defaults;
+  }
+
+  Future<void> _load() async {
+    final saved = await ref.read(saveStoreProvider).loadSettings();
+    state = saved;
+  }
+
+  void setSound(bool on) => _save(state.copyWith(sound: on));
+
+  void setHaptics(bool on) => _save(state.copyWith(haptics: on));
+
+  void _save(GameSettings next) {
+    state = next;
+    ref.read(saveStoreProvider).saveSettings(next);
+  }
+}
+
+/// Ses ve titreşim; testler sahte bir servisle değiştirir.
+final feedbackServiceProvider = Provider<FeedbackService>(
+  (ref) => DeviceFeedbackService(() => ref.read(settingsProvider)),
 );
 
 /// Gerçek saat; testler sabitler.

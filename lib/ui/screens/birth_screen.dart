@@ -6,6 +6,7 @@ import '../../l10n/generated/app_localizations.dart';
 import '../../models/models.dart';
 import '../providers.dart';
 import 'album_screen.dart';
+import 'settings_screen.dart';
 
 /// Doğum ekranı: isim ve cinsiyet; boş bırakılanlar rastgele seçilir.
 class BirthScreen extends ConsumerStatefulWidget {
@@ -47,6 +48,10 @@ class _BirthScreenState extends ConsumerState<BirthScreen> {
     final l10n = AppLocalizations.of(context);
     final theme = Theme.of(context);
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        actions: [SettingsScreen.button(context)],
+      ),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(

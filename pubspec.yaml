@@ -19,6 +19,7 @@ dependencies:
   hive_ce_flutter: ^2.4.0
   share_plus: ^13.3.1
   flutter_svg: ^2.3.0
+  audioplayers: ^6.8.1
 
 dev_dependencies:
   flutter_test:
@@ -34,6 +35,8 @@ flutter:
     - assets/careers/
     - assets/achievements.json
     - assets/portraits/
+    - assets/sounds/
+    - assets/fonts/OFL.txt
   fonts:
     - family: Nunito
       fonts:

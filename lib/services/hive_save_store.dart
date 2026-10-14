@@ -4,6 +4,7 @@ import 'package:hive_ce/hive_ce.dart';
 
 import '../engine/achievements.dart';
 import '../engine/life_record.dart';
+import 'feedback_service.dart';
 import 'save_store.dart';
 
 /// Hive üzerinde kayıt. Değerler JSON metni olarak tutulur; böylece tip
@@ -12,11 +13,13 @@ import 'save_store.dart';
 /// `Hive.init` (ya da Flutter'da `Hive.initFlutter`) [open]'dan önce
 /// çağrılmış olmalı.
 class HiveSaveStore implements SaveStore {
-  HiveSaveStore._(this._life, this._album, this._badges);
+  HiveSaveStore._(this._life, this._album, this._badges, this._settings);
 
   static const String lifeBoxName = 'hayat';
   static const String albumBoxName = 'album';
   static const String badgesBoxName = 'rozetler';
+  static const String settingsBoxName = 'ayarlar';
+  static const String _settingsKey = 'ayarlar';
   static const String _currentKey = 'current';
 
   final Box<String> _life;
@@ -24,11 +27,13 @@ class HiveSaveStore implements SaveStore {
 
   /// Rozet kimliği → ilerleme (JSON).
   final Box<String> _badges;
+  final Box<String> _settings;
 
   static Future<HiveSaveStore> open() async => HiveSaveStore._(
     await Hive.openBox<String>(lifeBoxName),
     await Hive.openBox<String>(albumBoxName),
     await Hive.openBox<String>(badgesBoxName),
+    await Hive.openBox<String>(settingsBoxName),
   );
 
   @override
@@ -80,6 +85,21 @@ class HiveSaveStore implements SaveStore {
           key: jsonEncode(value.toJson()),
       });
 
+  @override
+  Future<GameSettings> loadSettings() async {
+    final raw = _settings.get(_settingsKey);
+    if (raw == null) return GameSettings.defaults;
+    try {
+      return GameSettings.fromJson(jsonDecode(raw) as Map<String, dynamic>);
+    } on Object {
+      return GameSettings.defaults;
+    }
+  }
+
+  @override
+  Future<void> saveSettings(GameSettings settings) =>
+      _settings.put(_settingsKey, jsonEncode(settings.toJson()));
+
   static LifeRecord? _tryParse(String raw) {
     try {
       return LifeRecord.fromJson(jsonDecode(raw) as Map<String, dynamic>);
@@ -92,5 +112,6 @@ class HiveSaveStore implements SaveStore {
     await _life.close();
     await _album.close();
     await _badges.close();
+    await _settings.close();
   }
 }

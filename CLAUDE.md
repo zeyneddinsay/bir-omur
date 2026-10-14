@@ -135,7 +135,7 @@ Adımlar:
 - [x] Paylaşım kartı: 9:16 hayat özeti görseli, `share_plus` ile paylaşım (ödülsüz)
 - [x] Başarımlar (`assets/achievements.json`) ve Hayat Albümü ekranı
 - [x] Görsel stil ve katmanlı SVG portreler
-- [ ] Ses ve titreşim (`lib/services/`, ayarlardan kapatılabilir)
+- [x] Ses ve titreşim (`lib/services/`, ayarlardan kapatılabilir)
 - [ ] Firebase Analytics ve Crashlytics (`lib/services/` arkasında)
 
 Sonraki aşamalar `docs/GDD.md` dosyasındaki "MVP kapsamı ve yol haritası" bölümünde.

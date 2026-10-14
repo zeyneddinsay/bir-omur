@@ -1,5 +1,6 @@
 import '../engine/achievements.dart';
 import '../engine/life_record.dart';
+import 'feedback_service.dart';
 
 /// Yerel kayıt. Motor bunu bilmez; arayüz katmanı her karardan sonra
 /// hayatın tam durumunu buraya yazar.
@@ -20,6 +21,10 @@ abstract interface class SaveStore {
   Future<Map<String, AchievementProgress>> loadAchievements();
 
   Future<void> saveAchievements(Map<String, AchievementProgress> progress);
+
+  Future<GameSettings> loadSettings();
+
+  Future<void> saveSettings(GameSettings settings);
 }
 
 /// Bellekte duran kayıt; testler ve kaydın açılamadığı durumlar için.
@@ -27,6 +32,7 @@ class MemorySaveStore implements SaveStore {
   Map<String, Object?>? _current;
   final List<LifeRecord> _album = [];
   Map<String, AchievementProgress> _achievements = const {};
+  GameSettings _settings = GameSettings.defaults;
 
   @override
   Future<Map<String, dynamic>?> loadCurrentLife() async =>
@@ -53,4 +59,9 @@ class MemorySaveStore implements SaveStore {
   Future<void> saveAchievements(
     Map<String, AchievementProgress> progress,
   ) async => _achievements = Map.unmodifiable(progress);
+  @override
+  Future<GameSettings> loadSettings() async => _settings;
+  @override
+  Future<void> saveSettings(GameSettings settings) async =>
+      _settings = settings;
 }

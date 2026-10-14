@@ -7,6 +7,7 @@ import '../../l10n/generated/app_localizations.dart';
 import '../../models/models.dart';
 import '../l10n_names.dart';
 import '../providers.dart';
+import 'settings_screen.dart';
 import '../portrait/portrait.dart';
 import '../portrait/portrait_spec.dart';
 import '../widgets/life_status.dart';
@@ -66,7 +67,10 @@ class _YearScreenState extends ConsumerState<YearScreen> {
             ),
           ],
         ),
-        actions: [AssetsButton(engine: engine)],
+        actions: [
+          AssetsButton(engine: engine),
+          SettingsScreen.button(context),
+        ],
       ),
       body: SafeArea(
         child: Column(

@@ -290,6 +290,24 @@ class AppLocalizationsTr extends AppLocalizations {
   String get rebirthButton => 'Yeniden doğ';
 
   @override
+  String get settingsTitle => 'Ayarlar';
+
+  @override
+  String get settingsSound => 'Ses';
+
+  @override
+  String get settingsSoundHint => 'Kart, zar, terfi, rozet ve veda sesleri';
+
+  @override
+  String get settingsHaptics => 'Titreşim';
+
+  @override
+  String get settingsHapticsHint => 'Kart kaydırırken ve önemli anlarda';
+
+  @override
+  String get settingsLicenses => 'Lisanslar';
+
+  @override
   String deathNetWorth(String amount) {
     return 'Net servet: $amount';
   }

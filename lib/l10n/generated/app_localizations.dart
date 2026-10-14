@@ -538,6 +538,42 @@ abstract class AppLocalizations {
   /// **'Yeniden doğ'**
   String get rebirthButton;
 
+  /// No description provided for @settingsTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ayarlar'**
+  String get settingsTitle;
+
+  /// No description provided for @settingsSound.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ses'**
+  String get settingsSound;
+
+  /// No description provided for @settingsSoundHint.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kart, zar, terfi, rozet ve veda sesleri'**
+  String get settingsSoundHint;
+
+  /// No description provided for @settingsHaptics.
+  ///
+  /// In tr, this message translates to:
+  /// **'Titreşim'**
+  String get settingsHaptics;
+
+  /// No description provided for @settingsHapticsHint.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kart kaydırırken ve önemli anlarda'**
+  String get settingsHapticsHint;
+
+  /// No description provided for @settingsLicenses.
+  ///
+  /// In tr, this message translates to:
+  /// **'Lisanslar'**
+  String get settingsLicenses;
+
   /// No description provided for @deathNetWorth.
   ///
   /// In tr, this message translates to:
