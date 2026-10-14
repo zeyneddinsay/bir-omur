@@ -128,7 +128,7 @@ Adımlar:
 
 - [x] Hassas kart taraması: kırmızı çizgilere göre 150 kart; card_lint'e incelenecek kelime denetimi
 - [x] Uygulama ikonu ve açılış ekranı: portre yüzlü ikon (`tools/app_icon`, elle çalıştırılır), Android uyarlanabilir ikon, kâğıt rengi açılış
-- [ ] Android release imzası (anahtar ve şifreler depoya girmez)
+- [x] Android release imzası: `android/key.properties` (depoya girmez), yoksa debug imzası; anahtar oluşturma ve yedek `docs/RELEASE.md`
 - [ ] iOS dSYM yükleme betiği (Mac'te kullanıcı ekler)
 - [ ] Gizlilik politikası taslağı; Play Data safety ve App Store gizlilik etiketi cevapları
 

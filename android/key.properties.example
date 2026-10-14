@@ -1,0 +1,7 @@
+# Bu dosyayı key.properties adıyla kopyala ve değerleri doldur.
+# key.properties ve .jks dosyası depoya GİRMEZ (android/.gitignore).
+# storeFile, android/ klasörüne göredir.
+storeFile=../../biromur-keys/upload-keystore.jks
+storePassword=
+keyAlias=upload
+keyPassword=
