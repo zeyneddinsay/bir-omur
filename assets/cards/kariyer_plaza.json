@@ -77,5 +77,223 @@
       "label": "Önce ben giderim",
       "effects": { "money": 100000, "happiness": 4, "career": { "quit": true } }
     }
+  },
+  {
+    "id": "acik_ofis",
+    "stage": "genc",
+    "minAge": 22,
+    "maxAge": 64,
+    "once": true,
+    "conditions": {
+      "career": "plaza"
+    },
+    "text": "Açık ofise geçildi. Masan yazıcının, kahve makinesinin ve sürekli telefonda olan satış ekibinin tam ortasında.",
+    "left": {
+      "label": "Kulaklık takarım",
+      "effects": {
+        "happiness": -2,
+        "knowledge": 1
+      }
+    },
+    "right": {
+      "label": "Yer değişikliği isterim",
+      "roll": {
+        "stat": "reputation",
+        "threshold": 50
+      },
+      "success": {
+        "happiness": 4
+      },
+      "fail": {
+        "reputation": -2,
+        "happiness": -1
+      }
+    }
+  },
+  {
+    "id": "takim_ruhu",
+    "stage": "genc",
+    "minAge": 22,
+    "maxAge": 64,
+    "cooldown": 4,
+    "conditions": {
+      "career": "plaza"
+    },
+    "speaker": "ik_uzmani",
+    "text": "Şirket takım ruhu için hafta sonu doğa yürüyüşü düzenledi. Katılım 'gönüllü ama herkes geliyor'.",
+    "left": {
+      "label": "Katılırım",
+      "effects": {
+        "reputation": 3,
+        "health": 2,
+        "family": -2
+      }
+    },
+    "right": {
+      "label": "Ailem bekliyor",
+      "effects": {
+        "family": 3,
+        "reputation": -3
+      }
+    }
+  },
+  {
+    "id": "genc_mudur",
+    "stage": "genc",
+    "minAge": 26,
+    "maxAge": 64,
+    "once": true,
+    "conditions": {
+      "career": "plaza",
+      "minTier": 2
+    },
+    "speaker": "mudur",
+    "text": "Yeni müdürün senden genç. İlk toplantıda 'Ben de sizin gibi stajyerdim' dedi. Geçen yıl.",
+    "left": {
+      "label": "Destek olurum",
+      "effects": {
+        "reputation": 3,
+        "happiness": -1
+      }
+    },
+    "right": {
+      "label": "İlanlara bakarım",
+      "effects": {
+        "happiness": 2,
+        "reputation": -2
+      }
+    }
+  },
+  {
+    "id": "prim_aciklandi",
+    "stage": "genc",
+    "minAge": 24,
+    "maxAge": 64,
+    "cooldown": 3,
+    "conditions": {
+      "career": "plaza",
+      "minTier": 2
+    },
+    "text": "Primler açıklandı. Herkes 'beklentimin altında' diyor, ama kimse rakam söylemiyor.",
+    "left": {
+      "label": "Kenara koyarım",
+      "effects": {
+        "money": 50000
+      }
+    },
+    "right": {
+      "label": "Kendime bir hediye",
+      "effects": {
+        "money": 20000,
+        "happiness": 6
+      }
+    }
+  },
+  {
+    "id": "rakip_teklif",
+    "stage": "genc",
+    "minAge": 26,
+    "maxAge": 60,
+    "once": true,
+    "conditions": {
+      "career": "plaza",
+      "minTier": 2
+    },
+    "text": "Rakip şirketten aradılar: 'Bizde bir üst pozisyon var.' Maaş da iyi, kahve makinesi de daha iyi.",
+    "left": {
+      "label": "Burada kalırım",
+      "effects": {
+        "reputation": 3,
+        "happiness": -1
+      }
+    },
+    "right": {
+      "label": "Geçerim",
+      "effects": {
+        "happiness": 4,
+        "reputation": -2,
+        "career": {
+          "promote": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "pazar_aksami",
+    "stage": "genc",
+    "minAge": 24,
+    "maxAge": 64,
+    "cooldown": 5,
+    "conditions": {
+      "career": "plaza"
+    },
+    "text": "Pazar akşamı midende bir ağrı. Pazartesi toplantısını düşündükçe artıyor.",
+    "left": {
+      "label": "Birkaç gün izin",
+      "effects": {
+        "health": 4,
+        "happiness": 3,
+        "reputation": -2
+      }
+    },
+    "right": {
+      "label": "Dişimi sıkarım",
+      "effects": {
+        "health": -4,
+        "reputation": 3
+      }
+    }
+  },
+  {
+    "id": "ofis_pastasi",
+    "stage": "genc",
+    "minAge": 22,
+    "maxAge": 64,
+    "cooldown": 4,
+    "conditions": {
+      "career": "plaza"
+    },
+    "text": "Ofiste doğum günü pastası kesildi. Kimin doğum günü olduğunu kimse tam bilmiyor, ama herkes mutlu.",
+    "left": {
+      "label": "Bir dilim alırım",
+      "effects": {
+        "happiness": 3,
+        "reputation": 1,
+        "health": -1
+      }
+    },
+    "right": {
+      "label": "Diyetteyim",
+      "effects": {
+        "health": 1,
+        "reputation": -1
+      }
+    }
+  },
+  {
+    "id": "evden_calisma",
+    "stage": "genc",
+    "minAge": 22,
+    "maxAge": 64,
+    "once": true,
+    "conditions": {
+      "career": "plaza"
+    },
+    "text": "Şirket haftada iki gün evden çalışmaya izin verdi. Buna en çok kedin sevindi, en az patronun.",
+    "left": {
+      "label": "Evden çalışırım",
+      "effects": {
+        "happiness": 4,
+        "family": 3,
+        "reputation": -2
+      }
+    },
+    "right": {
+      "label": "Ofise giderim",
+      "effects": {
+        "reputation": 3,
+        "happiness": -1
+      }
+    }
   }
 ]
