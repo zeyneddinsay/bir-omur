@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 
 import '../../l10n/generated/app_localizations.dart';
 import '../../models/models.dart';
+import '../portrait/portrait.dart';
+import '../portrait/portrait_spec.dart';
 
 /// Sola, sağa ya da (varsa) yukarı kaydırılan olay kartı. Kaydırmak
 /// istemeyenler için altında seçenek düğmeleri de vardır.
@@ -14,10 +16,14 @@ class SwipeCard extends StatefulWidget {
     required this.onChoose,
     this.onLean,
     this.speakerName,
+    this.portrait,
   });
 
   final EventCard card;
   final String? speakerName;
+
+  /// Kartın üstündeki portre.
+  final PortraitSpec? portrait;
   final ValueChanged<ChoiceSide> onChoose;
 
   /// Kart bir seçeneğe doğru eğildiğinde (ya da geri döndüğünde null).
@@ -127,6 +133,7 @@ class _SwipeCardState extends State<SwipeCard>
                     child: _CardFace(
                       card: card,
                       speakerName: widget.speakerName,
+                      portrait: widget.portrait,
                       lean: _lean,
                       compact: constraints.maxHeight < 300,
                     ),
@@ -188,6 +195,7 @@ class _CardFace extends StatelessWidget {
     required this.lean,
     required this.compact,
     this.speakerName,
+    this.portrait,
   });
 
   final EventCard card;
@@ -196,6 +204,9 @@ class _CardFace extends StatelessWidget {
 
   /// Küçük ekranda portre gizlenir, yer metne kalır.
   final bool compact;
+
+  /// Konuşmacının (yoksa oyuncunun) portresi.
+  final PortraitSpec? portrait;
 
   @override
   Widget build(BuildContext context) {
@@ -265,15 +276,8 @@ class _CardFace extends StatelessWidget {
                   children: [
                     SizedBox(height: 28, child: leanText),
                     const SizedBox(height: 8),
-                    CircleAvatar(
-                      radius: 30,
-                      backgroundColor: scheme.primaryContainer,
-                      child: Icon(
-                        Icons.person,
-                        size: 34,
-                        color: scheme.onPrimaryContainer,
-                      ),
-                    ),
+                    if (portrait case final spec?)
+                      Portrait(spec: spec, size: 72),
                     if (speaker != null) ...[
                       const SizedBox(height: 8),
                       speaker,

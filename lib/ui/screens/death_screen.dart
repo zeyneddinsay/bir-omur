@@ -5,6 +5,8 @@ import '../../content/content_loader.dart';
 import '../../engine/engine.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../l10n_names.dart';
+import '../portrait/portrait.dart';
+import '../portrait/portrait_spec.dart';
 import '../providers.dart';
 import '../share/share_preview_screen.dart';
 import '../widgets/life_status.dart';
@@ -38,6 +40,11 @@ class DeathScreen extends ConsumerWidget {
                   padding: const EdgeInsets.all(24),
                   child: Column(
                     children: [
+                      Portrait(
+                        spec: PortraitDesigner.forCharacter(c),
+                        size: 96,
+                      ),
+                      const SizedBox(height: 12),
                       Text(
                         l10n.deathTitle(c.name),
                         key: const Key('death_name'),

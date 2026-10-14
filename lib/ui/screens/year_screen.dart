@@ -7,6 +7,8 @@ import '../../l10n/generated/app_localizations.dart';
 import '../../models/models.dart';
 import '../l10n_names.dart';
 import '../providers.dart';
+import '../portrait/portrait.dart';
+import '../portrait/portrait_spec.dart';
 import '../widgets/life_status.dart';
 import '../widgets/stats_bar.dart';
 import '../widgets/swipe_card.dart';
@@ -43,6 +45,13 @@ class _YearScreenState extends ConsumerState<YearScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        leading: Padding(
+          padding: const EdgeInsets.all(8),
+          child: Portrait(
+            key: const Key('player_portrait'),
+            spec: PortraitDesigner.forCharacter(c),
+          ),
+        ),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -116,6 +125,13 @@ class _YearScreenState extends ConsumerState<YearScreen> {
             key: ValueKey('${state.character.age}-${card.id}'),
             card: card,
             speakerName: widget.registry.speakers[card.speaker],
+            portrait: switch (card.speaker) {
+              final id? => PortraitDesigner.forSpeaker(
+                id,
+                playerAge: state.character.age,
+              ),
+              null => PortraitDesigner.forCharacter(state.character),
+            },
             onLean: (side) => setState(() => _lean = side),
             onChoose: (side) {
               setState(() => _lean = null);

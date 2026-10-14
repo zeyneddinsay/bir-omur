@@ -7,6 +7,8 @@ import '../../engine/life_record.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../models/models.dart';
 import '../l10n_names.dart';
+import '../portrait/portrait.dart';
+import '../portrait/portrait_spec.dart';
 import '../providers.dart';
 
 /// Hayat Albümü: biten hayatlar ve hayatlar boyunca biriken rozetler.
@@ -76,7 +78,15 @@ class _LivesTab extends ConsumerWidget {
             : l10n.jobTier(career.name, career.tier(life.careerTier!).name);
         return ListTile(
           key: Key('album_life_$i'),
-          leading: CircleAvatar(child: Text(life.name.characters.first)),
+          leading: Portrait(
+            size: 48,
+            spec: PortraitDesigner.forPerson(
+              name: life.name,
+              hometown: life.hometown,
+              gender: Gender.fromId(life.gender) ?? Gender.erkek,
+              age: life.deathAge,
+            ),
+          ),
           title: Text(life.name),
           subtitle: Text(
             [
