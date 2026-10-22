@@ -7,7 +7,11 @@ import 'turkish.dart';
 /// - `{kisi.hitap.abi}` (abi/abla), `.evlat`, `.amca`, `.bey`
 /// - `{kisi.akraba}`: oyuncunun ağzından akrabalık ("deden", "babaannen",
 ///   "dayın"); akraba değilse adı
-/// - `{oyuncu.ad}`
+/// - `{oyuncu.ad}`, `{oyuncu.hitap.evlat}` (büyüğün oyuncuya "oğlum/kızım"
+///   demesi), `{oyuncu.hitap.abi}` (küçüğün oyuncuya "abi/abla" demesi)
+///
+/// Kişinin hitabı (`{kisi.hitap.abi}`) kişinin cinsiyetine, oyuncununki
+/// oyuncunun cinsiyetine göre kurulur.
 ///
 /// Ekler `{kisi.ad|e}` gibi eklenir (bkz. [renderTemplate]).
 abstract final class PersonText {
@@ -18,6 +22,7 @@ abstract final class PersonText {
     'kisi.akraba',
     'oyuncu.ad',
     for (final a in Address.values) 'kisi.hitap.${a.key}',
+    for (final a in Address.values) 'oyuncu.hitap.${a.key}',
   };
 
   /// Oyuncunun ağzından akrabalık sözcüğü (iyelik ekiyle). Akraba değilse
@@ -26,7 +31,11 @@ abstract final class PersonText {
     null => null,
     Kinship.anne => 'annen',
     Kinship.baba => 'baban',
-    Kinship.kardes => 'kardeşin',
+    Kinship.kardes => switch ((p.bornAt < 0, p.gender)) {
+      (true, Gender.kadin) => 'ablan',
+      (true, Gender.erkek) => 'ağabeyin',
+      _ => 'kardeşin',
+    },
     Kinship.dede => 'deden',
     Kinship.nine => p.side == Side.anne ? 'anneannen' : 'babaannen',
     Kinship.amca => 'amcan',
@@ -59,13 +68,17 @@ abstract final class PersonText {
           ? TemplateValue(p.name)
           : TemplateValue(word, proper: false);
     }
-    const prefix = 'kisi.hitap.';
-    if (path.startsWith(prefix)) {
-      final address = Address.fromKey(path.substring(prefix.length));
-      if (address == null) return null;
-      return TemplateValue(address.forGender(p.gender), proper: false);
-    }
-    return null;
+    return addressOf(path, 'kisi', p.gender) ??
+        addressOf(path, EventCard.playerSlot, c.gender);
+  }
+
+  /// `{<yuva>.hitap.<hitap>}` yolunu verilen cinsiyete göre kurar.
+  static TemplateValue? addressOf(String path, String slot, Gender gender) {
+    final prefix = '$slot.hitap.';
+    if (!path.startsWith(prefix)) return null;
+    final address = Address.fromKey(path.substring(prefix.length));
+    if (address == null) return null;
+    return TemplateValue(address.forGender(gender), proper: false);
   }
 
   /// Şablonu kişiye ve oyuncuya göre kurar; ilk harf büyük yazılır.

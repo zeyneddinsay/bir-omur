@@ -135,8 +135,14 @@ class LifeEngine {
   final int seed;
   final SeededRandom _random;
 
-  /// Kayıt biçimi değişirse artırılır; eski kayıtlar için dönüştürücü yazılır.
-  static const int snapshotVersion = 1;
+  /// Kayıt biçimi değişirse artırılır. Sürüm 2 (D1): kişiler, hafıza ve yeni
+  /// olay biçimi. Sürüm 1 kayıtları dönüştürülemez; eski kartlar ve kişisiz
+  /// karakter yeni sisteme taşınamaz, oyuncuya bildirilip silinir.
+  static const int snapshotVersion = 2;
+
+  /// Kayıt bu sürümle sürdürülebilir mi.
+  static bool canRestore(Map<String, dynamic> snapshot) =>
+      snapshot['version'] == snapshotVersion;
 
   late final EffectResolver _resolver = EffectResolver(
     _random,

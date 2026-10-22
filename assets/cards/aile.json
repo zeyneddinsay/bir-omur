@@ -1,0 +1,706 @@
+[
+  {
+    "id": "dukkanda_yaz",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 10,
+    "maxAge": 16,
+    "repeat": "once",
+    "conditions": { "familyProfile": ["esnaf"] },
+    "roles": {
+      "veli": { "kin": ["baba", "anne"] }
+    },
+    "speaker": "veli",
+    "text": "Yaz tatili başladı. {veli.akraba}: 'Tatil yok, dükkâna geliyorsun. Hem harçlığını çıkarırsın.'",
+    "left": {
+      "label": "Peki, gelirim",
+      "effects": {
+        "money": 1000,
+        "knowledge": 2,
+        "people": {
+          "veli": {
+            "memory": {
+              "kind": "dukkanda_yanimdaydi",
+              "label": "Yaz boyu dükkânda yanımdaydı",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Ben de tatil isterim",
+      "effects": {
+        "happiness": 4,
+        "people": {
+          "veli": {
+            "memory": {
+              "kind": "dukkana_gelmedi",
+              "label": "Dükkâna gelmeye yüz ekşitti",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "hasat_sabahi",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 9,
+    "maxAge": 16,
+    "repeat": "once",
+    "conditions": { "familyProfile": ["ciftci"] },
+    "roles": {
+      "veli": { "kin": ["baba", "anne"] }
+    },
+    "speaker": "veli",
+    "text": "Hasat zamanı. {veli.akraba} seni şafakta uyandırdı: 'Kalk, tarla beklemez.'",
+    "left": {
+      "label": "Hemen kalkarım",
+      "effects": {
+        "health": 2,
+        "happiness": -1,
+        "people": {
+          "veli": {
+            "memory": {
+              "kind": "hasatta_omuz",
+              "label": "Hasatta omuz omuza çalıştık",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Beş dakika daha...",
+      "effects": {
+        "happiness": 2,
+        "people": {
+          "veli": {
+            "memory": {
+              "kind": "hasatta_uyudu",
+              "label": "Hasat sabahı yataktan çıkmadı",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "fabrika_gezisi",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 10,
+    "maxAge": 16,
+    "repeat": "once",
+    "conditions": { "familyProfile": ["fabrikator"] },
+    "roles": {
+      "veli": { "kin": ["baba", "anne"] }
+    },
+    "speaker": "veli",
+    "text": "{veli.akraba} sana fabrikayı gezdiriyor. Ustabaşı uzaktan seslendi: 'Küçük patron geldi!'",
+    "left": {
+      "label": "Makineleri göster",
+      "effects": {
+        "knowledge": 2,
+        "people": {
+          "veli": {
+            "memory": {
+              "kind": "fabrikayi_merak",
+              "label": "Fabrikayı merakla gezdi",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Sıkıldım, gidelim",
+      "effects": {
+        "happiness": 1,
+        "people": {
+          "veli": {
+            "memory": {
+              "kind": "fabrikadan_sikildi",
+              "label": "Fabrikayı gezerken sıkıldı",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "yorgun_aksam",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 11,
+    "maxAge": 17,
+    "repeat": "once",
+    "conditions": { "familyProfile": ["yalniz"] },
+    "roles": {
+      "veli": { "kin": ["anne", "baba"] }
+    },
+    "speaker": "veli",
+    "text": "{veli.akraba} işten yorgun döndü, ayakkabılarını bile çıkarmadan koltukta uyuyakaldı.",
+    "left": {
+      "label": "Üstünü ört",
+      "effects": {
+        "people": {
+          "veli": {
+            "memory": {
+              "kind": "ustumu_ortu",
+              "label": "Yorgun düştüğümde üstümü örttü",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Sofrayı ben kurayım",
+      "effects": {
+        "knowledge": 1,
+        "people": {
+          "veli": {
+            "memory": {
+              "kind": "sofrayi_kurdu",
+              "label": "Yorgun geldiğim akşam sofrayı o kurdu",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "evin_yuku",
+    "type": "kisi",
+    "theme": "para",
+    "minAge": 16,
+    "maxAge": 18,
+    "repeat": "once",
+    "conditions": { "familyProfile": ["isci"] },
+    "roles": {
+      "veli": { "kin": ["anne", "baba"] }
+    },
+    "speaker": "veli",
+    "text": "{veli.akraba} yorgun bir sesle: 'Okul bitince bir iş bul {oyuncu.hitap.evlat}; bu ev zor dönüyor.'",
+    "left": {
+      "label": "Söz, çalışacağım",
+      "effects": {
+        "happiness": -2,
+        "people": {
+          "veli": {
+            "memory": {
+              "kind": "yuku_omuzladi",
+              "label": "Evin yükünü omuzlayacağına söz verdi",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Önce okumalıyım",
+      "effects": {
+        "knowledge": 2,
+        "people": {
+          "veli": {
+            "memory": {
+              "kind": "okumayi_secti",
+              "label": "Okumayı seçti; içim buruk kaldı",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "devlet_kapisi",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 18,
+    "maxAge": 24,
+    "repeat": "once",
+    "conditions": { "familyProfile": ["memur"], "career": "none" },
+    "roles": {
+      "veli": { "kin": ["anne", "baba"] }
+    },
+    "speaker": "veli",
+    "text": "{veli.akraba} masaya bir yığın KPSS kitabı koydu: 'Devlet kapısı gibisi yok {oyuncu.hitap.evlat}.'",
+    "left": {
+      "label": "Peki, çalışırım",
+      "effects": {
+        "knowledge": 3,
+        "people": {
+          "veli": {
+            "memory": {
+              "kind": "devlet_kapisi",
+              "label": "Devlet kapısı öğüdümü tuttu",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Ben başka yol çizerim",
+      "effects": {
+        "happiness": 2,
+        "people": {
+          "veli": {
+            "memory": {
+              "kind": "garanti_isi_begenmedi",
+              "label": "Garanti işi beğenmedi",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "anne_sitemi",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 19,
+    "maxAge": 70,
+    "repeat": { "cooldown": 4 },
+    "roles": {
+      "anne": { "kin": ["anne"], "maxCloseness": 75 }
+    },
+    "speaker": "anne",
+    "text": "{anne.akraba} aradı: 'Bir annen var, onu da aramıyorsun. Hep ben mi arayacağım {oyuncu.hitap.evlat}?'",
+    "left": {
+      "label": "Haklısın anne",
+      "effects": {
+        "happiness": 0,
+        "people": {
+          "anne": {
+            "memory": {
+              "kind": "sitemime_gonul_aldi",
+              "label": "Sitem ettim, gönlümü aldı",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Çok yoğunum anne",
+      "effects": {
+        "happiness": 1,
+        "people": {
+          "anne": {
+            "memory": {
+              "kind": "yogunum_dedi",
+              "label": "Aramadı, üstüne 'yoğunum' dedi",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "baba_ogudu",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 22,
+    "maxAge": 35,
+    "repeat": { "cooldown": 5 },
+    "roles": {
+      "baba": { "kin": ["baba"] }
+    },
+    "speaker": "baba",
+    "text": "{baba.akraba} çayını karıştırıyor: 'Bizim zamanımızda bu yaşta herkes evlenmişti.'",
+    "left": {
+      "label": "Devir değişti baba",
+      "effects": {
+        "happiness": 1,
+        "people": {
+          "baba": {
+            "memory": {
+              "kind": "ogudu_gecistirdi",
+              "label": "Öğüdümü 'devir değişti' diye geçiştirdi",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Haklısın, bakacağım",
+      "effects": {
+        "happiness": -2,
+        "people": {
+          "baba": {
+            "memory": {
+              "kind": "ogudu_dinledi",
+              "label": "Öğüdümü dinledi",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "kardes_borc",
+    "type": "kisi",
+    "theme": "para",
+    "minAge": 22,
+    "maxAge": 65,
+    "repeat": { "cooldown": 6 },
+    "conditions": { "min": { "money": 10000 } },
+    "roles": {
+      "kardes": { "kin": ["kardes"], "minAge": 20 }
+    },
+    "speaker": "kardes",
+    "text": "{kardes.akraba} çekinerek açtı konuyu: 'Ay sonuna kadar biraz para lazım, söz geri veririm.'",
+    "left": {
+      "label": "Al, dert etme",
+      "effects": {
+        "money": -10000,
+        "people": {
+          "kardes": {
+            "memory": {
+              "kind": "darda_para_verdi",
+              "label": "Darda kaldığımda bana para verdi",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        },
+        "schedule": { "event": "kardes_borc_iade", "inYears": 2, "with": ["kardes"] }
+      }
+    },
+    "right": {
+      "label": "Ben de darım şu an",
+      "effects": {
+        "people": {
+          "kardes": {
+            "memory": {
+              "kind": "borc_vermedi",
+              "label": "Borç istediğimde vermedi",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "kardes_borc_iade",
+    "type": "iplik",
+    "theme": "para",
+    "minAge": 24,
+    "maxAge": 70,
+    "repeat": { "cooldown": 1 },
+    "roles": {
+      "kardes": { "kin": ["kardes"] }
+    },
+    "speaker": "kardes",
+    "text": "{kardes.akraba} kapıda, elinde bir zarf: 'Geç oldu ama getirdim. Kusura bakma.'",
+    "left": {
+      "label": "Sağ ol",
+      "effects": { "money": 10000 }
+    },
+    "right": {
+      "label": "Sende kalsın",
+      "effects": {
+        "reputation": 1,
+        "people": {
+          "kardes": {
+            "memory": {
+              "kind": "borcu_bagisladi",
+              "label": "Borcumu bana bağışladı",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "kardes_kuslugu",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 8,
+    "maxAge": 80,
+    "repeat": { "cooldown": 5 },
+    "roles": {
+      "kardes": { "kin": ["kardes"], "minAge": 6, "minHostility": 20 }
+    },
+    "speaker": "kardes",
+    "text": "{kardes.akraba} kapıda duruyor, gözü yerde: 'Hâlâ küs müyüz?'",
+    "left": {
+      "label": "Gel buraya",
+      "effects": {
+        "happiness": 3,
+        "people": {
+          "kardes": {
+            "heal": "*",
+            "memory": {
+              "kind": "baristik",
+              "label": "Eski meseleyi gülerek kapattık",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Biraz daha küsüm",
+      "effects": {
+        "people": {
+          "kardes": {
+            "memory": {
+              "kind": "barisa_yanasmadi",
+              "label": "Barışmak istedim, yanaşmadı",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "dedenin_hikayesi",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 7,
+    "maxAge": 35,
+    "repeat": { "cooldown": 6 },
+    "roles": {
+      "dede": { "kin": ["dede"] }
+    },
+    "speaker": "dede",
+    "text": "{dede.akraba} aynı hikâyeyi yine anlatıyor: askerde kar, kurt ve tek bir kibrit.",
+    "left": {
+      "label": "Bunu biliyorum dede",
+      "effects": {
+        "happiness": 1,
+        "people": {
+          "dede": {
+            "memory": {
+              "kind": "hikayemi_kesti",
+              "label": "Hikâyemi yarıda kesti",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Sonra ne oldu?",
+      "effects": {
+        "happiness": -1,
+        "people": {
+          "dede": {
+            "memory": {
+              "kind": "hikayemi_dinledi",
+              "label": "Hikâyemi sonuna kadar dinledi",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "ninenin_sofrasi",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 5,
+    "maxAge": 40,
+    "repeat": { "cooldown": 5 },
+    "roles": {
+      "nine": { "kin": ["nine"] }
+    },
+    "speaker": "nine",
+    "text": "{nine.akraba} tabağını üçüncü kez doldurdu: 'Ne bu, kuş kadar yedin. Bir deri bir kemik kalmışsın.'",
+    "left": {
+      "label": "Patlayacağım, yeter",
+      "effects": {
+        "people": {
+          "nine": {
+            "memory": {
+              "kind": "yemegimi_birakti",
+              "label": "Yemeğimi tabakta bıraktı",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Bir tabak daha!",
+      "effects": {
+        "health": -1,
+        "happiness": 2,
+        "people": {
+          "nine": {
+            "memory": {
+              "kind": "istahla_yedi",
+              "label": "Yemeğimi iştahla yedi",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "dugunde_soru",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 23,
+    "maxAge": 35,
+    "repeat": "once",
+    "roles": {
+      "akraba": { "kin": ["amca", "hala", "dayi", "teyze"] }
+    },
+    "speaker": "akraba",
+    "text": "Bir düğünde {akraba.akraba} yanına süzüldü: 'Eee, sıra sende! Ne zaman yiyeceğiz pilavını?'",
+    "left": {
+      "label": "Kısmetse",
+      "effects": {
+        "happiness": -1,
+        "people": {
+          "akraba": {
+            "memory": {
+              "kind": "tatli_dil",
+              "label": "Soruma tatlı dille cevap verdi",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Bul o zaman bana!",
+      "effects": {
+        "happiness": 1,
+        "people": {
+          "akraba": {
+            "memory": {
+              "kind": "kismet_istedi",
+              "label": "Ona bir kısmet bulmamı istedi",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "maas_gunu",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 18,
+    "maxAge": 60,
+    "repeat": { "cooldown": 6 },
+    "conditions": { "career": "any" },
+    "roles": {
+      "veli": { "kin": ["anne", "baba"] }
+    },
+    "speaker": "veli",
+    "text": "Maaş günü. {veli.akraba} 'Bana bir şey alma sakın' diyor ama gözü vitrinde.",
+    "left": {
+      "label": "Hediye alırım",
+      "effects": {
+        "money": -3000,
+        "people": {
+          "veli": {
+            "memory": {
+              "kind": "maasla_hediye",
+              "label": "Maaşı yatınca bana hediye aldı",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Kenara koyayım",
+      "effects": { "happiness": 1 }
+    }
+  },
+  {
+    "id": "dut_agaci",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 50,
+    "maxAge": 100,
+    "repeat": { "cooldown": 7 },
+    "roles": {
+      "kardes": { "kin": ["kardes"] }
+    },
+    "speaker": "kardes",
+    "text": "{kardes.akraba} aradı: 'Eski evin avlusundaki dut ağacını hatırlıyor musun? Dün rüyamda gördüm.'",
+    "left": {
+      "label": "Her dalını",
+      "effects": {
+        "happiness": 2,
+        "people": {
+          "kardes": {
+            "memory": {
+              "kind": "eski_gunler",
+              "label": "Eski günleri andık",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Pek hatırlamıyorum",
+      "effects": {
+        "people": {
+          "kardes": {
+            "memory": {
+              "kind": "animizi_unuttu",
+              "label": "Ortak anımızı unutmuş",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  }
+]

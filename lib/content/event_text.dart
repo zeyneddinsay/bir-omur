@@ -25,7 +25,9 @@ abstract final class EventText {
     final slot = path.substring(0, dot);
     final field = path.substring(dot + 1);
     if (slot == EventCard.playerSlot) {
-      return field == 'ad' ? TemplateValue(c.name) : null;
+      return field == 'ad'
+          ? TemplateValue(c.name)
+          : PersonText.addressOf(path, EventCard.playerSlot, c.gender);
     }
     final id = bindings[slot];
     final person = id == null ? null : c.people[id];

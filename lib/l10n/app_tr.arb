@@ -23,6 +23,9 @@
   "resumeButton": "Kaldığın yerden devam et",
   "resumeOrNew": "Ya da yeni bir hayata başla; yarım kalan hayat silinir.",
   "resumeFailed": "Kayıt açılamadı. Yeni bir hayata başlayabilirsin.",
+  "outdatedSaveTitle": "Yarım kalan hayat sürdürülemiyor",
+  "outdatedSaveBody": "Bu hayat oyunun eski bir sürümünden kaldı. Bir Ömür artık insanlarla, anılarla ve yeni olaylarla işliyor; eski hayat bu düzene taşınamıyor. Albümün ve rozetlerin yerinde.",
+  "outdatedSaveDismiss": "Anladım, yeni hayata başla",
 
   "statHealth": "Sağlık",
   "statHappiness": "Mutluluk",

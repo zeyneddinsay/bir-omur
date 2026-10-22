@@ -14,6 +14,7 @@ LifeState simulateLife(
   int seed, {
   CareerBook? careers,
   FamilyBook? families,
+  void Function(LifeState state)? onStep,
 }) {
   final engine = LifeEngine(
     deck: deck,
@@ -51,6 +52,7 @@ LifeState simulateLife(
           expect(c.isAlive, isFalse);
       }
       lastAge = c.age;
+      onStep?.call(state);
     },
   );
 }

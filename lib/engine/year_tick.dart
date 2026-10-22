@@ -20,9 +20,9 @@ abstract final class EngineFlags {
 
 /// Yaşlanma: yaş 1 artar ve pasif değişimler uygulanır.
 ///
-/// Gençlikte hafif sağlık toparlanması, yaşa bağlı sağlık kaybı ve
-/// yetişkinlikte aile bağının yavaşça soğuması; itibarın ve mutluluğun
-/// ortaya kayması.
+/// Gençlikte hafif sağlık toparlanması, yaşa bağlı sağlık kaybı; itibarın
+/// ve mutluluğun ortaya kayması. Aile Bağı ailenin yakınlığından
+/// hesaplanır, burada değişmez.
 /// Gelir [CareerTick], enflasyon, kira ve kredi [EconomyTick] içindedir.
 class YearTick {
   const YearTick();

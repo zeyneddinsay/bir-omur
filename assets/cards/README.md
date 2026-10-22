@@ -63,7 +63,8 @@ motoru" bölümündedir.
 `kin` (akrabalık listesi), `roles` (süren rol), `formerRoles` (bitmiş rol), `bond`, `gender`,
 `side`, `minAge`/`maxAge` (kişinin yaşı), `minGap`/`maxGap` (oyuncudan yaş farkı),
 `minCloseness`/`maxCloseness`, `minHostility`/`maxHostility`, `traits`, `notTraits`,
-`memory`/`noMemory` (anı türü), `sameCity`, `offstage` (kişi sahnede değil, görüşme sayılmaz).
+`memory`/`noMemory` (anı türü), `sameCity`, `offstage` (kişi sahnede değil, görüşme sayılmaz),
+`deceased` (son bir yıl içinde vefat etmiş kişi; aşağıda).
 Sınırlar dahildir.
 
 Uygun kişi seçilirken yakınlığı ya da husumeti yüksek kişiler iki kat ağırlık alır. Olaya
@@ -71,9 +72,14 @@ Uygun kişi seçilirken yakınlığı ya da husumeti yüksek kişiler iki kat a�
 
 ## Metin
 
-- **Yer tutucular:** `{yuva.ad}`, `{yuva.soyad}`, `{yuva.akraba}` ("deden", "babaannen", "dayın"),
-  `{yuva.hitap.abi}` (abi/abla), `.evlat` (oğlum/kızım), `.amca` (amca/teyze), `.bey` (Bey/Hanım),
-  `{oyuncu.ad}`.
+- **Yer tutucular:** `{yuva.ad}`, `{yuva.soyad}`, `{yuva.akraba}` ("deden", "babaannen", "ablan",
+  "dayın"), `{oyuncu.ad}`.
+- **Hitaplar:** `{yuva.hitap.abi}` (abi/abla), `.evlat` (oğlum/kızım), `.amca` (amca/teyze), `.bey`
+  (Bey/Hanım) kişinin cinsiyetine göre kurulur: oyuncu ona böyle seslenir. Kişi oyuncuya
+  seslenirken `{oyuncu.hitap.evlat}` ("oğlum/kızım") ya da `{oyuncu.hitap.abi}` kullanılır; bunlar
+  oyuncunun cinsiyetine göre kurulur.
+- **Vefat yuvası:** `"deceased": true` olan yuva yalnızca son bir yıl içinde vefat etmiş kişiyle
+  eşleşir (cenaze, taziye). Sahne dışıdır; ona kişi etkisi yazılmaz.
 - **Ekler:** Ekler `{kerem.ad|e}` biçiminde yazılır: `e`, `i`, `in`, `de`, `den`, `le`. Elle yazılan
   ek (`{kerem.ad}'e`) hatadır.
 

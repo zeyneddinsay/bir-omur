@@ -538,6 +538,8 @@ class CardValidator {
           final where = '.$side.people.$slot';
           if (card.role(slot) == null) {
             error(where, '"$slot" diye bir rol yuvası yok');
+          } else if (card.role(slot)!.deceased) {
+            error(where, 'vefat etmiş kişiye etki yazılmaz');
           }
           if (change.memory case final m?) {
             if (m.kind.trim().isEmpty) error('$where.memory', 'boş anı türü');
@@ -624,8 +626,10 @@ class CardValidator {
       final slot = dot < 0 ? token.path : token.path.substring(0, dot);
       final field = dot < 0 ? '' : token.path.substring(dot + 1);
       if (slot == EventCard.playerSlot) {
-        if (field != 'ad') {
-          error(path, 'oyuncu için yalnızca {oyuncu.ad}');
+        final isAddress =
+            field.startsWith('hitap.') && slotFields.contains(field);
+        if (field != 'ad' && !isAddress) {
+          error(path, 'oyuncu için yalnızca {oyuncu.ad} ve {oyuncu.hitap.…}');
           valid = false;
         }
       } else if (card.role(slot) == null) {

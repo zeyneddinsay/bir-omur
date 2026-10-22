@@ -215,6 +215,12 @@ class LifeController extends Notifier<LifeState?> {
 
   void advanceYear() => _update(engine.advanceYear());
 
+  /// Sürdürülemeyen (eski sürüm) yarım hayat kaydını siler.
+  void discardSavedLife() {
+    _write(_store.clearCurrentLife);
+    ref.invalidate(savedLifeProvider);
+  }
+
   /// Doğum ekranına döner; yarım hayat kaydı silinir.
   void reset() {
     _engine = null;

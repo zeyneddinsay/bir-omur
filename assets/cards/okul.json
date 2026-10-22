@@ -1,0 +1,461 @@
+[
+  {
+    "id": "teneffus_not",
+    "type": "kisi",
+    "theme": "okul",
+    "minAge": 11,
+    "maxAge": 14,
+    "repeat": "once",
+    "roles": {
+      "kerem": { "roles": ["sinifArkadasi"], "minGap": -1, "maxGap": 1 }
+    },
+    "speaker": "kerem",
+    "text": "Teneffüs. {kerem.ad}, sıra arkadaşına yazdığın notu buldu ve sınıfa okuyor.",
+    "left": {
+      "label": "Ver onu bana!",
+      "effects": {
+        "reputation": 3,
+        "people": {
+          "kerem": {
+            "memory": {
+              "kind": "rezil_etti",
+              "label": "Sınıfın ortasında üstüme yürüdü",
+              "tone": "olumsuz",
+              "severity": 2
+            }
+          }
+        }
+      }
+    },
+    "right": { "label": "Gülüp geçerim", "effects": { "happiness": -2 } }
+  },
+  {
+    "id": "karne_zayif",
+    "type": "kisi",
+    "theme": "okul",
+    "minAge": 10,
+    "maxAge": 17,
+    "repeat": { "cooldown": 3 },
+    "conditions": { "max": { "knowledge": 20 } },
+    "roles": {
+      "veli": { "kin": ["anne", "baba"] }
+    },
+    "speaker": "veli",
+    "text": "Karnede bir zayıf var. {veli.akraba} gözlüğünü taktı, karneyi ışığa tutup uzun uzun baktı.",
+    "left": {
+      "label": "Öğretmen bana takık",
+      "effects": {
+        "people": {
+          "veli": {
+            "memory": {
+              "kind": "zayifi_ogretmene_yikti",
+              "label": "Zayıfı öğretmenine yıktı",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Bu dönem çalışacağım",
+      "effects": {
+        "knowledge": 3,
+        "happiness": -2,
+        "people": {
+          "veli": {
+            "memory": {
+              "kind": "zayifi_ustlendi",
+              "label": "Zayıfın sorumluluğunu üstlendi",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "karne_takdir",
+    "type": "kisi",
+    "theme": "okul",
+    "minAge": 11,
+    "maxAge": 17,
+    "repeat": { "cooldown": 3 },
+    "conditions": { "min": { "knowledge": 40 } },
+    "roles": {
+      "veli": { "kin": ["anne", "baba"] }
+    },
+    "speaker": "veli",
+    "text": "Takdir belgesi! {veli.akraba} bütün akrabaları tek tek arıyor, telefon elden ele dolaşıyor.",
+    "left": {
+      "label": "Yapma, utanıyorum",
+      "effects": { "happiness": 2 }
+    },
+    "right": {
+      "label": "Ben de konuşayım!",
+      "effects": {
+        "reputation": 2,
+        "people": {
+          "veli": {
+            "memory": {
+              "kind": "takdir_gururu",
+              "label": "Takdir aldığı gün beni gururlandırdı",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "kopya",
+    "type": "kisi",
+    "theme": "okul",
+    "minAge": 11,
+    "maxAge": 18,
+    "repeat": "once",
+    "roles": {
+      "arkadas": { "roles": ["sinifArkadasi"], "minGap": -1, "maxGap": 1 }
+    },
+    "speaker": "arkadas",
+    "text": "Sınavda {arkadas.ad} fısıldıyor: 'Kâğıdını biraz yana çek, ne olur.' Öğretmen pencereden dışarı bakıyor.",
+    "left": {
+      "label": "Kâğıdı kaydır",
+      "effects": {
+        "people": {
+          "arkadas": {
+            "memory": {
+              "kind": "kopya_verdi",
+              "label": "Sınavda kâğıdını bana gösterdi",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      },
+      "roll": { "stat": "luck", "threshold": 50 },
+      "success": { "happiness": 1 },
+      "fail": { "reputation": -4, "happiness": -3 }
+    },
+    "right": {
+      "label": "Olmaz, yakalanırız",
+      "effects": {
+        "people": {
+          "arkadas": {
+            "memory": {
+              "kind": "kopya_vermedi",
+              "label": "Sınavda kâğıdını göstermedi",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "tahtaya_kalkmak",
+    "type": "kisi",
+    "theme": "okul",
+    "minAge": 8,
+    "maxAge": 18,
+    "repeat": { "cooldown": 4 },
+    "roles": {
+      "ogretmen": { "roles": ["ogretmen"] }
+    },
+    "speaker": "ogretmen",
+    "text": "{ogretmen.ad} {ogretmen.hitap.bey} seni tahtaya kaldırdı. Soru tahtada, sınıf nefesini tutmuş bekliyor.",
+    "left": {
+      "label": "Bildiğim kadar",
+      "roll": { "stat": "knowledge", "threshold": 50 },
+      "success": {
+        "knowledge": 2,
+        "reputation": 2,
+        "people": {
+          "ogretmen": {
+            "memory": {
+              "kind": "tahtada_cozdu",
+              "label": "Tahtadaki soruyu güzel çözdü",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "fail": { "happiness": -2 }
+    },
+    "right": {
+      "label": "Bilmiyorum öğretmenim",
+      "effects": {
+        "knowledge": 1,
+        "people": {
+          "ogretmen": {
+            "memory": {
+              "kind": "durust_cevap",
+              "label": "Bilmediğini dürüstçe söyledi",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "kirik_cam",
+    "type": "kisi",
+    "theme": "mahalle",
+    "minAge": 8,
+    "maxAge": 13,
+    "repeat": "once",
+    "roles": {
+      "arkadas": {
+        "roles": ["sinifArkadasi", "siraArkadasi"],
+        "minGap": -1,
+        "maxGap": 1,
+        "sameCity": true
+      }
+    },
+    "speaker": "arkadas",
+    "text": "Mahalle maçı. {arkadas.ad} topu cama gönderdi. Camın sahibi balkona çıktı: 'Kim attı bunu?'",
+    "left": {
+      "label": "Hep beraber kaçalım!",
+      "effects": {
+        "reputation": -2,
+        "people": {
+          "arkadas": {
+            "memory": {
+              "kind": "birlikte_kactik",
+              "label": "Cam kırılınca birlikte kaçtık",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Onu gösteririm",
+      "effects": {
+        "reputation": 1,
+        "people": {
+          "arkadas": {
+            "memory": {
+              "kind": "ele_verdi",
+              "label": "Cam kırılınca beni ele verdi",
+              "tone": "olumsuz",
+              "severity": 2
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "dogum_gunu_daveti",
+    "type": "kisi",
+    "theme": "okul",
+    "minAge": 8,
+    "maxAge": 15,
+    "repeat": { "cooldown": 3 },
+    "conditions": { "max": { "money": 500 } },
+    "roles": {
+      "arkadas": {
+        "roles": ["sinifArkadasi", "siraArkadasi"],
+        "minGap": -1,
+        "maxGap": 1,
+        "minCloseness": 20
+      }
+    },
+    "speaker": "arkadas",
+    "text": "{arkadas.ad} doğum gününe çağırdı. Hediye alacak paran yok ama bir makasın, bir de yapıştırıcın var.",
+    "left": {
+      "label": "Kendi elimle yaparım",
+      "effects": {
+        "happiness": 2,
+        "people": {
+          "arkadas": {
+            "memory": {
+              "kind": "el_yapimi_hediye",
+              "label": "Doğum günüme kendi eliyle hediye yaptı",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Gitmesem de olur",
+      "effects": {
+        "people": {
+          "arkadas": {
+            "memory": {
+              "kind": "dogum_gunume_gelmedi",
+              "label": "Doğum günüme gelmedi",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "koridorda_omuz",
+    "type": "kisi",
+    "theme": "okul",
+    "minAge": 12,
+    "maxAge": 18,
+    "repeat": { "cooldown": 3 },
+    "roles": {
+      "rakip": { "roles": ["sinifArkadasi"], "minHostility": 30 }
+    },
+    "speaker": "rakip",
+    "text": "{rakip.ad} koridorda omzuna çarptı, arkadaşları kıkırdıyor: 'Pardon, görmedim.'",
+    "left": {
+      "label": "Görmedin tabii!",
+      "effects": {
+        "reputation": 2,
+        "people": {
+          "rakip": {
+            "memory": {
+              "kind": "kafa_tuttu",
+              "label": "Koridorda bana kafa tuttu",
+              "tone": "olumsuz",
+              "severity": 2
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Boş ver, geç",
+      "effects": { "happiness": -2 }
+    }
+  },
+  {
+    "id": "ilk_telefon",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 11,
+    "maxAge": 14,
+    "repeat": "once",
+    "conditions": {
+      "familyProfile": ["esnaf", "memur", "isci", "ciftci", "yalniz"]
+    },
+    "roles": {
+      "veli": { "kin": ["anne", "baba"] }
+    },
+    "speaker": "veli",
+    "text": "Sınıfta telefonu olmayan bir sen kaldın. {veli.akraba} derin bir nefes aldı: 'Bizim zamanımızda...'",
+    "left": {
+      "label": "Tamam, beklerim",
+      "effects": {
+        "happiness": -2,
+        "people": {
+          "veli": {
+            "memory": {
+              "kind": "telefona_anlayis",
+              "label": "Telefon için tutturmadı, anlayış gösterdi",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Ama herkeste var!",
+      "roll": { "stat": "luck", "threshold": 50 },
+      "success": { "happiness": 5 },
+      "fail": {
+        "happiness": -3,
+        "people": {
+          "veli": {
+            "memory": {
+              "kind": "telefon_icin_tutturdu",
+              "label": "Telefon için evi ayağa kaldırdı",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "dershane",
+    "type": "kisi",
+    "theme": "okul",
+    "minAge": 16,
+    "maxAge": 17,
+    "repeat": "once",
+    "conditions": {
+      "familyProfile": ["esnaf", "memur", "isci", "ciftci", "yalniz"]
+    },
+    "roles": {
+      "veli": { "kin": ["anne", "baba"] }
+    },
+    "speaker": "veli",
+    "text": "{veli.akraba} masaya bir broşür bıraktı: 'Dershane pahalı ama gerekirse borç ederiz.'",
+    "left": {
+      "label": "Evde çalışırım",
+      "effects": {
+        "knowledge": 3,
+        "people": {
+          "veli": {
+            "memory": {
+              "kind": "masraf_cikarmadi",
+              "label": "Bize masraf çıkarmadı",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Gideyim",
+      "effects": { "knowledge": 6, "happiness": -2 }
+    }
+  },
+  {
+    "id": "sinema_parasi",
+    "type": "kisi",
+    "theme": "para",
+    "minAge": 11,
+    "maxAge": 17,
+    "repeat": { "cooldown": 3 },
+    "conditions": {
+      "familyProfile": ["esnaf", "memur", "isci", "ciftci", "yalniz"]
+    },
+    "roles": {
+      "veli": { "kin": ["anne", "baba"] }
+    },
+    "speaker": "veli",
+    "text": "Arkadaşlar cumartesi sinemaya gidiyor. {veli.akraba} cüzdanını açtı; bir cüzdana baktı, bir sana.",
+    "left": {
+      "label": "Boş ver, gitmem",
+      "effects": {
+        "happiness": -2,
+        "people": {
+          "veli": {
+            "memory": {
+              "kind": "halimizi_anladi",
+              "label": "Halimizi anladı, üstelemedi",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Lütfen, bu seferlik",
+      "effects": { "happiness": 3 }
+    }
+  }
+]

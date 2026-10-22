@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:bir_omur/content/event_text.dart';
 import 'package:bir_omur/content/interaction_validator.dart';
 import 'package:bir_omur/content/person_text.dart';
 import 'package:bir_omur/content/turkish.dart';
@@ -802,6 +803,43 @@ void main() {
       expect(
         PersonText.render('{kisi.akraba|e} sordun.', friend, player),
         "Ayşe'ye sordun.",
+      );
+    });
+
+    test('büyük kardeş abla ya da ağabey, küçüğü kardeş', () {
+      Person sibling(Gender gender, int bornAt) => Person.fromJson({
+        ..._person(kin: Kinship.kardes, gender: gender).toJson(),
+        'bornAt': bornAt,
+      });
+      expect(PersonText.kinWord(sibling(Gender.kadin, -3)), 'ablan');
+      expect(PersonText.kinWord(sibling(Gender.erkek, -3)), 'ağabeyin');
+      expect(PersonText.kinWord(sibling(Gender.kadin, 2)), 'kardeşin');
+      expect(PersonText.kinWord(sibling(Gender.erkek, 0)), 'kardeşin');
+    });
+
+    test('oyuncunun hitabı oyuncunun, kişininki kişinin cinsiyetine göre', () {
+      final daughter = testCharacter(gender: Gender.kadin);
+      final mother = _person(kin: Kinship.anne, gender: Gender.kadin);
+      expect(
+        PersonText.render(
+          "{kisi.akraba}: 'Gel {oyuncu.hitap.evlat}.'",
+          mother,
+          daughter,
+        ),
+        "Annen: 'Gel kızım.'",
+      );
+      final son = testCharacter(gender: Gender.erkek);
+      expect(
+        PersonText.render('{oyuncu.hitap.evlat}, {kisi.hitap.abi}', mother, son),
+        'Oğlum, abla',
+      );
+      expect(
+        EventText.render(
+          "Bir amca: 'Gül Sokak nerede {oyuncu.hitap.evlat}?'",
+          const {},
+          daughter,
+        ),
+        "Bir amca: 'Gül Sokak nerede kızım?'",
       );
     });
 

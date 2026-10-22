@@ -183,10 +183,19 @@ void main() {
     test('bilinmeyen kayıt sürümü reddedilir', () {
       final engine = LifeEngine(deck: EventDeck([]), seed: 1)..startLife();
       final snapshot = _throughJson(engine.toSnapshot())..['version'] = 99;
+      expect(LifeEngine.canRestore(snapshot), isFalse);
       expect(
         () => LifeEngine.restore(deck: EventDeck([]), snapshot: snapshot),
         throwsFormatException,
       );
+    });
+
+    test('sürüm 2: D1 öncesi (sürüm 1) kayıt sürdürülemez', () {
+      final engine = LifeEngine(deck: EventDeck([]), seed: 1)..startLife();
+      final snapshot = _throughJson(engine.toSnapshot());
+      expect(snapshot['version'], 2);
+      expect(LifeEngine.canRestore(snapshot), isTrue);
+      expect(LifeEngine.canRestore({...snapshot, 'version': 1}), isFalse);
     });
   });
 }

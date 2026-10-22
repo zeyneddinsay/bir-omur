@@ -68,6 +68,16 @@ class AppLocalizationsTr extends AppLocalizations {
       'Kayıt açılamadı. Yeni bir hayata başlayabilirsin.';
 
   @override
+  String get outdatedSaveTitle => 'Yarım kalan hayat sürdürülemiyor';
+
+  @override
+  String get outdatedSaveBody =>
+      'Bu hayat oyunun eski bir sürümünden kaldı. Bir Ömür artık insanlarla, anılarla ve yeni olaylarla işliyor; eski hayat bu düzene taşınamıyor. Albümün ve rozetlerin yerinde.';
+
+  @override
+  String get outdatedSaveDismiss => 'Anladım, yeni hayata başla';
+
+  @override
   String get statHealth => 'Sağlık';
 
   @override

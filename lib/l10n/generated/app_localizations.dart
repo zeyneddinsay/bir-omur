@@ -196,6 +196,24 @@ abstract class AppLocalizations {
   /// **'Kayıt açılamadı. Yeni bir hayata başlayabilirsin.'**
   String get resumeFailed;
 
+  /// No description provided for @outdatedSaveTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yarım kalan hayat sürdürülemiyor'**
+  String get outdatedSaveTitle;
+
+  /// No description provided for @outdatedSaveBody.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu hayat oyunun eski bir sürümünden kaldı. Bir Ömür artık insanlarla, anılarla ve yeni olaylarla işliyor; eski hayat bu düzene taşınamıyor. Albümün ve rozetlerin yerinde.'**
+  String get outdatedSaveBody;
+
+  /// No description provided for @outdatedSaveDismiss.
+  ///
+  /// In tr, this message translates to:
+  /// **'Anladım, yeni hayata başla'**
+  String get outdatedSaveDismiss;
+
   /// No description provided for @statHealth.
   ///
   /// In tr, this message translates to:

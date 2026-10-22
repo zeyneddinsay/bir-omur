@@ -145,8 +145,8 @@ D1 adımları (kişiler ve İnsanlar sekmesi):
 - [x] Vakit puanı: `ActionCatalog.timeFor`, aksiyonların vakit bedeli (`timeCost`)
 - [x] Etkileşimler ve Ara sohbeti: `lib/engine/interactions.dart`, metinler `assets/interactions.json` (yükleyici denetler), `lib/content/person_text.dart`
 - [x] Yeni olay formatı ve card_lint; eski kartlar silindi (şema `assets/cards/README.md`). Eski kartlara bağlı üç rozet (Dipten döndü, Akrabayla iş olur mu, Dört kuşak) geçici olarak kaldırıldı; D3, D4a ve D4b'de yeni sistemlerle dönecek. Aile Bağı artık ailenin yakınlığından hesaplanır; "Aileyle vakit", "Arkadaşlarla buluş" ve "Memleket ziyareti" aksiyonları kalktı (memleket D2'de şehirle döner).
-- [ ] D1 içeriği (yaklaşık 40 olay)
-- [ ] Kayıt sürüm 2
+- [x] D1 içeriği: 69 olay, 6 dosya (`assets/cards/`): dönemeçler (ilkokul, LGS, YKS, askerlik, cenazeler), iplikler (mezuna kalma, mezuniyet, kardeşin borcu), çocukluk, okul, aile profilleri, yetişkin aile ve mahalle. Vefat yuvası (`deceased`), `{oyuncu.hitap.evlat}` ve abla/ağabey sözcükleri eklendi. Gerçek içerikle 300 hayat testi `test/content/real_cards_test.dart`. Askerliğin bölük arkadaşları, tercih ekranı ve kadınlar için eşdeğer yol D2'de. Bekleyen içerik notları: D4b'de evlilik gelince `dugunde_soru` ve `baba_ogudu` kartlarına "evli değil" koşulu eklenmeli; `sameCity` şimdilik memlekete bakıyor, D2'de oyuncunun yaşadığı şehre bakmalı (`annenin_kaplari`, `gozum_yollarda`); D2 ekonomi ölçeğinde bedelli ve ehliyet tutarları da büyütülmeli.
+- [x] Kayıt sürüm 2: `LifeEngine.snapshotVersion = 2`, `canRestore`. Sürüm 1 kayıtları dönüştürülemez; doğum ekranı açıklayıp siler (albüm ve rozetler kalır).
 - [ ] Arayüz: sekmeli ana ekran, İnsanlar, kişi detayı, Ara akışı, yıl günlüğü
 - [ ] 300 hayat simülasyonu ve `life_report`
 - [ ] Telefonda deneme (D1 kapısı)

@@ -31,6 +31,7 @@ class RoleSlot {
     this.noMemory,
     this.sameCity,
     this.offstage = false,
+    this.deceased = false,
   });
 
   /// Metinde `{kerem.ad}` gibi kullanılan ad.
@@ -79,6 +80,11 @@ class RoleSlot {
   /// Kişi sahnede değil (hakkında konuşuluyor): olay görüşme sayılmaz.
   final bool offstage;
 
+  /// Yalnızca son bir yıl içinde vefat etmiş kişiyle eşleşir (cenaze,
+  /// taziye). Her vefat için bir kez eşleşir; böyle bir yuva her zaman
+  /// sahne dışıdır.
+  final bool deceased;
+
   static const Set<String> knownKeys = {
     'kin',
     'roles',
@@ -100,6 +106,7 @@ class RoleSlot {
     'noMemory',
     'sameCity',
     'offstage',
+    'deceased',
   };
 
   factory RoleSlot.fromJson(String name, JsonReader r) {
@@ -164,7 +171,8 @@ class RoleSlot {
       memory: r.optionalString('memory'),
       noMemory: r.optionalString('noMemory'),
       sameCity: r.has('sameCity') ? r.optionalBool('sameCity') : null,
-      offstage: r.optionalBool('offstage'),
+      offstage: r.optionalBool('offstage') || r.optionalBool('deceased'),
+      deceased: r.optionalBool('deceased'),
     );
     for (final (lo, hi, label) in [
       (slot.minAge, slot.maxAge, 'yaş'),

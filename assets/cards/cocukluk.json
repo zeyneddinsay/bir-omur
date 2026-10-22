@@ -1,0 +1,353 @@
+[
+  {
+    "id": "nazar_boncugu",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 0,
+    "maxAge": 1,
+    "repeat": "once",
+    "roles": {
+      "buyuk": { "kin": ["nine", "anne"] }
+    },
+    "speaker": "buyuk",
+    "text": "{buyuk.akraba} beşiğine mavi bir nazar boncuğu iliştirdi: 'Göz değmesin şu yanaklara.'",
+    "left": {
+      "label": "Boncuğa uzan",
+      "effects": { "happiness": 2 }
+    },
+    "right": {
+      "label": "Ona gülümse",
+      "effects": {
+        "people": {
+          "buyuk": {
+            "memory": {
+              "kind": "ilk_gulus",
+              "label": "Bana ilk gülümsediği gün",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "ilk_kelime",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 1,
+    "maxAge": 2,
+    "repeat": "once",
+    "roles": {
+      "anne": { "kin": ["anne"] },
+      "baba": { "kin": ["baba"] }
+    },
+    "speaker": "anne",
+    "text": "İlk kelimen geliyor. {anne.akraba} 'Anne de' diye fısıldıyor, {baba.akraba} 'Baba de' diye.",
+    "left": {
+      "label": "Anne!",
+      "effects": {
+        "people": {
+          "anne": {
+            "memory": {
+              "kind": "ilk_kelime",
+              "label": "İlk kelimesi 'anne' oldu",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Baba!",
+      "effects": {
+        "people": {
+          "baba": {
+            "memory": {
+              "kind": "ilk_kelime",
+              "label": "İlk kelimesi 'baba' oldu",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "ilk_adim",
+    "type": "genel",
+    "theme": "saglik",
+    "minAge": 1,
+    "maxAge": 2,
+    "repeat": "once",
+    "text": "İlk adım zamanı. Bir yanda sehpanın sivri köşesi, öbür yanda yumuşacık halı.",
+    "left": {
+      "label": "Sehpaya tutun",
+      "effects": { "knowledge": 1 }
+    },
+    "right": {
+      "label": "Halıya atıl",
+      "effects": { "happiness": 2 }
+    }
+  },
+  {
+    "id": "gizli_seker",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 2,
+    "maxAge": 6,
+    "repeat": "once",
+    "roles": {
+      "buyuk": { "kin": ["dede", "nine"] }
+    },
+    "speaker": "buyuk",
+    "text": "{buyuk.akraba} cebinden bir şeker çıkardı, göz kırptı: 'Kimseye söyleme ama.'",
+    "left": {
+      "label": "Şekeri kap",
+      "effects": {
+        "happiness": 3,
+        "people": {
+          "buyuk": {
+            "memory": {
+              "kind": "gizli_seker",
+              "label": "Gizli şekerimizi birlikte yedik",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Yemekten önce olmaz",
+      "effects": { "knowledge": 1 }
+    }
+  },
+  {
+    "id": "kirik_oyuncak",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 4,
+    "maxAge": 12,
+    "repeat": { "cooldown": 4 },
+    "roles": {
+      "kardes": { "kin": ["kardes"], "minAge": 3, "minGap": -4, "maxGap": 4 }
+    },
+    "speaker": "kardes",
+    "text": "{kardes.ad} en sevdiğin oyuncağı kırdı ve büyüklere koştu: 'Kendi kendine kırıldı!'",
+    "left": {
+      "label": "O kırdı, gördüm!",
+      "effects": {
+        "people": {
+          "kardes": {
+            "memory": {
+              "kind": "oyuncak_ispiyon",
+              "label": "Oyuncak meselesinde beni ele verdi",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Neyse, boş ver",
+      "effects": {
+        "happiness": -2,
+        "people": {
+          "kardes": {
+            "memory": {
+              "kind": "oyuncak_sustu",
+              "label": "Oyuncağı ben kırdım, beni ele vermedi",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "bayram_harcligi",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 4,
+    "maxAge": 14,
+    "repeat": { "cooldown": 3 },
+    "roles": {
+      "buyuk": { "kin": ["dede", "nine", "amca", "hala", "dayi", "teyze"] }
+    },
+    "speaker": "buyuk",
+    "text": "Bayram sabahı, {buyuk.akraba|in} elini öptün. Avucuna katlanmış bir para sıkıştırdı.",
+    "left": {
+      "label": "Teşekkür ederim",
+      "effects": {
+        "money": 300,
+        "happiness": 3,
+        "people": {
+          "buyuk": {
+            "memory": {
+              "kind": "harcligi_sevincle_aldi",
+              "label": "Harçlığımı sevinçle aldı",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Olmaz, ayıp olur",
+      "effects": {
+        "reputation": 2,
+        "people": {
+          "buyuk": {
+            "memory": {
+              "kind": "harclik_almadi",
+              "label": "Harçlığı nazikçe geri çevirdi",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "bakkal_sakiz",
+    "type": "kisi",
+    "theme": "mahalle",
+    "minAge": 4,
+    "maxAge": 9,
+    "repeat": "once",
+    "roles": {
+      "bakkal": { "roles": ["bakkal"] }
+    },
+    "speaker": "bakkal",
+    "text": "Bakkal {bakkal.ad} {bakkal.hitap.amca} tezgâhın üstünden uzandı: 'Al bakalım, bu sakız benden.'",
+    "left": {
+      "label": "Teşekkür ederim",
+      "effects": {
+        "people": {
+          "bakkal": {
+            "memory": {
+              "kind": "terbiyeli_cocuk",
+              "label": "Sakızı alınca güzelce teşekkür etti",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "İki tane olmaz mı?",
+      "effects": {
+        "happiness": 2,
+        "people": {
+          "bakkal": {
+            "memory": {
+              "kind": "minik_pazarlik",
+              "label": "Boyu tezgâhı geçmeden pazarlığa girişti",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "merdivende_komsu",
+    "type": "kisi",
+    "theme": "mahalle",
+    "minAge": 5,
+    "maxAge": 12,
+    "repeat": { "cooldown": 4 },
+    "roles": {
+      "komsu": { "roles": ["komsu"] },
+      "veli": { "kin": ["anne", "baba"], "offstage": true }
+    },
+    "speaker": "komsu",
+    "text": "Merdivende {komsu.ad} {komsu.hitap.amca}: 'Söyle bakayım, dün akşam size kim geldi?'",
+    "left": {
+      "label": "Her şeyi anlatırım",
+      "effects": {
+        "people": {
+          "komsu": {
+            "memory": {
+              "kind": "her_seyi_anlatti",
+              "label": "Merdivende her şeyi bana anlattı",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          },
+          "veli": {
+            "memory": {
+              "kind": "evi_anlatti",
+              "label": "Evin içini komşuya anlattı",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Bilmiyorum ki",
+      "effects": { "knowledge": 1 }
+    }
+  },
+  {
+    "id": "atesli_gece",
+    "type": "kisi",
+    "theme": "saglik",
+    "minAge": 2,
+    "maxAge": 10,
+    "repeat": { "cooldown": 4 },
+    "roles": {
+      "veli": { "kin": ["anne", "baba"] }
+    },
+    "speaker": "veli",
+    "text": "Ateşin 39'a çıktı. {veli.akraba} bütün gece başında, alnındaki ıslak bezi değiştirip duruyor.",
+    "left": {
+      "label": "Uyumaya çalış",
+      "effects": { "health": 3 }
+    },
+    "right": {
+      "label": "Gitme, yanımda kal",
+      "effects": {
+        "health": 1,
+        "people": {
+          "veli": {
+            "memory": {
+              "kind": "basinda_bekledi",
+              "label": "Hastayken bütün gece başında bekledim",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "anaokulu",
+    "type": "genel",
+    "theme": "okul",
+    "minAge": 5,
+    "maxAge": 6,
+    "repeat": "once",
+    "text": "Anaokulunun ilk günü. Kapıda biri ağlıyor, öbürü kum havuzunda bir krallık kuruyor.",
+    "left": {
+      "label": "Kum havuzuna!",
+      "effects": { "happiness": 3 }
+    },
+    "right": {
+      "label": "Öğretmenin yanına",
+      "effects": { "knowledge": 2 }
+    }
+  }
+]

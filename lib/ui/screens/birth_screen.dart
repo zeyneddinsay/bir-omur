@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../content/content_loader.dart';
+import '../../engine/life_engine.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../models/models.dart';
 import '../../services/analytics_service.dart';
@@ -81,10 +82,16 @@ class _BirthScreenState extends ConsumerState<BirthScreen> {
                   if (settingsLoaded && settings.analyticsConsent == null)
                     const _ConsentCard(),
                   if (ref.watch(savedLifeProvider).value case final saved?)
-                    _ResumeCard(
-                      snapshot: saved,
-                      onResume: () => _resume(saved),
-                    ),
+                    LifeEngine.canRestore(saved)
+                        ? _ResumeCard(
+                            snapshot: saved,
+                            onResume: () => _resume(saved),
+                          )
+                        : _OutdatedSaveCard(
+                            onDismiss: () => ref
+                                .read(lifeProvider.notifier)
+                                .discardSavedLife(),
+                          ),
                   const SizedBox(height: 32),
                   TextField(
                     key: const Key('birth_name'),
@@ -152,6 +159,42 @@ class _BirthScreenState extends ConsumerState<BirthScreen> {
                 ],
               ),
             ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Oyunun eski bir sürümünden kalan, sürdürülemeyen yarım hayat.
+class _OutdatedSaveCard extends StatelessWidget {
+  const _OutdatedSaveCard({required this.onDismiss});
+
+  final VoidCallback onDismiss;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.only(top: 24),
+      child: Card(
+        color: theme.colorScheme.surfaceContainerHighest,
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(l10n.outdatedSaveTitle, style: theme.textTheme.titleMedium),
+              const SizedBox(height: 4),
+              Text(l10n.outdatedSaveBody),
+              const SizedBox(height: 12),
+              OutlinedButton(
+                key: const Key('discard_old_save'),
+                onPressed: onDismiss,
+                child: Text(l10n.outdatedSaveDismiss),
+              ),
+            ],
           ),
         ),
       ),

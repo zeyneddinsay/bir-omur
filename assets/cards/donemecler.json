@@ -1,0 +1,326 @@
+[
+  {
+    "id": "ilkokul_ilk_gun",
+    "type": "donemec",
+    "theme": "okul",
+    "minAge": 7,
+    "maxAge": 7,
+    "repeat": "once",
+    "roles": {
+      "sira": { "roles": ["siraArkadasi"] }
+    },
+    "speaker": "sira",
+    "text": "İlkokulun ilk günü. Sıra arkadaşın {sira.ad} önlüğünün yakasını çekiştiriyor, gözleri dolu dolu.",
+    "left": {
+      "label": "Elini tut",
+      "effects": {
+        "happiness": 0,
+        "people": {
+          "sira": {
+            "memory": {
+              "kind": "ilk_gun_elimi_tuttu",
+              "label": "İlk gün korktuğumda elimi tuttu",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Ben de ağlarım",
+      "effects": {
+        "happiness": 1,
+        "people": {
+          "sira": {
+            "memory": {
+              "kind": "ilk_gun_agladik",
+              "label": "İlk gün birlikte ağladık",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "lgs",
+    "type": "donemec",
+    "theme": "okul",
+    "minAge": 14,
+    "maxAge": 14,
+    "repeat": "once",
+    "text": "LGS sabahı. Kalemler açıldı, kimlik cepte; salonda yalnızca duvar saatinin tıkırtısı var.",
+    "left": {
+      "label": "Baştan sona sırayla",
+      "roll": { "stat": "knowledge", "threshold": 55 },
+      "success": { "addFlags": ["iyi_lise"], "knowledge": 2, "happiness": 5 },
+      "fail": { "happiness": -3 }
+    },
+    "right": {
+      "label": "Önce kolay sorular",
+      "roll": { "stat": "luck", "threshold": 55 },
+      "success": { "addFlags": ["iyi_lise"], "happiness": 5 },
+      "fail": { "happiness": -3 }
+    }
+  },
+  {
+    "id": "yks",
+    "type": "donemec",
+    "theme": "okul",
+    "minAge": 18,
+    "maxAge": 18,
+    "repeat": "once",
+    "conditions": { "notFlags": ["iyi_lise"] },
+    "text": "YKS sabahı. Yıllardır konuşulan gün bugün. Aklın şimdiden tercihlerde: memleket mi, büyükşehir mi?",
+    "left": {
+      "label": "Memlekette okurum",
+      "roll": { "stat": "knowledge", "threshold": 55 },
+      "success": {
+        "addFlags": ["yks_kazandi", "universite_ogrencisi"],
+        "knowledge": 3,
+        "happiness": 5,
+        "schedule": { "event": "mezuniyet", "inYears": 4 }
+      },
+      "fail": {
+        "addFlags": ["yks_kaybetti"],
+        "happiness": -6,
+        "schedule": { "event": "mezuna_kalma", "inYears": 1 }
+      }
+    },
+    "right": {
+      "label": "Büyükşehre giderim",
+      "roll": { "stat": "knowledge", "threshold": 62 },
+      "success": {
+        "addFlags": ["yks_kazandi", "universite_ogrencisi"],
+        "knowledge": 3,
+        "happiness": 8,
+        "schedule": { "event": "mezuniyet", "inYears": 4 }
+      },
+      "fail": {
+        "addFlags": ["yks_kaybetti"],
+        "happiness": -6,
+        "schedule": { "event": "mezuna_kalma", "inYears": 1 }
+      }
+    }
+  },
+  {
+    "id": "yks_iyi_lise",
+    "type": "donemec",
+    "theme": "okul",
+    "minAge": 18,
+    "maxAge": 18,
+    "repeat": "once",
+    "conditions": { "flags": ["iyi_lise"] },
+    "text": "YKS sabahı. Lisedeki hocaların 'Siz bu işi bilirsiniz' dedi. Kalbin şimdiden iki şehir arasında.",
+    "left": {
+      "label": "Memlekette okurum",
+      "roll": { "stat": "knowledge", "threshold": 48 },
+      "success": {
+        "addFlags": ["yks_kazandi", "universite_ogrencisi"],
+        "knowledge": 3,
+        "happiness": 5,
+        "schedule": { "event": "mezuniyet", "inYears": 4 }
+      },
+      "fail": {
+        "addFlags": ["yks_kaybetti"],
+        "happiness": -6,
+        "schedule": { "event": "mezuna_kalma", "inYears": 1 }
+      }
+    },
+    "right": {
+      "label": "Büyükşehre giderim",
+      "roll": { "stat": "knowledge", "threshold": 55 },
+      "success": {
+        "addFlags": ["yks_kazandi", "universite_ogrencisi"],
+        "knowledge": 3,
+        "happiness": 8,
+        "schedule": { "event": "mezuniyet", "inYears": 4 }
+      },
+      "fail": {
+        "addFlags": ["yks_kaybetti"],
+        "happiness": -6,
+        "schedule": { "event": "mezuna_kalma", "inYears": 1 }
+      }
+    }
+  },
+  {
+    "id": "mezuna_kalma",
+    "type": "iplik",
+    "theme": "okul",
+    "minAge": 19,
+    "maxAge": 25,
+    "repeat": "once",
+    "text": "Geçen yılki sınav olmadı. Mahallede herkes aynı şeyi soruyor: 'Eee, şimdi ne yapıyorsun?'",
+    "left": {
+      "label": "Bir yıl daha denerim",
+      "effects": { "knowledge": 3 },
+      "roll": { "stat": "knowledge", "threshold": 52 },
+      "success": {
+        "removeFlags": ["yks_kaybetti"],
+        "addFlags": ["yks_kazandi", "universite_ogrencisi"],
+        "happiness": 8,
+        "schedule": { "event": "mezuniyet", "inYears": 4 }
+      },
+      "fail": { "happiness": -5 }
+    },
+    "right": {
+      "label": "Çalışmaya başlarım",
+      "effects": { "happiness": 2 }
+    }
+  },
+  {
+    "id": "mezuniyet",
+    "type": "iplik",
+    "theme": "okul",
+    "minAge": 21,
+    "maxAge": 40,
+    "repeat": "once",
+    "text": "Mezuniyet töreni. Kep havada, diploma elinde; dört yılın hepsi tek bir fotoğrafa sığıyor.",
+    "left": {
+      "label": "Kepi fırlat!",
+      "effects": {
+        "removeFlags": ["universite_ogrencisi"],
+        "addFlags": ["universite_mezunu"],
+        "knowledge": 5,
+        "happiness": 6
+      }
+    },
+    "right": {
+      "label": "Hocalara teşekkür et",
+      "effects": {
+        "removeFlags": ["universite_ogrencisi"],
+        "addFlags": ["universite_mezunu"],
+        "knowledge": 5,
+        "happiness": 3,
+        "reputation": 3
+      }
+    }
+  },
+  {
+    "id": "askerlik_celbi",
+    "type": "donemec",
+    "theme": "genel",
+    "minAge": 20,
+    "maxAge": 40,
+    "repeat": "once",
+    "conditions": {
+      "gender": "erkek",
+      "notFlags": ["universite_ogrencisi", "askerligini_yapti"],
+      "max": { "money": 150000 }
+    },
+    "text": "Askerlik şubesinden celp kâğıdı geldi. Saçlar kısalacak, telefon bir süre susacak.",
+    "left": {
+      "label": "Davul zurnayla uğurlan",
+      "effects": {
+        "addFlags": ["askerligini_yapti", "asker_anilari"],
+        "money": -3000,
+        "happiness": 3,
+        "reputation": 2
+      }
+    },
+    "right": {
+      "label": "Sessizce gidip dön",
+      "effects": {
+        "addFlags": ["askerligini_yapti", "asker_anilari"],
+        "health": 3
+      }
+    }
+  },
+  {
+    "id": "askerlik_bedelli",
+    "type": "donemec",
+    "theme": "genel",
+    "minAge": 20,
+    "maxAge": 40,
+    "repeat": "once",
+    "conditions": {
+      "gender": "erkek",
+      "notFlags": ["universite_ogrencisi", "askerligini_yapti"],
+      "min": { "money": 150000 }
+    },
+    "text": "Celp kâğıdı geldi. Hesaptaki para bedelliye yetiyor ama 'bizim bölükte' diye başlayan hikâyeler de cazip.",
+    "left": {
+      "label": "Gidip yaparım",
+      "effects": {
+        "addFlags": ["askerligini_yapti", "asker_anilari"],
+        "health": 3,
+        "reputation": 2
+      }
+    },
+    "right": {
+      "label": "Bedelli öderim",
+      "effects": {
+        "addFlags": ["askerligini_yapti", "bedelli"],
+        "money": -90000
+      }
+    }
+  },
+  {
+    "id": "cenaze_cocuk",
+    "type": "donemec",
+    "theme": "aile",
+    "minAge": 3,
+    "maxAge": 11,
+    "repeat": { "cooldown": 1 },
+    "roles": {
+      "merhum": {
+        "kin": ["dede", "nine", "amca", "hala", "dayi", "teyze"],
+        "deceased": true
+      }
+    },
+    "text": "{merhum.akraba} artık yok. Evde herkes alçak sesle konuşuyor; kimse sana tam olarak anlatmıyor.",
+    "left": {
+      "label": "Birine sıkıca sarıl",
+      "effects": { "happiness": -3 }
+    },
+    "right": {
+      "label": "Resmine uzun uzun bak",
+      "effects": { "happiness": -4 }
+    }
+  },
+  {
+    "id": "cenaze_akraba",
+    "type": "donemec",
+    "theme": "aile",
+    "minAge": 12,
+    "maxAge": 110,
+    "repeat": { "cooldown": 1 },
+    "roles": {
+      "merhum": {
+        "kin": ["dede", "nine", "amca", "hala", "dayi", "teyze", "kardes"],
+        "deceased": true
+      }
+    },
+    "text": "{merhum.akraba} vefat etti. Taziye evinin kapısı hiç kapanmıyor; gelen herkes onu bir hatırayla anıyor.",
+    "left": {
+      "label": "Gelenleri karşıla",
+      "effects": { "reputation": 2, "happiness": -4 }
+    },
+    "right": {
+      "label": "Bir köşede onu an",
+      "effects": { "happiness": -6 }
+    }
+  },
+  {
+    "id": "cenaze_ebeveyn",
+    "type": "donemec",
+    "theme": "aile",
+    "minAge": 18,
+    "maxAge": 110,
+    "repeat": { "cooldown": 1 },
+    "roles": {
+      "merhum": { "kin": ["anne", "baba"], "deceased": true }
+    },
+    "text": "{merhum.akraba} vefat etti. Telefon sabah erkenden çaldı; o günden geriye yalnızca parçalar kaldı.",
+    "left": {
+      "label": "Her işi ben üstlenirim",
+      "effects": { "reputation": 3, "health": -3, "happiness": -8 }
+    },
+    "right": {
+      "label": "Yasımı yaşayayım",
+      "effects": { "happiness": -10 }
+    }
+  }
+]

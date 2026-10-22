@@ -109,6 +109,26 @@ void main() {
     expect(find.textContaining('1 yaş'), findsOneWidget);
   });
 
+  testWidgets('eski sürümden kalan hayat bildirilir ve silinir', (
+    tester,
+  ) async {
+    _phone(tester);
+    final store = answeredStore();
+    await store.saveCurrentLife({
+      'version': 1,
+      'character': {'name': 'Eski', 'age': 30},
+    });
+    await tester.pumpWidget(_app(store: store));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('resume_button')), findsNothing);
+    expect(find.text('Yarım kalan hayat sürdürülemiyor'), findsOneWidget);
+    await tester.ensureVisible(find.byKey(const Key('discard_old_save')));
+    await tester.tap(find.byKey(const Key('discard_old_save')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('discard_old_save')), findsNothing);
+    expect(await store.loadCurrentLife(), isNull);
+  });
+
   testWidgets('kart sürüklenerek seçilir', (tester) async {
     await _bornAs(tester, 'Ali');
     await tester.drag(

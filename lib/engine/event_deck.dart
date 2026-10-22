@@ -27,7 +27,18 @@ abstract final class RoleMatcher {
 
   static bool matches(RoleSlot slot, Person p, Character c) {
     final now = c.age;
-    if (!p.isAlive || p.archived || p.bornAt > now) return false;
+    if (slot.deceased) {
+      final died = p.diedAt;
+      // Her vefat için bir kez: ölümden sonra olaya çıkmışsa eşleşmez.
+      if (died == null ||
+          now - died > 1 ||
+          (p.lastEventAt != null && p.lastEventAt! >= died)) {
+        return false;
+      }
+    } else if (!p.isAlive || p.archived) {
+      return false;
+    }
+    if (p.bornAt > now) return false;
     if (slot.kin.isNotEmpty && !slot.kin.contains(p.kin)) return false;
     if (slot.roles.isNotEmpty && !slot.roles.any((r) => p.hasRole(r))) {
       return false;
@@ -134,11 +145,13 @@ class EventDeck {
         bound[slot.name] = fixedId;
         continue;
       }
+      // Vefat yuvası yalnızca ölmüşlere bakar; dinlenme kuralı ona işlemez.
+      final pool = slot.deceased ? c.people.bornBy(now) : c.people.active(now);
       final candidates = [
-        for (final p in c.people.active(now))
+        for (final p in pool)
           if (!bound.containsValue(p.id) &&
               !busy.contains(p.id) &&
-              RoleMatcher.isRested(p, now) &&
+              (slot.deceased || RoleMatcher.isRested(p, now)) &&
               RoleMatcher.matches(slot, p, c))
             p,
       ];

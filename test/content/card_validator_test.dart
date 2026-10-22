@@ -152,9 +152,21 @@ void main() {
         'a.text',
         messageContains: 'oyuncu.ad',
       );
+      _expectSingleError(
+        _check([
+          _card('a', extra: {'text': '{oyuncu.hitap.dayi} geldi.'}),
+        ]),
+        'a.text',
+        messageContains: 'oyuncu.ad',
+      );
       expect(
         _check([
-          _card('a', extra: {'text': '{oyuncu.ad|e} bir haber.'}),
+          _card(
+            'a',
+            extra: {
+              'text': "{oyuncu.ad|e} bir haber: 'Gel {oyuncu.hitap.evlat}.'",
+            },
+          ),
         ]).errors,
         isEmpty,
       );
@@ -212,6 +224,32 @@ void main() {
         result,
         'a.left.people.k',
         messageContains: 'yuvası yok',
+      );
+    });
+
+    test('vefat etmiş kişiye etki yazılmaz', () {
+      final result = _check([
+        _card(
+          'a',
+          extra: {
+            'roles': {
+              'merhum': {'deceased': true},
+            },
+            'left': {
+              'label': 'Sol',
+              'effects': {
+                'people': {
+                  'merhum': {'memory': _memory()},
+                },
+              },
+            },
+          },
+        ),
+      ]);
+      _expectSingleError(
+        result,
+        'a.left.people.merhum',
+        messageContains: 'vefat',
       );
     });
 

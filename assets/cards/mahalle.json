@@ -1,0 +1,313 @@
+[
+  {
+    "id": "kombi_dedikodusu",
+    "type": "kisi",
+    "theme": "mahalle",
+    "minAge": 18,
+    "maxAge": 80,
+    "repeat": { "cooldown": 4 },
+    "roles": {
+      "komsu": { "roles": ["komsu"], "sameCity": true }
+    },
+    "speaker": "komsu",
+    "text": "{komsu.ad} {komsu.hitap.amca} kapıda: 'Benden duymuş olma ama alt kattakiler kombiyi gece hiç kapatmıyormuş.'",
+    "left": {
+      "label": "Aa, öyle mi?",
+      "effects": {
+        "reputation": -1,
+        "people": {
+          "komsu": {
+            "memory": {
+              "kind": "dedikodu_dinledi",
+              "label": "Anlattıklarımı can kulağıyla dinledi",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Bize ne teyze",
+      "effects": {
+        "people": {
+          "komsu": {
+            "memory": {
+              "kind": "lafimi_kesti",
+              "label": "Dedikoduma kulak asmadı",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "veresiye_defteri",
+    "type": "kisi",
+    "theme": "mahalle",
+    "minAge": 15,
+    "maxAge": 40,
+    "repeat": "once",
+    "conditions": {
+      "familyProfile": ["esnaf", "memur", "isci", "ciftci"]
+    },
+    "roles": {
+      "bakkal": { "roles": ["bakkal"], "sameCity": true }
+    },
+    "speaker": "bakkal",
+    "text": "Bakkal {bakkal.ad} {bakkal.hitap.amca} defteri açtı: 'Adın burada. Üzülme, bu deftere girmeyen mahallede kalmadı.'",
+    "left": {
+      "label": "Hemen öderim",
+      "effects": {
+        "money": -500,
+        "people": {
+          "bakkal": {
+            "memory": {
+              "kind": "veresiye_odedi",
+              "label": "Veresiyeyi zamanında kapattı",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Ay başına amca",
+      "effects": {
+        "people": {
+          "bakkal": {
+            "memory": {
+              "kind": "veresiye_erteledi",
+              "label": "Veresiyeyi yine ay başına bıraktı",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "bakkalin_vefati",
+    "type": "kisi",
+    "theme": "mahalle",
+    "minAge": 8,
+    "maxAge": 100,
+    "repeat": "once",
+    "roles": {
+      "bakkal": { "roles": ["bakkal"], "deceased": true, "sameCity": true }
+    },
+    "text": "Bakkal {bakkal.ad} {bakkal.hitap.amca} vefat etmiş. Kepenkte bir kâğıt var; köşesi rüzgârda kalkıp iniyor.",
+    "left": {
+      "label": "Taziyeye giderim",
+      "effects": { "reputation": 2, "happiness": -2 }
+    },
+    "right": {
+      "label": "İçimden anarım",
+      "effects": { "happiness": -2 }
+    }
+  },
+  {
+    "id": "yol_soran_amca",
+    "type": "tesaduf",
+    "theme": "genel",
+    "minAge": 15,
+    "maxAge": 55,
+    "repeat": { "cooldown": 8 },
+    "text": "Yaşlı bir amca seni durdurdu: 'Gül Sokak ne tarafta {oyuncu.hitap.evlat}?' Elinde buruşuk bir kâğıt var.",
+    "left": {
+      "label": "Elinden tutup götür",
+      "effects": { "reputation": 2, "happiness": 2 }
+    },
+    "right": {
+      "label": "Tarif ederim",
+      "effects": { "happiness": 1 }
+    }
+  },
+  {
+    "id": "pazarda_karsilasma",
+    "type": "tesaduf",
+    "theme": "genel",
+    "minAge": 20,
+    "maxAge": 70,
+    "repeat": "once",
+    "roles": {
+      "eski": { "formerRoles": ["siraArkadasi"], "sameCity": true }
+    },
+    "speaker": "eski",
+    "text": "Pazarda biri omzuna dokundu. {eski.ad}, eski sıra arkadaşın! 'Hiç değişmemişsin!'",
+    "left": {
+      "label": "Hadi bir çay içelim",
+      "effects": {
+        "happiness": 2,
+        "people": {
+          "eski": {
+            "bond": "arkadas",
+            "memory": {
+              "kind": "eski_gunler",
+              "label": "Pazarda karşılaştık, eski günleri andık",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Acelem var, sonra",
+      "effects": {
+        "happiness": 1,
+        "people": {
+          "eski": {
+            "memory": {
+              "kind": "beni_gecistirdi",
+              "label": "Pazarda karşılaştık, beni geçiştirdi",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "eski_ogretmen",
+    "type": "tesaduf",
+    "theme": "genel",
+    "minAge": 20,
+    "maxAge": 70,
+    "repeat": "once",
+    "roles": {
+      "ogretmen": { "formerRoles": ["ogretmen"], "sameCity": true }
+    },
+    "speaker": "ogretmen",
+    "text": "Çarşıda eski öğretmenin {ogretmen.ad} {ogretmen.hitap.bey}! Seni hemen tanıdı: 'Arka sıranın yaramazı!'",
+    "left": {
+      "label": "Elini öp",
+      "effects": {
+        "happiness": 2,
+        "people": {
+          "ogretmen": {
+            "memory": {
+              "kind": "elini_optu",
+              "label": "Yıllar sonra çarşıda elimi öptü",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Selam verip geç",
+      "effects": { "happiness": 1 }
+    }
+  },
+  {
+    "id": "sinif_grubu",
+    "type": "kisi",
+    "theme": "genel",
+    "minAge": 25,
+    "maxAge": 60,
+    "repeat": { "cooldown": 10 },
+    "roles": {
+      "eski": { "formerRoles": ["sinifArkadasi"] }
+    },
+    "speaker": "eski",
+    "text": "Eski sınıf grubunda {eski.ad} yazmış: 'Sen o mavi silgiyi çalan değil miydin?' Herkes çevrimiçi.",
+    "left": {
+      "label": "Hâlâ inkâr ediyorum",
+      "effects": {
+        "happiness": 2,
+        "people": {
+          "eski": {
+            "memory": {
+              "kind": "eski_gunler",
+              "label": "Eski günleri andık",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Cevap vermem",
+      "effects": {
+        "happiness": 1,
+        "people": {
+          "eski": {
+            "memory": {
+              "kind": "cevap_vermedi",
+              "label": "Grupta mesajıma cevap vermedi",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "parktaki_bank",
+    "type": "genel",
+    "theme": "mahalle",
+    "minAge": 65,
+    "maxAge": 110,
+    "repeat": { "cooldown": 4 },
+    "text": "Parktaki bankta emekliler kendi zamanlarını anlatıyor. Herkes sana döndü: 'Sen anlat bakalım.'",
+    "left": {
+      "label": "Ben gençken...",
+      "effects": { "reputation": 2, "happiness": 2 }
+    },
+    "right": {
+      "label": "Ben dinleyeyim",
+      "effects": { "knowledge": 1, "happiness": 1 }
+    }
+  },
+  {
+    "id": "tahliller",
+    "type": "genel",
+    "theme": "saglik",
+    "minAge": 35,
+    "maxAge": 110,
+    "repeat": { "cooldown": 5 },
+    "conditions": { "min": { "money": 2000 } },
+    "text": "Merdivenin yarısında soluk soluğa kaldın. Doktor: 'Kolesterol, tansiyon, şeker; hepsine bir bakalım.'",
+    "left": {
+      "label": "Tahlilleri yaptır",
+      "effects": { "money": -2000, "health": 5 }
+    },
+    "right": {
+      "label": "Bir şeyim yok",
+      "effects": { "health": -3 }
+    }
+  },
+  {
+    "id": "ehliyet_kursu",
+    "type": "genel",
+    "theme": "genel",
+    "minAge": 18,
+    "maxAge": 45,
+    "repeat": { "cooldown": 3 },
+    "conditions": {
+      "notFlags": ["ehliyet_var"],
+      "min": { "money": 15000 }
+    },
+    "text": "Ehliyet kursunda kampanya var. Direksiyon hocası: 'Benim öğrencim ilk seferde geçer, merak etme.'",
+    "left": {
+      "label": "Kursa yazılırım",
+      "effects": { "money": -15000 },
+      "roll": { "stat": "luck", "threshold": 45 },
+      "success": { "addFlags": ["ehliyet_var"], "happiness": 4 },
+      "fail": { "happiness": -3 }
+    },
+    "right": {
+      "label": "Otobüs de araba",
+      "effects": { "happiness": 1 }
+    }
+  }
+]

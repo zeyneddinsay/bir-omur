@@ -1,0 +1,417 @@
+[
+  {
+    "id": "bayram_telefonu",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 19,
+    "maxAge": 90,
+    "repeat": { "cooldown": 3 },
+    "roles": {
+      "buyuk": {
+        "kin": ["anne", "baba", "dede", "nine", "amca", "hala", "dayi", "teyze"],
+        "minAge": 50
+      }
+    },
+    "speaker": "buyuk",
+    "text": "Bayram arifesi. {buyuk.akraba} telefonda: 'Bu bayram da gelmeyecek misin? Sofrayı kuruyorum.'",
+    "left": {
+      "label": "Geliyorum",
+      "effects": {
+        "money": -1000,
+        "happiness": 2,
+        "people": {
+          "buyuk": {
+            "memory": {
+              "kind": "bayramda_geldi",
+              "label": "Bayramda kapımı çaldı",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Bu sefer olmaz",
+      "effects": {
+        "people": {
+          "buyuk": {
+            "memory": {
+              "kind": "bayramda_gelmedi",
+              "label": "Bayramda yolunu gözledim, gelmedi",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "annenin_kaplari",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 20,
+    "maxAge": 80,
+    "repeat": { "cooldown": 5 },
+    "roles": {
+      "anne": { "kin": ["anne"], "sameCity": true }
+    },
+    "speaker": "anne",
+    "text": "{anne.akraba} kapıya bir poşet bıraktı: üç kap yemek, bir kavanoz turşu. 'Kaplarımı geri getir ama.'",
+    "left": {
+      "label": "Kapları yıkar götürürüm",
+      "effects": {
+        "people": {
+          "anne": {
+            "memory": {
+              "kind": "kaplari_getirdi",
+              "label": "Kaplarımı tertemiz geri getirdi",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Kaplar bende kalsın",
+      "effects": {
+        "happiness": 2,
+        "people": {
+          "anne": {
+            "memory": {
+              "kind": "kaplari_getirmedi",
+              "label": "Kaplarımı yine geri getirmedi",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "musluk_tamiri",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 25,
+    "maxAge": 80,
+    "repeat": { "cooldown": 6 },
+    "roles": {
+      "baba": { "kin": ["baba"] }
+    },
+    "speaker": "baba",
+    "text": "{baba.akraba} musluğu kendisi tamir edecek: 'Ustaya para mı verilir? Tut şu anahtarı.'",
+    "left": {
+      "label": "Anahtarı tutarım",
+      "effects": {
+        "people": {
+          "baba": {
+            "memory": {
+              "kind": "birlikte_tamir",
+              "label": "Musluğu birlikte tamir ettik",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "roll": { "stat": "luck", "threshold": 45 },
+      "success": { "happiness": 2 },
+      "fail": { "money": -3000, "happiness": -2 }
+    },
+    "right": {
+      "label": "Usta çağırıyorum baba",
+      "effects": {
+        "money": -1500,
+        "people": {
+          "baba": {
+            "memory": {
+              "kind": "ustaya_verdi",
+              "label": "Bana güvenmedi, usta çağırdı",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "gece_telefonu",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 20,
+    "maxAge": 85,
+    "repeat": { "cooldown": 5 },
+    "roles": {
+      "kardes": { "kin": ["kardes"], "minAge": 18 }
+    },
+    "speaker": "kardes",
+    "text": "{kardes.akraba} gece yarısı aradı, sesi titriyor: 'Uyumadın değil mi? Biraz konuşabilir miyiz?'",
+    "left": {
+      "label": "Tabii, anlat",
+      "effects": {
+        "happiness": -1,
+        "people": {
+          "kardes": {
+            "memory": {
+              "kind": "dertles",
+              "label": "Gece yarısı derdimi dinledi",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Yarın konuşsak?",
+      "effects": {
+        "people": {
+          "kardes": {
+            "memory": {
+              "kind": "yarin_dedi",
+              "label": "Gece aradığımda 'yarın' dedi",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "gozum_yollarda",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 19,
+    "maxAge": 55,
+    "repeat": { "cooldown": 4 },
+    "roles": {
+      "buyuk": { "kin": ["dede", "nine"], "sameCity": false }
+    },
+    "speaker": "buyuk",
+    "text": "{buyuk.akraba} telefonda: 'Gözüm yollarda kaldı. Bir gel de şu yüzünü doya doya göreyim.'",
+    "left": {
+      "label": "Hafta sonu oradayım",
+      "effects": {
+        "money": -1000,
+        "happiness": 2,
+        "people": {
+          "buyuk": {
+            "memory": {
+              "kind": "beni_gormeye_geldi",
+              "label": "Yollara düşüp beni görmeye geldi",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Bu ay olmaz",
+      "effects": {
+        "people": {
+          "buyuk": {
+            "memory": {
+              "kind": "gelmesini_bekledim",
+              "label": "Gelmesini bekledim, gelmedi",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "sermaye_isteyen_akraba",
+    "type": "kisi",
+    "theme": "para",
+    "minAge": 25,
+    "maxAge": 70,
+    "repeat": { "cooldown": 8 },
+    "conditions": { "min": { "money": 20000 } },
+    "roles": {
+      "akraba": { "kin": ["amca", "hala", "dayi", "teyze"], "maxAge": 60 }
+    },
+    "speaker": "akraba",
+    "text": "{akraba.akraba}: 'Küçük bir iş kuruyorum, ufak bir sermaye lazım. Kime güveneyim, sana güveneceğim.'",
+    "left": {
+      "label": "Yardım ederim",
+      "effects": {
+        "money": -20000,
+        "people": {
+          "akraba": {
+            "memory": {
+              "kind": "sermaye_verdi",
+              "label": "İşime sermaye verdi",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Şu an olmaz",
+      "effects": {
+        "people": {
+          "akraba": {
+            "memory": {
+              "kind": "sermaye_vermedi",
+              "label": "Sermaye istedim, vermedi",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "komsunun_tabagi",
+    "type": "kisi",
+    "theme": "mahalle",
+    "minAge": 19,
+    "maxAge": 85,
+    "repeat": { "cooldown": 5 },
+    "roles": {
+      "komsu": { "roles": ["komsu"], "sameCity": true }
+    },
+    "speaker": "komsu",
+    "text": "{komsu.ad} {komsu.hitap.amca} bir tabak sarma getirdi. Tabak boş gitmez, bunu herkes bilir.",
+    "left": {
+      "label": "Kek yapıp gönderirim",
+      "effects": {
+        "happiness": 0,
+        "money": -200,
+        "people": {
+          "komsu": {
+            "memory": {
+              "kind": "tabagi_doldurdu",
+              "label": "Tabağımı dolu geri gönderdi",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Tabağı boş veririm",
+      "effects": {
+        "happiness": 1,
+        "people": {
+          "komsu": {
+            "memory": {
+              "kind": "tabak_bos_geldi",
+              "label": "Tabağımı boş geri getirdi",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "birikmis_gazeteler",
+    "type": "kisi",
+    "theme": "mahalle",
+    "minAge": 30,
+    "maxAge": 90,
+    "repeat": "once",
+    "roles": {
+      "komsu": { "roles": ["komsu"], "minAge": 65, "sameCity": true }
+    },
+    "text": "{komsu.ad} {komsu.hitap.amca} birkaç gündür ortalıkta yok. Kapısının önünde gazeteler birikmiş.",
+    "left": {
+      "label": "Kapısını çalarım",
+      "effects": {
+        "reputation": 1,
+        "people": {
+          "komsu": {
+            "memory": {
+              "kind": "hastayken_geldi",
+              "label": "Hastayken kapımı çaldı",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Yöneticiye haber ver",
+      "effects": {
+        "people": {
+          "komsu": {
+            "memory": {
+              "kind": "yardim_cagirdi",
+              "label": "Hastayken yardım çağırdı",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "apartman_toplantisi",
+    "type": "yer",
+    "theme": "mahalle",
+    "minAge": 25,
+    "maxAge": 85,
+    "repeat": { "cooldown": 5 },
+    "text": "Apartman toplantısı. Konu yine asansör; biri 'Ben merdiven kullanıyorum' diye aidat ödemek istemiyor.",
+    "left": {
+      "label": "Söz alıp ortayı bul",
+      "effects": { "reputation": 2, "happiness": -1 }
+    },
+    "right": {
+      "label": "Sessizce imzala",
+      "effects": { "happiness": 1 }
+    }
+  },
+  {
+    "id": "kargo_mesaji",
+    "type": "genel",
+    "theme": "para",
+    "minAge": 40,
+    "maxAge": 100,
+    "repeat": { "cooldown": 6 },
+    "text": "Bir sipariş bekliyordun. Telefona mesaj düştü: 'Kargonuz gümrükte, ödeme için bağlantıya tıklayın.'",
+    "left": {
+      "label": "Tıklayıp bakayım",
+      "roll": { "stat": "luck", "threshold": 50 },
+      "success": { "happiness": 3 },
+      "fail": { "money": -5000, "happiness": -3 }
+    },
+    "right": {
+      "label": "Silip geçerim",
+      "effects": { "knowledge": 1 }
+    }
+  },
+  {
+    "id": "tuzu_azalt",
+    "type": "genel",
+    "theme": "saglik",
+    "minAge": 60,
+    "maxAge": 110,
+    "repeat": { "cooldown": 4 },
+    "text": "Doktor tahlillere baktı, gözlüğünün üstünden süzdü: 'Tuzu azaltacağız, her gün de yürüyeceğiz.'",
+    "left": {
+      "label": "Söz, yürüyeceğim",
+      "effects": { "health": 4, "happiness": -1 }
+    },
+    "right": {
+      "label": "Turşusuz olmaz",
+      "effects": { "health": -2, "happiness": 2 }
+    }
+  }
+]

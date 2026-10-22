@@ -214,6 +214,43 @@ void main() {
       expect(match({}, testPerson('p1', age: -1)), isFalse);
     });
 
+    test('vefat yuvası: son bir yılın ölüsüyle, her vefat için bir kez', () {
+      final slot = {'deceased': true};
+      expect(_slot(slot).offstage, isTrue, reason: 'her zaman sahne dışı');
+      expect(match(slot, testPerson('p1')), isFalse, reason: 'yaşıyor');
+      expect(match(slot, testPerson('p1').copyWith(diedAt: 30)), isTrue);
+      expect(match(slot, testPerson('p1').copyWith(diedAt: 29)), isTrue);
+      expect(match(slot, testPerson('p1').copyWith(diedAt: 28)), isFalse);
+      expect(
+        match(slot, testPerson('p1', archived: true).copyWith(diedAt: 30)),
+        isTrue,
+        reason: 'arşivdeki akraba da anılır',
+      );
+      expect(
+        match(slot, testPerson('p1', lastEventAt: 30).copyWith(diedAt: 29)),
+        isFalse,
+        reason: 'vefatından sonra zaten olaya çıktı',
+      );
+      expect(
+        match(slot, testPerson('p1', lastEventAt: 28).copyWith(diedAt: 29)),
+        isTrue,
+      );
+    });
+
+    test('vefat yuvası dinlenme kuralına takılmaz', () {
+      final card = testCard(
+        'cenaze',
+        roles: {
+          'merhum': {'deceased': true},
+        },
+      );
+      final c = withPeople(testCharacter(age: 30), [
+        testPerson('x', lastEventAt: 28).copyWith(diedAt: 29),
+        testPerson('x'),
+      ]);
+      expect(EventDeck.bind(card, c, Random(1)), {'merhum': 'p1'});
+    });
+
     test('dinlenme: olaydan sonra 2 yıl, aile çekirdeği hariç', () {
       final friend = testPerson('p1', lastEventAt: 28);
       expect(RoleMatcher.isRested(friend, 30), isFalse);
