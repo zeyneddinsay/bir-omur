@@ -252,20 +252,39 @@ void main() {
       );
     });
 
-    test('tatil 2 vakit, diğer aksiyonlar 1', () {
+    test('tatil ve ara işler 2 vakit, diğer aksiyonlar 1', () {
       for (final a in ActionCatalog.all) {
-        expect(a.timeCost, a.id == 'tatil' ? 2 : 1, reason: a.id);
+        expect(
+          a.timeCost,
+          const {'tatil', 'ara_is'}.contains(a.id) ? 2 : 1,
+          reason: a.id,
+        );
       }
     });
 
-    test('ücretli aksiyonlar: spor 500 TL, tatil 25.000 TL', () {
-      expect(ActionCatalog.byId('spor')!.cost, 500);
-      expect(ActionCatalog.byId('tatil')!.cost, 25000);
+    test('ücretli aksiyonlar 2026 tutarlarıyla: spor 18.000, tatil 80.000', () {
+      expect(ActionCatalog.byId('spor')!.cost, 18000);
+      expect(ActionCatalog.byId('tatil')!.cost, 80000);
       expect(
         ActionCatalog.byId('tatil')!
-            .canAfford(testCharacter(money: 24999), Market.initial),
+            .canAfford(testCharacter(money: 79999), Market.initial),
         isFalse,
       );
+    });
+
+    test('ara işler yalnızca boştaki yetişkine; iş yoksa gelir yok', () {
+      final odd = ActionCatalog.byId('ara_is')!;
+      const job = Job(careerId: 'memur', tier: 1);
+      expect(odd.isAvailableFor(testCharacter(age: 25)), isTrue);
+      expect(odd.isAvailableFor(testCharacter(age: 25, job: job)), isFalse);
+      expect(
+        odd.isAvailableFor(
+          testCharacter(age: 20, flags: {ActionCatalog.studentFlag}),
+        ),
+        isFalse,
+      );
+      expect(odd.isAvailableFor(testCharacter(age: 17)), isFalse);
+      expect(odd.moneyChange(Market.initial), ActionCatalog.oddJobIncome);
     });
 
     test('ders çalış yalnızca öğrenciye, fazla mesai yalnızca çalışana', () {

@@ -262,6 +262,30 @@ class AppLocalizationsTr extends AppLocalizations {
   String get action_altin_sat => '10 gram altın sat';
 
   @override
+  String get action_ara_is => 'Ara işlere git';
+
+  @override
+  String get action_evden_cik => 'Evden çık, kiraya geç';
+
+  @override
+  String get action_ev_arkadasi => 'Ev arkadaşıyla otur';
+
+  @override
+  String get action_aileye_don => 'Aile evine dön';
+
+  @override
+  String get action_ev_al => 'Ev al (peşinat, kalanı kredi)';
+
+  @override
+  String get action_ev_sat => 'Evi sat';
+
+  @override
+  String get action_araba_al => 'Araba al (peşinat, kalanı kredi)';
+
+  @override
+  String get action_araba_sat => 'Arabayı sat';
+
+  @override
   String get action_is_ara => 'İş ara';
 
   @override
@@ -567,6 +591,81 @@ class AppLocalizationsTr extends AppLocalizations {
   String get assetNone => 'Yok';
 
   @override
+  String get home_aile => 'Ailenle yaşıyorsun';
+
+  @override
+  String get home_yurt => 'Yurtta kalıyorsun';
+
+  @override
+  String get home_evArkadasi => 'Ev arkadaşınla kirada';
+
+  @override
+  String get home_kira => 'Kirada yaşıyorsun';
+
+  @override
+  String get home_kendiEvi => 'Kendi evinde yaşıyorsun';
+
+  @override
+  String homeCity(String city, String type) {
+    return '$city ($type)';
+  }
+
+  @override
+  String get cityType_buyuk => 'büyükşehir';
+
+  @override
+  String get cityType_orta => 'orta şehir';
+
+  @override
+  String get cityType_kucuk => 'küçük şehir';
+
+  @override
+  String homeCosts(String rent, String living) {
+    return 'Yıllık kira $rent · yaşam gideri $living';
+  }
+
+  @override
+  String get moveButton => 'Başka şehre taşın';
+
+  @override
+  String get moveTitle => 'Nereye taşınacaksın?';
+
+  @override
+  String moveCost(String money) {
+    return 'Nakliye ve depozito $money · 2 vakit';
+  }
+
+  @override
+  String get moveJobWarning => 'Taşınınca şu anki işinden ayrılırsın.';
+
+  @override
+  String get moveWithFamilyTitle => 'Ailen bu şehirde';
+
+  @override
+  String get moveWithFamily => 'Ailemin yanına';
+
+  @override
+  String get moveRent => 'Kendime ev tutarım';
+
+  @override
+  String get moveBlocked_vakit => 'Bu yılın vakti yetmiyor';
+
+  @override
+  String get moveBlocked_para => 'Paran yetmiyor';
+
+  @override
+  String get moveBlocked_yas => '18 yaşından önce taşınamazsın';
+
+  @override
+  String get moveBlocked_ogrenci => 'Okurken okulunun şehrinden taşınamazsın';
+
+  @override
+  String get moveBlocked_evSahibi => 'Önce evini satmalısın';
+
+  @override
+  String get moveBlocked_ayniSehir => 'Zaten burada yaşıyorsun';
+
+  @override
   String get ledgerTitle => 'Para hareketleri';
 
   @override
@@ -590,6 +689,9 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get money_emekliAyligi => 'Emekli aylığı';
+
+  @override
+  String get money_yasliAyligi => '65 yaş aylığı';
 
   @override
   String get money_harclik => 'Aileden harçlık';
@@ -632,6 +734,11 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String money_is(String what) {
     return 'İş: $what';
+  }
+
+  @override
+  String money_tasinma(String city) {
+    return 'Taşınma: $city';
   }
 
   @override
@@ -807,6 +914,9 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get role_odaArkadasi => 'Oda arkadaşın';
+
+  @override
+  String get role_evArkadasi => 'Ev arkadaşın';
 
   @override
   String get role_bolukArkadasi => 'Bölük arkadaşın';

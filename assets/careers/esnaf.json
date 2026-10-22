@@ -6,37 +6,37 @@
   "tiers": [
     {
       "name": "Çırak",
-      "salary": 120000,
+      "salary": 400000,
       "promotion": { "minYears": 3, "chance": 0.8 }
     },
     {
       "name": "Kalfa",
-      "salary": 160000,
-      "promotion": { "minYears": 4, "chance": 0.6, "cost": 500000, "requires": { "min": { "money": 500000 } } }
+      "salary": 530000,
+      "promotion": { "minYears": 4, "chance": 0.6, "cost": 1650000, "requires": { "min": { "money": 500000 } } }
     },
     {
       "name": "Dükkân sahibi",
-      "salary": 350000,
+      "salary": 1160000,
       "promotion": {
         "minYears": 5,
         "chance": 0.5,
-        "cost": 1000000,
+        "cost": 3300000,
         "requires": { "min": { "money": 1500000, "reputation": 55 } }
       }
     },
     {
       "name": "İki dükkânlı esnaf",
-      "salary": 600000,
+      "salary": 1980000,
       "promotion": {
         "minYears": 6,
         "chance": 0.4,
-        "cost": 2000000,
+        "cost": 6600000,
         "requires": { "min": { "money": 3000000, "reputation": 65 } }
       }
     },
     {
       "name": "Zincir sahibi",
-      "salary": 900000
+      "salary": 2970000
     }
   ]
 }

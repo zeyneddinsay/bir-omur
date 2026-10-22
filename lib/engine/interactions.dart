@@ -136,16 +136,16 @@ class InteractionResult {
 /// Etkileşim kuralları. Tutarlar bugünün TL'siyle; D2'de ekonomi gerçek
 /// rakamlara çekilince güncellenir.
 abstract final class Interactions {
-  static const int giftCost = 500;
-  static const int travelCost = 1000;
-  static const int pocketMoney = 200;
+  static const int giftCost = 1500;
+  static const int travelCost = 3000;
+  static const int pocketMoney = 600;
 
   /// Borç istendiğinde kişinin verebileceği tutar, servetine göre.
   static const Map<WealthLevel, int> loanAmount = {
-    WealthLevel.dar: 2000,
-    WealthLevel.orta: 10000,
-    WealthLevel.rahat: 25000,
-    WealthLevel.zengin: 60000,
+    WealthLevel.dar: 7000,
+    WealthLevel.orta: 33000,
+    WealthLevel.rahat: 80000,
+    WealthLevel.zengin: 200000,
   };
 
   /// Uzun aradan sonra arama: bu kadar yıl görüşülmemişse ilk aramanın
@@ -335,17 +335,12 @@ abstract final class Interactions {
     InteractionKind.cayaGit,
   }.contains(kind);
 
-  /// Oyuncu 18 yaşına kadar anne, baba ve kardeşleriyle aynı evde yaşar.
+  /// Aynı evde yaşanan anne, baba ve kardeş (bkz. [PeopleTick.livesTogether]).
   static bool livesWithPlayer(Character c, Person p) =>
-      c.age < PeopleTick.householdUntil &&
-      const {Kinship.anne, Kinship.baba, Kinship.kardes}.contains(p.kin);
+      PeopleTick.livesTogether(c, p);
 
-  /// Oyuncu 18 yaşına kadar ailesiyle yaşar; aynı ev aynı şehir sayılır.
-  /// Oyuncunun şehri D2'ye kadar memleketidir.
-  static bool _sameCity(Character c, Person p) =>
-      p.city == c.hometown ||
-      (c.age < PeopleTick.householdUntil &&
-          const {Kinship.anne, Kinship.baba, Kinship.kardes}.contains(p.kin));
+  /// Aynı şehirde mi (oyuncunun şu an yaşadığı şehir).
+  static bool _sameCity(Character c, Person p) => p.city == c.city;
 
   /// Bu kişiyle şu an yapılabilecek bütün istekler; Ara her açık ton ve
   /// (nostalji ve iğnelemede) her anı için ayrı. Simülasyon ve denge

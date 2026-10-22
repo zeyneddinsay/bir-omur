@@ -17,7 +17,7 @@
     "left": {
       "label": "Geliyorum",
       "effects": {
-        "money": -1000,
+        "money": -3000,
         "happiness": 2,
         "people": {
           "buyuk": {
@@ -119,12 +119,12 @@
       },
       "roll": { "stat": "luck", "threshold": 45 },
       "success": { "happiness": 2 },
-      "fail": { "money": -3000, "happiness": -2 }
+      "fail": { "money": -10000, "happiness": -2 }
     },
     "right": {
       "label": "Usta çağırıyorum baba",
       "effects": {
-        "money": -1500,
+        "money": -5000,
         "people": {
           "baba": {
             "memory": {
@@ -197,7 +197,7 @@
     "left": {
       "label": "Hafta sonu oradayım",
       "effects": {
-        "money": -1000,
+        "money": -3000,
         "happiness": 2,
         "people": {
           "buyuk": {
@@ -234,7 +234,7 @@
     "minAge": 25,
     "maxAge": 70,
     "repeat": { "cooldown": 8, "max": 2 },
-    "conditions": { "min": { "money": 20000 } },
+    "conditions": { "min": { "money": 66000 } },
     "roles": {
       "akraba": { "kin": ["amca", "hala", "dayi", "teyze"], "maxAge": 60 }
     },
@@ -243,7 +243,7 @@
     "left": {
       "label": "Yardım ederim",
       "effects": {
-        "money": -20000,
+        "money": -66000,
         "people": {
           "akraba": {
             "memory": {
@@ -288,7 +288,7 @@
       "label": "Kek yapıp gönderirim",
       "effects": {
         "happiness": 0,
-        "money": -200,
+        "money": -600,
         "people": {
           "komsu": {
             "memory": {

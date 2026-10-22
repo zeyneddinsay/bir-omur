@@ -15,7 +15,7 @@
     "left": {
       "label": "Peki, gelirim",
       "effects": {
-        "money": 1000,
+        "money": 3000,
         "knowledge": 2,
         "people": {
           "veli": {
@@ -373,7 +373,7 @@
     "minAge": 22,
     "maxAge": 65,
     "repeat": { "cooldown": 6, "max": 3 },
-    "conditions": { "min": { "money": 10000 } },
+    "conditions": { "min": { "money": 33000 } },
     "roles": {
       "kardes": { "kin": ["kardes"], "minAge": 20 }
     },
@@ -382,7 +382,7 @@
     "left": {
       "label": "Al, dert etme",
       "effects": {
-        "money": -10000,
+        "money": -33000,
         "people": {
           "kardes": {
             "memory": {
@@ -426,7 +426,7 @@
     "text": "{kardes.akraba} kapıda, elinde bir zarf: 'Geç oldu ama getirdim. Kusura bakma.'",
     "left": {
       "label": "Sağ ol",
-      "effects": { "money": 10000 }
+      "effects": { "money": 33000 }
     },
     "right": {
       "label": "Sende kalsın",
@@ -641,7 +641,7 @@
     "left": {
       "label": "Hediye alırım",
       "effects": {
-        "money": -3000,
+        "money": -10000,
         "people": {
           "veli": {
             "memory": {

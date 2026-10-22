@@ -3,13 +3,16 @@ import 'dart:math';
 import '../models/models.dart';
 import 'birth.dart';
 import 'careers.dart';
+import 'cities.dart';
 import 'death_check.dart';
 import 'economy.dart';
 import 'effect_resolver.dart';
 import 'event_deck.dart';
+import 'housing.dart';
 import 'interactions.dart';
 import 'life_action.dart';
 import 'people_tick.dart';
+import 'person_factory.dart';
 import 'relationships.dart';
 import 'schedule_queue.dart';
 import 'seeded_random.dart';
@@ -292,11 +295,14 @@ class LifeEngine {
       throw StateError('$actionId bu yıl zaten yapıldı');
     }
 
-    var character = EffectResolver.applyEffect(
-      c,
-      action.totalEffect(_market),
-      careers: careers,
-    );
+    var character = switch (action.special) {
+      final special? => _applySpecial(special, c),
+      null => EffectResolver.applyEffect(
+        c,
+        action.totalEffect(_market),
+        careers: careers,
+      ),
+    };
     if (action.searchesJob) {
       final (hired, result) = searchJob(
         character,
@@ -417,6 +423,11 @@ class LifeEngine {
       MoneyEntry(age: age, source: MoneySource.araba, amount: -report.carCost),
       MoneyEntry(
         age: age,
+        source: MoneySource.yasamGideri,
+        amount: -report.livingCost,
+      ),
+      MoneyEntry(
+        age: age,
         source: MoneySource.aileDestegi,
         amount: aged.stats.money - afterEconomy.stats.money,
       ),
@@ -439,10 +450,81 @@ class LifeEngine {
       Economy.syncDerivedFlags(YearTick.updateHardshipFlags(afterCareer)),
     );
     return _state = _beginYear(
-      Relationships.syncFamilyBond(character),
+      Relationships.syncFamilyBond(
+        Housing.ensureNeighbours(character, _factory),
+      ),
       _state.queue,
     ).withNews(news);
   }
+
+  PersonFactory get _factory => PersonFactory(_random, families);
+
+  /// Taşınma 2 vakit sürer.
+  static const int moveTimeCost = 2;
+
+  /// Taşınılabilecek şehirler: kapalıysa sebebi, açıksa gideri.
+  List<(String city, MoveBlocked? blocked, int cost)> moveOptions() {
+    final c = _state.character;
+    MoveBlocked? reason(String city) {
+      if (city == c.city) return MoveBlocked.ayniSehir;
+      if (c.age < Housing.minAge) return MoveBlocked.yas;
+      if (c.hasFlag(ActionCatalog.studentFlag)) return MoveBlocked.ogrenci;
+      if (c.home == HomeKind.kendiEvi) return MoveBlocked.evSahibi;
+      if (_state.phase != YearPhase.actions || _state.timeLeft < moveTimeCost) {
+        return MoveBlocked.vakit;
+      }
+      if (c.stats.money < Housing.relocationCost(city)) return MoveBlocked.para;
+      return null;
+    }
+
+    return [
+      for (final city in Cities.all)
+        (city, reason(city), Housing.relocationCost(city)),
+    ];
+  }
+
+  /// Başka şehre taşınır. İşi varsa bırakır (iş şehre bağlıdır).
+  /// [withFamily]: o şehirde anne ya da baba varsa yanlarına.
+  LifeState moveTo(String city, {bool withFamily = false}) {
+    final option = moveOptions().where((o) => o.$1 == city).firstOrNull;
+    if (option == null || option.$2 != null) {
+      throw StateError('$city şehrine taşınılamaz: ${option?.$2}');
+    }
+    final c = _state.character;
+    final moved = Housing.moveTo(
+      c.job == null ? c : c.copyWith(clearJob: true),
+      city,
+      _factory,
+      withFamily: withFamily,
+    );
+    return _state = _state.copyWith(
+      character: YearTick.updateHardshipFlags(
+        _booked(c, moved, MoneySource.tasinma, ref: city),
+      ),
+      timeLeft: _state.timeLeft - moveTimeCost,
+    );
+  }
+
+  Character _applySpecial(ActionSpecial special, Character c) =>
+      switch (special) {
+        ActionSpecial.evdenCik => Housing.rentAlone(
+          c.copyWith(
+            stats: c.stats.withMoneyDelta(-Housing.moveInCost(c.city)),
+          ),
+          _factory,
+        ),
+        ActionSpecial.evArkadasi => Housing.shareFlat(
+          c.copyWith(
+            stats: c.stats.withMoneyDelta(-Housing.shareMoveInCost(c.city)),
+          ),
+          _factory,
+        ),
+        ActionSpecial.aileyeDon => Housing.backToFamily(c),
+        ActionSpecial.evAl => Housing.buyHouse(c),
+        ActionSpecial.evSat => Housing.sellHouse(c, _factory),
+        ActionSpecial.arabaAl => Housing.buyCar(c),
+        ActionSpecial.arabaSat => Housing.sellCar(c),
+      };
 
   /// [before] ile [after] arasındaki para farkını tek bir kaynakla deftere
   /// yazar (fark yoksa yazmaz).

@@ -35,6 +35,19 @@ class AutoPlayer {
       case YearPhase.cards:
         return engine.choose(pickSide(state.currentEvent!.card));
       case YearPhase.actions:
+        // Ara sıra başka şehre taşınır.
+        if (_random.nextInt(25) == 0) {
+          final cities = [
+            for (final (city, blocked, _) in engine.moveOptions())
+              if (blocked == null) city,
+          ];
+          if (cities.isNotEmpty) {
+            return engine.moveTo(
+              cities[_random.nextInt(cities.length)],
+              withFamily: _random.nextBool(),
+            );
+          }
+        }
         // Yılların yarısında önce biriyle etkileşir (Ara dahil).
         final people = engine.possibleInteractions();
         if (people.isNotEmpty && _random.nextBool()) {

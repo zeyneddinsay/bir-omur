@@ -61,7 +61,7 @@
     "left": {
       "label": "Hemen öderim",
       "effects": {
-        "money": -500,
+        "money": -1500,
         "people": {
           "bakkal": {
             "memory": {
@@ -275,11 +275,11 @@
     "minAge": 35,
     "maxAge": 110,
     "repeat": { "cooldown": 8, "max": 5 },
-    "conditions": { "min": { "money": 2000 }, "max": { "health": 60 } },
+    "conditions": { "min": { "money": 6500 }, "max": { "health": 60 } },
     "text": "Merdivenin yarısında soluk soluğa kaldın. Doktor: 'Kolesterol, tansiyon, şeker; hepsine bir bakalım.'",
     "left": {
       "label": "Tahlilleri yaptır",
-      "effects": { "money": -2000, "health": 5 }
+      "effects": { "money": -6500, "health": 5 }
     },
     "right": {
       "label": "Bir şeyim yok",
@@ -295,12 +295,12 @@
     "repeat": { "cooldown": 3, "max": 3 },
     "conditions": {
       "notFlags": ["ehliyet_var"],
-      "min": { "money": 15000 }
+      "min": { "money": 50000 }
     },
     "text": "Ehliyet kursunda kampanya var. Direksiyon hocası: 'Benim öğrencim ilk seferde geçer, merak etme.'",
     "left": {
       "label": "Kursa yazılırım",
-      "effects": { "money": -15000 },
+      "effects": { "money": -50000 },
       "roll": { "stat": "luck", "threshold": 45 },
       "success": { "addFlags": ["ehliyet_var"], "happiness": 4 },
       "fail": { "happiness": -3 }

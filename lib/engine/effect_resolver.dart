@@ -166,18 +166,14 @@ class EffectResolver {
     return Economy.syncDerivedFlags(next);
   }
 
-  /// Kartın etkisini hayatın sayılarına yazar: taşınma ve kartla gelen
-  /// altın. Aksiyonlarla alınan altın sayılmaz.
+  /// Kartın etkisini hayatın sayılarına yazar: kartla gelen altın.
+  /// Aksiyonlarla alınan altın sayılmaz; taşınmayı motor sayar.
   static Character _countCardEffect(Character c, Effect effect) {
-    final moved = effect.addFlags.contains(Economy.movedFlag);
     final gold = effect.gold > 0 ? effect.gold : 0;
-    if (!moved && gold == 0) return c;
+    if (gold == 0) return c;
     final counters = c.counters;
     return c.copyWith(
-      counters: counters.copyWith(
-        moves: counters.moves + (moved ? 1 : 0),
-        goldReceived: counters.goldReceived + gold,
-      ),
+      counters: counters.copyWith(goldReceived: counters.goldReceived + gold),
     );
   }
 

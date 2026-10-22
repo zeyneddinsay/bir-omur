@@ -502,6 +502,54 @@ abstract class AppLocalizations {
   /// **'10 gram altın sat'**
   String get action_altin_sat;
 
+  /// No description provided for @action_ara_is.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ara işlere git'**
+  String get action_ara_is;
+
+  /// No description provided for @action_evden_cik.
+  ///
+  /// In tr, this message translates to:
+  /// **'Evden çık, kiraya geç'**
+  String get action_evden_cik;
+
+  /// No description provided for @action_ev_arkadasi.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ev arkadaşıyla otur'**
+  String get action_ev_arkadasi;
+
+  /// No description provided for @action_aileye_don.
+  ///
+  /// In tr, this message translates to:
+  /// **'Aile evine dön'**
+  String get action_aileye_don;
+
+  /// No description provided for @action_ev_al.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ev al (peşinat, kalanı kredi)'**
+  String get action_ev_al;
+
+  /// No description provided for @action_ev_sat.
+  ///
+  /// In tr, this message translates to:
+  /// **'Evi sat'**
+  String get action_ev_sat;
+
+  /// No description provided for @action_araba_al.
+  ///
+  /// In tr, this message translates to:
+  /// **'Araba al (peşinat, kalanı kredi)'**
+  String get action_araba_al;
+
+  /// No description provided for @action_araba_sat.
+  ///
+  /// In tr, this message translates to:
+  /// **'Arabayı sat'**
+  String get action_araba_sat;
+
   /// No description provided for @action_is_ara.
   ///
   /// In tr, this message translates to:
@@ -958,6 +1006,144 @@ abstract class AppLocalizations {
   /// **'Yok'**
   String get assetNone;
 
+  /// No description provided for @home_aile.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ailenle yaşıyorsun'**
+  String get home_aile;
+
+  /// No description provided for @home_yurt.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yurtta kalıyorsun'**
+  String get home_yurt;
+
+  /// No description provided for @home_evArkadasi.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ev arkadaşınla kirada'**
+  String get home_evArkadasi;
+
+  /// No description provided for @home_kira.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kirada yaşıyorsun'**
+  String get home_kira;
+
+  /// No description provided for @home_kendiEvi.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kendi evinde yaşıyorsun'**
+  String get home_kendiEvi;
+
+  /// No description provided for @homeCity.
+  ///
+  /// In tr, this message translates to:
+  /// **'{city} ({type})'**
+  String homeCity(String city, String type);
+
+  /// No description provided for @cityType_buyuk.
+  ///
+  /// In tr, this message translates to:
+  /// **'büyükşehir'**
+  String get cityType_buyuk;
+
+  /// No description provided for @cityType_orta.
+  ///
+  /// In tr, this message translates to:
+  /// **'orta şehir'**
+  String get cityType_orta;
+
+  /// No description provided for @cityType_kucuk.
+  ///
+  /// In tr, this message translates to:
+  /// **'küçük şehir'**
+  String get cityType_kucuk;
+
+  /// No description provided for @homeCosts.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yıllık kira {rent} · yaşam gideri {living}'**
+  String homeCosts(String rent, String living);
+
+  /// No description provided for @moveButton.
+  ///
+  /// In tr, this message translates to:
+  /// **'Başka şehre taşın'**
+  String get moveButton;
+
+  /// No description provided for @moveTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Nereye taşınacaksın?'**
+  String get moveTitle;
+
+  /// No description provided for @moveCost.
+  ///
+  /// In tr, this message translates to:
+  /// **'Nakliye ve depozito {money} · 2 vakit'**
+  String moveCost(String money);
+
+  /// No description provided for @moveJobWarning.
+  ///
+  /// In tr, this message translates to:
+  /// **'Taşınınca şu anki işinden ayrılırsın.'**
+  String get moveJobWarning;
+
+  /// No description provided for @moveWithFamilyTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ailen bu şehirde'**
+  String get moveWithFamilyTitle;
+
+  /// No description provided for @moveWithFamily.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ailemin yanına'**
+  String get moveWithFamily;
+
+  /// No description provided for @moveRent.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kendime ev tutarım'**
+  String get moveRent;
+
+  /// No description provided for @moveBlocked_vakit.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu yılın vakti yetmiyor'**
+  String get moveBlocked_vakit;
+
+  /// No description provided for @moveBlocked_para.
+  ///
+  /// In tr, this message translates to:
+  /// **'Paran yetmiyor'**
+  String get moveBlocked_para;
+
+  /// No description provided for @moveBlocked_yas.
+  ///
+  /// In tr, this message translates to:
+  /// **'18 yaşından önce taşınamazsın'**
+  String get moveBlocked_yas;
+
+  /// No description provided for @moveBlocked_ogrenci.
+  ///
+  /// In tr, this message translates to:
+  /// **'Okurken okulunun şehrinden taşınamazsın'**
+  String get moveBlocked_ogrenci;
+
+  /// No description provided for @moveBlocked_evSahibi.
+  ///
+  /// In tr, this message translates to:
+  /// **'Önce evini satmalısın'**
+  String get moveBlocked_evSahibi;
+
+  /// No description provided for @moveBlocked_ayniSehir.
+  ///
+  /// In tr, this message translates to:
+  /// **'Zaten burada yaşıyorsun'**
+  String get moveBlocked_ayniSehir;
+
   /// No description provided for @ledgerTitle.
   ///
   /// In tr, this message translates to:
@@ -999,6 +1185,12 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Emekli aylığı'**
   String get money_emekliAyligi;
+
+  /// No description provided for @money_yasliAyligi.
+  ///
+  /// In tr, this message translates to:
+  /// **'65 yaş aylığı'**
+  String get money_yasliAyligi;
 
   /// No description provided for @money_harclik.
   ///
@@ -1077,6 +1269,12 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'İş: {what}'**
   String money_is(String what);
+
+  /// No description provided for @money_tasinma.
+  ///
+  /// In tr, this message translates to:
+  /// **'Taşınma: {city}'**
+  String money_tasinma(String city);
 
   /// No description provided for @money_varlik.
   ///
@@ -1365,6 +1563,12 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Oda arkadaşın'**
   String get role_odaArkadasi;
+
+  /// No description provided for @role_evArkadasi.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ev arkadaşın'**
+  String get role_evArkadasi;
 
   /// No description provided for @role_bolukArkadasi.
   ///

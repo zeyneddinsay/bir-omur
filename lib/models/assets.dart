@@ -17,7 +17,7 @@ class Assets {
   static const Assets none = Assets();
 
   /// Kiracının yıllık kirası (TL). Kira zammı kartları bunu kalıcı artırır.
-  static const int defaultRent = 120000;
+  static const int defaultRent = 330000;
 
   final int goldGrams;
   final int houses;

@@ -46,7 +46,7 @@
     "id": "ev_sahibine_bir_omur",
     "name": "Ev Sahibine Bir Ömür",
     "description": "Ömrü boyunca 4 milyon TL kira ödedi.",
-    "requires": { "counters": { "min": { "rentPaid": 4000000 } } }
+    "requires": { "counters": { "min": { "rentPaid": 13000000 } } }
   },
   {
     "id": "hic_borca_girmedi",

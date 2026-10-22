@@ -20,6 +20,7 @@ extension PeopleNames on AppLocalizations {
     RoleKind.sinifArkadasi => role_sinifArkadasi,
     RoleKind.ogretmen => role_ogretmen,
     RoleKind.odaArkadasi => role_odaArkadasi,
+    RoleKind.evArkadasi => role_evArkadasi,
     RoleKind.bolukArkadasi => role_bolukArkadasi,
     RoleKind.patron => role_patron,
     RoleKind.mudur => role_mudur,

@@ -184,7 +184,7 @@
     "left": {
       "label": "Teşekkür ederim",
       "effects": {
-        "money": 300,
+        "money": 1000,
         "happiness": 3,
         "people": {
           "buyuk": {

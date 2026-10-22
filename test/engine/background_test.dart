@@ -54,8 +54,8 @@ void main() {
       expect(at18.stats.money, b.adulthoodSupport, reason: b.id);
       expect(tick.apply(at18).stats.money, b.adulthoodSupport, reason: '19');
     }
-    expect(FamilyBackground.varlikli.adulthoodSupport, 400000);
-    expect(FamilyBackground.orta.adulthoodSupport, 100000);
+    expect(FamilyBackground.varlikli.adulthoodSupport, 1320000);
+    expect(FamilyBackground.orta.adulthoodSupport, 330000);
     expect(FamilyBackground.dar.adulthoodSupport, 0);
   });
 

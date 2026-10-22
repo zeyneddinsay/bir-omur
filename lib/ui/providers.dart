@@ -215,6 +215,10 @@ class LifeController extends Notifier<LifeState?> {
 
   void advanceYear() => _update(engine.advanceYear());
 
+  /// Başka şehre taşınır (Varlıklar sekmesi).
+  void moveTo(String city, {bool withFamily = false}) =>
+      _update(engine.moveTo(city, withFamily: withFamily));
+
   /// İnsanlar sekmesinden bir kişiyle etkileşim (Ara dahil).
   void interact(InteractionRequest request) =>
       _update(engine.interact(request));

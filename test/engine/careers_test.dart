@@ -32,9 +32,13 @@ Map<String, dynamic> _careerJson({double variance = 0}) => {
       'salary': 200000,
       'promotion': {'minYears': 1, 'chance': 1.0},
     },
-    {'name': 'Üç', 'salary': 300000},
+    {'name': 'Üç', 'salary': 500000},
   ],
 };
+
+/// Emekli aylığı hakkını doldurmuş (20 yıl çalışmış) karakter.
+Character _veteran(Character c) =>
+    c.copyWith(counters: const LifeCounters(yearsWorked: 20));
 
 Career _career({double variance = 0}) =>
     Career.fromJson(_careerJson(variance: variance), file: 'test.json');
@@ -148,15 +152,15 @@ void main() {
 
     test('emeklilik son maaşın %60ı, en az taban aylık', () {
       final high = Careers.applyChange(
-        testCharacter(job: _job(3)),
+        _veteran(testCharacter(job: _job(3))),
         const RetireCareer(),
         book,
       );
       expect(high.job, isNull);
-      expect(high.pension, 180000);
+      expect(high.pension, 300000);
 
       final low = Careers.applyChange(
-        testCharacter(job: _job(1)),
+        _veteran(testCharacter(job: _job(1))),
         const RetireCareer(),
         book,
       );
@@ -165,7 +169,7 @@ void main() {
 
     test('kart etkisiyle emekli olan emekli bayrağını alır', () {
       final c = EffectResolver.applyEffect(
-        testCharacter(job: _job(2)),
+        _veteran(testCharacter(job: _job(2))),
         const Effect(career: RetireCareer()),
         careers: book,
       );
@@ -211,7 +215,7 @@ void main() {
           SeededRandom(seed),
           _book(variance: 0.5),
         ).apply(testCharacter(age: 30, job: _job(3)));
-        expect(report.income, inInclusiveRange(150000, 450000));
+        expect(report.income, inInclusiveRange(250000, 750000));
         incomes.add(report.income);
       }
       expect(incomes.length, greaterThan(10));
@@ -221,32 +225,46 @@ void main() {
       final (c, report) = CareerTick(
         SeededRandom(1),
         _book(),
-      ).apply(testCharacter(age: 65, money: 0, job: _job(3)));
+      ).apply(_veteran(testCharacter(age: 65, money: 0, job: _job(3))));
       expect(report.retired, isTrue);
       expect(c.job, isNull);
-      expect(c.pension, 180000);
-      expect(c.stats.money, 180000);
+      expect(c.pension, 300000);
+      expect(c.stats.money, 300000);
     });
 
-    test('hiç çalışmamış biri de 65te taban aylık alır', () {
+    test('hiç çalışmamış biri emekli olmaz, 65 yaş aylığı alır', () {
       final (c, report) = CareerTick(
         SeededRandom(1),
         _book(),
       ).apply(testCharacter(age: 65, money: 0));
-      expect(report.retired, isTrue);
-      expect(c.pension, Careers.minPension);
+      expect(report.retired, isFalse);
+      expect(c.pension, 0);
+      expect(report.income, Careers.oldAgeAllowance);
+      expect(report.source, MoneySource.yasliAyligi);
     });
 
-    test('işsiz, öğrenci, lise ve çocuk gelirleri', () {
+    test('15 yıl çalışan 65te emekli olur, en az taban aylık', () {
+      final worker = testCharacter(
+        age: 65,
+        money: 0,
+      ).copyWith(counters: LifeCounters.zero.copyWith(yearsWorked: 15));
+      final (c, report) = CareerTick(SeededRandom(1), _book()).apply(worker);
+      expect(report.retired, isTrue);
+      expect(c.pension, Careers.minPension);
+      expect(report.source, MoneySource.emekliAyligi);
+    });
+
+    test('işsize kendiliğinden gelir yok; lise cep harçlığı; çocuk 0', () {
       int income(Character c) =>
           CareerTick(SeededRandom(1), _book()).apply(c).$2.income;
-      expect(income(testCharacter(age: 30)), Careers.unemployedIncome);
+      expect(income(testCharacter(age: 30)), 0, reason: 'ara işler aksiyondur');
+      expect(income(testCharacter(age: 16)), Careers.highSchoolAllowance);
+      expect(income(testCharacter(age: 9)), 0);
+      // Anne-babasız üniversiteliye aile harçlığı yok.
       expect(
         income(testCharacter(age: 20, flags: {ActionCatalog.studentFlag})),
-        Careers.studentIncome,
+        0,
       );
-      expect(income(testCharacter(age: 16)), Careers.highSchoolIncome);
-      expect(income(testCharacter(age: 9)), 0);
     });
   });
 

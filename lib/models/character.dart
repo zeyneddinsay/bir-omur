@@ -1,5 +1,6 @@
 import 'assets.dart';
 import 'career.dart';
+import 'home.dart';
 import 'life_counters.dart';
 import 'life_stage.dart';
 import 'money_ledger.dart';
@@ -43,8 +44,8 @@ enum Temperament {
 
 /// Doğulan ailenin maddi durumu. Gizli değildir; ekranda görünür.
 enum FamilyBackground {
-  varlikli('varlikli', adulthoodSupport: 400000),
-  orta('orta', adulthoodSupport: 100000),
+  varlikli('varlikli', adulthoodSupport: 1320000),
+  orta('orta', adulthoodSupport: 330000),
   dar('dar', adulthoodSupport: 0);
 
   const FamilyBackground(this.id, {required this.adulthoodSupport});
@@ -130,7 +131,10 @@ class Character {
     this.counters = LifeCounters.zero,
     this.isAlive = true,
     List<MoneyEntry> ledger = const [],
+    String? city,
+    this.home = HomeKind.aile,
   }) : assert(age >= 0),
+       city = city ?? hometown,
        ledger = List.unmodifiable(ledger),
        assert(luck >= 0 && luck <= 100),
        flags = Set.unmodifiable(flags),
@@ -141,6 +145,12 @@ class Character {
   final Gender gender;
   final int age;
   final Stats stats;
+
+  /// Şu an yaşadığı şehir; doğumda memleketidir.
+  final String city;
+
+  /// Nerede yaşadığı: aileyle, yurtta, kirada…
+  final HomeKind home;
 
   /// Bu yılın ve geçen yılın para hareketleri, kaynaklarıyla (Varlıklar
   /// sekmesi). Daha eskileri tutulmaz.
@@ -219,6 +229,8 @@ class Character {
     LifeCounters? counters,
     bool? isAlive,
     List<MoneyEntry>? ledger,
+    String? city,
+    HomeKind? home,
   }) {
     return Character(
       name: name ?? this.name,
@@ -242,6 +254,8 @@ class Character {
       counters: counters ?? this.counters,
       isAlive: isAlive ?? this.isAlive,
       ledger: ledger ?? this.ledger,
+      city: city ?? this.city,
+      home: home ?? this.home,
     );
   }
 
@@ -278,6 +292,8 @@ class Character {
     'pension': pension,
     'counters': counters.toJson(),
     'alive': isAlive,
+    'city': city,
+    'home': home.id,
     if (ledger.isNotEmpty) 'ledger': [for (final e in ledger) e.toJson()],
   };
 
@@ -319,6 +335,8 @@ class Character {
         json['counters'] as Map<String, dynamic>?,
       ),
       isAlive: json['alive'] as bool,
+      city: json['city'] as String?,
+      home: HomeKind.fromId(json['home'] as String? ?? 'aile') ?? HomeKind.aile,
       ledger: [
         for (final e in json['ledger'] as List? ?? const [])
           MoneyEntry.fromJson(e as Map<String, dynamic>),

@@ -60,10 +60,9 @@ class SummaryBuilder {
 
   static const String soldierFlag = 'asker_anilari';
 
-  /// "Mahallenin Zengini" için net servet eşiği (TL). Meslek maaşlarıyla
-  /// birikim kolaylaştığı için yüksek tutulur; bir ev tek başına
-  /// 1,5 milyon ettiği için ev sahibi olmak yetmez.
-  static const int richThreshold = 10000000;
+  /// "Mahallenin Zengini" için net servet eşiği (2026 TL). Bir ev tek
+  /// başına 5 milyon ettiği için ev sahibi olmak yetmez.
+  static const int richThreshold = 33000000;
 
   /// Lakap kurallarının baktığı bayraklar; card_lint kayıtta olduklarını
   /// denetler.

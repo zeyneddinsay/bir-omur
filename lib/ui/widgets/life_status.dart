@@ -114,8 +114,7 @@ class AssetsSummary extends StatelessWidget {
             ? l10n.assetNone
             : l10n.assetCarValue(a.cars, tl(a.carValue)),
       ),
-      if (c.hasFlag(Economy.renterFlag) && a.houses == 0)
-        (l10n.assetRent, tl(a.rent)),
+      if (c.home.paysRent) (l10n.assetRent, tl(a.rent)),
       if (a.hasLoan)
         (
           l10n.assetLoan,

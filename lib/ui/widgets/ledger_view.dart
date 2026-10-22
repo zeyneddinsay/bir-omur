@@ -71,6 +71,7 @@ String describeMoney(
 ) => switch (e.source) {
   MoneySource.maas => l10n.money_maas,
   MoneySource.emekliAyligi => l10n.money_emekliAyligi,
+  MoneySource.yasliAyligi => l10n.money_yasliAyligi,
   MoneySource.harclik => l10n.money_harclik,
   MoneySource.araIs => l10n.money_araIs,
   MoneySource.burs => l10n.money_burs,
@@ -89,6 +90,7 @@ String describeMoney(
     null => e.ref ?? '',
   },
   MoneySource.is_ => l10n.money_is(e.ref ?? ''),
+  MoneySource.tasinma => l10n.money_tasinma(e.ref ?? ''),
   MoneySource.varlik => l10n.money_varlik(e.ref ?? ''),
 };
 

@@ -260,7 +260,7 @@
     "minAge": 8,
     "maxAge": 15,
     "repeat": { "cooldown": 3, "max": 2 },
-    "conditions": { "max": { "money": 500 } },
+    "conditions": { "max": { "money": 1500 } },
     "roles": {
       "arkadas": {
         "roles": ["sinifArkadasi", "siraArkadasi"],

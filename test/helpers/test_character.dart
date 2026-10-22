@@ -17,6 +17,7 @@ Character testCharacter({
   Assets assets = Assets.none,
   Job? job,
   int pension = 0,
+  HomeKind home = HomeKind.aile,
 }) {
   return Character(
     name: 'Deneme',
@@ -32,12 +33,13 @@ Character testCharacter({
     ),
     temperament: temperament,
     luck: luck,
-    hometown: 'Kastamonu',
+    hometown: 'Konya',
     team: 'Boğaziçi Martıları',
     flags: flags,
     history: history,
     assets: assets,
     job: job,
     pension: pension,
+    home: home,
   );
 }

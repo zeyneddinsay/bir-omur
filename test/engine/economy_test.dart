@@ -2,7 +2,6 @@ import 'package:bir_omur/engine/engine.dart';
 import 'package:bir_omur/models/models.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../helpers/test_cards.dart';
 import '../helpers/test_character.dart';
 
 Character _apply(Character c, Effect e) => EffectResolver.applyEffect(c, e);
@@ -52,12 +51,16 @@ void main() {
 
   group('türetilen bayraklar', () {
     test('ev alınca ev sahibi olunur ve kiracılık biter', () {
-      final c = _apply(
-        testCharacter(flags: {'kiraci'}),
-        const Effect(house: 1),
+      final renter = Economy.syncDerivedFlags(
+        testCharacter(money: 2000000, home: HomeKind.kira),
       );
+      expect(renter.hasFlag(Economy.renterFlag), isTrue);
+      final c = Housing.buyHouse(renter);
+      expect(c.home, HomeKind.kendiEvi);
       expect(c.hasFlag(Economy.homeOwnerFlag), isTrue);
       expect(c.hasFlag(Economy.renterFlag), isFalse);
+      expect(c.stats.money, 2000000 - Housing.houseDownPayment());
+      expect(c.assets.hasLoan, isTrue);
     });
 
     test('ev elden çıkınca ev sahipliği biter', () {
@@ -92,11 +95,24 @@ void main() {
       expect(c.stats.money, -50000);
     });
 
-    test('kira yalnızca kiracıdan alınır', () {
+    test('kira ve yaşam gideri yalnızca evden çıkmış olandan alınır', () {
       final (renter, _, r1) = EconomyTick(SeededRandom(1))
-          .apply(testCharacter(money: 0, flags: {'kiraci'}), Market.initial);
+          .apply(testCharacter(money: 0, home: HomeKind.kira), Market.initial);
       expect(r1.rentPaid, Assets.defaultRent);
-      expect(renter.stats.money, -Assets.defaultRent);
+      expect(r1.livingCost, Economy.livingCost);
+      expect(renter.stats.money, -Assets.defaultRent - Economy.livingCost);
+
+      final (sharer, _, r3) = EconomyTick(SeededRandom(1)).apply(
+        testCharacter(money: 0, home: HomeKind.evArkadasi),
+        Market.initial,
+      );
+      expect(r3.rentPaid, Assets.defaultRent ~/ 2);
+      expect(sharer.stats.money, -Assets.defaultRent ~/ 2 - Economy.livingCost);
+
+      final (_, _, r4) = EconomyTick(SeededRandom(1))
+          .apply(testCharacter(money: 0, home: HomeKind.yurt), Market.initial);
+      expect(r4.rentPaid, 0);
+      expect(r4.livingCost, Economy.dormCost);
 
       final (other, _, r2) = EconomyTick(SeededRandom(1))
           .apply(testCharacter(money: 0), Market.initial);
@@ -144,7 +160,13 @@ void main() {
         final (_, market, report) = EconomyTick(SeededRandom(seed))
             .apply(testCharacter(), Market.initial);
         expect(report.goldPriceChange, inInclusiveRange(-0.15, 0.15));
-        expect(market.goldPrice, inInclusiveRange(2550, 3450));
+        expect(
+          market.goldPrice,
+          inInclusiveRange(
+            (Economy.initialGoldPrice * 0.85).floor(),
+            (Economy.initialGoldPrice * 1.15).ceil(),
+          ),
+        );
       }
     });
   });
@@ -200,27 +222,19 @@ void main() {
   });
 
   test('yaşlanma ekonomiyi işletir ve piyasayı ilerletir', () {
-    final engine = LifeEngine(
-      deck: EventDeck([
-        testCard(
-          'kirala',
-          maxAge: 0,
-          left: {
-            'label': 'Sol',
-            'effects': {
-              'addFlags': ['kiraci'],
-            },
-          },
-        ),
-      ]),
-      seed: 4,
-    );
+    final engine = LifeEngine(deck: EventDeck(const []), seed: 4);
     engine.startLife();
-    engine.choose(ChoiceSide.left);
     expect(engine.lastEconomy, isNull);
+    while (engine.state.character.age < 18) {
+      engine.advanceYear();
+    }
+    // 18 yaşında aileden 330 bin destek; evden çıkıp kiraya geçer.
+    final c = engine.doAction('evden_cik').character;
+    expect(c.home, HomeKind.kira);
     engine.advanceYear();
     final report = engine.lastEconomy!;
-    expect(report.rentPaid, Assets.defaultRent);
+    expect(report.rentPaid, Economy.rentFor(c.city));
+    expect(report.livingCost, Economy.livingCost);
     expect(engine.market.inflation, report.inflation);
     expect(engine.market.goldPrice, isNot(Economy.initialGoldPrice));
   });

@@ -6,6 +6,7 @@ export 'effect.dart';
 export 'event_role.dart';
 export 'json_reader.dart' show CardFormatException;
 export 'life_counters.dart';
+export 'home.dart';
 export 'life_stage.dart';
 export 'money_ledger.dart';
 export 'family.dart';

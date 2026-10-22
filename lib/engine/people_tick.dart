@@ -66,9 +66,6 @@ class PeopleTick {
   /// baba, kardeş, eş ve çocuk sayılmaz, arşive de düşmez.
   static const int maxActive = 40;
 
-  /// Bu yaşa kadar anne, baba ve kardeşlerle aynı evde yaşanır; aynı evde
-  /// yaşayanlarla ilişki soğumaz. (D2'de evden çıkma kararı gelir.)
-  static const int householdUntil = 18;
 
   /// Anne ve baba bu yaştan önce vefat etmez (oyuncunun yaşı).
   static const int parentsSafeUntil = 18;
@@ -132,14 +129,26 @@ class PeopleTick {
   }
 
   void _household(Character c) {
-    if (_now >= householdUntil) return;
     for (final p in _book.active(_now).toList()) {
-      if (p.kin == Kinship.anne ||
-          p.kin == Kinship.baba ||
-          p.kin == Kinship.kardes) {
+      if (livesTogether(c, p)) {
         _book = _book.update(Relationships.touch(p, _now));
       }
     }
+  }
+
+  /// Oyuncuyla aynı evde mi: oyuncu aileyle yaşarken aynı şehirdeki anne,
+  /// baba ve evlenmemiş kardeşler. Aynı evdekiyle ilişki soğumaz; onlar
+  /// aranmaz, onlarla "buluşulmaz".
+  static bool livesTogether(Character c, Person p) {
+    if (c.home != HomeKind.aile || !p.isAlive || p.city != c.city) {
+      return false;
+    }
+    if (p.bornAt > c.age) return false;
+    return switch (p.kin) {
+      Kinship.anne || Kinship.baba => true,
+      Kinship.kardes => p.marital == MaritalStatus.bekar,
+      _ => false,
+    };
   }
 
   void _ownYear(Person original, Character c) {
@@ -159,8 +168,17 @@ class PeopleTick {
       return;
     }
 
-    if (p.occupation != null && p.occupation != 'emekli' && age >= 65) {
-      p = p.copyWith(occupation: 'emekli');
+    if (p.occupation != null &&
+        p.occupation != 'emekli' &&
+        p.occupation != 'ev_hanimi' &&
+        age >= 65) {
+      // Emekli bakkalın dükkânı kapanır; mahalleye yeni bakkal gelir.
+      p = p.copyWith(
+        occupation: 'emekli',
+        roles: [
+          for (final r in p.roles) r.kind == RoleKind.bakkal ? r.ended() : r,
+        ],
+      );
       _report(p, NewsKind.emekliOldu);
     } else if (p.occupation == null && age >= 22 && random.nextDouble() < 0.3) {
       final job = _jobFor(p, c);
@@ -180,7 +198,7 @@ class PeopleTick {
     }
 
     if (age >= 20 &&
-        !_livesWithPlayer(p) &&
+        !livesTogether(c, p) &&
         random.nextDouble() < 0.02 &&
         cities.length > 1) {
       final others = cities.where((city) => city != p.city).toList();
@@ -198,12 +216,6 @@ class PeopleTick {
 
     _book = _book.update(p);
   }
-
-  bool _livesWithPlayer(Person p) =>
-      _now < householdUntil &&
-      (p.kin == Kinship.anne ||
-          p.kin == Kinship.baba ||
-          p.kin == Kinship.kardes);
 
   bool _dies(Person p, int age) {
     if (age < deathMinAge) return false;
@@ -223,11 +235,14 @@ class PeopleTick {
   }
 
   String _jobFor(Person p, Character c) {
-    final profile = c.familyProfile == null
+    // Akrabaların işi ailenin profilinden; sınıf arkadaşı ve diğerleri
+    // her meslekten olabilir.
+    final profile = c.familyProfile == null || p.kin == null
         ? null
         : families.profileById(c.familyProfile!);
     final pool = (profile?.relativeJobs ?? families.occupations.keys.toList())
         .where((j) => j != 'emekli' && j != 'bakkal')
+        .where((j) => profile != null || j != 'fabrikator')
         .where((j) => p.gender == Gender.kadin || j != 'ev_hanimi')
         .toList();
     if (pool.isEmpty) return 'memur';
@@ -346,7 +361,7 @@ class PeopleTick {
         surname: surname,
         gender: gender,
         bornAt: -ageGap,
-        city: c.hometown,
+        city: c.city,
         origin: Origin.okul,
         metAt: _now,
         base: base,

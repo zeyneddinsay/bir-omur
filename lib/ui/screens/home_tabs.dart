@@ -9,6 +9,7 @@ import '../people/people_tab.dart';
 import '../people/people_text.dart';
 import '../people/people_view.dart';
 import '../providers.dart';
+import '../widgets/home_card.dart';
 import '../widgets/ledger_view.dart';
 import '../widgets/life_status.dart';
 
@@ -42,6 +43,8 @@ class HomeTabs extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              HomeCard(state: state),
+              const SizedBox(height: 8),
               AssetsSummary(engine: engine),
               const SizedBox(height: 12),
               LedgerView(character: state.character, deck: engine.deck),
@@ -244,7 +247,7 @@ class _ActionsTab extends ConsumerWidget {
               title: Text(l10n.actionName(action.id) ?? action.id),
               subtitle: Text(
                 blocked == null
-                    ? '${switch (action.moneyChange(controller.engine.market)) {
+                    ? '${switch (action.moneyChangeFor(state.character, controller.engine.market)) {
                         0 => l10n.actionFree,
                         < 0 && final change => l10n.money(-change),
                         final change => l10n.moneyGain(change),

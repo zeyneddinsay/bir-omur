@@ -77,7 +77,7 @@ abstract final class RoleMatcher {
         p.memories.any((m) => m.kind == slot.noMemory)) {
       return false;
     }
-    if (slot.sameCity != null && (p.city == c.hometown) != slot.sameCity) {
+    if (slot.sameCity != null && (p.city == c.city) != slot.sameCity) {
       return false;
     }
     return true;

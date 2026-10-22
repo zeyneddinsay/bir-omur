@@ -7,7 +7,7 @@ Person testPerson(
   Gender gender = Gender.erkek,
   int age = 30,
   int playerAge = 30,
-  String city = 'Kastamonu',
+  String city = 'Konya',
   Kinship? kin,
   Side? side,
   Bond? bond,

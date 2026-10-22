@@ -62,15 +62,27 @@ void main() {
   });
 
   test('aynı evde yaşanırken anne, baba ve kardeşle ilişki soğumaz', () {
+    var checked = 0;
     for (final (_, next) in yearPairs()) {
-      final age = next.character.age;
-      if (age >= PeopleTick.householdUntil) continue;
-      for (final p in next.character.people.active(age)) {
-        if (p.kin == Kinship.anne ||
-            p.kin == Kinship.baba ||
-            p.kin == Kinship.kardes) {
-          expect(p.lastContactAt, age);
-          expect(Relationships.coolingOf(p, age), 0);
+      final c = next.character;
+      for (final p in c.people.active(c.age)) {
+        if (PeopleTick.livesTogether(c, p)) {
+          checked++;
+          expect(p.lastContactAt, c.age);
+          expect(Relationships.coolingOf(p, c.age), 0);
+        }
+      }
+    }
+    expect(checked, greaterThan(1000));
+  });
+
+  test('çocukken anne ve baba aynı evde', () {
+    for (final (_, next) in yearPairs()) {
+      final c = next.character;
+      if (c.age >= 18) continue;
+      for (final p in c.people.active(c.age)) {
+        if (p.kin == Kinship.anne || p.kin == Kinship.baba) {
+          expect(PeopleTick.livesTogether(c, p), isTrue, reason: '${c.age}');
         }
       }
     }
@@ -171,19 +183,14 @@ void main() {
 
   test('kişinin kendi yılı çubukları değiştirmez', () {
     for (final (prev, next) in yearPairs()) {
-      final age = next.character.age;
       for (final p in next.character.people.all) {
         final before = prev.character.people[p.id];
         if (before == null) continue;
         expect(p.memories, before.memories);
         expect(p.base, before.base);
         expect(p.traits, before.traits);
-        if (age >= PeopleTick.householdUntil ||
-            !const {
-              Kinship.anne,
-              Kinship.baba,
-              Kinship.kardes,
-            }.contains(p.kin)) {
+        if (!PeopleTick.livesTogether(prev.character, before) &&
+            !PeopleTick.livesTogether(next.character, p)) {
           expect(p.lastContactAt, before.lastContactAt);
         }
       }
@@ -195,7 +202,9 @@ void main() {
       final age = next.character.age;
       final people = next.character.people;
       for (final p in people.active(age)) {
-        if (p.ageAt(age) >= 65 && p.occupation != null) {
+        if (p.ageAt(age) >= 65 &&
+            p.occupation != null &&
+            p.occupation != 'ev_hanimi') {
           expect(p.occupation, 'emekli', reason: '${p.id} ${p.ageAt(age)}');
         }
         if (p.occupation == 'ev_hanimi') expect(p.gender, Gender.kadin);

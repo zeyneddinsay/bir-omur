@@ -222,6 +222,19 @@ class _RandomPlayer {
         ];
         engine.choose(sides[_random.nextInt(sides.length)]);
       case YearPhase.actions:
+        if (_random.nextInt(25) == 0) {
+          final cities = [
+            for (final (city, blocked, _) in engine.moveOptions())
+              if (blocked == null) city,
+          ];
+          if (cities.isNotEmpty) {
+            engine.moveTo(
+              cities[_random.nextInt(cities.length)],
+              withFamily: _random.nextBool(),
+            );
+            return;
+          }
+        }
         final requests = engine.possibleInteractions();
         if (requests.isNotEmpty && _random.nextBool()) {
           engine.interact(requests[_random.nextInt(requests.length)]);

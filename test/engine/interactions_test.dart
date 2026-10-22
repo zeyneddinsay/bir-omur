@@ -23,7 +23,7 @@ Person _person({
   Gender gender = Gender.erkek,
   int age = 30,
   int playerAge = 30,
-  String city = 'Kastamonu',
+  String city = 'Konya',
   Kinship? kin,
   Side? side,
   List<PersonRole> roles = const [],
@@ -56,9 +56,18 @@ Person _person({
   archived: archived,
 );
 
-Character _with(Person p, {int age = 30, int money = 100000}) {
+Character _with(
+  Person p, {
+  int age = 30,
+  int money = 100000,
+  HomeKind home = HomeKind.aile,
+}) {
   final (book, _) = PeopleBook.empty().add((id) => p);
-  return testCharacter(age: age, money: money).copyWith(people: book);
+  return testCharacter(
+    age: age,
+    money: money,
+    home: home,
+  ).copyWith(people: book);
 }
 
 Memory _memory(
@@ -83,8 +92,9 @@ void main() {
     int timeLeft = 5,
     Set<String> used = const {},
     int money = 100000,
+    HomeKind home = HomeKind.aile,
   }) => Interactions.optionsFor(
-    _with(p, age: age, money: money),
+    _with(p, age: age, money: money, home: home),
     p,
     timeLeft: timeLeft,
     used: used,
@@ -266,9 +276,9 @@ void main() {
         reason: 'aynı evde yaşanan kardeş aranmaz',
       );
       expect(
-        options(sibling, age: 18).map((o) => o.kind),
+        options(sibling, age: 20, home: HomeKind.kira).map((o) => o.kind),
         contains(InteractionKind.ara),
-        reason: '18 yaşında ev ayrılır',
+        reason: 'evden çıkınca kardeş aranır',
       );
     });
 
@@ -307,11 +317,21 @@ void main() {
       );
     });
 
-    test('18 yaşına kadar anne, baba ve kardeş aynı evde', () {
-      final mother = _person(kin: Kinship.anne, city: 'Rize');
+    test('aileyle yaşarken anne aynı evde; evden çıkınca aranır', () {
+      final mother = _person(kin: Kinship.anne);
+      List<InteractionKind> kinds(int age, HomeKind home) => [
+        for (final o in options(mother, age: age, home: home)) o.kind,
+      ];
+      expect(kinds(12, HomeKind.aile), isNot(contains(InteractionKind.ara)));
+      expect(kinds(25, HomeKind.aile), isNot(contains(InteractionKind.ara)));
+      expect(kinds(25, HomeKind.kira), contains(InteractionKind.ara));
       expect(option(mother, InteractionKind.yemegiOv, age: 12).enabled, isTrue);
+      final away = _person(kin: Kinship.anne, city: 'Rize');
       expect(
-        option(mother, InteractionKind.yemegiOv, age: 25).blocked,
+        options(
+          away,
+          home: HomeKind.kira,
+        ).singleWhere((o) => o.kind == InteractionKind.yemegiOv).blocked,
         Blocked.uzak,
       );
     });
@@ -659,7 +679,7 @@ void main() {
         surname: 'Yılmaz',
         gender: Gender.erkek,
         bornAt: 0,
-        city: 'Kastamonu',
+        city: 'Konya',
         origin: Origin.okul,
         metAt: 12,
         base: 10,

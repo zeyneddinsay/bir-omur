@@ -208,14 +208,14 @@
     "conditions": {
       "gender": "erkek",
       "notFlags": ["universite_ogrencisi", "askerligini_yapti"],
-      "max": { "money": 150000 }
+      "max": { "money": 300000 }
     },
     "text": "Askerlik şubesinden celp kâğıdı geldi. Saçlar kısalacak, telefon bir süre susacak.",
     "left": {
       "label": "Davul zurnayla uğurlan",
       "effects": {
         "addFlags": ["askerligini_yapti", "asker_anilari"],
-        "money": -3000,
+        "money": -10000,
         "happiness": 3,
         "reputation": 2
       }
@@ -238,7 +238,7 @@
     "conditions": {
       "gender": "erkek",
       "notFlags": ["universite_ogrencisi", "askerligini_yapti"],
-      "min": { "money": 150000 }
+      "min": { "money": 300000 }
     },
     "text": "Celp kâğıdı geldi. Hesaptaki para bedelliye yetiyor ama 'bizim bölükte' diye başlayan hikâyeler de cazip.",
     "left": {
@@ -253,7 +253,7 @@
       "label": "Bedelli öderim",
       "effects": {
         "addFlags": ["askerligini_yapti", "bedelli"],
-        "money": -90000
+        "money": -300000
       }
     }
   },

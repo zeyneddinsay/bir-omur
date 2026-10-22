@@ -319,6 +319,9 @@ enum RoleKind {
   sinifArkadasi,
   ogretmen,
   odaArkadasi,
+
+  /// Aynı evi kirayla paylaştığın kişi.
+  evArkadasi,
   bolukArkadasi,
   patron,
   mudur,

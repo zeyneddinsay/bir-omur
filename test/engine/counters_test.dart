@@ -13,22 +13,17 @@ void main() {
       'tasin',
       left: {
         'label': 'Sol',
-        'effects': {
-          'addFlags': ['tasindi'],
-          'gold': 12,
-        },
+        'effects': {'gold': 12},
       },
     );
 
-    test('taşınma ve kartla gelen altın sayılır', () {
+    test('kartla gelen altın sayılır', () {
       final resolver = EffectResolver(SeededRandom(1));
-      var c = testCharacter(flags: {'tasindi'});
+      var c = testCharacter();
       c = resolver.resolve(c, PendingEvent(move), ChoiceSide.left).character;
       c = resolver
           .resolve(c.copyWith(age: 26), PendingEvent(move), ChoiceSide.left)
           .character;
-      // Bayrak zaten varken de her taşınma sayılır.
-      expect(c.counters.moves, 2);
       expect(c.counters.goldReceived, 24);
     });
 
@@ -46,7 +41,7 @@ void main() {
 
   test('ödenen kira birikir', () {
     final tick = EconomyTick(SeededRandom(1));
-    var c = testCharacter(money: 0, flags: {'kiraci'});
+    var c = testCharacter(money: 0, home: HomeKind.kira);
     var market = Market.initial;
     for (var i = 0; i < 3; i++) {
       (c, market, _) = tick.apply(c, market);

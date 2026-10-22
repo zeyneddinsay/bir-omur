@@ -5,27 +5,27 @@
   "tiers": [
     {
       "name": "Memur",
-      "salary": 180000,
+      "salary": 590000,
       "promotion": { "minYears": 5, "chance": 0.6, "requires": { "min": { "knowledge": 40 } } }
     },
     {
       "name": "Şef",
-      "salary": 240000,
+      "salary": 790000,
       "promotion": { "minYears": 5, "chance": 0.5, "requires": { "min": { "knowledge": 50, "reputation": 50 } } }
     },
     {
       "name": "Şube müdürü",
-      "salary": 320000,
+      "salary": 1060000,
       "promotion": { "minYears": 6, "chance": 0.4, "requires": { "min": { "knowledge": 60, "reputation": 55 } } }
     },
     {
       "name": "Daire başkanı",
-      "salary": 420000,
+      "salary": 1390000,
       "promotion": { "minYears": 6, "chance": 0.3, "requires": { "min": { "knowledge": 70, "reputation": 65 } } }
     },
     {
       "name": "Genel müdür",
-      "salary": 550000
+      "salary": 1820000
     }
   ]
 }

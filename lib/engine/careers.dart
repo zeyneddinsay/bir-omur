@@ -1,7 +1,9 @@
 import 'dart:math';
 
 import '../models/models.dart';
+import 'cities.dart';
 import 'life_action.dart';
+import 'relationships.dart';
 
 /// Oyundaki meslekler. İçerikten yüklenir; boş da olabilir.
 class CareerBook {
@@ -49,16 +51,28 @@ abstract final class Careers {
   /// Bu yaşta çalışan herkes emekli olur.
   static const int retireAge = 65;
 
-  /// Emekli aylığı son maaşın bu oranıdır; en az [minPension].
+  /// Emekli aylığı son maaşın bu oranıdır; en az [minPension] (2026: yıllık
+  /// yaklaşık 240 bin).
   static const double pensionShare = 0.6;
-  static const int minPension = 140000;
+  static const int minPension = 240000;
 
-  /// İşsiz yetişkinin ara işlerden geliri.
-  static const int unemployedIncome = 100000;
+  /// Emekli aylığı için en az bu kadar yıl çalışmış olmak gerekir.
+  static const int pensionMinYears = 15;
 
-  /// Üniversite öğrencisinin burs ve harçlığı.
-  static const int studentIncome = 30000;
-  static const int highSchoolIncome = 2000;
+  /// Emekli aylığı olmayan 65 yaş üstüne devletin yıllık aylığı.
+  static const int oldAgeAllowance = 60000;
+
+  /// Lisede ailenin verdiği yıllık cep harçlığı (dar aile vermez).
+  static const int highSchoolAllowance = 6000;
+
+  /// Üniversitede ailenin yıllık harçlığı (2026). Ebeveynle yakınlık
+  /// 50'nin altındaysa yarıya iner; anne ve baba yoksa verilmez.
+  static const Map<FamilyBackground, int> studentAllowance = {
+    FamilyBackground.varlikli: 150000,
+    FamilyBackground.orta: 60000,
+    FamilyBackground.dar: 0,
+  };
+  static const int factoryStudentAllowance = 300000;
 
   /// Emekli aylığı bağlanınca açılan bayrak. Kartlar bakabilir, değiştiremez.
   static const String retiredFlag = 'emekli';
@@ -94,9 +108,15 @@ abstract final class Careers {
     }
   }
 
-  /// Emekli eder: işi varsa son maaşın %60'ı, yoksa en az aylık.
+  /// Emekli aylığı hakkı var mı: en az [pensionMinYears] yıl çalışmış.
+  static bool canRetire(Character c) =>
+      c.counters.yearsWorked >= pensionMinYears;
+
+  /// Emekli eder: işi varsa son maaşın %60'ı, yoksa en az aylık. Hakkı
+  /// yoksa yalnızca işi bırakır.
   static Character retire(Character c, CareerBook book) {
     if (c.isRetired) return c;
+    if (!canRetire(c)) return c.copyWith(clearJob: true);
     final job = c.job;
     final lastSalary = job == null ? 0 : book.salaryOf(job);
     final pension = max(minPension, (lastSalary * pensionShare).round());
@@ -104,19 +124,36 @@ abstract final class Careers {
   }
 
   /// [baseIncome] gelirinin kaynağı.
-  static MoneySource baseIncomeSource(Character c) {
-    if (c.stage == LifeStage.lise) return MoneySource.harclik;
-    if (c.hasFlag(ActionCatalog.studentFlag)) return MoneySource.harclik;
-    return MoneySource.araIs;
+  static MoneySource baseIncomeSource(Character c) =>
+      c.age >= retireAge ? MoneySource.yasliAyligi : MoneySource.harclik;
+
+  /// Bir yılın geliri, iş ve emeklilik dışındaki durumlarda: lisede cep
+  /// harçlığı, üniversitede ailenin harçlığı, 65 yaştan sonra yaşlılık
+  /// aylığı. İşsiz yetişkine kendiliğinden gelir yoktur; ara işler bir
+  /// aksiyondur.
+  static int baseIncome(Character c) {
+    if (c.age >= retireAge) return oldAgeAllowance;
+    if (c.stage == LifeStage.lise) {
+      return c.background == FamilyBackground.dar ? 0 : highSchoolAllowance;
+    }
+    if (c.hasFlag(ActionCatalog.studentFlag)) return allowanceFor(c);
+    return 0;
   }
 
-  /// Bir yılın geliri, iş ve emeklilik dışındaki durumlarda.
-  static int baseIncome(Character c) {
-    final stage = c.stage;
-    if (stage.index < LifeStage.lise.index) return 0;
-    if (stage == LifeStage.lise) return highSchoolIncome;
-    if (c.hasFlag(ActionCatalog.studentFlag)) return studentIncome;
-    return unemployedIncome;
+  /// Üniversite harçlığı: aile durumuna ve anne-babayla yakınlığa göre.
+  static int allowanceFor(Character c) {
+    final parents = [
+      for (final p in c.people.bornBy(c.age))
+        if (p.isAlive && (p.kin == Kinship.anne || p.kin == Kinship.baba)) p,
+    ];
+    if (parents.isEmpty) return 0;
+    final base = c.familyProfile == 'fabrikator'
+        ? factoryStudentAllowance
+        : studentAllowance[c.background]!;
+    final closeness =
+        parents.fold(0, (s, p) => s + Relationships.closeness(p, c.age)) /
+        parents.length;
+    return closeness < 50 ? base ~/ 2 : base;
   }
 }
 
@@ -134,7 +171,7 @@ class CareerTick {
 
     if (!c.isRetired && c.age >= Careers.retireAge) {
       c = Careers.retire(c, book);
-      retired = true;
+      retired = c.isRetired;
     }
 
     final int income;
@@ -149,7 +186,9 @@ class CareerTick {
       final factor = variance == 0
           ? 1.0
           : 1 + variance * (2 * random.nextDouble() - 1);
-      income = (career.tier(job.tier).salary * factor).round();
+      income =
+          (career.tier(job.tier).salary * factor * Cities.typeOf(c.city).salary)
+              .round();
       worked = true;
       (c, promoted) = _tryPromotion(c, career, job);
     } else {

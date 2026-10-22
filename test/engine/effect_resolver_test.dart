@@ -16,7 +16,7 @@ void main() {
         const Effect(
           stats: {StatKind.happiness: 10, StatKind.health: -5},
           money: -3000,
-          addFlags: ['tasindi'],
+          addFlags: ['ehliyet_var'],
           removeFlags: ['kiraci'],
         ),
       );
@@ -24,7 +24,7 @@ void main() {
       expect(next.stats.happiness, 96);
       expect(next.stats.health, 45);
       expect(next.stats.money, -2000);
-      expect(next.flags, {'tasindi'});
+      expect(next.flags, {'ehliyet_var'});
     });
 
     test('boş etki karakteri değiştirmez', () {
@@ -40,7 +40,7 @@ void main() {
         'label': 'Taşınırım',
         'effects': {
           'money': -15000,
-          'addFlags': ['tasindi'],
+          'addFlags': ['ehliyet_var'],
         },
       },
       right: {
@@ -64,7 +64,7 @@ void main() {
       );
       expect(outcome.rollSucceeded, isNull);
       expect(outcome.character.stats.money, 10000 - 15000);
-      expect(outcome.character.hasFlag('tasindi'), isTrue);
+      expect(outcome.character.hasFlag('ehliyet_var'), isTrue);
       expect(outcome.character.history.single.cardId, 'pazarlik');
       expect(outcome.character.history.single.side, ChoiceSide.left);
       expect(outcome.scheduled, isEmpty);

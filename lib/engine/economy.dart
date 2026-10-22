@@ -2,6 +2,7 @@ import 'dart:math';
 
 import '../models/models.dart';
 import 'careers.dart';
+import 'cities.dart';
 
 /// Hayat boyunca değişen piyasa: altın fiyatı ve son yılın enflasyonu.
 /// Değişmezdir; kayda girer.
@@ -32,6 +33,7 @@ class EconomyReport {
     this.rentPaid = 0,
     this.loanPaid = 0,
     this.carCost = 0,
+    this.livingCost = 0,
     this.goldPriceChange = 0,
   });
 
@@ -40,6 +42,9 @@ class EconomyReport {
   final int rentPaid;
   final int loanPaid;
   final int carCost;
+
+  /// Ev dışında yaşamanın yıllık gideri (yurt, kira evi, kendi evin).
+  final int livingCost;
   final double goldPriceChange;
 }
 
@@ -51,20 +56,47 @@ abstract final class Economy {
   /// Nakit, yılın enflasyonunun bu oranı kadar erir (%30 enflasyon → %15).
   static const double cashErosionShare = 0.5;
 
-  static const int initialGoldPrice = 3000;
+  static const int initialGoldPrice = 6500;
   static const double goldMinChange = -0.15;
   static const double goldMaxChange = 0.15;
 
-  /// Evin bugünkü değeri; reel olarak sabit kalır.
-  static const int houseValue = 1500000;
+  /// Evin bugünkü değeri (orta şehir); reel olarak sabit kalır. 2026
+  /// Türkiye ortalaması yaklaşık 5 milyon.
+  static const int houseValue = 5000000;
 
-  static const int newCarValue = 600000;
+  static const int newCarValue = 1800000;
   static const double carYearlyDepreciation = 0.05;
-  static const int carYearlyCost = 15000;
+  static const int carYearlyCost = 50000;
 
-  /// Kira, taban kiranın bu katını geçmez; zamlar bugünün parasıyla
-  /// sınırsız büyümesin.
-  static const int maxRent = 2 * Assets.defaultRent;
+  /// Kira, şehrin taban kirasının bu katını geçmez; zamlar bugünün
+  /// parasıyla sınırsız büyümesin.
+  static const int maxRentFactor = 2;
+
+  /// Şehrin taban yıllık kirası (100 m², 2026: orta şehir 330 bin).
+  static int rentFor(String city) =>
+      (Assets.defaultRent * Cities.typeOf(city).rent).round();
+
+  static int maxRentFor(String city) => maxRentFactor * rentFor(city);
+
+  /// Ev dışında yaşamanın yıllık gideri (yemek, fatura, ulaşım).
+  static const int livingCost = 150000;
+
+  /// Yurdun yıllık gideri.
+  static const int dormCost = 60000;
+
+  /// Nerede yaşandığına göre yıllık yaşam gideri.
+  static int livingCostFor(HomeKind home) => switch (home) {
+    HomeKind.aile => 0,
+    HomeKind.yurt => dormCost,
+    _ => livingCost,
+  };
+
+  /// Bu yıl ödenecek kira: kirada tamamı, ev arkadaşıyla yarısı.
+  static int rentDue(Character c) => switch (c.home) {
+    HomeKind.kira => c.assets.rent,
+    HomeKind.evArkadasi => c.assets.rent ~/ 2,
+    _ => 0,
+  };
 
   /// Araba sahibine her yıl küçük bir keyif ve itibar verir.
   static const Effect carYearlyBonus = Effect(
@@ -79,11 +111,13 @@ abstract final class Economy {
   static const String goldOwnerFlag = 'altin_var';
   static const String renterFlag = 'kiraci';
 
-  /// Bir kart bu bayrağı her eklediğinde taşınma sayacı artar.
+  /// En az bir kez taşınmış (taşınma sayacından türetilir).
   static const String movedFlag = 'tasindi';
 
   static const Set<String> derivedFlags = {
     homeOwnerFlag,
+    renterFlag,
+    movedFlag,
     carOwnerFlag,
     goldOwnerFlag,
     Careers.retiredFlag,
@@ -114,9 +148,8 @@ abstract final class Economy {
     a = a.copyWith(
       goldGrams: max(0, a.goldGrams + effect.gold),
       houses: max(0, a.houses + effect.house),
-      rent:
-          ((effect.rentReset ? Assets.defaultRent : a.rent) + effect.rentChange)
-              .clamp(0, maxRent),
+      rent: ((effect.rentReset ? rentFor(c.city) : a.rent) + effect.rentChange)
+          .clamp(0, maxRentFor(c.city)),
     );
     if (effect.car > 0) {
       a = a.copyWith(
@@ -153,7 +186,8 @@ abstract final class Economy {
     set(carOwnerFlag, a.cars > 0);
     set(goldOwnerFlag, a.goldGrams > 0);
     set(Careers.retiredFlag, c.isRetired);
-    if (a.houses > 0) flags.remove(renterFlag);
+    set(renterFlag, c.home.paysRent);
+    set(movedFlag, c.counters.moves > 0);
     if (flags.length == c.flags.length && flags.containsAll(c.flags)) return c;
     return c.copyWith(flags: flags);
   }
@@ -186,10 +220,10 @@ class EconomyTick {
     money -= eroded;
 
     var a = c.assets;
-    final rentPaid = c.hasFlag(Economy.renterFlag) && a.houses == 0
-        ? a.rent
-        : 0;
+    final rentPaid = Economy.rentDue(c);
     money -= rentPaid;
+    final livingCost = Economy.livingCostFor(c.home);
+    money -= livingCost;
 
     var loanPaid = 0;
     if (a.hasLoan) {
@@ -228,6 +262,7 @@ class EconomyTick {
         rentPaid: rentPaid,
         loanPaid: loanPaid,
         carCost: carCost,
+        livingCost: livingCost,
         goldPriceChange: goldChange,
       ),
     );

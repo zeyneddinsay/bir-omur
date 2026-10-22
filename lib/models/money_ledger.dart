@@ -5,6 +5,9 @@ enum MoneySource {
   maas,
   emekliAyligi,
 
+  /// Çalışmamış ya da yeterince çalışmamış yaşlıya devletin 65 yaş aylığı.
+  yasliAyligi,
+
   /// Ailenin verdiği harçlık (lise ve üniversite).
   harclik,
 
@@ -43,6 +46,9 @@ enum MoneySource {
 
   /// İş ilanı, mülakat, istifa gibi iş hareketleri; [MoneyEntry.ref] açıklama.
   is_,
+
+  /// Başka şehre taşınma; [MoneyEntry.ref] yeni şehir.
+  tasinma,
 
   /// Ev, araba, taşınma gibi varlık hareketleri.
   varlik,
