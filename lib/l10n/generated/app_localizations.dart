@@ -1168,6 +1168,12 @@ abstract class AppLocalizations {
   /// **'Para hareketi yok.'**
   String get ledgerEmpty;
 
+  /// No description provided for @ledgerInflationHint.
+  ///
+  /// In tr, this message translates to:
+  /// **'Nakit her yıl enflasyonun yarısı kadar erir; altın ve ev değerini korur.'**
+  String get ledgerInflationHint;
+
   /// No description provided for @ledgerTotal.
   ///
   /// In tr, this message translates to:
@@ -1285,7 +1291,7 @@ abstract class AppLocalizations {
   /// No description provided for @lastYearTitle.
   ///
   /// In tr, this message translates to:
-  /// **'Geçen yıl'**
+  /// **'Yıl başı'**
   String get lastYearTitle;
 
   /// No description provided for @lastYearIncome.

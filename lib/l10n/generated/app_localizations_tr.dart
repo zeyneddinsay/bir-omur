@@ -680,6 +680,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get ledgerEmpty => 'Para hareketi yok.';
 
   @override
+  String get ledgerInflationHint =>
+      'Nakit her yıl enflasyonun yarısı kadar erir; altın ve ev değerini korur.';
+
+  @override
   String get ledgerTotal => 'Toplam';
 
   @override
@@ -745,7 +749,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get lastYearTitle => 'Geçen yıl';
+  String get lastYearTitle => 'Yıl başı';
 
   @override
   String lastYearIncome(String amount) {

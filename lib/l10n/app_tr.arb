@@ -237,6 +237,7 @@
   "ledgerLastYear": "Geçen yıl ({age} yaş)",
   "@ledgerLastYear": { "placeholders": { "age": { "type": "int" } } },
   "ledgerEmpty": "Para hareketi yok.",
+  "ledgerInflationHint": "Nakit her yıl enflasyonun yarısı kadar erir; altın ve ev değerini korur.",
   "ledgerTotal": "Toplam",
   "money_maas": "Maaş",
   "money_emekliAyligi": "Emekli aylığı",
@@ -261,7 +262,7 @@
   "money_varlik": "{what}",
   "@money_varlik": { "placeholders": { "what": { "type": "String" } } },
 
-  "lastYearTitle": "Geçen yıl",
+  "lastYearTitle": "Yıl başı",
   "lastYearIncome": "Gelir {amount}",
   "@lastYearIncome": { "placeholders": { "amount": { "type": "String" } } },
   "lastYearRent": "Kira {amount}",

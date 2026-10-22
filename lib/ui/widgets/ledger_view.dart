@@ -53,6 +53,11 @@ class LedgerView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(l10n.ledgerTitle, style: theme.textTheme.titleMedium),
+            if (c.ledger.any((e) => e.source == MoneySource.enflasyon))
+              Text(
+                l10n.ledgerInflationHint,
+                style: theme.textTheme.bodySmall,
+              ),
             section(l10n.ledgerThisYear(c.age), c.age),
             if (c.age > 0) section(l10n.ledgerLastYear(c.age - 1), c.age - 1),
           ],

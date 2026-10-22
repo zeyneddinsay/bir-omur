@@ -87,6 +87,8 @@ class LifeAction {
   /// Yaşa ve duruma göre bu karakter yapabilir mi.
   bool isAvailableFor(Character c) {
     if (!isAvailableAt(c.age)) return false;
+    // Altını olmayana "altın sat" görünmez.
+    if (goldGrams < 0 && c.assets.goldGrams < -goldGrams) return false;
     if (requiresJob && c.job == null) return false;
     if (studentsOnly && !ActionCatalog.isStudent(c)) return false;
     if (idleOnly && !ActionCatalog.isIdleAdult(c)) return false;
