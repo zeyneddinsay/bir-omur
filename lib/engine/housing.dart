@@ -18,6 +18,9 @@ abstract final class Housing {
   /// Evden çıkma, taşınma ve kredi bu yaştan itibaren.
   static const int minAge = 18;
 
+  /// 55 yaşından sonra memleketine taşınınca açılan bayrak (rozet).
+  static const String homecomingFlag = 'memlekete_dondu';
+
   /// Ev ve arabada peşinat oranı.
   static const double downPaymentShare = 0.2;
   static const int houseLoanYears = 10;
@@ -205,6 +208,10 @@ abstract final class Housing {
         lastMoveAt: c.age,
       ),
     );
+    // Yaşlılığında memleketine dönen.
+    if (city == c.hometown && c.age >= 55) {
+      next = next.copyWith(flags: {...next.flags, homecomingFlag});
+    }
     // Eş ve küçük çocuklar birlikte taşınır.
     var book = next.people;
     for (final p in book.all.toList()) {

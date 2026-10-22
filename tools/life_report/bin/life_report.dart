@@ -426,6 +426,17 @@ class _RandomPlayer {
           }
           return;
         }
+        // Yaşlılıkta ara sıra memlekete döner.
+        final me0 = engine.state.character;
+        if (me0.age >= 60 &&
+            me0.city != me0.hometown &&
+            _random.nextInt(15) == 0 &&
+            engine.moveOptions().any(
+              (o) => o.$1 == me0.hometown && o.$2 == null,
+            )) {
+          engine.moveTo(me0.hometown, withFamily: true);
+          return;
+        }
         if (_random.nextInt(200) == 0) {
           final cities = [
             for (final (city, blocked, _) in engine.moveOptions())

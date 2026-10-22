@@ -88,8 +88,11 @@ class SummaryBuilder {
   /// Mahalle seni sözünle hatırlar: itibar eşiği aştığında aşılan puan bu
   /// kadar kat sayılır.
   static const int reputationWeight = 2;
+
+  /// İtibar her yıl ortaya kaydığı için lakap eşiği daha düşük.
+  static const int reputationThreshold = 70;
   static const int soldierScore = 3;
-  static const int bossScore = 15;
+  static const int bossScore = 8;
   static const int friendScore = 15;
   static const int movesScore = 12;
 
@@ -107,7 +110,7 @@ class SummaryBuilder {
     final candidates = <(Nickname, int)>[
       (
         Nickname.sozuDinlenen,
-        (s.reputation - statThreshold) * reputationWeight,
+        (s.reputation - reputationThreshold) * reputationWeight,
       ),
       (Nickname.bayramlarinBasKosesi, s.family - statThreshold),
       (Nickname.mahalleninProfesoru, s.knowledge - statThreshold),

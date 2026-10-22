@@ -60,7 +60,7 @@ LifeSummary _longLife() {
       seed: seed,
     );
     final end = AutoPlayer(seed).play(engine);
-    if (end.summary!.deathAge > 80 && end.summary!.biggestMoment != null) {
+    if (end.summary!.deathAge > 65 && end.summary!.biggestMoment != null) {
       return end.summary!;
     }
   }

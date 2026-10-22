@@ -32,11 +32,11 @@ class FamilyGenerator {
   final List<String> cities;
 
   /// Yakınlık tabanları.
-  static const int motherBase = 70;
-  static const int fatherBase = 65;
+  static const int motherBase = 62;
+  static const int fatherBase = 57;
   static const int singleParentBase = 75;
-  static const int siblingBase = 55;
-  static const int grandparentBase = 60;
+  static const int siblingBase = 48;
+  static const int grandparentBase = 52;
   static const int relativeBase = 40;
   static const int neighborBase = 30;
   static const int grocerBase = 25;

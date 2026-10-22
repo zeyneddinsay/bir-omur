@@ -260,6 +260,16 @@ class CareerTick {
     if (c.isRetired) {
       income = c.pension;
       source = MoneySource.emekliAyligi;
+      // Emekli de eski makamıyla anılır.
+      final tier = c.careerJob?.tier ?? 0;
+      final standing = tier >= 4
+          ? 2
+          : tier >= 3
+          ? 1
+          : 0;
+      if (standing > 0) {
+        c = c.copyWith(stats: c.stats.withDelta(StatKind.reputation, standing));
+      }
     } else if (c.job != null && c.hasFlag('askerde')) {
       // Askerdeki yıl iş askıda: maaş, kıdem ve performans işlemez.
     } else if (c.job case final job?) {
@@ -291,6 +301,17 @@ class CareerTick {
         worked = true;
         c = c.copyWith(job: next);
         c = Careers.tempoEffect(c, next.tempo);
+        // Üst kademe mahallede söz sahibi yapar.
+        final standing = next.tier >= 4
+            ? 2
+            : next.tier >= 3
+            ? 1
+            : 0;
+        if (standing > 0) {
+          c = c.copyWith(
+            stats: c.stats.withDelta(StatKind.reputation, standing),
+          );
+        }
       }
     } else {
       income = Careers.baseIncome(c);

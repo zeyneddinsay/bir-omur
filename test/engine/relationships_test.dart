@@ -365,7 +365,8 @@ void main() {
       now: 27,
     );
     expect(hostile(calmed, 27), 5);
-    expect(close(calmed, 27), 87);
+    // 70 üstü yarı hızla dolar (Relationships.softCap).
+    expect(close(calmed, 27), 79);
     expect(Relationships.colorOf(calmed, 27), RelationColor.dost);
 
     // Öteki yol: 21'de iğnelemek.

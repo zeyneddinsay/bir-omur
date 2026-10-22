@@ -99,7 +99,12 @@ abstract final class Relationships {
     return min(maxCooling, (idle * coolingPerYear * paceOf(p)).round());
   }
 
-  /// Yakınlık (0–100): taban + olumlu anılar + izlenim − soğuma.
+  /// Yakınlık bu değerin üstünde yarı hızla artar: çok yakın olmak emek
+  /// ister, yakınlık kolay doymaz.
+  static const int softCap = 70;
+
+  /// Yakınlık (0–100): taban + olumlu anılar + izlenim − soğuma; [softCap]
+  /// üstü yarı hızla.
   static int closeness(Person p, int now) {
     var sum = p.base.toDouble();
     for (final m in p.memories) {
@@ -107,6 +112,7 @@ abstract final class Relationships {
         sum += weightOf(m, p, now);
       }
     }
+    if (sum > softCap) sum = softCap + (sum - softCap) / 2;
     sum += impressionAt(p.impression, now).warmth;
     sum -= coolingOf(p, now);
     return sum.round().clamp(0, 100);

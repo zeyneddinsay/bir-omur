@@ -437,9 +437,14 @@ abstract final class BusinessRules {
         kept.add(next);
       }
     }
+    // İtibarlı ve kâr eden işletme sahibinin sözü dinlenir.
+    final known = kept.any(
+      (b) => b.reputation >= 70 && (b.lastProfit ?? 0) > 0,
+    );
+    final stats = c.stats.copyWith(money: money);
     return (
       c.copyWith(
-        stats: c.stats.copyWith(money: money),
+        stats: known ? stats.withDelta(StatKind.reputation, 1) : stats,
         businesses: kept,
         people: people,
         bankruptcies: bankruptcies,
