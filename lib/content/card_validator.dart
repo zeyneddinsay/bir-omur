@@ -520,6 +520,12 @@ class CardValidator {
 
     _checkCareerUse(card, error);
     _checkText(card, '.text', card.text, maxTextLength, error);
+    if (card.closing case final closing?) {
+      if (!card.chainOnly) {
+        error('.closing', 'kapanış cümlesi yalnızca iplikte olur');
+      }
+      _checkText(card, '.closing', closing, maxTextLength, error);
+    }
 
     if (card.up != null && card.rarity == Rarity.siradan) {
       error('.up', 'yukarı seçeneği yalnızca nadir ve efsane kartlarda olur');

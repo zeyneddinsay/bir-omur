@@ -122,7 +122,8 @@ class _MeTab extends ConsumerWidget {
     final occupations =
         ref.watch(contentProvider).value?.families.occupations ?? const {};
     final news = [
-      for (final n in state.notes) noteLine(l10n, n, engine.careers),
+      for (final n in state.notes)
+        noteLine(l10n, n, engine.careers, deck: engine.deck, character: c),
       for (final n in state.news) l10n.newsLine(n, c, occupations: occupations),
     ].where((line) => line.isNotEmpty).toList();
     final choices = [

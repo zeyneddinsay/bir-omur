@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../content/event_text.dart';
 import '../../engine/engine.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../models/models.dart';
+import '../people/people_text.dart';
 import '../providers.dart';
 import 'home_card.dart';
 import 'business_card.dart';
@@ -28,7 +30,13 @@ String schoolName(AppLocalizations l10n, HighSchool school) => switch (school) {
 };
 
 /// Yıl günlüğünde oyuncunun kendi notu.
-String noteLine(AppLocalizations l10n, LifeNote note, CareerBook careers) {
+String noteLine(
+  AppLocalizations l10n,
+  LifeNote note,
+  CareerBook careers, {
+  EventDeck? deck,
+  Character? character,
+}) {
   final d = note.detail ?? '';
   final parts = d.split('|');
   String title(String careerId, String tier) {
@@ -110,6 +118,8 @@ String noteLine(AppLocalizations l10n, LifeNote note, CareerBook careers) {
       businessTypeName(l10n, parts[0]),
     ),
     NoteKind.iseAldin => d,
+    NoteKind.iplikKapandi => _closingLine(l10n, parts, deck, character),
+    NoteKind.dunyaKucuk => _worldSmallLine(l10n, parts, character),
   };
 }
 
@@ -275,4 +285,42 @@ class _TercihSheetState extends ConsumerState<TercihSheet> {
       ),
     );
   }
+}
+
+/// Kişisi giden ipliğin kapanış cümlesi: kartta yazılıysa o, yoksa vefat ya
+/// da ayrılık cümlesi.
+String _closingLine(
+  AppLocalizations l10n,
+  List<String> parts,
+  EventDeck? deck,
+  Character? c,
+) {
+  final people = {
+    for (final p in parts.skip(1))
+      if (p.indexOf('=') case final i when i > 0)
+        p.substring(0, i): p.substring(i + 1),
+  };
+  if (c == null || people.isEmpty) return '';
+  final closing = deck?.byId(parts.first)?.closing;
+  if (closing != null) return EventText.render(closing, people, c);
+  final person = c.people[people.values.first];
+  if (person == null) return '';
+  return person.isAlive
+      ? l10n.note_iplikAyrildi(person.name)
+      : l10n.note_iplikVefat(person.name);
+}
+
+/// "Dünya küçük: Kerem artık patronun. Onu okuldan tanıyorsun."
+String _worldSmallLine(
+  AppLocalizations l10n,
+  List<String> parts,
+  Character? c,
+) {
+  if (c == null || parts.length != 2) return '';
+  final p = c.people[parts[0]];
+  final kind = RoleKind.values.asNameMap()[parts[1]];
+  if (p == null || kind == null) return '';
+  final role = l10n.roleName(kind);
+  final lower = role.isEmpty ? role : role[0].toLowerCase() + role.substring(1);
+  return l10n.note_dunyaKucuk(p.name, lower, l10n.originSince(p.origin));
 }

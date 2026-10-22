@@ -319,10 +319,11 @@ abstract final class Housing {
   }
 
   static Character _addLandlord(Character c, PersonFactory f) {
-    final (book, _) = f.add(
+    final (book, _) = f.addOrReuse(
       c.people,
       now: c.age,
-      age: f.between(40, 72),
+      minAge: 40,
+      maxAge: 72,
       city: c.city,
       origin: Origin.kendin,
       base: 15,

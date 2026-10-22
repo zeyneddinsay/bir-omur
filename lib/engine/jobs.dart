@@ -314,11 +314,12 @@ abstract final class JobMarket {
       company: listing.company,
     );
     var people = next.people;
-    (people, _) = f.add(
+    // Patron çalışma çağında (en fazla 62); dünya küçük: tanıdık çıkabilir.
+    (people, _) = f.addOrReuse(
       people,
       now: c.age,
-      // Patron çalışma çağında: en fazla 62.
-      age: f.between(min(max(30, c.age + 3), 55), min(max(45, c.age + 20), 62)),
+      minAge: min(max(30, c.age + 3), 55),
+      maxAge: min(max(45, c.age + 20), 62),
       city: c.city,
       origin: Origin.isYeri,
       base: 15,

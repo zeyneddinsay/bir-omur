@@ -424,6 +424,7 @@
     },
     "speaker": "kardes",
     "text": "{kardes.akraba} kapıda, elinde bir zarf: 'Geç oldu ama getirdim. Kusura bakma.'",
+    "closing": "{kardes.akraba} {kardes.ad} verdiğin borcu hiç getiremedi; sen de hiç sormadın.",
     "left": {
       "label": "Sağ ol",
       "effects": { "money": 33000 }

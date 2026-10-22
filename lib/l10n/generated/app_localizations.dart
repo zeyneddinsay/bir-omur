@@ -2332,6 +2332,78 @@ abstract class AppLocalizations {
   /// **'{person} işine ortak oldu: {name}.'**
   String note_ortakAlindi(String person, String name);
 
+  /// No description provided for @note_iplikVefat.
+  ///
+  /// In tr, this message translates to:
+  /// **'{name} vefat etti; aranızda yarım kalan mesele de onunla kapandı.'**
+  String note_iplikVefat(String name);
+
+  /// No description provided for @note_iplikAyrildi.
+  ///
+  /// In tr, this message translates to:
+  /// **'{name} artık hayatında değil; aranızdaki o mesele yarım kaldı.'**
+  String note_iplikAyrildi(String name);
+
+  /// No description provided for @note_dunyaKucuk.
+  ///
+  /// In tr, this message translates to:
+  /// **'Dünya küçük: {name} artık {role}. Onu {since} tanıyorsun.'**
+  String note_dunyaKucuk(String name, String role, String since);
+
+  /// No description provided for @since_aile.
+  ///
+  /// In tr, this message translates to:
+  /// **'aileden'**
+  String get since_aile;
+
+  /// No description provided for @since_okul.
+  ///
+  /// In tr, this message translates to:
+  /// **'okuldan'**
+  String get since_okul;
+
+  /// No description provided for @since_universite.
+  ///
+  /// In tr, this message translates to:
+  /// **'üniversiteden'**
+  String get since_universite;
+
+  /// No description provided for @since_askerlik.
+  ///
+  /// In tr, this message translates to:
+  /// **'askerden'**
+  String get since_askerlik;
+
+  /// No description provided for @since_isYeri.
+  ///
+  /// In tr, this message translates to:
+  /// **'eski bir işten'**
+  String get since_isYeri;
+
+  /// No description provided for @since_mahalle.
+  ///
+  /// In tr, this message translates to:
+  /// **'mahalleden'**
+  String get since_mahalle;
+
+  /// No description provided for @since_tesaduf.
+  ///
+  /// In tr, this message translates to:
+  /// **'bir tesadüften'**
+  String get since_tesaduf;
+
+  /// No description provided for @since_araci.
+  ///
+  /// In tr, this message translates to:
+  /// **'bir tanıdık sayesinde'**
+  String get since_araci;
+
+  /// No description provided for @since_kendin.
+  ///
+  /// In tr, this message translates to:
+  /// **'eskiden'**
+  String get since_kendin;
+
   /// No description provided for @note_iseAldin.
   ///
   /// In tr, this message translates to:

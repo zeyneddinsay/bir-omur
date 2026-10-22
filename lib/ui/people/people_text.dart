@@ -39,6 +39,19 @@ extension PeopleNames on AppLocalizations {
     RoleKind.doktor => role_doktor,
   };
 
+  /// "Onu {okuldan} tanıyorsun."
+  String originSince(Origin origin) => switch (origin) {
+    Origin.aile => since_aile,
+    Origin.okul => since_okul,
+    Origin.universite => since_universite,
+    Origin.askerlik => since_askerlik,
+    Origin.isYeri => since_isYeri,
+    Origin.mahalle => since_mahalle,
+    Origin.tesaduf => since_tesaduf,
+    Origin.araci => since_araci,
+    Origin.kendin => since_kendin,
+  };
+
   String bondName(Bond bond) => switch (bond) {
     Bond.tanidik => bond_tanidik,
     Bond.arkadas => bond_arkadas,

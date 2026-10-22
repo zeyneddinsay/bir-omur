@@ -1396,6 +1396,48 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
+  String note_iplikVefat(String name) {
+    return '$name vefat etti; aranızda yarım kalan mesele de onunla kapandı.';
+  }
+
+  @override
+  String note_iplikAyrildi(String name) {
+    return '$name artık hayatında değil; aranızdaki o mesele yarım kaldı.';
+  }
+
+  @override
+  String note_dunyaKucuk(String name, String role, String since) {
+    return 'Dünya küçük: $name artık $role. Onu $since tanıyorsun.';
+  }
+
+  @override
+  String get since_aile => 'aileden';
+
+  @override
+  String get since_okul => 'okuldan';
+
+  @override
+  String get since_universite => 'üniversiteden';
+
+  @override
+  String get since_askerlik => 'askerden';
+
+  @override
+  String get since_isYeri => 'eski bir işten';
+
+  @override
+  String get since_mahalle => 'mahalleden';
+
+  @override
+  String get since_tesaduf => 'bir tesadüften';
+
+  @override
+  String get since_araci => 'bir tanıdık sayesinde';
+
+  @override
+  String get since_kendin => 'eskiden';
+
+  @override
   String note_iseAldin(String person, String name) {
     return '$person, $name işinde çalışmaya başladı.';
   }

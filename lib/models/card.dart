@@ -390,6 +390,7 @@ class EventCard {
     this.conditions = Conditions.none,
     this.roles = const [],
     this.speaker,
+    this.closing,
   });
 
   final String id;
@@ -418,6 +419,10 @@ class EventCard {
 
   /// Nadir olaylardaki üçüncü seçenek (yukarı kaydırma).
   final Choice? up;
+
+  /// İplikte: taşınan kişi vefat ettiyse ya da çevreden ayrıldıysa olay
+  /// gelmez, bu cümle yıl günlüğüne yazılır.
+  final String? closing;
 
   bool get mandatory => type == EventType.donemec;
   bool get chainOnly => type == EventType.iplik;
@@ -457,6 +462,7 @@ class EventCard {
     'left',
     'right',
     'up',
+    'closing',
   };
 
   /// Rol yuvası adları: küçük harf, Türkçe harfler ve alt çizgi.
@@ -547,6 +553,7 @@ class EventCard {
       left: Choice.fromJson(r.requireObject('left')),
       right: Choice.fromJson(r.requireObject('right')),
       up: up == null ? null : Choice.fromJson(up),
+      closing: r.optionalString('closing'),
     );
   }
 }

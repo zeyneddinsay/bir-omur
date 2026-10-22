@@ -69,6 +69,13 @@ enum NoteKind {
 
   /// Tanıdığını işe aldı: `tür|ad`.
   iseAldin,
+
+  /// İpliğin kişisi gitti: `kart|yuva=kişi|…`; arayüz kartın kapanış
+  /// cümlesini kurar.
+  iplikKapandi,
+
+  /// Dünya küçük: bir tanıdık yeni bir rol aldı: `kişi|rol`.
+  dunyaKucuk,
 }
 
 class LifeNote {

@@ -181,10 +181,11 @@ abstract final class BusinessRules {
     // Mahallede aynı işi yapan 0–2 rakip.
     final rivals = f.random.nextInt(3);
     for (var i = 0; i < rivals; i++) {
-      (people, _) = f.add(
+      (people, _) = f.addOrReuse(
         people,
         now: c.age,
-        age: f.between(30, 60),
+        minAge: 30,
+        maxAge: 60,
         city: c.city,
         origin: Origin.mahalle,
         base: 5,
@@ -428,10 +429,11 @@ abstract final class BusinessRules {
     if (present || b.managerId != null) {
       return _replace(c, b.copyWith(present: present));
     }
-    final (people, manager) = f.add(
+    final (people, manager) = f.addOrReuse(
       c.people,
       now: c.age,
-      age: f.between(30, 55),
+      minAge: 30,
+      maxAge: 55,
       city: b.city,
       origin: Origin.isYeri,
       base: 15,

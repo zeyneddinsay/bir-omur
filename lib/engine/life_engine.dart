@@ -363,7 +363,7 @@ class LifeEngine {
       character: character,
       timeSpent: _state.timeSpent + action.timeCost,
       actionsUsed: {..._state.actionsUsed, actionId},
-      notes: note == null ? null : [..._state.notes, note],
+      notes: [..._state.notes, ?note, ..._worldSmall(c, character)],
     );
   }
 
@@ -593,7 +593,9 @@ class LifeEngine {
         notes.add(LifeNote(NoteKind.eveDondu, next.city));
       }
       if (next.city != c.city || next.home != c.home) {
+        final unsettled = next;
         next = Housing.settle(next, _factory);
+        notes.addAll(_worldSmall(unsettled, next));
       }
       if (deck.byId(graduationEvent) != null) {
         queue = queue.add(graduationEvent, atAge: next.age);
@@ -687,7 +689,7 @@ class LifeEngine {
       character: Relationships.syncFamilyBond(next),
       timeSpent: _state.timeSpent + 1,
       applied: {..._state.applied, JobMarket.key(listing)},
-      notes: [..._state.notes, note],
+      notes: [..._state.notes, note, ..._worldSmall(c, next)],
     );
   }
 
@@ -826,7 +828,11 @@ class LifeEngine {
         _booked(before, next, MoneySource.isletme, ref: '$typeId:kurulus'),
       ),
       timeSpent: _state.timeSpent + BusinessRules.openTimeCost,
-      notes: [..._state.notes, LifeNote(NoteKind.isletmeAcildi, typeId)],
+      notes: [
+        ..._state.notes,
+        LifeNote(NoteKind.isletmeAcildi, typeId),
+        ..._worldSmall(before, next),
+      ],
     );
   }
 
@@ -841,7 +847,10 @@ class LifeEngine {
     final c = _state.character;
     final next = BusinessRules.setPresent(c, id, present, _factory);
     if (!_timeFits(next)) throw StateError('Başında durmaya vakit kalmadı');
-    return _state = _state.copyWith(character: next);
+    return _state = _state.copyWith(
+      character: next,
+      notes: [..._state.notes, ..._worldSmall(c, next)],
+    );
   }
 
   /// Başında durma seçimi bu yıl değiştirilebilir mi (vakit yetiyor mu).
@@ -1059,7 +1068,7 @@ class LifeEngine {
     };
     return _state = _state.copyWith(
       character: next,
-      notes: [..._state.notes, LifeNote(note)],
+      notes: [..._state.notes, LifeNote(note), ..._worldSmall(c, next)],
     );
   }
 
@@ -1116,6 +1125,7 @@ class LifeEngine {
       notes: [
         ..._state.notes,
         if (c.job != null) const LifeNote(NoteKind.istifa),
+        ..._worldSmall(c, moved),
       ],
       timeSpent: _state.timeSpent + moveTimeCost,
       listings: JobMarket.listingsFor(moved, careers, _random),
@@ -1158,6 +1168,28 @@ class LifeEngine {
 
   /// [before] ile [after] arasındaki para farkını tek bir kaynakla deftere
   /// yazar (fark yoksa yazmaz).
+  /// Dünya küçük: bir tanıdık yeni bir rol aldıysa (patron, ev sahibi,
+  /// müdür, rakip) günlüğe yazılır: `kişi|rol`.
+  static List<LifeNote> _worldSmall(Character before, Character after) {
+    const watched = {
+      RoleKind.patron,
+      RoleKind.amir,
+      RoleKind.usta,
+      RoleKind.mudur,
+      RoleKind.evSahibi,
+      RoleKind.rakip,
+    };
+    return [
+      for (final p in after.people.all)
+        if (before.people[p.id] case final old?)
+          for (final r in p.roles)
+            if (r.active &&
+                watched.contains(r.kind) &&
+                !old.roles.any((o) => o.active && o.kind == r.kind))
+              LifeNote(NoteKind.dunyaKucuk, '${p.id}|${r.kind.name}'),
+    ];
+  }
+
   static Character _booked(
     Character before,
     Character after,
@@ -1285,14 +1317,15 @@ class LifeEngine {
   /// Yılın olayları: önce dönemeçler, sonra zamanı gelen iplikler (aynı
   /// kişilerle), sonra rastgele olaylar. Dönemeçler dahil yılda en fazla
   /// [EventDeck.maxPerYear] olay; sığmayan iplik sonraki yıla kalır.
-  /// İpliğin kişisi artık uygun değilse (vefat, arşiv, rolü bitti) iplik
-  /// düşer. (Kapanış metinleri D4a'da gelir.)
+  /// İpliğin kişisi artık uygun değilse (vefat, arşiv, rolü bitti) olay
+  /// gelmez; günlüğe kapanış cümlesi yazılır ([NoteKind.iplikKapandi]).
   LifeState _beginYear(
     Character character,
     ScheduleQueue queue, {
     List<LifeNote> notes = const [],
   }) {
     final age = character.age;
+    final yearNotes = [...notes];
     var (due, rest) = queue.takeDue(age);
     final milestones = deck.milestones(character, _random);
     final busy = {for (final e in milestones) ...e.people.values};
@@ -1312,7 +1345,21 @@ class LifeEngine {
         fixed: entry.people,
         busy: busy,
       );
-      if (people == null) continue;
+      if (people == null) {
+        if (entry.people.isNotEmpty) {
+          yearNotes.add(
+            LifeNote(
+              NoteKind.iplikKapandi,
+              [
+                card.id,
+                for (final MapEntry(:key, :value) in entry.people.entries)
+                  '$key=$value',
+              ].join('|'),
+            ),
+          );
+        }
+        continue;
+      }
       busy.addAll(people.values);
       chained.add(PendingEvent(card, Map.unmodifiable(people)));
     }
@@ -1328,13 +1375,15 @@ class LifeEngine {
       busy: busy,
     );
     final events = [...milestones, ...chained, ...drawn];
-    if (events.isEmpty) return _actionsPhase(character, rest, notes: notes);
+    if (events.isEmpty) {
+      return _actionsPhase(character, rest, notes: yearNotes);
+    }
     return LifeState(
       character: character,
       phase: YearPhase.cards,
       queue: rest,
       pendingCards: List.unmodifiable(events),
-      notes: List.unmodifiable(notes),
+      notes: List.unmodifiable(yearNotes),
     );
   }
 
