@@ -282,7 +282,7 @@
     "theme": "aile",
     "minAge": 19,
     "maxAge": 70,
-    "repeat": { "cooldown": 4 },
+    "repeat": { "cooldown": 4, "max": 6 },
     "roles": {
       "anne": { "kin": ["anne"], "maxCloseness": 75 }
     },
@@ -327,7 +327,7 @@
     "theme": "aile",
     "minAge": 22,
     "maxAge": 35,
-    "repeat": { "cooldown": 5 },
+    "repeat": { "cooldown": 5, "max": 2 },
     "roles": {
       "baba": { "kin": ["baba"] }
     },
@@ -372,7 +372,7 @@
     "theme": "para",
     "minAge": 22,
     "maxAge": 65,
-    "repeat": { "cooldown": 6 },
+    "repeat": { "cooldown": 6, "max": 3 },
     "conditions": { "min": { "money": 10000 } },
     "roles": {
       "kardes": { "kin": ["kardes"], "minAge": 20 }
@@ -451,7 +451,7 @@
     "theme": "aile",
     "minAge": 8,
     "maxAge": 80,
-    "repeat": { "cooldown": 5 },
+    "repeat": { "cooldown": 5, "max": 4 },
     "roles": {
       "kardes": { "kin": ["kardes"], "minAge": 6, "minHostility": 20 }
     },
@@ -496,7 +496,7 @@
     "theme": "aile",
     "minAge": 7,
     "maxAge": 35,
-    "repeat": { "cooldown": 6 },
+    "repeat": { "cooldown": 6, "max": 3 },
     "roles": {
       "dede": { "kin": ["dede"] }
     },
@@ -541,7 +541,7 @@
     "theme": "aile",
     "minAge": 5,
     "maxAge": 40,
-    "repeat": { "cooldown": 5 },
+    "repeat": { "cooldown": 5, "max": 4 },
     "roles": {
       "nine": { "kin": ["nine"] }
     },
@@ -631,7 +631,7 @@
     "theme": "aile",
     "minAge": 18,
     "maxAge": 60,
-    "repeat": { "cooldown": 6 },
+    "repeat": { "cooldown": 6, "max": 4 },
     "conditions": { "career": "any" },
     "roles": {
       "veli": { "kin": ["anne", "baba"] }
@@ -665,7 +665,7 @@
     "theme": "aile",
     "minAge": 50,
     "maxAge": 100,
-    "repeat": { "cooldown": 7 },
+    "repeat": { "cooldown": 7, "max": 3 },
     "roles": {
       "kardes": { "kin": ["kardes"] }
     },

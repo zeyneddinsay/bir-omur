@@ -57,7 +57,6 @@ void main() {
     await tester.tap(find.byKey(const Key('tab_people')));
     await tester.pumpAndSettle();
     expect(find.text('Aile'), findsOneWidget);
-    expect(find.text('Okul'), findsOneWidget);
     await tester.tap(find.byKey(Key('person_${parent.id}')));
     await tester.pumpAndSettle();
 
@@ -67,19 +66,30 @@ void main() {
       findsOneWidget,
     );
     expect(find.byKey(const Key('closeness_bar')), findsOneWidget);
-    expect(find.byKey(const Key('interaction_ara')), findsOneWidget);
+    // Aynı evde yaşanan anne ya da baba aranmaz; ev içi etkileşimler var.
+    expect(find.byKey(const Key('interaction_ara')), findsNothing);
+    expect(find.byKey(const Key('interaction_dertles')), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 
   testWidgets('Ara: ton seçilir, sonuç yazılır, vakit düşer', (tester) async {
     final container = await _bornAndGrown(tester, 11);
     final before = container.read(lifeProvider)!;
+    // Aynı evde yaşamayan biri: sınıf arkadaşı.
     final parent = before.character.people.all.firstWhere(
-      (p) => p.kin == Kinship.anne || p.kin == Kinship.baba,
+      (p) => p.hasRole(RoleKind.sinifArkadasi),
     );
 
     await tester.tap(find.byKey(const Key('tab_people')));
     await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(
+      find.byKey(Key('person_${parent.id}')),
+      200,
+      scrollable: find.descendant(
+        of: find.byKey(const Key('people_list')),
+        matching: find.byType(Scrollable),
+      ),
+    );
     await tester.tap(find.byKey(Key('person_${parent.id}')));
     await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('interaction_ara')));

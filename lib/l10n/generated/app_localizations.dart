@@ -412,6 +412,30 @@ abstract class AppLocalizations {
   /// **'+{amount} TL'**
   String moneyGain(int amount);
 
+  /// No description provided for @actionBlocked_vakit.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu yılın vakti yetmiyor'**
+  String get actionBlocked_vakit;
+
+  /// No description provided for @actionBlocked_para.
+  ///
+  /// In tr, this message translates to:
+  /// **'Paran yetmiyor'**
+  String get actionBlocked_para;
+
+  /// No description provided for @actionBlocked_buYil.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu yıl yaptın'**
+  String get actionBlocked_buYil;
+
+  /// No description provided for @actionBlocked_isYok.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu yaşta başvurabileceğin bir iş kalmadı'**
+  String get actionBlocked_isYok;
+
   /// No description provided for @ageUpButton.
   ///
   /// In tr, this message translates to:
@@ -519,6 +543,12 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Zamanı geldiğinde, huzur içinde gözlerini yumdu.'**
   String get deathCauseNatural;
+
+  /// No description provided for @deathCauseEarly.
+  ///
+  /// In tr, this message translates to:
+  /// **'Hayatı erken bitti. Geride bıraktıkları onu hep anacak.'**
+  String get deathCauseEarly;
 
   /// No description provided for @nicknameTitle.
   ///
@@ -823,7 +853,7 @@ abstract class AppLocalizations {
   /// No description provided for @jobChild.
   ///
   /// In tr, this message translates to:
-  /// **'Okul çağında'**
+  /// **'Öğrenci'**
   String get jobChild;
 
   /// No description provided for @jobTier.

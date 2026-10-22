@@ -189,6 +189,10 @@ class JobSearchResult {
   bool get found => careerId != null;
 }
 
+/// Bu karaktere başvurusu açık en az bir meslek var mı (yaş ve şartlar).
+bool hasOpenCareer(Character c, CareerBook book) =>
+    book.all.any((career) => career.jobSearch?.isOpenTo(c) ?? false);
+
 /// İş arama: başvurusu açık meslekler en yüksek giriş maaşından başlayarak
 /// denenir; ilk tutan zarda o mesleğin 1. kademesine girilir.
 (Character, JobSearchResult) searchJob(

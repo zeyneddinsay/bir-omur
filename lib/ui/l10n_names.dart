@@ -47,6 +47,13 @@ extension L10nNames on AppLocalizations {
     null => rollLuck,
   };
 
+  String actionBlockedReason(ActionBlocked blocked) => switch (blocked) {
+    ActionBlocked.vakit => actionBlocked_vakit,
+    ActionBlocked.para => actionBlocked_para,
+    ActionBlocked.buYil => actionBlocked_buYil,
+    ActionBlocked.isYok => actionBlocked_isYok,
+  };
+
   String backgroundName(FamilyBackground background) => switch (background) {
     FamilyBackground.varlikli => background_varlikli,
     FamilyBackground.orta => background_orta,
@@ -66,10 +73,15 @@ extension L10nNames on AppLocalizations {
     Nickname.mahalleninBildikYuzu => nickname_mahalleninBildikYuzu,
   };
 
-  String deathCauseText(DeathCause cause) => switch (cause) {
-    DeathCause.health => deathCauseHealth,
-    DeathCause.natural => deathCauseNatural,
-  };
+  /// Ölüm metni; 50 yaşından önce "huzur içinde, zamanı geldiğinde" denmez.
+  String deathCauseText(DeathCause cause, {required int age}) =>
+      switch (cause) {
+        DeathCause.health => deathCauseHealth,
+        DeathCause.natural when age < earlyDeathAge => deathCauseEarly,
+        DeathCause.natural => deathCauseNatural,
+      };
+
+  static const int earlyDeathAge = 50;
 }
 
 /// Türkçe büyük harf: `toUpperCase()` "i" harfini "I" yapar; Türkçede

@@ -5,7 +5,7 @@
     "theme": "aile",
     "minAge": 19,
     "maxAge": 90,
-    "repeat": { "cooldown": 3 },
+    "repeat": { "cooldown": 5, "max": 6 },
     "roles": {
       "buyuk": {
         "kin": ["anne", "baba", "dede", "nine", "amca", "hala", "dayi", "teyze"],
@@ -53,7 +53,7 @@
     "theme": "aile",
     "minAge": 20,
     "maxAge": 80,
-    "repeat": { "cooldown": 5 },
+    "repeat": { "cooldown": 5, "max": 5 },
     "roles": {
       "anne": { "kin": ["anne"], "sameCity": true }
     },
@@ -97,7 +97,7 @@
     "theme": "aile",
     "minAge": 25,
     "maxAge": 80,
-    "repeat": { "cooldown": 6 },
+    "repeat": { "cooldown": 6, "max": 3 },
     "roles": {
       "baba": { "kin": ["baba"] }
     },
@@ -144,7 +144,7 @@
     "theme": "aile",
     "minAge": 20,
     "maxAge": 85,
-    "repeat": { "cooldown": 5 },
+    "repeat": { "cooldown": 7, "max": 4 },
     "roles": {
       "kardes": { "kin": ["kardes"], "minAge": 18 }
     },
@@ -188,7 +188,7 @@
     "theme": "aile",
     "minAge": 19,
     "maxAge": 55,
-    "repeat": { "cooldown": 4 },
+    "repeat": { "cooldown": 4, "max": 4 },
     "roles": {
       "buyuk": { "kin": ["dede", "nine"], "sameCity": false }
     },
@@ -233,7 +233,7 @@
     "theme": "para",
     "minAge": 25,
     "maxAge": 70,
-    "repeat": { "cooldown": 8 },
+    "repeat": { "cooldown": 8, "max": 2 },
     "conditions": { "min": { "money": 20000 } },
     "roles": {
       "akraba": { "kin": ["amca", "hala", "dayi", "teyze"], "maxAge": 60 }
@@ -278,7 +278,7 @@
     "theme": "mahalle",
     "minAge": 19,
     "maxAge": 85,
-    "repeat": { "cooldown": 5 },
+    "repeat": { "cooldown": 5, "max": 4 },
     "roles": {
       "komsu": { "roles": ["komsu"], "sameCity": true }
     },
@@ -367,7 +367,7 @@
     "theme": "mahalle",
     "minAge": 25,
     "maxAge": 85,
-    "repeat": { "cooldown": 5 },
+    "repeat": { "cooldown": 8, "max": 4 },
     "text": "Apartman toplantısı. Konu yine asansör; biri 'Ben merdiven kullanıyorum' diye aidat ödemek istemiyor.",
     "left": {
       "label": "Söz alıp ortayı bul",
@@ -384,17 +384,17 @@
     "theme": "para",
     "minAge": 40,
     "maxAge": 100,
-    "repeat": { "cooldown": 6 },
+    "repeat": { "cooldown": 10, "max": 2 },
     "text": "Bir sipariş bekliyordun. Telefona mesaj düştü: 'Kargonuz gümrükte, ödeme için bağlantıya tıklayın.'",
     "left": {
-      "label": "Tıklayıp bakayım",
-      "roll": { "stat": "luck", "threshold": 50 },
-      "success": { "happiness": 3 },
-      "fail": { "money": -5000, "happiness": -3 }
+      "label": "Kargo firmasını ararım",
+      "effects": { "knowledge": 2, "happiness": -1 }
     },
     "right": {
       "label": "Silip geçerim",
-      "effects": { "knowledge": 1 }
+      "roll": { "stat": "luck", "threshold": 40 },
+      "success": { "happiness": 1 },
+      "fail": { "happiness": -2 }
     }
   },
   {
@@ -403,7 +403,7 @@
     "theme": "saglik",
     "minAge": 60,
     "maxAge": 110,
-    "repeat": { "cooldown": 4 },
+    "repeat": { "cooldown": 6, "max": 4 },
     "text": "Doktor tahlillere baktı, gözlüğünün üstünden süzdü: 'Tuzu azaltacağız, her gün de yürüyeceğiz.'",
     "left": {
       "label": "Söz, yürüyeceğim",

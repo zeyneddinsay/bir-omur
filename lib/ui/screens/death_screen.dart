@@ -71,7 +71,7 @@ class DeathScreen extends ConsumerWidget {
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        l10n.deathCauseText(summary.cause),
+                        l10n.deathCauseText(summary.cause, age: summary.deathAge),
                         textAlign: TextAlign.center,
                         style: theme.textTheme.bodyLarge?.copyWith(
                           fontStyle: FontStyle.italic,

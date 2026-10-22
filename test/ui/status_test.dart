@@ -51,7 +51,8 @@ void main() {
         'Üniversite öğrencisi',
       );
       expect(label(testCharacter(age: 70, pension: 140000)), 'Emekli');
-      expect(label(testCharacter(age: 10)), 'Okul çağında');
+      expect(label(testCharacter(age: 10)), 'Öğrenci');
+      expect(label(testCharacter(age: 3)), isEmpty, reason: 'okul öncesi');
     });
 
     test('ölüm özeti son işi gösterir; hiç çalışmadıysa yok', () {

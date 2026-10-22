@@ -158,7 +158,10 @@ void main() {
         contains(InteractionKind.eliniOp),
       );
       expect(
-        kinds(_person(kin: Kinship.kardes)),
+        options(
+          _person(kin: Kinship.kardes, age: 8, playerAge: 10),
+          age: 10,
+        ).map((o) => o.kind),
         contains(InteractionKind.kardesleOyna),
       );
       expect(
@@ -216,7 +219,23 @@ void main() {
 
   group('şartlar', () {
     test('yaş', () {
-      expect(option(_person(), InteractionKind.bulus, age: 6).enabled, isTrue);
+      expect(
+        option(
+          _person(age: 40, playerAge: 6),
+          InteractionKind.bulus,
+          age: 6,
+        ).enabled,
+        isTrue,
+      );
+      expect(
+        option(
+          _person(age: 2, playerAge: 8),
+          InteractionKind.bulus,
+          age: 8,
+        ).blocked,
+        Blocked.karsiYas,
+        reason: 'bebekle buluşulmaz',
+      );
       expect(
         option(_person(), InteractionKind.ara, age: 10).blocked,
         Blocked.yas,
@@ -231,13 +250,25 @@ void main() {
         Blocked.yas,
       );
       expect(
-        option(
+        options(
           _person(kin: Kinship.kardes, age: 20, playerAge: 10),
-          InteractionKind.kardesleOyna,
           age: 10,
-        ).blocked,
-        Blocked.yas,
-        reason: 'kardeş 14 yaşından büyük',
+        ).map((o) => o.kind),
+        isNot(contains(InteractionKind.kardesleOyna)),
+        reason: 'kardeş 14 yaşından büyük: seçenek hiç çıkmaz',
+      );
+      final sibling = _person(kin: Kinship.kardes, age: 12, playerAge: 15);
+      expect(
+        options(sibling, age: 15).map((o) => o.kind),
+        isNot(
+          anyOf(contains(InteractionKind.ara), contains(InteractionKind.bulus)),
+        ),
+        reason: 'aynı evde yaşanan kardeş aranmaz',
+      );
+      expect(
+        options(sibling, age: 18).map((o) => o.kind),
+        contains(InteractionKind.ara),
+        reason: '18 yaşında ev ayrılır',
       );
     });
 
@@ -686,17 +717,17 @@ void main() {
       final parent = mother(engine);
       final before = engine.state.timeLeft;
       final state = engine.interact(
-        InteractionRequest(InteractionKind.bulus, parent.id),
+        InteractionRequest(InteractionKind.dertles, parent.id),
       );
       expect(state.timeLeft, before - 1);
       expect(state.lastInteraction!.personId, parent.id);
       expect(
         state.interactionsUsed,
-        contains(Interactions.usedKey(parent.id, InteractionKind.bulus)),
+        contains(Interactions.usedKey(parent.id, InteractionKind.dertles)),
       );
       expect(
         () => engine.interact(
-          InteractionRequest(InteractionKind.bulus, parent.id),
+          InteractionRequest(InteractionKind.dertles, parent.id),
         ),
         throwsStateError,
       );
@@ -708,7 +739,7 @@ void main() {
     test('bu yıl yapılanlar kayda girip çıkar', () {
       final engine = engineAt(12);
       final parent = mother(engine);
-      engine.interact(InteractionRequest(InteractionKind.bulus, parent.id));
+      engine.interact(InteractionRequest(InteractionKind.dertles, parent.id));
       final restored = LifeEngine.restore(
         deck: EventDeck(const []),
         families: families,
@@ -739,7 +770,7 @@ void main() {
       );
       expect(
         () => engine.interact(
-          InteractionRequest(InteractionKind.bulus, parent.id),
+          InteractionRequest(InteractionKind.dertles, parent.id),
         ),
         throwsStateError,
       );

@@ -36,7 +36,7 @@ class LifeSummary {
   /// Nakit, altın, ev ve arabanın toplamından kalan kredi borcu düşülmüş hâli.
   final int netWorth;
 
-  /// Hayattaki en nadir kart; nadir ya da efsane kart görülmediyse null.
+  /// Hayatın en büyük anı (bkz. SummaryBuilder); hiç olay yoksa null.
   final CardRecord? biggestMoment;
 
   int get deathAge => character.age;
@@ -114,16 +114,27 @@ class SummaryBuilder {
   }
 
   /// En nadir kart; eşitlikte ilk görülen.
+  /// Hayatın en büyük anı: en nadir kart; nadir kart yoksa hayatın son
+  /// dönemeci ya da ipliği (sınav, mezuniyet, askerlik). Cenaze gibi
+  /// vefat yuvalı olaylar "en büyük an" sayılmaz.
   CardRecord? _biggestMoment(Character c) {
     CardRecord? best;
     var bestWeight = Rarity.siradan.weight;
+    CardRecord? milestone;
     for (final record in c.history) {
-      final weight = deck.byId(record.cardId)?.rarity.weight;
-      if (weight != null && weight < bestWeight) {
+      final card = deck.byId(record.cardId);
+      if (card == null) continue;
+      final weight = card.rarity.weight;
+      if (weight < bestWeight) {
         best = record;
         bestWeight = weight;
       }
+      final mourning = card.roles.any((slot) => slot.deceased);
+      if (!mourning &&
+          (card.type == EventType.donemec || card.type == EventType.iplik)) {
+        milestone = record;
+      }
     }
-    return best;
+    return best ?? milestone;
   }
 }

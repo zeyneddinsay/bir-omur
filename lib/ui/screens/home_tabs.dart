@@ -141,8 +141,10 @@ class _MeTab extends ConsumerWidget {
           leading: const Icon(Icons.home_outlined),
           title: Text(l10n.hometownLine(c.hometown, c.team)),
           subtitle: Text(
-            '${l10n.backgroundName(c.background)} · '
-            '${jobLabel(l10n, c, engine.careers)}',
+            [
+              l10n.backgroundName(c.background),
+              jobLabel(l10n, c, engine.careers),
+            ].where((s) => s.isNotEmpty).join(' · '),
           ),
         ),
       ],
@@ -213,7 +215,7 @@ class _ActionsTab extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
     final controller = ref.read(lifeProvider.notifier);
     final actions = [
-      for (final entry in controller.engine.availableActions())
+      for (final entry in controller.engine.actionOptions())
         if (categories.contains(entry.$1.category)) entry,
     ];
     return ListView(
@@ -225,24 +227,28 @@ class _ActionsTab extends ConsumerWidget {
             padding: const EdgeInsets.all(16),
             child: Text(l10n.noActionsHere, textAlign: TextAlign.center),
           ),
-        for (final (action, enabled) in actions)
+        for (final (action, blocked) in actions)
           Card(
             child: ListTile(
               key: Key('action_${action.id}'),
-              enabled: enabled,
+              enabled: blocked == null,
               leading: Icon(_categoryIcon(action.category)),
               title: Text(l10n.actionName(action.id) ?? action.id),
-              subtitle: Text(switch (action.moneyChange(
-                controller.engine.market,
-              )) {
-                0 => l10n.actionFree,
-                < 0 && final change => l10n.money(-change),
-                final change => l10n.moneyGain(change),
-              }),
+              subtitle: Text(
+                blocked == null
+                    ? '${switch (action.moneyChange(controller.engine.market)) {
+                        0 => l10n.actionFree,
+                        < 0 && final change => l10n.money(-change),
+                        final change => l10n.moneyGain(change),
+                      }} · ${l10n.interactionCost(action.timeCost)}'
+                    : l10n.actionBlockedReason(blocked),
+              ),
               trailing: state.actionsUsed.contains(action.id)
                   ? const Icon(Icons.check)
                   : null,
-              onTap: enabled ? () => controller.doAction(action.id) : null,
+              onTap: blocked == null
+                  ? () => controller.doAction(action.id)
+                  : null,
             ),
           ),
       ],

@@ -1,6 +1,19 @@
 import '../models/models.dart';
 import 'economy.dart';
 
+/// Bir aksiyonun neden yapılamadığı; arayüz sebebi gösterir.
+enum ActionBlocked {
+  /// Bu yılın vakti yetmiyor.
+  vakit,
+  para,
+
+  /// Bu yıl zaten yapıldı.
+  buYil,
+
+  /// Bu yaşta ve durumda başvurulabilecek bir iş yok.
+  isYok,
+}
+
 /// Aksiyon menüsünün kategorileri.
 enum ActionCategory { okulIs, para, saglik, eglence }
 
@@ -14,6 +27,8 @@ class LifeAction {
     this.cost = 0,
     this.goldGrams = 0,
     this.searchesJob = false,
+    this.requiresJob = false,
+    this.studentsOnly = false,
     this.minAge = 0,
     this.maxAge,
     this.timeCost = 1,
@@ -32,6 +47,12 @@ class LifeAction {
 
   /// "İş ara": işsiz, emekli ya da öğrenci olmayan yetişkine açık.
   final bool searchesJob;
+
+  /// Yalnızca bir işi olana açık (fazla mesai).
+  final bool requiresJob;
+
+  /// Yalnızca okuldaki ya da üniversitedeki öğrenciye açık (ders çalış).
+  final bool studentsOnly;
   final int minAge;
   final int? maxAge;
 
@@ -41,6 +62,8 @@ class LifeAction {
   /// Yaşa ve (iş arama için) duruma göre bu karakter yapabilir mi.
   bool isAvailableFor(Character c) {
     if (!isAvailableAt(c.age)) return false;
+    if (requiresJob && c.job == null) return false;
+    if (studentsOnly && !ActionCatalog.isStudent(c)) return false;
     if (!searchesJob) return true;
     return c.job == null &&
         !c.isRetired &&
@@ -50,8 +73,10 @@ class LifeAction {
   bool isAvailableAt(int age) =>
       age >= minAge && (maxAge == null || age <= maxAge!);
 
-  /// Aksiyonun nakde etkisi: ücret ve altın alımı eksi, altın satışı artı.
-  int moneyChange(Market market) => -cost - goldGrams * market.goldPrice;
+  /// Aksiyonun nakde etkisi: ücret ve altın alımı eksi; altın satışı ve
+  /// kazanç (fazla mesai) artı.
+  int moneyChange(Market market) =>
+      effect.money - cost - goldGrams * market.goldPrice;
 
   /// Para (ya da satılacak altın) yetiyor mu.
   bool canAfford(Character c, Market market) {
@@ -63,7 +88,7 @@ class LifeAction {
   /// Aksiyonun tam etkisi: ücret, altın ve kendi etkisi.
   Effect totalEffect(Market market) => Effect(
     stats: effect.stats,
-    money: effect.money + moneyChange(market),
+    money: moneyChange(market),
     gold: effect.gold + goldGrams,
   );
 }
@@ -78,6 +103,10 @@ abstract final class ActionCatalog {
 
   static const String jobSearchId = 'is_ara';
 
+  /// Okul çağında (7–18) ya da üniversitede.
+  static bool isStudent(Character c) =>
+      (c.age >= 7 && c.age <= 18) || c.hasFlag(studentFlag);
+
   static const List<LifeAction> all = [
     LifeAction(
       id: 'oyun_oyna',
@@ -89,7 +118,7 @@ abstract final class ActionCatalog {
       id: 'ders_calis',
       category: ActionCategory.okulIs,
       minAge: 7,
-      maxAge: 29,
+      studentsOnly: true,
       effect: Effect(stats: {StatKind.knowledge: 5, StatKind.happiness: -1}),
     ),
     LifeAction(
@@ -97,6 +126,7 @@ abstract final class ActionCatalog {
       category: ActionCategory.okulIs,
       minAge: 19,
       maxAge: 64,
+      requiresJob: true,
       effect: Effect(
         money: 20000,
         stats: {StatKind.health: -2, StatKind.happiness: -2},
@@ -105,7 +135,7 @@ abstract final class ActionCatalog {
     LifeAction(
       id: 'kitap_oku',
       category: ActionCategory.okulIs,
-      minAge: 30,
+      minAge: 12,
       effect: Effect(stats: {StatKind.knowledge: 3, StatKind.happiness: 1}),
     ),
     LifeAction(

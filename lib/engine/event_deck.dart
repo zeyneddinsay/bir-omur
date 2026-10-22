@@ -122,8 +122,23 @@ class EventDeck {
     final lastSeen = character.lastSeenAge(card.id);
     if (lastSeen == null) return true;
     if (card.once) return false;
+    if (card.repeat.maxTimes case final limit?
+        when timesSeen(card.id, character) >= limit) {
+      return false;
+    }
     return character.age - lastSeen >= max(1, card.cooldown);
   }
+
+  /// Kart bu hayatta kaç kez geldi.
+  static int timesSeen(String cardId, Character c) =>
+      c.history.where((r) => r.cardId == cardId).length;
+
+  /// Daha önce gelmiş kart her gelişinde bu oranla daha az çekilir; yeni
+  /// olaylar öne geçer, havuz küçükken aynı kart peş peşe gelmez.
+  static const double freshness = 0.35;
+
+  static double drawWeight(EventCard card, Character c) =>
+      card.rarity.weight * pow(freshness, timesSeen(card.id, c)).toDouble();
 
   /// Rol yuvalarını kişilere bağlar. [fixed] önceden bağlanmış yuvalar
   /// (iplikten gelen kişiler); [busy] bu yıl başka olayda olan kişiler.
@@ -228,7 +243,7 @@ class EventDeck {
     final taken = {...busy};
     var chanceUsed = false;
     while (drawn.length < count && pool.isNotEmpty) {
-      final card = pool.removeAt(_weightedIndex(pool, random));
+      final card = pool.removeAt(_weightedIndex(pool, c, random));
       if (usedThemes.contains(card.theme)) continue;
       if (card.type == EventType.tesaduf && chanceUsed) continue;
       final people = bind(card, c, random, busy: taken);
@@ -241,11 +256,16 @@ class EventDeck {
     return drawn;
   }
 
-  static int _weightedIndex(List<EventCard> pool, Random random) {
-    final total = pool.fold(0, (sum, card) => sum + card.rarity.weight);
-    var target = random.nextInt(total);
+  static int _weightedIndex(
+    List<EventCard> pool,
+    Character c,
+    Random random,
+  ) {
+    final weights = [for (final card in pool) drawWeight(card, c)];
+    final total = weights.fold(0.0, (sum, w) => sum + w);
+    var target = random.nextDouble() * total;
     for (var i = 0; i < pool.length; i++) {
-      target -= pool[i].rarity.weight;
+      target -= weights[i];
       if (target < 0) return i;
     }
     return pool.length - 1;

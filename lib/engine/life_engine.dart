@@ -237,18 +237,29 @@ class LifeEngine {
   }
 
   /// Bu yıl yapılabilecek aksiyonlar ve yapılıp yapılamayacakları.
-  List<(LifeAction action, bool enabled)> availableActions() {
+  List<(LifeAction action, bool enabled)> availableActions() => [
+    for (final (action, blocked) in actionOptions()) (action, blocked == null),
+  ];
+
+  /// Bu yıl görünen aksiyonlar; kapalıysa sebebi (arayüz gösterir).
+  List<(LifeAction action, ActionBlocked? blocked)> actionOptions() {
     final c = _state.character;
     final canAct = _state.phase == YearPhase.actions;
+    ActionBlocked? reason(LifeAction action) {
+      if (_state.actionsUsed.contains(action.id)) return ActionBlocked.buYil;
+      if (!canAct || _state.timeLeft < action.timeCost) {
+        return ActionBlocked.vakit;
+      }
+      if (!action.canAfford(c, _market)) return ActionBlocked.para;
+      if (action.searchesJob && !hasOpenCareer(c, careers)) {
+        return ActionBlocked.isYok;
+      }
+      return null;
+    }
+
     return [
       for (final action in ActionCatalog.availableFor(c))
-        (
-          action,
-          canAct &&
-              _state.timeLeft >= action.timeCost &&
-              action.canAfford(c, _market) &&
-              !_state.actionsUsed.contains(action.id),
-        ),
+        (action, reason(action)),
     ];
   }
 

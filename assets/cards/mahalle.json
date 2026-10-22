@@ -5,7 +5,7 @@
     "theme": "mahalle",
     "minAge": 18,
     "maxAge": 80,
-    "repeat": { "cooldown": 4 },
+    "repeat": { "cooldown": 4, "max": 4 },
     "roles": {
       "komsu": { "roles": ["komsu"], "sameCity": true }
     },
@@ -116,7 +116,7 @@
     "theme": "genel",
     "minAge": 15,
     "maxAge": 55,
-    "repeat": { "cooldown": 8 },
+    "repeat": { "cooldown": 8, "max": 3 },
     "text": "Yaşlı bir amca seni durdurdu: 'Gül Sokak ne tarafta {oyuncu.hitap.evlat}?' Elinde buruşuk bir kâğıt var.",
     "left": {
       "label": "Elinden tutup götür",
@@ -212,7 +212,7 @@
     "theme": "genel",
     "minAge": 25,
     "maxAge": 60,
-    "repeat": { "cooldown": 10 },
+    "repeat": { "cooldown": 10, "max": 3 },
     "roles": {
       "eski": { "formerRoles": ["sinifArkadasi"] }
     },
@@ -257,7 +257,7 @@
     "theme": "mahalle",
     "minAge": 65,
     "maxAge": 110,
-    "repeat": { "cooldown": 4 },
+    "repeat": { "cooldown": 6, "max": 4 },
     "text": "Parktaki bankta emekliler kendi zamanlarını anlatıyor. Herkes sana döndü: 'Sen anlat bakalım.'",
     "left": {
       "label": "Ben gençken...",
@@ -274,8 +274,8 @@
     "theme": "saglik",
     "minAge": 35,
     "maxAge": 110,
-    "repeat": { "cooldown": 5 },
-    "conditions": { "min": { "money": 2000 } },
+    "repeat": { "cooldown": 8, "max": 5 },
+    "conditions": { "min": { "money": 2000 }, "max": { "health": 60 } },
     "text": "Merdivenin yarısında soluk soluğa kaldın. Doktor: 'Kolesterol, tansiyon, şeker; hepsine bir bakalım.'",
     "left": {
       "label": "Tahlilleri yaptır",
@@ -292,7 +292,7 @@
     "theme": "genel",
     "minAge": 18,
     "maxAge": 45,
-    "repeat": { "cooldown": 3 },
+    "repeat": { "cooldown": 3, "max": 3 },
     "conditions": {
       "notFlags": ["ehliyet_var"],
       "min": { "money": 15000 }

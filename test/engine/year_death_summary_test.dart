@@ -268,6 +268,24 @@ void main() {
       );
     });
 
+    test('ders çalış yalnızca öğrenciye, fazla mesai yalnızca çalışana', () {
+      final study = ActionCatalog.byId('ders_calis')!;
+      final overtime = ActionCatalog.byId('fazla_mesai')!;
+      const job = Job(careerId: 'memur', tier: 1);
+      expect(study.isAvailableFor(testCharacter(age: 12)), isTrue);
+      expect(
+        study.isAvailableFor(
+          testCharacter(age: 21, flags: {ActionCatalog.studentFlag}),
+        ),
+        isTrue,
+      );
+      expect(study.isAvailableFor(testCharacter(age: 21, job: job)), isFalse);
+      expect(study.isAvailableFor(testCharacter(age: 25)), isFalse);
+      expect(overtime.isAvailableFor(testCharacter(age: 25)), isFalse);
+      expect(overtime.isAvailableFor(testCharacter(age: 25, job: job)), isTrue);
+      expect(overtime.moneyChange(Market.initial), greaterThan(0));
+    });
+
     test('aksiyon kimlikleri tekrar etmez', () {
       final ids = ActionCatalog.all.map((a) => a.id).toList();
       expect(ids.toSet(), hasLength(ids.length));

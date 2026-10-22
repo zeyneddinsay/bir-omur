@@ -308,25 +308,36 @@ enum EventTheme {
 
 /// Olayın tekrar kuralı: hayatta bir kez ya da en az [cooldown] yıl arayla.
 class Repeat {
-  const Repeat.once() : once = true, cooldown = 0;
+  const Repeat.once() : once = true, cooldown = 0, maxTimes = 1;
 
-  const Repeat.every(this.cooldown) : once = false, assert(cooldown >= 1);
+  const Repeat.every(this.cooldown, {this.maxTimes})
+    : once = false,
+      assert(cooldown >= 1);
 
   final bool once;
 
   /// Tekrar için geçmesi gereken yıl ([once] ise 0).
   final int cooldown;
 
-  /// JSON: `"repeat": "once"` ya da `"repeat": {"cooldown": 3}`.
+  /// Bir hayatta en fazla kaç kez gelir; null ise sınırsız.
+  final int? maxTimes;
+
+  /// JSON: `"repeat": "once"` ya da `"repeat": {"cooldown": 3, "max": 4}`
+  /// (`max` isteğe bağlı: hayat boyu en fazla kaç kez).
   factory Repeat.fromJson(Object? value, String path) {
     if (value == 'once') return const Repeat.once();
     if (value is Map<String, dynamic>) {
-      final r = JsonReader(value, path)..rejectUnknownKeys(const {'cooldown'});
+      final r = JsonReader(value, path)
+        ..rejectUnknownKeys(const {'cooldown', 'max'});
       final years = r.requireInt('cooldown');
       if (years < 1) {
         throw CardFormatException('$path.cooldown', 'en az 1 olmalı');
       }
-      return Repeat.every(years);
+      final max = r.optionalInt('max');
+      if (max != null && max < 2) {
+        throw CardFormatException('$path.max', 'en az 2 olmalı (1 için "once")');
+      }
+      return Repeat.every(years, maxTimes: max);
     }
     throw CardFormatException(path, '"once" ya da {"cooldown": N} olmalı');
   }

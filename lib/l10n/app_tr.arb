@@ -76,6 +76,10 @@
   "@timeLeft": { "placeholders": { "count": { "type": "int" } } },
   "actionFree": "Ücretsiz",
   "moneyGain": "+{amount} TL",
+  "actionBlocked_vakit": "Bu yılın vakti yetmiyor",
+  "actionBlocked_para": "Paran yetmiyor",
+  "actionBlocked_buYil": "Bu yıl yaptın",
+  "actionBlocked_isYok": "Bu yaşta başvurabileceğin bir iş kalmadı",
   "@moneyGain": { "placeholders": { "amount": { "type": "int", "format": "decimalPattern" } } },
   "ageUpButton": "Yaşlan",
 
@@ -100,6 +104,7 @@
   "@deathLifespan": { "placeholders": { "age": { "type": "int" } } },
   "deathCauseHealth": "Bedeni daha fazla dayanamadı. Sevdikleri yanındaydı.",
   "deathCauseNatural": "Zamanı geldiğinde, huzur içinde gözlerini yumdu.",
+  "deathCauseEarly": "Hayatı erken bitti. Geride bıraktıkları onu hep anacak.",
   "nicknameTitle": "Mahalle onu şöyle hatırlıyor",
   "biggestMomentTitle": "En büyük an",
   "momentChoice": "Seçimin: {label}",
@@ -168,7 +173,7 @@
   "jobNone": "İşsiz",
   "jobStudent": "Üniversite öğrencisi",
   "jobRetired": "Emekli",
-  "jobChild": "Okul çağında",
+  "jobChild": "Öğrenci",
   "jobTier": "{career} · {tier}",
   "@jobTier": { "placeholders": { "career": { "type": "String" }, "tier": { "type": "String" } } },
 

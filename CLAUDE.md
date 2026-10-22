@@ -149,7 +149,22 @@ D1 adımları (kişiler ve İnsanlar sekmesi):
 - [x] Kayıt sürüm 2: `LifeEngine.snapshotVersion = 2`, `canRestore`. Sürüm 1 kayıtları dönüştürülemez; doğum ekranı açıklayıp siler (albüm ve rozetler kalır).
 - [x] Arayüz: kartlardan sonra beş sekme (Ben, İnsanlar, Okul / İş, Varlıklar, Aktiviteler; `lib/ui/screens/home_tabs.dart`), İnsanlar listesi ve kişi ekranı (`lib/ui/people/`), Ara sohbeti (ton, anı), Ben sekmesinde yıl günlüğü (haberler ve seçimler)
 - [x] 300 hayat simülasyonu ve `life_report`: test oyuncusu ve rapor artık kişilerle de etkileşir (`LifeEngine.possibleInteractions`); rapora kişi, hafıza ve olay akışı ölçümleri eklendi. D5 denge notu: rastgele oyuncuda Aile Bağı ölümde ortalama 97, "Bayramların Baş Köşesi" lakabı %79 ve "Her Bayram Elini Öptü" rozeti %87; aile tabanı (anne 70) ve olumlu anıların toplanması yakınlığı çabuk doyuruyor. Ev, araba ve kira olayları D2 ile gelecek (şimdi %0).
-- [ ] Telefonda deneme (D1 kapısı)
+- [ ] Telefonda deneme (D1 kapısı). Kullanıcı ilk denemede şunları buldu: kaynağı görünmeyen para (yaşam gideri yok, gelir dökümü yok), peş peşe gelen kartlar, işteyken "Ders çalış", ad ile cinsiyet uyuşmazlığı (düzeltildi), açıklamasız zar sonucu (düzeltildi).
+
+Karar (22 Ekim 2026): Kullanıcı ara kapıları kaldırdı. D2, D3, D4a, D4b ve D5 adım adım onay beklenmeden sırayla bitirilecek; kullanıcı en sonda telefonda test edip hataları bildirecek. Her aşamanın sonunda bağımsız bir mantık denetimi yapılır.
+
+D2 adımları (eğitim, meslekler, ekonomi; telefon denemesi ve denetim bulguları dahil):
+
+- [x] D2.0 Hızlı düzeltmeler: aksiyonların yaş, iş ve öğrenci şartları; vakit bedeli ve kapalılık sebebi; bebek ve aynı evdekiyle etkileşim; iş etiketi; kart tekrarı (tazelik ağırlığı, ömür boyu sınır); kart mantık düzeltmeleri; genç ölüm metni; dönemeçlere nadirlik
+- [ ] D2.1 Para dökümü: her para hareketinin kaynağı; Varlıklar sekmesinde bu yılın ve geçen yılın dökümü
+- [ ] D2.2 Ekonomi 2026 rakamları ve yaşam gideri: ölçek × 3,3, nerede yaşadığına göre gider, harçlık, 18 yaş aile desteği, çalışmayana emekli aylığı yok
+- [ ] D2.3 Şehir ve ev: oyuncunun yaşadığı şehir, 3 şehir türü, aileyle / yurt / ev arkadaşı / kira / kendi evi; evden çık, taşın; komşular yenilenir
+- [ ] D2.4 Eğitim yolu: lise türü, YKS puanı ve tercih ekranı, üniversite yılları, yarı zamanlı iş, burs, staj, kazanamayınca seçenekler
+- [ ] D2.5 Askerlik: bölük arkadaşları, kadınlar için eşdeğer yol
+- [ ] D2.6 Meslekler: memur, hemşire, yazılımcı, plaza çalışanı, oto tamircisi, garson/kurye, emlakçı; Esnaf kalkar; performans, tempo, terfi, zam, kovulma, erken emeklilik
+- [ ] D2.7 İlanlar, mülakat, torpil, İş sekmesi; iş yerinin insanları
+- [ ] D2.8 D2 olayları: okul, üniversite, askerlik, iş yeri
+- [ ] D2.9 300 hayat testi, `life_report`, bağımsız mantık denetimi
 
 ## Bekleyen aşama: F3a — Dağıtıma hazırlık
 

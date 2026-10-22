@@ -274,9 +274,9 @@ void main() {
         expect(engine.state.news, before);
       }
       final before = engine.state.news;
-      if (engine.state.timeLeft > 0) {
-        final parent = engine.state.character.people.all.first;
-        engine.interact(InteractionRequest(InteractionKind.bulus, parent.id));
+      final requests = engine.possibleInteractions();
+      if (requests.isNotEmpty) {
+        engine.interact(requests.first);
         expect(engine.state.news, before);
       }
       if (before.isNotEmpty) checked++;

@@ -224,9 +224,9 @@ abstract final class Interactions {
 
   /// Etkileşimin en küçük oyuncu yaşı ve karşıdakinin en küçük yaşı.
   static const Map<InteractionKind, ({int player, int other})> minAges = {
-    InteractionKind.bulus: (player: 6, other: 0),
+    InteractionKind.bulus: (player: 6, other: 7),
     InteractionKind.ara: (player: 11, other: 7),
-    InteractionKind.hediye: (player: 11, other: 0),
+    InteractionKind.hediye: (player: 11, other: 7),
     InteractionKind.dertles: (player: 11, other: 11),
     InteractionKind.borcIste: (player: 18, other: 18),
     InteractionKind.borcOde: (player: 18, other: 18),
@@ -256,9 +256,11 @@ abstract final class Interactions {
   }) {
     final now = c.age;
     if (!p.isAlive || p.bornAt > now) return const [];
+    // Aynı evde yaşanan anne, baba ve kardeş aranmaz, onlarla "buluşulmaz".
+    final household = livesWithPlayer(c, p);
     final kinds = [
-      if (!p.archived) InteractionKind.bulus,
-      InteractionKind.ara,
+      if (!p.archived && !household) InteractionKind.bulus,
+      if (!household) InteractionKind.ara,
       if (!p.archived) ...[
         InteractionKind.hediye,
         InteractionKind.dertles,
@@ -269,7 +271,10 @@ abstract final class Interactions {
         if (p.kin == Kinship.baba) InteractionKind.macIzle,
         if (p.kin == Kinship.dede || p.kin == Kinship.nine)
           InteractionKind.eliniOp,
-        if (p.kin == Kinship.kardes) InteractionKind.kardesleOyna,
+        if (p.kin == Kinship.kardes &&
+            now <= playMaxAge &&
+            p.ageAt(now) <= playMaxAge)
+          InteractionKind.kardesleOyna,
         if (p.hasRole(RoleKind.komsu)) InteractionKind.cayaGit,
       ],
     ];
@@ -302,9 +307,6 @@ abstract final class Interactions {
       blocked = Blocked.yas;
     } else if (otherAge < ages.other) {
       blocked = Blocked.karsiYas;
-    } else if (kind == InteractionKind.kardesleOyna &&
-        (now > playMaxAge || otherAge > playMaxAge)) {
-      blocked = Blocked.yas;
     } else if (used.contains(usedKey(p.id, kind))) {
       blocked = Blocked.buYil;
     } else if (timeLeft < timeCost) {
@@ -332,6 +334,11 @@ abstract final class Interactions {
     InteractionKind.kardesleOyna,
     InteractionKind.cayaGit,
   }.contains(kind);
+
+  /// Oyuncu 18 yaşına kadar anne, baba ve kardeşleriyle aynı evde yaşar.
+  static bool livesWithPlayer(Character c, Person p) =>
+      c.age < PeopleTick.householdUntil &&
+      const {Kinship.anne, Kinship.baba, Kinship.kardes}.contains(p.kin);
 
   /// Oyuncu 18 yaşına kadar ailesiyle yaşar; aynı ev aynı şehir sayılır.
   /// Oyuncunun şehri D2'ye kadar memleketidir.

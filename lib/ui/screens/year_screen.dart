@@ -63,8 +63,11 @@ class _YearScreenState extends ConsumerState<YearScreen> {
           children: [
             Text(c.name),
             Text(
-              '${l10n.ageLabel(c.age)} · ${l10n.stageName(c.stage)} · '
-              '${jobLabel(l10n, c, engine.careers)}',
+              [
+                l10n.ageLabel(c.age),
+                l10n.stageName(c.stage),
+                jobLabel(l10n, c, engine.careers),
+              ].where((s) => s.isNotEmpty).join(' · '),
               key: const Key('age_line'),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,

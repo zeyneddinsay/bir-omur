@@ -37,6 +37,32 @@ void main() {
       );
     });
 
+    test('ömür boyu sınır: max kez geldikten sonra gelmez', () {
+      final card = EventCard.fromJson(
+        testCardJson('a')..['repeat'] = {'cooldown': 1, 'max': 2},
+      );
+      final once = testCharacter(age: 30, history: [_seen('a', 20)]);
+      final twice = testCharacter(
+        age: 30,
+        history: [_seen('a', 20), _seen('a', 25)],
+      );
+      expect(EventDeck.isRepeatAllowed(card, once), isTrue);
+      expect(EventDeck.isRepeatAllowed(card, twice), isFalse);
+    });
+
+    test('tazelik: gelmiş kart daha az çekilir', () {
+      final card = testCard('a', cooldown: 1);
+      final fresh = EventDeck.drawWeight(card, testCharacter());
+      final seen = EventDeck.drawWeight(
+        card,
+        testCharacter(history: [_seen('a', 20), _seen('a', 22)]),
+      );
+      expect(
+        seen,
+        closeTo(fresh * EventDeck.freshness * EventDeck.freshness, 1e-9),
+      );
+    });
+
     test('cooldown dolmadan tekrar gelmez; aynı yıl hiç gelmez', () {
       final card = testCard('a', cooldown: 3);
       bool allowedAt(int age) => EventDeck.isRepeatAllowed(

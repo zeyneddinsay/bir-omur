@@ -23,6 +23,8 @@ String jobLabel(AppLocalizations l10n, Character c, CareerBook careers) {
     return careerLine(l10n, career, job.tier);
   }
   if (c.hasFlag(ActionCatalog.studentFlag)) return l10n.jobStudent;
+  // Okul öncesinde iş satırı yok; okul çağında "Öğrenci".
+  if (c.age < 7) return '';
   if (c.age < EngineFlags.hardshipMinAge) return l10n.jobChild;
   return l10n.jobNone;
 }

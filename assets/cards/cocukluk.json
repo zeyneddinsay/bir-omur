@@ -131,7 +131,7 @@
     "theme": "aile",
     "minAge": 4,
     "maxAge": 12,
-    "repeat": { "cooldown": 4 },
+    "repeat": { "cooldown": 4, "max": 2 },
     "roles": {
       "kardes": { "kin": ["kardes"], "minAge": 3, "minGap": -4, "maxGap": 4 }
     },
@@ -175,7 +175,7 @@
     "theme": "aile",
     "minAge": 4,
     "maxAge": 14,
-    "repeat": { "cooldown": 3 },
+    "repeat": { "cooldown": 4, "max": 3 },
     "roles": {
       "buyuk": { "kin": ["dede", "nine", "amca", "hala", "dayi", "teyze"] }
     },
@@ -265,7 +265,7 @@
     "theme": "mahalle",
     "minAge": 5,
     "maxAge": 12,
-    "repeat": { "cooldown": 4 },
+    "repeat": { "cooldown": 4, "max": 2 },
     "roles": {
       "komsu": { "roles": ["komsu"] },
       "veli": { "kin": ["anne", "baba"], "offstage": true }
@@ -306,7 +306,7 @@
     "theme": "saglik",
     "minAge": 2,
     "maxAge": 10,
-    "repeat": { "cooldown": 4 },
+    "repeat": { "cooldown": 4, "max": 2 },
     "roles": {
       "veli": { "kin": ["anne", "baba"] }
     },

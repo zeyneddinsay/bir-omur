@@ -217,6 +217,18 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
+  String get actionBlocked_vakit => 'Bu yılın vakti yetmiyor';
+
+  @override
+  String get actionBlocked_para => 'Paran yetmiyor';
+
+  @override
+  String get actionBlocked_buYil => 'Bu yıl yaptın';
+
+  @override
+  String get actionBlocked_isYok => 'Bu yaşta başvurabileceğin bir iş kalmadı';
+
+  @override
   String get ageUpButton => 'Yaşlan';
 
   @override
@@ -277,6 +289,10 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get deathCauseNatural =>
       'Zamanı geldiğinde, huzur içinde gözlerini yumdu.';
+
+  @override
+  String get deathCauseEarly =>
+      'Hayatı erken bitti. Geride bıraktıkları onu hep anacak.';
 
   @override
   String get nicknameTitle => 'Mahalle onu şöyle hatırlıyor';
@@ -485,7 +501,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get jobRetired => 'Emekli';
 
   @override
-  String get jobChild => 'Okul çağında';
+  String get jobChild => 'Öğrenci';
 
   @override
   String jobTier(String career, String tier) {
