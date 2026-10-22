@@ -249,6 +249,8 @@ class CareerTick {
     if (c.isRetired) {
       income = c.pension;
       source = MoneySource.emekliAyligi;
+    } else if (c.job != null && c.hasFlag('askerde')) {
+      // Askerdeki yıl iş askıda: maaş, kıdem ve performans işlemez.
     } else if (c.job case final job?) {
       final career = book.require(job.careerId);
       final performance = Careers.nextPerformance(c, job, random);

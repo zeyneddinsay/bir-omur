@@ -36,6 +36,8 @@ class DeathCheck {
     // Çocuklar ve gençler yaşa bağlı ihtimalle ölmez; oyunun tonu bunu
     // kaldırmaz. Sağlık 0'a düşerse [check] yine ölüm verir.
     if (age < adultAge) return 0;
+    // Askerdeki yıl da öyle: askerde ölüm oyunda yer almaz.
+    if (character.hasFlag('askerde')) return 0;
     final health = character.stats.health;
     final lowHealth = health < 20 ? 0.1 * (20 - health) / 20 : 0.0;
     return min(1, _ageBase(age) + lowHealth);

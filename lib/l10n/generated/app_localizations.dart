@@ -1012,6 +1012,12 @@ abstract class AppLocalizations {
   /// **'Ailenle yaşıyorsun'**
   String get home_aile;
 
+  /// No description provided for @home_aileEvi.
+  ///
+  /// In tr, this message translates to:
+  /// **'Aile evinde yaşıyorsun'**
+  String get home_aileEvi;
+
   /// No description provided for @home_yurt.
   ///
   /// In tr, this message translates to:

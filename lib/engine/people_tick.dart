@@ -150,6 +150,29 @@ class PeopleTick {
     };
   }
 
+  /// Emeklilikle biten roller: dükkân ve iş yeri.
+  static const _retiringRoles = {
+    RoleKind.bakkal,
+    RoleKind.patron,
+    RoleKind.isArkadasi,
+  };
+
+  /// Yere bağlı roller: bu rolü süren kişi başka şehre taşınmaz.
+  static const _placeRoles = {
+    RoleKind.patron,
+    RoleKind.mudur,
+    RoleKind.isArkadasi,
+    RoleKind.calisan,
+    RoleKind.ortak,
+    RoleKind.rakip,
+    RoleKind.komsu,
+    RoleKind.bakkal,
+    RoleKind.muhtar,
+    RoleKind.evSahibi,
+    RoleKind.evArkadasi,
+    RoleKind.kiraci,
+  };
+
   void _ownYear(Person original, Character c) {
     var p = _book[original.id]!;
     final age = p.ageAt(_now);
@@ -175,7 +198,8 @@ class PeopleTick {
       p = p.copyWith(
         occupation: 'emekli',
         roles: [
-          for (final r in p.roles) r.kind == RoleKind.bakkal ? r.ended() : r,
+          for (final r in p.roles)
+            _retiringRoles.contains(r.kind) ? r.ended() : r,
         ],
       );
       _report(p, NewsKind.emekliOldu);
@@ -198,6 +222,7 @@ class PeopleTick {
 
     if (age >= 20 &&
         !livesTogether(c, p) &&
+        !p.roles.any((r) => r.active && _placeRoles.contains(r.kind)) &&
         random.nextDouble() < 0.02 &&
         cities.length > 1) {
       final others = cities.where((city) => city != p.city).toList();

@@ -251,7 +251,9 @@ class _RandomPlayer {
         engine.disposeBusiness(b.id, sell: true);
         return true;
       }
-      if (!b.present && BusinessTypes.require(b.type).laborBound) {
+      if (!b.present &&
+          BusinessTypes.require(b.type).laborBound &&
+          engine.canSetBusinessPresent(b.id, true)) {
         engine.setBusinessPresent(b.id, true);
         return true;
       }
@@ -348,8 +350,9 @@ class _RandomPlayer {
           return;
         }
         if (me.job != null) {
-          if (_random.nextInt(10) == 0) {
-            engine.setTempo(Tempo.values[_random.nextInt(Tempo.values.length)]);
+          final tempo = Tempo.values[_random.nextInt(Tempo.values.length)];
+          if (_random.nextInt(10) == 0 && engine.canSetTempo(tempo)) {
+            engine.setTempo(tempo);
             return;
           }
           if (engine.canRequest(promotion: true) && _random.nextInt(3) == 0) {

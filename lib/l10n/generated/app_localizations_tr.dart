@@ -592,6 +592,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get home_aile => 'Ailenle yaşıyorsun';
 
   @override
+  String get home_aileEvi => 'Aile evinde yaşıyorsun';
+
+  @override
   String get home_yurt => 'Yurtta kalıyorsun';
 
   @override

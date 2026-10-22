@@ -100,7 +100,11 @@ class JobCard extends ConsumerWidget {
               showSelectedIcon: false,
               segments: [
                 for (final t in Tempo.values)
-                  ButtonSegment(value: t, label: Text(tempoName(l10n, t))),
+                  ButtonSegment(
+                    value: t,
+                    label: Text(tempoName(l10n, t)),
+                    enabled: t == job.tempo || controller.engine.canSetTempo(t),
+                  ),
               ],
               selected: {job.tempo},
               onSelectionChanged: state.phase == YearPhase.actions

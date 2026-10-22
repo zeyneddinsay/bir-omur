@@ -85,6 +85,28 @@ abstract final class Economy {
   static const int dormCost = 60000;
 
   /// Nerede yaşandığına göre yıllık yaşam gideri.
+  /// Oyuncunun bu yılki yaşam gideri: aile evinde anne ya da baba yoksa
+  /// (vefat, taşınma) gider kendisine kalır, kira yoktur.
+  static int livingCostOf(Character c) =>
+      c.home == HomeKind.aile && c.age > 18 && _parentsGone(c)
+      ? livingCost
+      : livingCostFor(c.home);
+
+  /// Anne ve baba biliniyor ama hiçbiri oyuncunun şehrinde yaşamıyor.
+  static bool _parentsGone(Character c) =>
+      c.people.all.any((p) => p.kin == Kinship.anne || p.kin == Kinship.baba) &&
+      !parentInCity(c);
+
+  /// Oyuncunun şehrinde yaşayan anne ya da babası var mı.
+  static bool parentInCity(Character c) => c.people
+      .bornBy(c.age)
+      .any(
+        (p) =>
+            p.isAlive &&
+            (p.kin == Kinship.anne || p.kin == Kinship.baba) &&
+            p.city == c.city,
+      );
+
   static int livingCostFor(HomeKind home) => switch (home) {
     HomeKind.aile => 0,
     HomeKind.yurt => dormCost,
@@ -222,7 +244,8 @@ class EconomyTick {
     var a = c.assets;
     final rentPaid = Economy.rentDue(c);
     money -= rentPaid;
-    final livingCost = Economy.livingCostFor(c.home);
+    // Askerdeki yıl yaşam gideri yok (kira sürer).
+    final livingCost = c.hasFlag('askerde') ? 0 : Economy.livingCostOf(c);
     money -= livingCost;
 
     var loanPaid = 0;

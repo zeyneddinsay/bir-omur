@@ -159,8 +159,16 @@ class _BusinessCard extends ConsumerWidget {
               key: Key('business_present_${b.id}'),
               showSelectedIcon: false,
               segments: [
-                ButtonSegment(value: true, label: Text(l10n.businessPresent)),
-                ButtonSegment(value: false, label: Text(l10n.businessManaged)),
+                ButtonSegment(
+                  value: true,
+                  label: Text(l10n.businessPresent),
+                  enabled: engine.canSetBusinessPresent(b.id, true),
+                ),
+                ButtonSegment(
+                  value: false,
+                  label: Text(l10n.businessManaged),
+                  enabled: engine.canSetBusinessPresent(b.id, false),
+                ),
               ],
               selected: {b.present},
               onSelectionChanged: canAct

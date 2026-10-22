@@ -3,6 +3,7 @@ import 'dart:math';
 import '../models/models.dart';
 import 'careers.dart';
 import 'cities.dart';
+import 'education.dart';
 import 'person_factory.dart';
 import 'relationships.dart';
 
@@ -119,7 +120,8 @@ abstract final class JobMarket {
     CareerBook book,
     Random random,
   ) {
-    if (c.age < 18 || c.isRetired) return const [];
+    // Lise bitmeden (YKS yılı dahil) tam zamanlı ilan yok.
+    if (c.age <= EducationRules.yksAge || c.isRetired) return const [];
     final type = Cities.typeOf(c.city);
     final pool = [
       for (final career in book.all)
@@ -280,7 +282,8 @@ abstract final class JobMarket {
     (people, _) = f.add(
       people,
       now: c.age,
-      age: f.between(max(30, c.age + 3), max(45, c.age + 20)),
+      // Patron çalışma çağında: en fazla 62.
+      age: f.between(min(max(30, c.age + 3), 55), min(max(45, c.age + 20), 62)),
       city: c.city,
       origin: Origin.isYeri,
       base: 15,

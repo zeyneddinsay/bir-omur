@@ -19,7 +19,7 @@ class HomeCard extends ConsumerWidget {
     final theme = Theme.of(context);
     final c = state.character;
     final rent = Economy.rentDue(c);
-    final living = Economy.livingCostFor(c.home);
+    final living = Economy.livingCostOf(c);
     return Card(
       key: const Key('home_card'),
       child: Padding(
@@ -28,7 +28,9 @@ class HomeCard extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              homeName(l10n, c.home),
+              c.home == HomeKind.aile && !Economy.parentInCity(c)
+                  ? l10n.home_aileEvi
+                  : homeName(l10n, c.home),
               key: const Key('home_kind'),
               style: theme.textTheme.titleMedium,
             ),

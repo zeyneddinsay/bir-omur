@@ -44,7 +44,7 @@ class LifeState {
     required this.phase,
     this.queue = const ScheduleQueue(),
     this.pendingCards = const [],
-    this.timeLeft = 0,
+    this.timeSpent = 0,
     this.actionsUsed = const {},
     this.lastOutcome,
     this.summary,
@@ -62,7 +62,16 @@ class LifeState {
 
   /// Bu yıl henüz kaydırılmamış olaylar; ilki ekrandaki olaydır.
   final List<PendingEvent> pendingCards;
-  final int timeLeft;
+
+  /// Bu yıl harcanan vakit. Kalan vakit her an karakterin durumundan
+  /// hesaplanır; böylece tempo ya da iş değişince vakit kendiliğinden
+  /// uyar ve düğmeyle vakit kazanılamaz.
+  final int timeSpent;
+
+  /// Kalan vakit; aksiyon aşaması dışında 0.
+  int get timeLeft => phase == YearPhase.actions
+      ? max(0, ActionCatalog.timeFor(character) - timeSpent)
+      : 0;
 
   /// Bu yıl yapılmış aksiyonlar; aynı aksiyon yılda bir kez yapılır.
   final Set<String> actionsUsed;
@@ -92,7 +101,7 @@ class LifeState {
 
   LifeState copyWith({
     Character? character,
-    int? timeLeft,
+    int? timeSpent,
     Set<String>? actionsUsed,
     List<PersonNews>? news,
     Set<String>? interactionsUsed,
@@ -105,7 +114,7 @@ class LifeState {
     phase: phase,
     queue: queue,
     pendingCards: pendingCards,
-    timeLeft: timeLeft ?? this.timeLeft,
+    timeSpent: timeSpent ?? this.timeSpent,
     actionsUsed: actionsUsed ?? this.actionsUsed,
     lastOutcome: lastOutcome,
     summary: summary,
@@ -241,7 +250,11 @@ class LifeEngine {
       );
     }
 
-    final remaining = _state.pendingCards.sublist(1);
+    // Seçim koşulları değiştirdiyse (celp, istifa) artık uymayan olaylar düşer.
+    final remaining = [
+      for (final e in _state.pendingCards.skip(1))
+        if (e.card.conditions.isMetBy(character)) e,
+    ];
     final storedOutcome = ChoiceOutcome(
       character: character,
       choice: outcome.choice,
@@ -336,7 +349,7 @@ class LifeEngine {
     };
     return _state = _state.copyWith(
       character: character,
-      timeLeft: _state.timeLeft - action.timeCost,
+      timeSpent: _state.timeSpent + action.timeCost,
       actionsUsed: {..._state.actionsUsed, actionId},
       notes: note == null ? null : [..._state.notes, note],
     );
@@ -350,7 +363,7 @@ class LifeEngine {
     return Interactions.optionsFor(
       _state.character,
       p,
-      timeLeft: _state.phase == YearPhase.actions ? _state.timeLeft : 0,
+      timeLeft: _state.timeLeft,
       used: _state.interactionsUsed,
     );
   }
@@ -396,7 +409,7 @@ class LifeEngine {
           ),
         ),
       ),
-      timeLeft: _state.timeLeft - option.timeCost,
+      timeSpent: _state.timeSpent + option.timeCost,
       interactionsUsed: {
         ..._state.interactionsUsed,
         Interactions.usedKey(request.personId, request.kind),
@@ -558,6 +571,9 @@ class LifeEngine {
       if (next.city != c.city) {
         notes.add(LifeNote(NoteKind.eveDondu, next.city));
       }
+      if (next.city != c.city || next.home != c.home) {
+        next = Housing.settle(next, _factory);
+      }
       if (deck.byId(graduationEvent) != null) {
         queue = queue.add(graduationEvent, atAge: next.age);
       }
@@ -577,7 +593,6 @@ class LifeEngine {
   /// Bu yılın ilanları ve başvurulamıyorsa sebebi.
   List<(JobListing listing, ListingBlocked? blocked)> listingOptions() {
     final c = _state.character;
-    final canAct = _state.phase == YearPhase.actions;
     return [
       for (final l in _state.listings)
         (
@@ -586,7 +601,7 @@ class LifeEngine {
             c,
             l,
             careers,
-            timeLeft: canAct ? _state.timeLeft : 0,
+            timeLeft: _state.timeLeft,
             applied: _state.applied,
           ),
         ),
@@ -649,7 +664,7 @@ class LifeEngine {
     _lastInterview = result;
     return _state = _state.copyWith(
       character: Relationships.syncFamilyBond(next),
-      timeLeft: _state.timeLeft - 1,
+      timeSpent: _state.timeSpent + 1,
       applied: {..._state.applied, JobMarket.key(listing)},
       notes: [..._state.notes, note],
     );
@@ -689,7 +704,7 @@ class LifeEngine {
     };
     return _state = _state.copyWith(
       character: _booked(before, c, MoneySource.terfi),
-      timeLeft: _state.timeLeft - requestTimeCost,
+      timeSpent: _state.timeSpent + requestTimeCost,
       notes: [..._state.notes, note],
     );
   }
@@ -707,7 +722,7 @@ class LifeEngine {
     };
     return _state = _state.copyWith(
       character: c,
-      timeLeft: _state.timeLeft - requestTimeCost,
+      timeSpent: _state.timeSpent + requestTimeCost,
       notes: [..._state.notes, note],
     );
   }
@@ -738,18 +753,27 @@ class LifeEngine {
     final job = c.job;
     if (job == null || job.tempo == tempo) return _state;
     final next = c.copyWith(job: job.copyWith(tempo: tempo));
-    final before = ActionCatalog.timeFor(c);
-    final after = ActionCatalog.timeFor(next);
-    final timeLeft = _state.phase == YearPhase.actions
-        ? (_state.timeLeft + after - before).clamp(0, after)
-        : _state.timeLeft;
-    return _state = _state.copyWith(character: next, timeLeft: timeLeft);
+    if (!_timeFits(next)) throw StateError('Bu tempo için vakit kalmadı');
+    return _state = _state.copyWith(character: next);
   }
+
+  /// Tempo bu yıl değiştirilebilir mi: yüklenmek 1 vakit ister.
+  bool canSetTempo(Tempo tempo) {
+    final job = _state.character.job;
+    if (job == null || _state.phase != YearPhase.actions) return false;
+    return _timeFits(
+      _state.character.copyWith(job: job.copyWith(tempo: tempo)),
+    );
+  }
+
+  /// Değişiklikten sonra harcanan vakit yeni hakkı aşmıyor mu.
+  bool _timeFits(Character next) =>
+      ActionCatalog.timeFor(next) >= _state.timeSpent;
 
   /// Açılabilecek işletmeler ve kapalıysa sebebi.
   List<(BusinessType type, BusinessBlocked? blocked)> businessOptions() {
     final c = _state.character;
-    final time = _state.phase == YearPhase.actions ? _state.timeLeft : 0;
+    final time = _state.timeLeft;
     return [
       for (final t in BusinessTypes.openable)
         (t, BusinessRules.openBlocked(c, t, timeLeft: time)),
@@ -770,7 +794,7 @@ class LifeEngine {
       character: YearTick.updateHardshipFlags(
         _booked(before, next, MoneySource.isletme, ref: '$typeId:kurulus'),
       ),
-      timeLeft: _state.timeLeft - BusinessRules.openTimeCost,
+      timeSpent: _state.timeSpent + BusinessRules.openTimeCost,
       notes: [..._state.notes, LifeNote(NoteKind.isletmeAcildi, typeId)],
     );
   }
@@ -780,14 +804,29 @@ class LifeEngine {
 
   /// Başında durur ya da müdüre bırakır (vakti hemen etkiler).
   LifeState setBusinessPresent(String id, bool present) {
+    if (!canSetBusinessPresent(id, present)) {
+      throw StateError('Başında durma değiştirilemez');
+    }
     final c = _state.character;
     final next = BusinessRules.setPresent(c, id, present, _factory);
-    final before = ActionCatalog.timeFor(c);
-    final after = ActionCatalog.timeFor(next);
-    final timeLeft = _state.phase == YearPhase.actions
-        ? (_state.timeLeft + after - before).clamp(0, after)
-        : _state.timeLeft;
-    return _state = _state.copyWith(character: next, timeLeft: timeLeft);
+    if (!_timeFits(next)) throw StateError('Başında durmaya vakit kalmadı');
+    return _state = _state.copyWith(character: next);
+  }
+
+  /// Başında durma seçimi bu yıl değiştirilebilir mi (vakit yetiyor mu).
+  bool canSetBusinessPresent(String id, bool present) {
+    if (_state.phase != YearPhase.actions) return false;
+    final c = _state.character;
+    final b = _business(id);
+    if (b.present == present) return true;
+    if (present && b.city != c.city) return false;
+    final next = c.copyWith(
+      businesses: [
+        for (final x in c.businesses)
+          x.id == id ? x.copyWith(present: present) : x,
+      ],
+    );
+    return _timeFits(next);
   }
 
   LifeState setBusinessPrice(String id, PriceLevel price) => _state = _state
@@ -811,7 +850,7 @@ class LifeEngine {
         MoneySource.isletme,
         ref: '${b.type}:reklam',
       ),
-      timeLeft: _state.timeLeft - BusinessRules.adTimeCost,
+      timeSpent: _state.timeSpent + BusinessRules.adTimeCost,
     );
   }
 
@@ -831,7 +870,7 @@ class LifeEngine {
       character: YearTick.updateHardshipFlags(
         _booked(before, next, MoneySource.isletme, ref: '${b.type}:sube'),
       ),
-      timeLeft: _state.timeLeft - BusinessRules.openTimeCost,
+      timeSpent: _state.timeSpent + BusinessRules.openTimeCost,
       notes: [
         ..._state.notes,
         LifeNote(
@@ -914,11 +953,18 @@ class LifeEngine {
     if (placement == null) {
       throw StateError('$departmentId / $city tercih edilemez');
     }
-    final next = EducationRules.enroll(c, placement.$1, city, _factory);
+    var next = EducationRules.enroll(c, placement.$1, city, _factory);
+    if (next.city != c.city || next.home != c.home) {
+      next = Housing.settle(next, _factory);
+    }
+    // Örgün öğrenci tam zamanlı çalışamaz; açıköğretimde iş sürer.
+    final quits = next.job != null && !next.education.openEducation;
+    if (quits) next = Careers.leaveJob(next);
     return _state = _state.copyWith(
       character: next,
       notes: [
         ..._state.notes,
+        if (quits) const LifeNote(NoteKind.istifa),
         LifeNote(NoteKind.yerlesti, '$departmentId:${next.education.uniCity}'),
       ],
     );
@@ -994,8 +1040,13 @@ class LifeEngine {
       throw StateError('$city şehrine taşınılamaz: ${option?.$2}');
     }
     final c = _state.character;
+    // İş bırakılır; işletmeler eski şehirde müdüre kalır.
+    var leaving = Careers.leaveJob(c);
+    for (final b in leaving.businesses) {
+      leaving = BusinessRules.setPresent(leaving, b.id, false, _factory);
+    }
     final moved = Housing.moveTo(
-      c.job == null ? c : c.copyWith(clearJob: true),
+      leaving,
       city,
       _factory,
       withFamily: withFamily,
@@ -1004,7 +1055,11 @@ class LifeEngine {
       character: YearTick.updateHardshipFlags(
         _booked(c, moved, MoneySource.tasinma, ref: city),
       ),
-      timeLeft: _state.timeLeft - moveTimeCost,
+      notes: [
+        ..._state.notes,
+        if (c.job != null) const LifeNote(NoteKind.istifa),
+      ],
+      timeSpent: _state.timeSpent + moveTimeCost,
       listings: JobMarket.listingsFor(moved, careers, _random),
       applied: const {},
     );
@@ -1069,7 +1124,7 @@ class LifeEngine {
     'character': _state.character.toJson(),
     'queue': _state.queue.toJson(),
     'pending': [for (final e in _state.pendingCards) e.toJson()],
-    'timeLeft': _state.timeLeft,
+    'timeSpent': _state.timeSpent,
     'actionsUsed': _state.actionsUsed.toList(),
     'cause': _state.summary?.cause.name,
     'news': [for (final n in _state.news) n.toJson()],
@@ -1142,7 +1197,9 @@ class LifeEngine {
         character: character,
         phase: phase,
         queue: queue,
-        timeLeft: snapshot['timeLeft'] as int,
+        timeSpent:
+            snapshot['timeSpent'] as int? ??
+            ActionCatalog.timeFor(character) - (snapshot['timeLeft'] as int),
         actionsUsed: {...(snapshot['actionsUsed'] as List).cast<String>()},
       ),
     };
@@ -1246,7 +1303,6 @@ class LifeEngine {
       character: c,
       phase: YearPhase.actions,
       queue: queue,
-      timeLeft: ActionCatalog.timeFor(c),
       lastOutcome: lastOutcome,
       notes: List.unmodifiable(newNotes),
     );

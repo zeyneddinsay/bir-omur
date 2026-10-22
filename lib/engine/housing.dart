@@ -38,14 +38,7 @@ abstract final class Housing {
   static int relocationCost(String city) => Economy.rentFor(city) ~/ 2;
 
   /// Oyuncunun yaşadığı şehirde hayatta olan anne ya da baba var mı.
-  static bool hasParentInCity(Character c) => c.people
-      .bornBy(c.age)
-      .any(
-        (p) =>
-            p.isAlive &&
-            (p.kin == Kinship.anne || p.kin == Kinship.baba) &&
-            p.city == c.city,
-      );
+  static bool hasParentInCity(Character c) => Economy.parentInCity(c);
 
   /// Kirada tek başına: ev sahibi yeni kişi.
   static Character rentAlone(Character c, PersonFactory f) {
@@ -161,7 +154,7 @@ abstract final class Housing {
       stats: next.stats.withMoneyDelta(-relocationCost(city)),
       counters: next.counters.copyWith(moves: next.counters.moves + 1),
     );
-    next = _changeNeighbourhood(next, f);
+    next = changeNeighbourhood(next, f);
     if (withFamily && hasParentInCity(next)) {
       next = next.copyWith(home: HomeKind.aile);
     } else {
@@ -177,6 +170,8 @@ abstract final class Housing {
   /// Oyuncunun şehrinde komşu teyze ve bakkal yoksa (vefat, emeklilik,
   /// taşınma) yenisi gelir. Her yıl motor çağırır.
   static Character ensureNeighbours(Character c, PersonFactory f) {
+    // Yurtta komşu teyze ve bakkal yok.
+    if (c.home == HomeKind.yurt) return c;
     var book = c.people;
     bool has(RoleKind role) =>
         book.active(c.age).any((p) => p.city == c.city && p.hasRole(role));
@@ -212,9 +207,27 @@ abstract final class Housing {
     return identical(book, c.people) ? c : c.copyWith(people: book);
   }
 
+  /// Okul yüzünden şehir ya da ev değişince (yurda yerleşme, mezuniyet):
+  /// mahalle değişir; kiraya çıkana şehrin kirası ve ev sahibi gelir.
+  static Character settle(Character c, PersonFactory f) {
+    var next = changeNeighbourhood(c, f);
+    final hasLandlord = next.people
+        .active(next.age)
+        .any((p) => p.hasRole(RoleKind.evSahibi));
+    if (next.home == HomeKind.kira && !hasLandlord) {
+      next = _addLandlord(
+        next.copyWith(
+          assets: next.assets.copyWith(rent: Economy.rentFor(next.city)),
+        ),
+        f,
+      );
+    }
+    return Economy.syncDerivedFlags(next);
+  }
+
   /// Eski şehrin komşu ve bakkal rolleri biter; yeni şehirde rolü bitmiş
   /// eski tanıdık komşular varsa geri döner, yoksa yenileri gelir.
-  static Character _changeNeighbourhood(Character c, PersonFactory f) {
+  static Character changeNeighbourhood(Character c, PersonFactory f) {
     var book = c.people;
     const local = {RoleKind.komsu, RoleKind.bakkal};
     for (final p in book.bornBy(c.age).toList()) {

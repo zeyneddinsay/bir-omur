@@ -360,7 +360,14 @@ void main() {
       );
       expect(restored.state.listings, e.state.listings);
       final state = e.applyFor(open, ChoiceSide.left);
-      expect(state.timeLeft, before - 1);
+      // İşe girerse vakit hakkı 3'e iner; harcanan 1 düşülür.
+      expect(state.timeSpent, 1);
+      expect(
+        state.timeLeft,
+        state.character.job == null
+            ? before - 1
+            : ActionCatalog.timeFor(state.character) - 1,
+      );
       expect(state.applied, contains(JobMarket.key(open)));
       expect(
         state.notes.last.kind,

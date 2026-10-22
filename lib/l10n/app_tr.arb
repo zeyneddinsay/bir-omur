@@ -206,6 +206,7 @@
   "@assetGoldPrice": { "placeholders": { "price": { "type": "String" } } },
   "assetNone": "Yok",
   "home_aile": "Ailenle yaşıyorsun",
+  "home_aileEvi": "Aile evinde yaşıyorsun",
   "home_yurt": "Yurtta kalıyorsun",
   "home_evArkadasi": "Ev arkadaşınla kirada",
   "home_kira": "Kirada yaşıyorsun",

@@ -48,6 +48,7 @@ class LifeAction {
     this.goldGrams = 0,
     this.requiresJob = false,
     this.studentsOnly = false,
+    this.jobless = false,
     this.idleOnly = false,
     this.special,
     this.minAge = 0,
@@ -72,6 +73,9 @@ class LifeAction {
   /// Yalnızca okuldaki ya da üniversitedeki öğrenciye açık (ders çalış).
   final bool studentsOnly;
 
+  /// Yalnızca bir işi olmayanlar (yarı zamanlı iş).
+  final bool jobless;
+
   /// Yalnızca işi olmayan, okumayan ve emekli olmayan yetişkine açık
   /// (ara işler).
   final bool idleOnly;
@@ -91,6 +95,7 @@ class LifeAction {
     if (goldGrams < 0 && c.assets.goldGrams < -goldGrams) return false;
     if (requiresJob && c.job == null) return false;
     if (studentsOnly && !ActionCatalog.isStudent(c)) return false;
+    if (jobless && c.job != null) return false;
     if (idleOnly && !ActionCatalog.isIdleAdult(c)) return false;
     if (special case final s?) return _specialAvailable(s, c);
     return true;
@@ -221,6 +226,7 @@ abstract final class ActionCatalog {
       category: ActionCategory.okulIs,
       minAge: 18,
       studentsOnly: true,
+      jobless: true,
       timeCost: 2,
       effect: Effect(
         money: partTimeIncome,
@@ -368,7 +374,7 @@ abstract final class ActionCatalog {
     if (c.businesses.any((b) => b.present)) return c.job != null ? 1 : 2;
     if (c.isRetired || c.age >= 65) return 6;
     if (c.age <= 10) return 2;
-    if (c.age <= 18 || c.hasFlag(studentFlag)) return 5;
+    // İş okuldan önce gelir: çalışan açıköğretimli ve çırak 3 alır.
     if (c.job != null) return 3 - JobMarket.timePenalty(c);
     return 5;
   }

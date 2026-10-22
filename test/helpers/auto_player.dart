@@ -75,10 +75,9 @@ class AutoPlayer {
           );
         }
         if (c.job != null) {
-          if (_random.nextInt(10) == 0) {
-            return engine.setTempo(
-              Tempo.values[_random.nextInt(Tempo.values.length)],
-            );
+          final tempo = Tempo.values[_random.nextInt(Tempo.values.length)];
+          if (_random.nextInt(10) == 0 && engine.canSetTempo(tempo)) {
+            return engine.setTempo(tempo);
           }
           if (engine.canRequest(promotion: true) && _random.nextInt(3) == 0) {
             return engine.requestPromotion();
@@ -117,7 +116,7 @@ class AutoPlayer {
     }
     for (final b in c.businesses) {
       switch (_random.nextInt(30)) {
-        case 0:
+        case 0 when engine.canSetBusinessPresent(b.id, !b.present):
           return engine.setBusinessPresent(b.id, !b.present);
         case 1:
           return engine.setBusinessPrice(
