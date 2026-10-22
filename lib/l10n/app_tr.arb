@@ -566,6 +566,8 @@
   "journalTitle": "Bu yılın günlüğü",
   "journalEmpty": "Sakin bir yıl. Kimseden ses yok.",
   "journalChoice": "Seçimin: “{label}”",
+  "journalChoiceWith": "{event} → “{label}”",
+  "@journalChoiceWith": { "placeholders": { "event": { "type": "String" }, "label": { "type": "String" } } },
   "@journalChoice": { "placeholders": { "label": { "type": "String" } } },
   "news_kardesDogdu": "{name} doğdu. Artık bir kardeşin var.",
   "@news_kardesDogdu": { "placeholders": { "name": { "type": "String" } } },

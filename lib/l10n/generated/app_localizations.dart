@@ -2686,6 +2686,12 @@ abstract class AppLocalizations {
   /// **'Seçimin: “{label}”'**
   String journalChoice(String label);
 
+  /// No description provided for @journalChoiceWith.
+  ///
+  /// In tr, this message translates to:
+  /// **'{event} → “{label}”'**
+  String journalChoiceWith(String event, String label);
+
   /// No description provided for @news_kardesDogdu.
   ///
   /// In tr, this message translates to:

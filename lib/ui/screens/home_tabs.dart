@@ -129,7 +129,8 @@ class _MeTab extends ConsumerWidget {
     final choices = [
       for (final r in PeopleView.choicesThisYear(c))
         if (engine.deck.byId(r.cardId) case final card?)
-          l10n.journalChoice(
+          l10n.journalChoiceWith(
+            _gist(EventText.render(card.text, r.people, c)),
             EventText.render(card.choice(r.side).label, r.people, c),
           ),
     ];
@@ -269,4 +270,12 @@ class _ActionsTab extends ConsumerWidget {
     ActionCategory.saglik => Icons.health_and_safety_outlined,
     ActionCategory.eglence => Icons.celebration_outlined,
   };
+}
+
+/// Olayın günlükteki kısa hâli: ilk cümlesi, uzunsa kırpılmış.
+String _gist(String text) {
+  final end = RegExp(r'[.!?…](\s|$)').firstMatch(text);
+  var first = end == null ? text : text.substring(0, end.start + 1);
+  if (first.length > 70) first = '${first.substring(0, 67).trimRight()}…';
+  return first;
 }

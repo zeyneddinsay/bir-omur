@@ -1625,6 +1625,11 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
+  String journalChoiceWith(String event, String label) {
+    return '$event → “$label”';
+  }
+
+  @override
   String news_kardesDogdu(String name) {
     return '$name doğdu. Artık bir kardeşin var.';
   }
