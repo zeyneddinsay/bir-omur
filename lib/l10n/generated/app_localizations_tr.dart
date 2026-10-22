@@ -272,6 +272,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get action_yazilim_kursu => 'Yazılım kursuna yazıl';
 
   @override
+  String get action_tanis => 'Biriyle tanış';
+
+  @override
   String get action_ara_is => 'Ara işlere git';
 
   @override
@@ -698,6 +701,12 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get money_tazminat => 'Kıdem tazminatı';
+
+  @override
+  String get money_esGeliri => 'Eşinin hane bütçesine katkısı';
+
+  @override
+  String get money_cocuk => 'Çocukların gideri';
 
   @override
   String get money_emekliAyligi => 'Emekli aylığı';
@@ -1493,6 +1502,9 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
+  String get worldSmall_mudur => 'işletmenin müdürü';
+
+  @override
   String get since_aile => 'aileden';
 
   @override
@@ -1539,6 +1551,16 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get note_zorGun_bunalim =>
       'Zor bir yıl: içinden hiçbir şey gelmiyor. Kim aradı, kim aramadı; unutmayacaksın.';
+
+  @override
+  String note_evlendin(String name) {
+    return '$name ile evlendiniz.';
+  }
+
+  @override
+  String note_bebek(String name) {
+    return 'Bebeğinizin adı $name oldu.';
+  }
 
   @override
   String note_iseAldin(String person, String name) {
@@ -1638,6 +1660,11 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String news_vefat(String name) {
     return '$name vefat etti.';
+  }
+
+  @override
+  String news_torunDogdu(String name) {
+    return 'Torunun $name dünyaya geldi!';
   }
 
   @override
@@ -1897,6 +1924,21 @@ class AppLocalizationsTr extends AppLocalizations {
   String get interaction_cayaGit => 'Çaya git';
 
   @override
+  String get interaction_acil => 'Duygularını açıkla';
+
+  @override
+  String get interaction_ciddi => 'Ciddi düşünüyorum, de';
+
+  @override
+  String get interaction_teklif => 'Evlenme teklif et';
+
+  @override
+  String get interaction_ayril => 'Ayrıl';
+
+  @override
+  String get interaction_cocukIste => 'Çocuk isteyelim mi?';
+
+  @override
   String interactionCost(int time) {
     String _temp0 = intl.Intl.pluralLogic(
       time,
@@ -1947,6 +1989,9 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get blocked_kirginlikYok => 'Özür dileyecek bir kırgınlık yok';
+
+  @override
+  String get blocked_erken => 'Daha erken; birbirinizi biraz daha tanıyın';
 
   @override
   String get callTitle => 'Nasıl konuşacaksın?';

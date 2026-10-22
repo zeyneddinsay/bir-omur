@@ -18,6 +18,14 @@ class PersonFactory {
   /// (eski sınıf, bölük ya da iş arkadaşı, mahalleden biri) rolü alır.
   static const double worldSmallChance = 0.35;
 
+  /// Romantik ya da eski evlilik bağı olan tanıdık rol almaz.
+  static const Set<Bond> romanticBonds = {
+    Bond.flort,
+    Bond.sevgili,
+    Bond.nisanli,
+    Bond.eskiEs,
+  };
+
   /// Yere bağlı roller: bunlardan birini süren tanıdık yeni rol almaz.
   static const Set<RoleKind> placeRoles = {
     RoleKind.patron,
@@ -37,8 +45,10 @@ class PersonFactory {
   };
 
   /// Yeni bir rol için önce tanıdıklara bakar ([worldSmallChance]): aynı
-  /// şehirde, yaşı uyan, akraba olmayan ve yere bağlı bir rolü olmayan
-  /// biri rolü alır (arşivdeyse çevreye döner). Yoksa yeni kişi gelir.
+  /// şehirde, yaşı uyan, akraba ya da sevgili olmayan, süren hiçbir rolü
+  /// olmayan, bu rolü daha önce üstlenmemiş ve mesleği uyan (ya da mesleği
+  /// olmayan) biri rolü alır (arşivdeyse çevreye döner). Serveti değişmez.
+  /// Yoksa yeni kişi gelir.
   (PeopleBook, Person) addOrReuse(
     PeopleBook book, {
     required int now,
@@ -61,7 +71,10 @@ class PersonFactory {
               p.ageAt(now) >= minAge &&
               p.ageAt(now) <= maxAge &&
               (gender == null || p.gender == gender) &&
-              !p.roles.any((r) => r.active && placeRoles.contains(r.kind)))
+              !romanticBonds.contains(p.bond) &&
+              !p.roles.any((r) => r.active) &&
+              !roles.any((r) => p.hasRole(r.kind, activeOnly: false)) &&
+              (p.occupation == null || p.occupation == occupation))
             p,
       ];
       if (known.isNotEmpty) {
@@ -70,7 +83,6 @@ class PersonFactory {
           roles: [...p.roles, ...roles],
           archived: false,
           occupation: occupation,
-          wealth: wealth,
         );
         return (book.update(reused), reused);
       }

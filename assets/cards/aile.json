@@ -328,6 +328,7 @@
     "minAge": 22,
     "maxAge": 35,
     "repeat": { "cooldown": 5, "max": 2 },
+    "conditions": { "notFlags": ["evli"] },
     "roles": {
       "baba": { "kin": ["baba"] }
     },
@@ -588,6 +589,7 @@
     "minAge": 23,
     "maxAge": 35,
     "repeat": "once",
+    "conditions": { "notFlags": ["evli"] },
     "roles": {
       "akraba": { "kin": ["amca", "hala", "dayi", "teyze"] }
     },

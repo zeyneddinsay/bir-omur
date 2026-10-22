@@ -48,6 +48,7 @@ extension L10nNames on AppLocalizations {
     'araba_sat' => action_araba_sat,
     'kpss' => action_kpss,
     'yazilim_kursu' => action_yazilim_kursu,
+    'tanis' => action_tanis,
     _ => null,
   };
 

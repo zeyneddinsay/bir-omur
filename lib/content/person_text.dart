@@ -45,7 +45,7 @@ abstract final class PersonText {
     Kinship.kuzen => 'kuzenin',
     Kinship.yegen => 'yeğenin',
     Kinship.es => 'eşin',
-    Kinship.cocuk => 'çocuğun',
+    Kinship.cocuk => p.gender == Gender.kadin ? 'kızın' : 'oğlun',
     Kinship.gelin => 'gelinin',
     Kinship.damat => 'damadın',
     Kinship.torun => 'torunun',

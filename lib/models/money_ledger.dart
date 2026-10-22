@@ -6,6 +6,12 @@ enum MoneySource {
 
   /// Kovulunca kıdem tazminatı.
   tazminat,
+
+  /// Eşin hane bütçesine kattığı (çalışmıyorsa gideri).
+  esGeliri,
+
+  /// Evdeki çocukların gideri.
+  cocuk,
   emekliAyligi,
 
   /// Çalışmamış ya da yeterince çalışmamış yaşlıya devletin 65 yaş aylığı.

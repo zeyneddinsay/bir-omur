@@ -22,6 +22,7 @@ export 'military.dart';
 export 'people_tick.dart';
 export 'person_factory.dart';
 export 'relationships.dart';
+export 'romance.dart';
 export 'schedule_queue.dart';
 export 'seeded_random.dart';
 export 'summary_builder.dart';

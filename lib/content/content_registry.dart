@@ -32,6 +32,9 @@ class ContentRegistry {
     JobMarket.codingFlag,
     ...BusinessRules.ownedFlags,
     HardDay.flag,
+    HardDay.comebackFlag,
+    PeopleTick.fourGenerationsFlag,
+    ...Romance.derivedFlags,
   };
 
   /// Motorun koddan baktığı, kartların açtığı bayraklar; kayıtta
@@ -50,6 +53,11 @@ class ContentRegistry {
   static const Set<String> engineScheduledEvents = {
     LifeEngine.graduationEvent,
     HardDay.callCard,
+    Romance.weddingEvent,
+    Romance.birthEvent,
+    'kiz_isteme_damat',
+    'kiz_isteme_gelin',
+    'aile_tanisma_yemegi',
   };
 
   factory ContentRegistry.parse(String source) {

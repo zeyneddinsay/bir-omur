@@ -1,7 +1,9 @@
 import 'dart:math';
 
 import '../models/models.dart';
+import 'person_factory.dart';
 import 'relationships.dart';
+import 'romance.dart';
 
 /// Yıl günlüğüne düşen, çevreden bir haber.
 enum NewsKind {
@@ -15,6 +17,9 @@ enum NewsKind {
   isBuldu,
   emekliOldu,
   vefat,
+
+  /// Torun doğdu.
+  torunDogdu,
 }
 
 /// Bir kişi hakkında bir haber. Metni arayüz kurar.
@@ -81,6 +86,11 @@ class PeopleTick {
 
   static const int classmatesPerClass = 5;
 
+  /// Torun doğduğunda oyuncunun anne ya da babası hayattaysa açılan motor
+  /// bayrağı.
+  static const String fourGenerationsFlag = 'dort_kusak';
+  bool _fourGenerations = false;
+
   /// Önceki sınıftan bir arkadaşın yeni kademede de aynı sınıfta olma
   /// olasılığı (aynı mahalle, aynı okul).
   static const double stayInClassChance = 0.3;
@@ -107,6 +117,7 @@ class PeopleTick {
     _now = c.age;
     _news = [];
 
+    _fourGenerations = false;
     _births();
     _household(c);
     for (final p in _book.active(_now).toList()) {
@@ -116,7 +127,13 @@ class PeopleTick {
     if (stage != null) _newClass(c, stage);
     _archive();
 
-    return (c.copyWith(people: _book), List.unmodifiable(_news));
+    return (
+      c.copyWith(
+        people: _book,
+        flags: _fourGenerations ? {...c.flags, fourGenerationsFlag} : null,
+      ),
+      List.unmodifiable(_news),
+    );
   }
 
   void _births() {
@@ -139,10 +156,13 @@ class PeopleTick {
   /// baba ve evlenmemiş kardeşler. Aynı evdekiyle ilişki soğumaz; onlar
   /// aranmaz, onlarla "buluşulmaz".
   static bool livesTogether(Character c, Person p) {
-    if (c.home != HomeKind.aile || !p.isAlive || p.city != c.city) {
-      return false;
+    if (!p.isAlive || p.city != c.city || p.bornAt > c.age) return false;
+    // Eş ve 18 yaşından küçük çocuklar oyuncunun evinde (yurtta değilse).
+    if (c.home != HomeKind.yurt) {
+      if (p.kin == Kinship.es) return true;
+      if (p.kin == Kinship.cocuk) return p.ageAt(c.age) < 19;
     }
-    if (p.bornAt > c.age) return false;
+    if (c.home != HomeKind.aile) return false;
     return switch (p.kin) {
       Kinship.anne || Kinship.baba => true,
       Kinship.kardes => p.marital == MaritalStatus.bekar,
@@ -216,18 +236,52 @@ class PeopleTick {
     }
 
     // Anne, baba, eş ve çocuğun evliliği kendi olaylarıyla gelir.
-    const ownMarriage = {Kinship.anne, Kinship.baba, Kinship.es, Kinship.cocuk};
+    // Oyuncunun sevgilisi ya da nişanlısı başkasıyla evlenmez; çocuklar
+    // 24 yaşından sonra evlenir.
+    const ownMarriage = {Kinship.anne, Kinship.baba, Kinship.es};
+    final minMarriage = p.kin == Kinship.cocuk ? 24 : 22;
     if (p.marital == MaritalStatus.bekar &&
-        age >= 22 &&
+        age >= minMarriage &&
         age <= 40 &&
         !ownMarriage.contains(p.kin) &&
+        !Romance.romanticBonds.contains(p.bond) &&
         random.nextDouble() < 0.08) {
       p = p.copyWith(marital: MaritalStatus.evli);
       _report(p, NewsKind.evlendi);
     }
 
+    // Evli çocuğun bebeği: torun (çocuk başına ortalama ikiyi geçmez).
+    if (p.kin == Kinship.cocuk &&
+        p.marital == MaritalStatus.evli &&
+        age >= 25 &&
+        age <= 42 &&
+        random.nextDouble() < 0.15) {
+      final kids = _book.all.where((x) => x.kin == Kinship.cocuk).length;
+      final grandkids = _book.all.where((x) => x.kin == Kinship.torun).length;
+      if (grandkids < 2 * kids) {
+        final (book, baby) = Romance.addKinPerson(
+          _book,
+          PersonFactory(random, families),
+          now: _now,
+          age: 0,
+          city: p.city,
+          kin: Kinship.torun,
+          gender: random.nextBool() ? Gender.kadin : Gender.erkek,
+          surname: p.surname,
+          base: 70,
+        );
+        _book = book;
+        _news.add(PersonNews(NewsKind.torunDogdu, baby.id));
+        final parentAlive = _book.all.any(
+          (x) => x.isAlive && (x.kin == Kinship.anne || x.kin == Kinship.baba),
+        );
+        if (parentAlive) _fourGenerations = true;
+      }
+    }
+
     if (age >= 20 &&
         !livesTogether(c, p) &&
+        !Romance.romanticBonds.contains(p.bond) &&
         !p.roles.any((r) => r.active && _placeRoles.contains(r.kind)) &&
         random.nextDouble() < 0.02 &&
         cities.length > 1) {

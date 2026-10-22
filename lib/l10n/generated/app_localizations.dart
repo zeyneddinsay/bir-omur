@@ -520,6 +520,12 @@ abstract class AppLocalizations {
   /// **'Yazılım kursuna yazıl'**
   String get action_yazilim_kursu;
 
+  /// No description provided for @action_tanis.
+  ///
+  /// In tr, this message translates to:
+  /// **'Biriyle tanış'**
+  String get action_tanis;
+
   /// No description provided for @action_ara_is.
   ///
   /// In tr, this message translates to:
@@ -1203,6 +1209,18 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Kıdem tazminatı'**
   String get money_tazminat;
+
+  /// No description provided for @money_esGeliri.
+  ///
+  /// In tr, this message translates to:
+  /// **'Eşinin hane bütçesine katkısı'**
+  String get money_esGeliri;
+
+  /// No description provided for @money_cocuk.
+  ///
+  /// In tr, this message translates to:
+  /// **'Çocukların gideri'**
+  String get money_cocuk;
 
   /// No description provided for @money_emekliAyligi.
   ///
@@ -2458,6 +2476,12 @@ abstract class AppLocalizations {
   /// **'Dünya küçük: {name} artık {role}. Onu {since} tanıyorsun.'**
   String note_dunyaKucuk(String name, String role, String since);
 
+  /// No description provided for @worldSmall_mudur.
+  ///
+  /// In tr, this message translates to:
+  /// **'işletmenin müdürü'**
+  String get worldSmall_mudur;
+
   /// No description provided for @since_aile.
   ///
   /// In tr, this message translates to:
@@ -2541,6 +2565,18 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Zor bir yıl: içinden hiçbir şey gelmiyor. Kim aradı, kim aramadı; unutmayacaksın.'**
   String get note_zorGun_bunalim;
+
+  /// No description provided for @note_evlendin.
+  ///
+  /// In tr, this message translates to:
+  /// **'{name} ile evlendiniz.'**
+  String note_evlendin(String name);
+
+  /// No description provided for @note_bebek.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bebeğinizin adı {name} oldu.'**
+  String note_bebek(String name);
 
   /// No description provided for @note_iseAldin.
   ///
@@ -2691,6 +2727,12 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'{name} vefat etti.'**
   String news_vefat(String name);
+
+  /// No description provided for @news_torunDogdu.
+  ///
+  /// In tr, this message translates to:
+  /// **'Torunun {name} dünyaya geldi!'**
+  String news_torunDogdu(String name);
 
   /// No description provided for @group_aile.
   ///
@@ -3160,6 +3202,36 @@ abstract class AppLocalizations {
   /// **'Çaya git'**
   String get interaction_cayaGit;
 
+  /// No description provided for @interaction_acil.
+  ///
+  /// In tr, this message translates to:
+  /// **'Duygularını açıkla'**
+  String get interaction_acil;
+
+  /// No description provided for @interaction_ciddi.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ciddi düşünüyorum, de'**
+  String get interaction_ciddi;
+
+  /// No description provided for @interaction_teklif.
+  ///
+  /// In tr, this message translates to:
+  /// **'Evlenme teklif et'**
+  String get interaction_teklif;
+
+  /// No description provided for @interaction_ayril.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ayrıl'**
+  String get interaction_ayril;
+
+  /// No description provided for @interaction_cocukIste.
+  ///
+  /// In tr, this message translates to:
+  /// **'Çocuk isteyelim mi?'**
+  String get interaction_cocukIste;
+
   /// No description provided for @interactionCost.
   ///
   /// In tr, this message translates to:
@@ -3231,6 +3303,12 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Özür dileyecek bir kırgınlık yok'**
   String get blocked_kirginlikYok;
+
+  /// No description provided for @blocked_erken.
+  ///
+  /// In tr, this message translates to:
+  /// **'Daha erken; birbirinizi biraz daha tanıyın'**
+  String get blocked_erken;
 
   /// No description provided for @callTitle.
   ///

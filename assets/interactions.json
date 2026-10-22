@@ -128,7 +128,48 @@
     "komsu.cay": [
       "{kisi.ad} {kisi.hitap.amca} çay koydu. İki saatte üç komşunun hikâyesini dinledin.",
       "{kisi.ad} {kisi.hitap.amca} kapıyı açar açmaz \"Gel otur, sana anlatacaklarım var\" dedi."
+    ],
+    "acil.evet": [
+      "{kisi.ad|e} söyledin. Bir an sustu, sonra gülümsedi: \"Ben de bunu bekliyordum.\"",
+      "Kekeleyerek anlattın. {kisi.ad} elini tuttu: \"Bu kadar zor muydu?\""
+    ],
+    "acil.hayir": [
+      "{kisi.ad} gözlerini kaçırdı: \"Seni çok seviyorum ama… arkadaş olarak.\"",
+      "{kisi.ad} uzun uzun düşündü. \"Bozulmasın aramız\" dedi. Eve yürüyerek döndün."
+    ],
+    "ciddi.evet": [
+      "\"Ben ciddi düşünüyorum\" dedin. {kisi.ad}: \"Ben de.\" Artık sevgilisiniz.",
+      "{kisi.ad} telefonundaki adını \"Sevgilim\" diye değiştirdi; sana da gösterdi."
+    ],
+    "ciddi.hayir": [
+      "{kisi.ad}: \"Ben şu an ciddi bir şey istemiyorum.\" Kahveler soğudu, yollar ayrıldı.",
+      "{kisi.ad} hazır değilmiş. Bir süre birbirinize mesaj atmadınız; sonra hiç atmadınız."
+    ],
+    "teklif.evet": [
+      "Yüzüğü çıkardın, eller titriyordu. {kisi.ad} ağlayarak \"Evet\" dedi. Sıra ailelerde.",
+      "{kisi.ad}: \"Evet! Ama annemle konuşman lazım, haberin olsun.\""
+    ],
+    "teklif.hayir": [
+      "{kisi.ad} yüzüğe baktı, sonra sana: \"Daha hazır değilim.\" Yüzük cebine geri döndü.",
+      "{kisi.ad}: \"Çok güzel ama… şimdi değil.\" O akşam ikiniz de az konuştunuz."
+    ],
+    "ayril.iyi": [
+      "{kisi.ad} ile oturup konuştunuz. Kavga yok; sadece yollar ayrıldı.",
+      "{kisi.ad} \"Haklısın\" dedi. Ayrılmak kolay değildi ama ikiniz de biliyordunuz."
+    ],
+    "ayril.bosanma": [
+      "{kisi.ad} ile yollarınız ayrıldı. İmzalar atıldı, ev bölündü; sessiz ve yorgun bir gün.",
+      "Boşandınız. {kisi.ad} son kez kapıda durdu: \"Kendine iyi bak.\""
+    ],
+    "cocuk.evet": [
+      "{kisi.ad} gözleri dolarak başını salladı: \"Ben de çok istiyorum.\"",
+      "{kisi.ad}: \"Odayı şimdiden boyamaya başlayalım mı?\""
+    ],
+    "cocuk.hayir": [
+      "{kisi.ad}: \"Şimdi değil. Önce biraz daha kendimize bakalım.\"",
+      "{kisi.ad} konuyu değiştirdi. Belli ki daha hazır değil."
     ]
+
   },
   "memories": {
     "bulus": "Birlikte vakit geçirdik",
@@ -149,6 +190,15 @@
     "mac_izledik": "Birlikte maç izledik",
     "elini_optu": "Elimi öptü",
     "birlikte_oynadik": "Birlikte oynadık",
-    "caya_geldi": "Çayıma geldi"
+    "caya_geldi": "Çayıma geldi",
+    "acildi": "Bana duygularını açtı",
+    "acilmadi": "Duygularını açtı, karşılık veremedim",
+    "sevgili_olduk": "Sevgili olduk",
+    "ayrildik": "Ayrıldık",
+    "evet_dedi": "Evlenme teklifine evet dedim",
+    "teklif_reddi": "Evlenme teklifini geri çevirdim",
+    "bosandik": "Boşandık",
+    "cocuk_karari": "Çocuk sahibi olmaya karar verdik",
+    "cocuk_istemedi": "Çocuk istediğinde hazır değildim"
   }
 }

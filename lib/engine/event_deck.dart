@@ -70,7 +70,10 @@ abstract final class RoleMatcher {
     }
     if (!slot.traits.every(p.hasTrait)) return false;
     if (slot.notTraits.any(p.hasTrait)) return false;
-    if (slot.memory != null && !p.memories.any((m) => m.kind == slot.memory)) {
+    if (slot.memory != null &&
+        !p.memories.any(
+          (m) => m.kind == slot.memory && c.age - m.age >= slot.memoryYears,
+        )) {
       return false;
     }
     if (slot.noMemory != null &&

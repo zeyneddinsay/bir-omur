@@ -3,6 +3,7 @@ import 'dart:math';
 import '../models/models.dart';
 import 'people_tick.dart';
 import 'relationships.dart';
+import 'romance.dart';
 
 /// Kişiyle yapılabilecek etkileşimler (İnsanlar sekmesi). İlk sürümün
 /// listesi; "İş konuş" ve ortaklık D2 ve D3'te gelir.
@@ -30,6 +31,21 @@ enum InteractionKind {
 
   /// Komşu: çaya git.
   cayaGit,
+
+  /// Duygularını açıkla: arkadaştan flörte.
+  acil,
+
+  /// "Ciddi düşünüyorum": flörtten sevgiliye.
+  ciddi,
+
+  /// Evlenme teklifi: sevgiliden nişanlıya.
+  teklif,
+
+  /// Ayrılmak ya da boşanmak.
+  ayril,
+
+  /// Eşle çocuk kararı.
+  cocukIste,
 }
 
 /// Ara sohbetinin tonu.
@@ -63,6 +79,9 @@ enum Blocked {
 
   /// Özür dileyecek bir kırgınlık yok.
   kirginlikYok,
+
+  /// Flörtün üstünden henüz bir yıl geçmedi.
+  erken,
 }
 
 /// İnsanlar sekmesindeki bir düğme: etkileşim, bedeli ve kapalıysa sebebi.
@@ -185,6 +204,15 @@ abstract final class Interactions {
     'elini_optu',
     'birlikte_oynadik',
     'caya_geldi',
+    'acildi',
+    'acilmadi',
+    'sevgili_olduk',
+    'ayrildik',
+    'evet_dedi',
+    'teklif_reddi',
+    'bosandik',
+    'cocuk_karari',
+    'cocuk_istemedi',
   ];
 
   /// Motorun üretebileceği bütün sonuç anahtarları. Her biri için
@@ -220,6 +248,16 @@ abstract final class Interactions {
     'dede.el.harclik',
     'kardes.oyun',
     'komsu.cay',
+    'acil.evet',
+    'acil.hayir',
+    'ciddi.evet',
+    'ciddi.hayir',
+    'teklif.evet',
+    'teklif.hayir',
+    'ayril.iyi',
+    'ayril.bosanma',
+    'cocuk.evet',
+    'cocuk.hayir',
   ];
 
   /// Etkileşimin en küçük oyuncu yaşı ve karşıdakinin en küçük yaşı.
@@ -237,6 +275,11 @@ abstract final class Interactions {
     InteractionKind.eliniOp: (player: 6, other: 0),
     InteractionKind.kardesleOyna: (player: 6, other: 4),
     InteractionKind.cayaGit: (player: 12, other: 0),
+    InteractionKind.acil: (player: 18, other: 18),
+    InteractionKind.ciddi: (player: 18, other: 18),
+    InteractionKind.teklif: (player: Romance.proposalMinAge, other: 18),
+    InteractionKind.ayril: (player: 18, other: 18),
+    InteractionKind.cocukIste: (player: Romance.childMinAge, other: 18),
   };
 
   /// Kardeşle oyun bu yaşa kadar (ikisi için de).
@@ -276,6 +319,13 @@ abstract final class Interactions {
             p.ageAt(now) <= playMaxAge)
           InteractionKind.kardesleOyna,
         if (p.hasRole(RoleKind.komsu)) InteractionKind.cayaGit,
+        if (Romance.canCourt(c, p)) InteractionKind.acil,
+        if (p.bond == Bond.flort) InteractionKind.ciddi,
+        if (p.bond == Bond.sevgili) InteractionKind.teklif,
+        if (Romance.romanticBonds.contains(p.bond) || p.kin == Kinship.es)
+          InteractionKind.ayril,
+        if (p.kin == Kinship.es && Romance.childAgeFits(c, p))
+          InteractionKind.cocukIste,
       ],
     ];
     return [
@@ -318,6 +368,20 @@ abstract final class Interactions {
     } else if (kind == InteractionKind.dertles &&
         Relationships.closeness(p, now) < confideMin) {
       blocked = Blocked.yakinlikDusuk;
+    } else if (Relationships.closeness(p, now) <
+        switch (kind) {
+          InteractionKind.acil => Romance.confessMin,
+          InteractionKind.ciddi => Romance.seriousMin,
+          InteractionKind.teklif => Romance.proposeMin,
+          InteractionKind.cocukIste => Romance.childMin,
+          _ => 0,
+        }) {
+      blocked = Blocked.yakinlikDusuk;
+    } else if (kind == InteractionKind.ciddi &&
+        now - (Romance.datingSince(p) ?? now) < Romance.datingYears) {
+      blocked = Blocked.erken;
+    } else if (kind == InteractionKind.cocukIste && Romance.childTooSoon(c)) {
+      blocked = Blocked.erken;
     }
     return InteractionOption(
       kind,
@@ -482,6 +546,11 @@ class _Resolver {
         3,
       ),
       InteractionKind.cayaGit => _simple('komsu.cay', 'caya_geldi', 1),
+      InteractionKind.acil => _confess(),
+      InteractionKind.ciddi => _serious(),
+      InteractionKind.teklif => _propose(),
+      InteractionKind.ayril => _breakUp(),
+      InteractionKind.cocukIste => _askChild(),
     };
 
     if (request.kind != InteractionKind.uzaklas) {
@@ -595,6 +664,72 @@ class _Resolver {
     if (p.hasTrait(Trait.gamsiz) && _chance(0.4)) return 'lafsok.gecti';
     _remember('laf_soktu', MemoryTone.olumsuz, 1);
     return 'lafsok.iyi';
+  }
+
+  double get _warmth => (_closeness - 50) / 100;
+
+  String _confess() {
+    if (_chance((0.45 + _warmth).clamp(0.2, 0.9))) {
+      p = p.copyWith(bond: Bond.flort);
+      _remember('acildi', MemoryTone.olumlu, 2);
+      _happy(5);
+      return 'acil.evet';
+    }
+    _remember('acilmadi', MemoryTone.olumsuz, 1);
+    _happy(-4);
+    return 'acil.hayir';
+  }
+
+  String _serious() {
+    if (_chance((0.55 + _warmth).clamp(0.3, 0.95))) {
+      p = p.copyWith(bond: Bond.sevgili);
+      _remember('sevgili_olduk', MemoryTone.olumlu, 2);
+      _happy(4);
+      return 'ciddi.evet';
+    }
+    p = p.copyWith(bond: Bond.eskiSevgili);
+    _remember('ayrildik', MemoryTone.olumsuz, 2);
+    _happy(-5);
+    return 'ciddi.hayir';
+  }
+
+  String _propose() {
+    if (_chance((0.5 + _warmth).clamp(0.3, 0.95))) {
+      p = p.copyWith(bond: Bond.nisanli);
+      _remember('evet_dedi', MemoryTone.olumlu, 3);
+      _happy(8);
+      return 'teklif.evet';
+    }
+    _remember('teklif_reddi', MemoryTone.olumsuz, 3);
+    _happy(-6);
+    return 'teklif.hayir';
+  }
+
+  String _breakUp() {
+    final divorce = p.kin == Kinship.es;
+    p = p.copyWith(
+      clearKin: divorce,
+      bond: divorce ? Bond.eskiEs : Bond.eskiSevgili,
+      marital: divorce ? MaritalStatus.bekar : null,
+    );
+    _remember(divorce ? 'bosandik' : 'ayrildik', MemoryTone.olumsuz, 2);
+    _happy(-5);
+    if (!divorce) return 'ayril.iyi';
+    // Evlilikte biriken nakit yarı yarıya bölünür.
+    if (c.stats.money > 0) _money -= c.stats.money ~/ 2;
+    return 'ayril.bosanma';
+  }
+
+  String _askChild() {
+    final kids = c.people.all.where((x) => x.kin == Kinship.cocuk).length;
+    if (_chance((0.6 + _warmth - 0.2 * kids).clamp(0.1, 0.9))) {
+      _remember('cocuk_karari', MemoryTone.olumlu, 2);
+      _happy(3);
+      return 'cocuk.evet';
+    }
+    _remember('cocuk_istemedi', MemoryTone.olumsuz, 1);
+    _happy(-2);
+    return 'cocuk.hayir';
   }
 
   String _drift() {

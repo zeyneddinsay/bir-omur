@@ -21,6 +21,7 @@ import 'military.dart';
 import 'people_tick.dart';
 import 'person_factory.dart';
 import 'relationships.dart';
+import 'romance.dart';
 import 'schedule_queue.dart';
 import 'seeded_random.dart';
 import 'summary_builder.dart';
@@ -102,6 +103,7 @@ class LifeState {
 
   LifeState copyWith({
     Character? character,
+    ScheduleQueue? queue,
     int? timeSpent,
     Set<String>? actionsUsed,
     List<PersonNews>? news,
@@ -113,7 +115,7 @@ class LifeState {
   }) => LifeState(
     character: character ?? this.character,
     phase: phase,
-    queue: queue,
+    queue: queue ?? this.queue,
     pendingCards: pendingCards,
     timeSpent: timeSpent ?? this.timeSpent,
     actionsUsed: actionsUsed ?? this.actionsUsed,
@@ -232,15 +234,19 @@ class LifeEngine {
     }
 
     final outcome = _resolver.resolve(_state.character, event, side);
-    final character = Relationships.syncFamilyBond(
-      YearTick.updateHardshipFlags(
-        _booked(
-          _state.character,
-          outcome.character,
-          MoneySource.olay,
-          ref: '${event.card.id}:${side.name}',
-        ),
+    final (afterLife, lifeNotes) = _lifeEvent(
+      _booked(
+        _state.character,
+        outcome.character,
+        MoneySource.olay,
+        ref: '${event.card.id}:${side.name}',
       ),
+      event,
+      side,
+    );
+    final notes = [..._state.notes, ...lifeNotes];
+    final character = Relationships.syncFamilyBond(
+      Romance.syncFlags(YearTick.updateHardshipFlags(afterLife)),
     );
     var queue = _state.queue;
     for (final thread in outcome.scheduled) {
@@ -270,7 +276,7 @@ class LifeEngine {
         pendingCards: remaining,
         lastOutcome: storedOutcome,
         news: _state.news,
-        notes: _state.notes,
+        notes: notes,
         listings: _state.listings,
       );
     }
@@ -278,8 +284,45 @@ class LifeEngine {
       character,
       queue,
       lastOutcome: storedOutcome,
-      notes: _state.notes,
+      notes: notes,
     ).withNews(_state.news).copyWith(listings: _state.listings);
+  }
+
+  /// Hayatın büyük olayları: düğünde evlilik kurulur (aile evinde yaşayan
+  /// kiraya çıkar), doğumda çocuk seçilen adla gelir.
+  (Character, List<LifeNote>) _lifeEvent(
+    Character c,
+    PendingEvent event,
+    ChoiceSide side,
+  ) {
+    switch (event.card.id) {
+      case Romance.weddingEvent:
+        final id = event.people[Romance.partnerSlot];
+        if (id == null) return (c, const []);
+        var married = Romance.marry(c, id, _factory);
+        if (married.home == HomeKind.aile) {
+          married = Housing.rentAlone(married, _factory);
+        }
+        return (
+          Economy.syncDerivedFlags(married),
+          [LifeNote(NoteKind.evlendin, id)],
+        );
+      case Romance.birthEvent:
+        final gender = _random.nextBool() ? Gender.kadin : Gender.erkek;
+        final names = Romance.nameSuggestions(c, gender, _factory);
+        final (next, child) = Romance.addChild(
+          c,
+          _factory,
+          gender: gender,
+          name: switch (side) {
+            ChoiceSide.left => names.inLaw,
+            ChoiceSide.right => names.mother,
+            ChoiceSide.up => null,
+          },
+        );
+        return (next, [LifeNote(NoteKind.bebek, child.id)]);
+    }
+    return (c, const []);
   }
 
   /// Bu yıl yapılabilecek aksiyonlar ve yapılıp yapılamayacakları.
@@ -411,14 +454,46 @@ class LifeEngine {
       used: _state.interactionsUsed,
       memoryLabels: interactions.memoryLabels,
     );
+    // Teklif kabul edilince kız isteme gelecek yıl, düğün ondan sonraki
+    // yıl; çocuk kararından bir yıl sonra bebek.
+    var queue = _state.queue;
+    final age = character.age;
+    final person = character.people[request.personId]!;
+    switch (result.outcome) {
+      case 'teklif.evet':
+        final scene =
+            Romance.proposalEvents[Romance.sceneFor(character, person)]!;
+        final with_ = {Romance.partnerSlot: person.id};
+        if (deck.byId(scene) != null) {
+          queue = queue.add(scene, atAge: age + 1, people: with_);
+        }
+        if (deck.byId(Romance.weddingEvent) != null) {
+          queue = queue.add(
+            Romance.weddingEvent,
+            atAge: age + 2,
+            people: with_,
+          );
+        }
+      case 'cocuk.evet':
+        if (deck.byId(Romance.birthEvent) != null) {
+          queue = queue.add(
+            Romance.birthEvent,
+            atAge: age + 1,
+            people: {Romance.spouseSlot: person.id},
+          );
+        }
+    }
     return _state = _state.copyWith(
+      queue: queue,
       character: Relationships.syncFamilyBond(
-        YearTick.updateHardshipFlags(
-          _booked(
-            _state.character,
-            character,
-            MoneySource.etkilesim,
-            ref: request.kind.name,
+        Romance.syncFlags(
+          YearTick.updateHardshipFlags(
+            _booked(
+              _state.character,
+              character,
+              MoneySource.etkilesim,
+              ref: request.kind.name,
+            ),
           ),
         ),
       ),
@@ -440,8 +515,8 @@ class LifeEngine {
     if (_state.character.hasFlag(EducationRules.pendingFlag)) {
       declineTercih(TercihKind.calis);
     }
-    final before = _state.character;
-    final worthBefore = Economy.netWorth(before, _market);
+    // Zor gün karşılaştırması yılın başıyla (kartlardan önce) yapılır.
+    final before = _yearStart ?? _state.character;
     final cause = _deathCheck.check(_state.character);
     if (cause != null) {
       final dead = _state.character.copyWith(isAlive: false);
@@ -459,6 +534,7 @@ class LifeEngine {
       _market,
     );
     _market = market;
+    final worthBefore = Economy.netWorth(before, _market);
     _lastEconomy = report;
     final aged = _yearTick.apply(afterEconomy);
     final (paid, careerReport) = _careerTick.apply(aged);
@@ -477,6 +553,16 @@ class LifeEngine {
         age: age,
         source: MoneySource.yasamGideri,
         amount: -report.livingCost,
+      ),
+      MoneyEntry(
+        age: age,
+        source: MoneySource.cocuk,
+        amount: -report.childCost,
+      ),
+      MoneyEntry(
+        age: age,
+        source: MoneySource.esGeliri,
+        amount: report.spouseIncome,
       ),
       MoneyEntry(
         age: age,
@@ -520,9 +606,11 @@ class LifeEngine {
       cities: BirthGenerator.hometowns,
     ).apply(Economy.syncDerivedFlags(YearTick.updateHardshipFlags(served)));
     var settled = Relationships.syncFamilyBond(
-      BusinessRules.refreshStaff(
-        Housing.ensureNeighbours(character, _factory),
-        _factory,
+      Romance.syncFlags(
+        BusinessRules.refreshStaff(
+          Housing.ensureNeighbours(character, _factory),
+          _factory,
+        ),
       ),
     );
     var nextQueue = queue;
@@ -541,6 +629,12 @@ class LifeEngine {
           if (n.kind == NewsKind.vefat) n.personId,
       ],
     );
+    if (settled.counters.debtSpells > 0 &&
+        Economy.netWorth(settled, _market) >= HardDay.comebackWorth) {
+      settled = settled.copyWith(
+        flags: {...settled.flags, HardDay.comebackFlag},
+      );
+    }
     if (hardDay case (final cause, final detail)) {
       notes.add(
         LifeNote(
@@ -550,7 +644,7 @@ class LifeEngine {
       );
       final callers = HardDay.callers(settled, _random, cause);
       if (deck.byId(HardDay.callCard) != null) {
-        for (final p in callers) {
+        for (final p in callers.take(HardDay.maxCallers)) {
           nextQueue = nextQueue.add(
             HardDay.callCard,
             atAge: settled.age,
@@ -731,6 +825,10 @@ class LifeEngine {
   }
 
   InterviewResult? _lastInterview;
+
+  /// Yılın başındaki karakter (kartlardan önce); zor gün karşılaştırması
+  /// için. Kaydedilmez; kayıttan dönülen yılda o anki karakter kullanılır.
+  Character? _yearStart;
 
   /// Son mülakatın sonucu (arayüz için). Kaydedilmez.
   InterviewResult? get lastInterview => _lastInterview;
@@ -1217,6 +1315,10 @@ class LifeEngine {
           ),
           JobMarket.codingFlag,
         ),
+        ActionSpecial.tanis => Romance.meet(
+          c.copyWith(stats: c.stats.withMoneyDelta(-Romance.meetCost)),
+          _factory,
+        ),
       };
 
   /// [before] ile [after] arasındaki para farkını tek bir kaynakla deftere
@@ -1377,6 +1479,7 @@ class LifeEngine {
     ScheduleQueue queue, {
     List<LifeNote> notes = const [],
   }) {
+    _yearStart = character;
     final age = character.age;
     final yearNotes = [...notes];
     var (due, rest) = queue.takeDue(age);

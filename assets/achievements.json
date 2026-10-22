@@ -96,6 +96,20 @@
     "requires": { "conditions": { "flags": ["akraba_ortak"] } }
   },
   {
+    "id": "dipten_dondu",
+    "name": "Dipten Döndü",
+    "description": "Borca battığı günlerden sonra servetini on milyona çıkardı.",
+    "rarity": "nadir",
+    "requires": { "conditions": { "flags": ["dipten_dondu"] } }
+  },
+  {
+    "id": "dort_kusak",
+    "name": "Dört Kuşak Bir Fotoğrafta",
+    "description": "Torununu kucağına aldığında annesi ya da babası da hayattaydı.",
+    "rarity": "efsane",
+    "requires": { "conditions": { "flags": ["dort_kusak"] } }
+  },
+  {
     "id": "asirlik_cinar",
     "name": "Asırlık Çınar",
     "description": "Yüzüncü yaş gününü kutladı.",

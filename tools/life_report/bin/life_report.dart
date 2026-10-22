@@ -45,6 +45,10 @@ void main(List<String> args) {
   var livesWithHardDay = 0;
   var livesWithTrueFriend = 0;
   var worldSmall = 0;
+  var married = 0;
+  var divorced = 0;
+  var children = 0;
+  final marriageAges = <int>[];
 
   for (var i = 0; i < lives; i++) {
     final seed = firstSeed + i;
@@ -94,6 +98,16 @@ void main(List<String> args) {
     biz.addLife(c, opened: player.openedBusinesses);
     if (hadHardDay) livesWithHardDay++;
     if (HardDay.trueFriends(c).isNotEmpty) livesWithTrueFriend++;
+    final spouses = c.people.all.where(
+      (p) => p.kin == Kinship.es || p.bond == Bond.eskiEs,
+    );
+    if (spouses.isNotEmpty) married++;
+    if (c.people.all.any((p) => p.bond == Bond.eskiEs)) divorced++;
+    children += c.people.all.where((p) => p.kin == Kinship.cocuk).length;
+    for (final s in spouses) {
+      final m = s.memories.where((m) => m.kind == 'evlendik').firstOrNull;
+      if (m != null) marriageAges.add(m.age);
+    }
     deathAges.add(summary.deathAge);
     netWorths.add(summary.netWorth);
     for (final a in badges.earnedBy(summary)) {
@@ -233,6 +247,12 @@ void main(List<String> args) {
       'en az bir kez ${pct(livesWithHardDay)}, gerçek dostu olan ${pct(livesWithTrueFriend)}; '
       'dünya küçük tesadüfü hayat başına ${(worldSmall / lives).toStringAsFixed(1)}',
     );
+  marriageAges.sort();
+  stdout.writeln(
+    'Aşk: evlenen ${pct(married)}, boşanan ${pct(divorced)}, '
+    'hayat başına çocuk ${(children / lives).toStringAsFixed(1)}'
+    '${marriageAges.isEmpty ? '' : ', medyan evlilik yaşı ${marriageAges[marriageAges.length ~/ 2]}'}',
+  );
 }
 
 /// Açık ilanlardan biri şu anki işten daha iyi mi.
@@ -263,6 +283,62 @@ class _RandomPlayer {
 
   /// Bu hayatta açılan işletme türleri.
   final List<String> openedBusinesses = [];
+
+  /// Aşk hamlesi (test oyuncusundaki gibi): ilişkiyi ilerletir, sevgiliyle
+  /// vakit geçirir, bekârsa yakınlaşır ya da biriyle tanışır.
+  bool _romanceMove(LifeEngine engine) {
+    if (_random.nextInt(3) == 0) return false;
+    const steps = {
+      InteractionKind.acil,
+      InteractionKind.ciddi,
+      InteractionKind.teklif,
+      InteractionKind.cocukIste,
+    };
+    final requests = engine.possibleInteractions();
+    final step = requests.where((r) => steps.contains(r.kind)).toList();
+    if (step.isNotEmpty) {
+      engine.interact(step[_random.nextInt(step.length)]);
+      interactions++;
+      return true;
+    }
+    final c = engine.state.character;
+    if (!Romance.isSingle(c)) {
+      final partner = Romance.partner(c) ?? Romance.spouse(c);
+      final warm = requests
+          .where(
+            (r) =>
+                r.personId == partner?.id &&
+                (r.kind == InteractionKind.hediye ||
+                    r.kind == InteractionKind.bulus ||
+                    r.kind == InteractionKind.dertles),
+          )
+          .toList();
+      if (warm.isEmpty) return false;
+      engine.interact(warm.first);
+      interactions++;
+      return true;
+    }
+    final courting = requests
+        .where(
+          (r) =>
+              (r.kind == InteractionKind.bulus ||
+                  r.kind == InteractionKind.hediye) &&
+              Romance.canCourt(c, c.people[r.personId]!),
+        )
+        .toList();
+    if (courting.isNotEmpty) {
+      engine.interact(courting[_random.nextInt(courting.length)]);
+      interactions++;
+      return true;
+    }
+    final meet = engine
+        .availableActions()
+        .where((a) => a.$2 && a.$1.id == 'tanis')
+        .firstOrNull;
+    if (meet == null) return false;
+    engine.doAction(meet.$1.id);
+    return true;
+  }
 
   /// Akıllıca işletme: parası kuruluşun iki katıysa ara sıra beklenen kârı
   /// en yüksek türü açar; iki yıl üst üste zarar edeni satar; kâr edeni
@@ -403,6 +479,7 @@ class _RandomPlayer {
           }
         }
         if (_businessMove(engine)) return;
+        if (_romanceMove(engine)) return;
         final requests = engine.possibleInteractions();
         if (requests.isNotEmpty && _random.nextBool()) {
           engine.interact(requests[_random.nextInt(requests.length)]);

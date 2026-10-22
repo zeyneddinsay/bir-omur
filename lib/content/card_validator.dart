@@ -537,8 +537,11 @@ class CardValidator {
       _checkText(card, '.closing', closing, maxTextLength, error);
     }
 
-    if (card.up != null && card.rarity == Rarity.siradan) {
-      error('.up', 'yukarı seçeneği yalnızca nadir ve efsane kartlarda olur');
+    // Dönemeçte yukarı seçeneği serbest (ilgi seçimi gibi üç yollu kararlar).
+    if (card.up != null &&
+        card.rarity == Rarity.siradan &&
+        card.type != EventType.donemec) {
+      error('.up', 'yukarı seçeneği yalnızca nadir, efsane ve dönemeçte olur');
     }
     if (card.type == EventType.kisi && card.roles.isEmpty) {
       error('.roles', 'kişi olayı en az bir rol yuvası ister');

@@ -87,6 +87,7 @@ class AutoPlayer {
           }
         }
         if (businessMove(engine) case final next?) return next;
+        if (romanceMove(engine) case final next?) return next;
         // Yılların yarısında önce biriyle etkileşir (Ara dahil).
         final people = engine.possibleInteractions();
         if (people.isNotEmpty && _random.nextBool()) {
@@ -97,6 +98,55 @@ class AutoPlayer {
       case YearPhase.dead:
         return state;
     }
+  }
+
+  /// Aşk hamlesi: çoğu yıl ilişkiyi bir adım ilerletir (açıl, ciddileş,
+  /// teklif, çocuk); bekârsa ara sıra biriyle tanışır ya da uygun biriyle
+  /// buluşup yakınlaşır. Hamle yoksa null.
+  LifeState? romanceMove(LifeEngine engine) {
+    if (_random.nextInt(3) == 0) return null;
+    const steps = {
+      InteractionKind.acil,
+      InteractionKind.ciddi,
+      InteractionKind.teklif,
+      InteractionKind.cocukIste,
+    };
+    final requests = engine.possibleInteractions();
+    final step = requests.where((r) => steps.contains(r.kind)).toList();
+    if (step.isNotEmpty) {
+      return engine.interact(step[_random.nextInt(step.length)]);
+    }
+    final c = engine.state.character;
+    if (!Romance.isSingle(c)) {
+      // Sevgiliyle ya da eşle vakit geçir.
+      final partner = Romance.partner(c) ?? Romance.spouse(c);
+      final warm = requests
+          .where(
+            (r) =>
+                r.personId == partner?.id &&
+                (r.kind == InteractionKind.hediye ||
+                    r.kind == InteractionKind.bulus ||
+                    r.kind == InteractionKind.dertles),
+          )
+          .toList();
+      return warm.isEmpty ? null : engine.interact(warm.first);
+    }
+    final courting = requests
+        .where(
+          (r) =>
+              (r.kind == InteractionKind.bulus ||
+                  r.kind == InteractionKind.hediye) &&
+              Romance.canCourt(c, c.people[r.personId]!),
+        )
+        .toList();
+    if (courting.isNotEmpty) {
+      return engine.interact(courting[_random.nextInt(courting.length)]);
+    }
+    final meet = engine
+        .availableActions()
+        .where((a) => a.$2 && a.$1.id == 'tanis')
+        .firstOrNull;
+    return meet == null ? null : engine.doAction(meet.$1.id);
   }
 
   /// İşletme hamlesi: ara sıra işletme açar; açtıklarında fiyatı, başında

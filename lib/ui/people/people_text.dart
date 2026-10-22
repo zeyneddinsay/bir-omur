@@ -93,9 +93,15 @@ extension PeopleNames on AppLocalizations {
     InteractionKind.eliniOp => interaction_eliniOp,
     InteractionKind.kardesleOyna => interaction_kardesleOyna,
     InteractionKind.cayaGit => interaction_cayaGit,
+    InteractionKind.acil => interaction_acil,
+    InteractionKind.ciddi => interaction_ciddi,
+    InteractionKind.teklif => interaction_teklif,
+    InteractionKind.ayril => interaction_ayril,
+    InteractionKind.cocukIste => interaction_cocukIste,
   };
 
   String blockedReason(Blocked blocked) => switch (blocked) {
+    Blocked.erken => blocked_erken,
     Blocked.vakit => blocked_vakit,
     Blocked.yas => blocked_yas,
     Blocked.karsiYas => blocked_karsiYas,
@@ -169,6 +175,7 @@ extension PeopleNames on AppLocalizations {
       ),
       NewsKind.emekliOldu => news_emekliOldu(name),
       NewsKind.vefat => news_vefat(name),
+      NewsKind.torunDogdu => news_torunDogdu(p.name),
     };
   }
 }

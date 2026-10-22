@@ -120,6 +120,8 @@ String noteLine(
     NoteKind.iseAldin => d,
     NoteKind.iplikKapandi => _closingLine(l10n, parts, deck, character),
     NoteKind.dunyaKucuk => _worldSmallLine(l10n, parts, character),
+    NoteKind.evlendin => l10n.note_evlendin(character?.people[d]?.name ?? ''),
+    NoteKind.bebek => l10n.note_bebek(character?.people[d]?.name ?? ''),
     NoteKind.zorGun => switch (parts.first) {
       'borc' => l10n.note_zorGun_borc,
       'kovuldun' => l10n.note_zorGun_kovuldun,
@@ -329,7 +331,10 @@ String _worldSmallLine(
   final p = c.people[parts[0]];
   final kind = RoleKind.values.asNameMap()[parts[1]];
   if (p == null || kind == null) return '';
-  final role = l10n.roleName(kind);
+  // Müdür oyuncunun işletmesinin müdürüdür; "müdürün" amir gibi okunur.
+  final role = kind == RoleKind.mudur
+      ? l10n.worldSmall_mudur
+      : l10n.roleName(kind);
   final lower = role.isEmpty ? role : role[0].toLowerCase() + role.substring(1);
   return l10n.note_dunyaKucuk(p.name, lower, l10n.originSince(p.origin));
 }

@@ -214,8 +214,25 @@ D4a adımları (iplikler, dünya küçük, zor gün):
   - O yıl en çok 3 kişi arar, her biri bir olay olarak gelir (`zor_gun_aradi`). Açıp dertleşilen "gerçek dost" olur.
   - Arkadaşın olup aramayana "Zor günümde aramadı" anısı yazılır. Para gelince "Zor günümde neredeydin?" olayı, yıllar sonra "O zor yıl" olayı gelir.
 - [x] Hayatın sonu (`lib/engine/life_story.dart`, ölüm ekranında "Hayatındaki insanlar"): son gününde yanındaki, cenazeye gelenler (gerçek dostlar önde, küs olup gelen, zenginse tanımadığın akrabalar), en yakın üç kişi, seni en çok özleyecek kişi, kurduğun işler. Yeni lakaplar: Patron, Herkesin Dostu, Gurbetçi Ruhlu.
-- [ ] D4a bağımsız mantık denetimi
-- D5 notu: zor gün hayat başına 5,5 yıl (her hayatta en az bir kez); "Bayramların Baş Köşesi" lakabı %69.
+- [x] D4a bağımsız mantık denetimi (12 bulgu) ve düzeltmeler:
+  - Vefatta zor gün yalnızca çekirdek aile ya da 80+ yakın dost için. Borç zor günü −100 bin altında ve öğrenci ya da aileyle yaşayan değilse. Karşılaştırma yılın başıyla.
+  - Olay olarak en çok 2 arayan gelir; arama isteyen herkes "aradı" sayılır. "Aramadı" anısı yalnızca 40+ yakın arkadaşa, aynı kişiye 5 yılda bir yazılır. Arama olayı yalnız zor gün yılında gelir.
+  - Dünya küçük kuralı: süren rolü, sevgilisi ya da eski eşi olan, aynı rolü daha önce üstlenmiş ya da mesleği uymayan tanıdık seçilmez; servet değişmez. İşletme müdürü günlükte "işletmenin müdürü".
+  - Ölüm ekranı: gerçek dostlar ve küs olup gelen cenazeye katılır; yanındaki kişide aynı şehir önce.
+  - Rol yuvasına `memoryYears` (anı en az kaç yıllık) eklendi.
+
+D4b adımları (aşk, evlilik, çocuklar; `lib/engine/romance.dart`):
+
+- [x] 14 yaş dönemeci `ilk_hoslanti`: kızlar, oğlanlar ya da ikisi (`ilgi_kadin`, `ilgi_erkek`). Seçilmediyse karşı cins. Romantik bağ 18+ ve yaş kuralıyla (küçük olan büyüğün yarısı artı 7).
+- [x] Aktiviteler'de "Biriyle tanış": ilgi duyulan cinsiyetten, yaşı uyan, bekâr biri arkadaş olarak gelir.
+- [x] İnsanlar'da yeni etkileşimler: duygularını açıkla (50+), ciddi düşünüyorum (60+, flörtten en az 1 yıl sonra), evlenme teklifi (75+, 20 yaş), ayrıl ya da boşan (nakit yarı yarıya), çocuk isteyelim mi (60+, 20–45 yaş, en fazla 4 çocuk, iki yıl arayla).
+- [x] Teklif kabul edilince gelecek yıl kız isteme (çiftin cinsiyetine göre damat, gelin ya da iki ailenin tanışma yemeği), ondan sonraki yıl düğün. Düğünde eş olur, kayınvalide ve kayınpeder gelir, aile evinde yaşayan kiraya çıkar.
+- [x] Doğum: adı kayın taraf, annen ya da siz koyarsınız. Eş ve 18 yaşından küçük çocuklar aynı evde sayılır ve taşınınca birlikte taşınır.
+- [x] Hane bütçesi: çalışan eş +300 bin, çalışmayan eş −150 bin, evdeki her çocuk −100 bin (deftere ayrı kalemler).
+- [x] Çocuklar 24 yaşından sonra evlenir; evli çocuğun torunu olur. Rozetler geri döndü: Dört Kuşak Bir Fotoğrafta (`dort_kusak`), Dipten Döndü (`dipten_dondu`).
+- [x] Olaylar (`assets/cards/ask.json`, 21 olay): yıl dönümü, kıskançlık, ilk tatil, "annen beni sevmedi", bayram kimde, kayınvalide ziyareti, ev işleri, ilk adım, veli toplantısı, okul maçı, ergen, eşin ve evladın cenazesi. `dugunde_soru` ve `baba_ogudu` evlilere gelmez.
+- [ ] D4b bağımsız mantık denetimi
+- D5 notları: test oyuncusunda evlenen %93, boşanan %6, hayat başına 2,7 çocuk, medyan evlilik yaşı 34. "Patron" lakabı %51 (test oyuncusu neredeyse her hayatta işletme açıyor). Zor gün hayat başına 4,1 yıl.
 
 ## Bekleyen aşama: F3a — Dağıtıma hazırlık
 

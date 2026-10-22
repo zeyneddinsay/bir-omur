@@ -344,7 +344,8 @@ abstract final class JobMarket {
     if (reference != null) {
       people = people.update(
         Relationships.addMemory(
-          reference,
+          // Güncel hâli: dünya küçük kuralıyla patron da olmuş olabilir.
+          people[reference.id] ?? reference,
           Memory(
             kind: 'ise_aracilik',
             label: 'İşe girmesine aracı oldum',

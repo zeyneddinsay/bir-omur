@@ -89,9 +89,9 @@ class SummaryBuilder {
   /// kadar kat sayılır.
   static const int reputationWeight = 2;
   static const int soldierScore = 3;
-  static const int bossScore = 6;
-  static const int friendScore = 6;
-  static const int movesScore = 4;
+  static const int bossScore = 15;
+  static const int friendScore = 15;
+  static const int movesScore = 12;
 
   /// Önce özel durumlar (asırlık, zengin, borçlu); sonra en belirgin özellik
   /// kazanır: her aday için eşiğin ne kadar aşıldığına bakılır, en büyüğü

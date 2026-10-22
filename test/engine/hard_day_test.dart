@@ -36,8 +36,19 @@ void main() {
 
     test('sebepler: borç, kovulma, iflas, yakının vefatı', () {
       expect(cause(), isNull);
-      expect(cause(after: -1)?.$1, HardDayCause.borc);
-      expect(cause(before: -5, after: -10), isNull, reason: 'zaten borçluydu');
+      final renter = testCharacter(age: 40, home: HomeKind.kira);
+      expect(cause(after: -1, character: renter), isNull, reason: 'küçük eksi');
+      expect(cause(after: -200000, character: renter)?.$1, HardDayCause.borc);
+      expect(
+        cause(after: -200000),
+        isNull,
+        reason: 'aileyle yaşayan borç zor günü yaşamaz',
+      );
+      expect(
+        cause(before: -5, after: -200000, character: renter),
+        isNull,
+        reason: 'zaten borçluydu',
+      );
       expect(cause(fired: true)?.$1, HardDayCause.kovuldun);
       expect(cause(bankrupt: true)?.$1, HardDayCause.iflas);
       final mother = testPerson(
@@ -70,13 +81,15 @@ void main() {
       final life = withPeople(c, [friend, cold]);
       final callers = HardDay.callers(life, SeededRandom(1), HardDayCause.borc);
       expect(callers.map((p) => p.id), isNot(contains('p2')));
-      final marked = HardDay.markMissed(life, {for (final p in callers) p.id});
-      expect(
-        marked.people['p2']!.memories.any(
-          (m) => m.kind == HardDay.missedMemory,
-        ),
-        isTrue,
-      );
+      // Kimse aramadıysa: yakın arkadaşa anı yazılır, uzak tanıdığa yazılmaz;
+      // aynı kişiye 5 yılda bir.
+      final marked = HardDay.markMissed(life, const {});
+      int missed(Character x, String id) => x.people[id]!.memories
+          .where((m) => m.kind == HardDay.missedMemory)
+          .length;
+      expect(missed(marked, 'p1'), 1);
+      expect(missed(marked, 'p2'), 0);
+      expect(missed(HardDay.markMissed(marked, const {}), 'p1'), 1);
     });
   });
 

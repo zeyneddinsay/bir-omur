@@ -1,0 +1,645 @@
+[
+  {
+    "id": "ilk_hoslanti",
+    "type": "donemec",
+    "theme": "ask",
+    "minAge": 14,
+    "maxAge": 14,
+    "repeat": "once",
+    "text": "Teneffüste herkes kimden hoşlandığını fısıldıyor. Sıra sana geldi; yanakların şimdiden kızardı.",
+    "left": {
+      "label": "Kızlardan",
+      "effects": { "addFlags": ["ilgi_kadin"] }
+    },
+    "right": {
+      "label": "Oğlanlardan",
+      "effects": { "addFlags": ["ilgi_erkek"] }
+    },
+    "up": {
+      "label": "İkisinden de",
+      "effects": { "addFlags": ["ilgi_kadin", "ilgi_erkek"] }
+    }
+  },
+  {
+    "id": "kiz_isteme_damat",
+    "type": "iplik",
+    "theme": "ask",
+    "minAge": 20,
+    "maxAge": 90,
+    "repeat": { "cooldown": 1 },
+    "roles": {
+      "nisanli": { "bond": ["nisanli"], "minAge": 18 }
+    },
+    "speaker": "nisanli",
+    "text": "Kız istemedesin. Çiçek, çikolata, 'Hayırlı bir iş için geldik' cümlesi tamam. Önüne gelen kahve belli ki tuzlu.",
+    "closing": "{nisanli.ad} ile nişan bozuldu; kız isteme günü hiç gelmedi.",
+    "left": {
+      "label": "Son yudumuna kadar",
+      "effects": {
+        "happiness": 3,
+        "people": {
+          "nisanli": {
+            "memory": {
+              "kind": "tuzlu_kahve",
+              "label": "Tuzlu kahveyi yüzünü buruşturmadan içti",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Bir yudum, gülümseme",
+      "effects": { "happiness": 1, "reputation": -1 }
+    }
+  },
+  {
+    "id": "kiz_isteme_gelin",
+    "type": "iplik",
+    "theme": "ask",
+    "minAge": 20,
+    "maxAge": 90,
+    "repeat": { "cooldown": 1 },
+    "roles": {
+      "nisanli": { "bond": ["nisanli"], "minAge": 18 }
+    },
+    "speaker": "nisanli",
+    "text": "Seni istemeye geldiler. Kahveleri sen yapıyorsun; {nisanli.ad} için olan fincanın yanında tuz kavanozu duruyor.",
+    "closing": "{nisanli.ad} ile nişan bozuldu; kahveler hiç pişmedi.",
+    "left": {
+      "label": "Bir kaşık tuz",
+      "effects": {
+        "happiness": 3,
+        "people": {
+          "nisanli": {
+            "memory": {
+              "kind": "tuzlu_kahve",
+              "label": "Kahveme tuz koydu, gülmemek için zor durdum",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Şekerli yaparım",
+      "effects": {
+        "people": {
+          "nisanli": {
+            "memory": {
+              "kind": "sekerli_kahve",
+              "label": "Kız istemede bana şekerli kahve yaptı",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "aile_tanisma_yemegi",
+    "type": "iplik",
+    "theme": "ask",
+    "minAge": 20,
+    "maxAge": 90,
+    "repeat": { "cooldown": 1 },
+    "roles": {
+      "nisanli": { "bond": ["nisanli"], "minAge": 18 }
+    },
+    "speaker": "nisanli",
+    "text": "İki aile ilk kez aynı sofrada. Ortam biraz gergin; {nisanli.ad} masanın altından elini tuttu.",
+    "closing": "{nisanli.ad} ile nişan bozuldu; o sofra hiç kurulmadı.",
+    "left": {
+      "label": "Ben konuşurum",
+      "effects": {
+        "reputation": 2,
+        "people": {
+          "nisanli": {
+            "memory": {
+              "kind": "aileleri_tanistirdi",
+              "label": "Ailelerin önünde arkamda durdu",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Yemekleri överim",
+      "effects": { "happiness": 2 }
+    }
+  },
+  {
+    "id": "dugun",
+    "type": "iplik",
+    "theme": "ask",
+    "minAge": 20,
+    "maxAge": 95,
+    "repeat": { "cooldown": 1 },
+    "roles": {
+      "nisanli": { "bond": ["nisanli"], "minAge": 18 }
+    },
+    "speaker": "nisanli",
+    "text": "Düğün günü! {nisanli.ad} yanında, salon dolu, takı masası hazır. Halay başını kim çekecek, o belli değil.",
+    "closing": "{nisanli.ad} ile düğün hiç olmadı; davetiyeler çekmecede kaldı.",
+    "left": {
+      "label": "Salon düğünü",
+      "effects": { "money": -700000, "gold": 60, "happiness": 8 }
+    },
+    "right": {
+      "label": "Sade bir nikâh",
+      "effects": { "money": -150000, "gold": 10, "happiness": 5 }
+    }
+  },
+  {
+    "id": "bebek_dogdu",
+    "type": "iplik",
+    "theme": "aile",
+    "minAge": 20,
+    "maxAge": 60,
+    "repeat": { "cooldown": 1 },
+    "rarity": "nadir",
+    "roles": {
+      "es": { "minAge": 18 }
+    },
+    "speaker": "es",
+    "text": "Bebek geldi! Kayın taraf büyüklerinin adını, annen dizideki bir adı istiyor. {es.ad} sana bakıyor.",
+    "left": {
+      "label": "Kayın tarafın dediği",
+      "effects": { "happiness": 8 }
+    },
+    "right": {
+      "label": "Annemin dediği",
+      "effects": { "happiness": 8 }
+    },
+    "up": {
+      "label": "Biz koyacağız",
+      "effects": { "happiness": 10 }
+    }
+  },
+  {
+    "id": "yildonumu_unuttu",
+    "type": "kisi",
+    "theme": "ask",
+    "minAge": 19,
+    "maxAge": 80,
+    "repeat": { "cooldown": 4, "max": 3 },
+    "roles": {
+      "sevgili": { "bond": ["sevgili", "nisanli"], "minAge": 18 }
+    },
+    "speaker": "sevgili",
+    "text": "{sevgili.ad} süslenmiş, kapıda bekliyor: 'Bugün ne günü biliyor musun?' Bilmiyorsun.",
+    "left": {
+      "label": "Tabii biliyorum!",
+      "roll": { "stat": "luck", "threshold": 55 },
+      "success": { "happiness": 3 },
+      "fail": {
+        "happiness": -3,
+        "people": {
+          "sevgili": {
+            "memory": {
+              "kind": "yildonumu_unuttu",
+              "label": "Yıl dönümümüzü unuttu",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Özür, telafi ederim",
+      "effects": {
+        "money": -15000,
+        "people": {
+          "sevgili": {
+            "memory": {
+              "kind": "telafi_etti",
+              "label": "Unuttu ama gönlümü aldı",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "kiskanclik",
+    "type": "kisi",
+    "theme": "ask",
+    "minAge": 19,
+    "maxAge": 70,
+    "repeat": { "cooldown": 5, "max": 2 },
+    "roles": {
+      "sevgili": { "bond": ["sevgili", "nisanli"], "traits": ["kiskanc"], "minAge": 18 }
+    },
+    "speaker": "sevgili",
+    "text": "{sevgili.ad} telefonunu işaret ediyor: 'Bu gece yarısı mesaj atan kim?' Mesaj kargo şirketinden.",
+    "left": {
+      "label": "Telefonu uzatırım",
+      "effects": {
+        "people": {
+          "sevgili": {
+            "memory": {
+              "kind": "guven_verdi",
+              "label": "Telefonunu hiç saklamadı",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Bu güvensizlik yorucu",
+      "effects": {
+        "happiness": -2,
+        "people": {
+          "sevgili": {
+            "memory": {
+              "kind": "kiskanclik_kavgasi",
+              "label": "Kıskançlık yüzünden kavga ettik",
+              "tone": "olumsuz",
+              "severity": 2
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "ilk_tatil",
+    "type": "kisi",
+    "theme": "ask",
+    "minAge": 19,
+    "maxAge": 60,
+    "repeat": "once",
+    "roles": {
+      "sevgili": { "bond": ["sevgili", "nisanli"], "minAge": 18 }
+    },
+    "speaker": "sevgili",
+    "text": "{sevgili.ad} ilk kez birlikte tatile gitmeyi önerdi. Bütçe dar, hevesin geniş.",
+    "left": {
+      "label": "Deniz kenarı",
+      "effects": {
+        "money": -60000,
+        "happiness": 6,
+        "people": {
+          "sevgili": {
+            "memory": {
+              "kind": "ilk_tatil",
+              "label": "İlk tatilimiz",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Şehirde bir hafta sonu",
+      "effects": {
+        "money": -10000,
+        "happiness": 3
+      }
+    }
+  },
+  {
+    "id": "annen_beni_sevmedi",
+    "type": "kisi",
+    "theme": "ask",
+    "minAge": 19,
+    "maxAge": 60,
+    "repeat": "once",
+    "roles": {
+      "sevgili": { "bond": ["sevgili", "nisanli"], "minAge": 18 },
+      "anne": { "kin": ["anne"], "offstage": true }
+    },
+    "speaker": "sevgili",
+    "text": "{sevgili.ad} {anne.akraba|le} ilk kez tanıştı. Dönüşte sessiz: 'Annen beni sevmedi, değil mi?'",
+    "left": {
+      "label": "Zamanla sever",
+      "effects": { "happiness": -1 }
+    },
+    "right": {
+      "label": "Annemle konuşurum",
+      "effects": {
+        "people": {
+          "sevgili": {
+            "memory": {
+              "kind": "arkamda_durdu",
+              "label": "Annesine karşı arkamda durdu",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "bayram_kimde",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 20,
+    "maxAge": 90,
+    "repeat": { "cooldown": 5, "max": 3 },
+    "roles": {
+      "es": { "kin": ["es"] }
+    },
+    "speaker": "es",
+    "text": "Bayram yaklaşıyor. {es.ad}: 'Bu sefer bizimkilere gidiyoruz, geçen sefer seninkilerdeydik.'",
+    "left": {
+      "label": "Haklısın, gidelim",
+      "effects": {
+        "people": {
+          "es": {
+            "memory": {
+              "kind": "bayram_bizde",
+              "label": "Bayramı benim ailemde geçirmeyi kabul etti",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Annem çok bekliyor",
+      "effects": {
+        "people": {
+          "es": {
+            "memory": {
+              "kind": "bayram_kavgasi",
+              "label": "Bayramı yine onun ailesinde geçirdik",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "kayinvalide_ziyareti",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 20,
+    "maxAge": 90,
+    "repeat": { "cooldown": 4, "max": 4 },
+    "roles": {
+      "kayin": { "kin": ["kayinvalide"] }
+    },
+    "speaker": "kayin",
+    "text": "{kayin.ad} {kayin.hitap.amca} habersiz geldi, eldiveniyle rafın tozuna baktı: 'Yorgunsunuz herhalde.'",
+    "left": {
+      "label": "Çay koyarım",
+      "effects": {
+        "happiness": -1,
+        "people": {
+          "kayin": {
+            "memory": {
+              "kind": "cay_koydu",
+              "label": "Habersiz geldim, güler yüzle çay koydu",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Haber verseydiniz",
+      "effects": {
+        "people": {
+          "kayin": {
+            "memory": {
+              "kind": "kapida_bozuldu",
+              "label": "Habersiz geldim diye yüzüme vurdu",
+              "tone": "olumsuz",
+              "severity": 2
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "ev_isleri",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 20,
+    "maxAge": 90,
+    "repeat": { "cooldown": 4, "max": 3 },
+    "roles": {
+      "es": { "kin": ["es"] }
+    },
+    "speaker": "es",
+    "text": "{es.ad} bulaşık makinesinin önünde: 'Bu makineyi hep ben mi boşaltacağım?'",
+    "left": {
+      "label": "Bundan sonra bende",
+      "effects": {
+        "people": {
+          "es": {
+            "memory": {
+              "kind": "ev_isi_ustlendi",
+              "label": "Ev işini üstlendi",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Ama yemeği ben yaptım",
+      "effects": {
+        "people": {
+          "es": {
+            "memory": {
+              "kind": "ev_isi_kavgasi",
+              "label": "Ev işi yüzünden tartıştık",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "cocugun_ilk_adimi",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 20,
+    "maxAge": 70,
+    "repeat": { "cooldown": 1, "max": 3 },
+    "roles": {
+      "cocuk": { "kin": ["cocuk"], "minAge": 1, "maxAge": 1 }
+    },
+    "speaker": "cocuk",
+    "text": "{cocuk.ad} koltuğa tutunarak doğruldu, bıraktı, iki adım attı ve kahkahayla popo üstü oturdu.",
+    "left": {
+      "label": "Videoya çektim!",
+      "effects": { "happiness": 6 }
+    },
+    "right": {
+      "label": "Herkesi ararım",
+      "effects": { "happiness": 5, "reputation": 1 }
+    }
+  },
+  {
+    "id": "veli_toplantisi",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 25,
+    "maxAge": 80,
+    "repeat": { "cooldown": 3, "max": 4 },
+    "roles": {
+      "cocuk": { "kin": ["cocuk"], "minAge": 7, "maxAge": 14 }
+    },
+    "text": "Veli toplantısı. Öğretmen: '{cocuk.ad} çok zeki ama derste hep pencereden dışarı bakıyor.'",
+    "left": {
+      "label": "Ödevlerine otururuz",
+      "effects": {
+        "happiness": -1,
+        "people": {
+          "cocuk": {
+            "memory": {
+              "kind": "odeve_oturduk",
+              "label": "Ödevlerime benimle oturdu",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Ben de öyleydim",
+      "effects": { "happiness": 2 }
+    }
+  },
+  {
+    "id": "cocuk_mac",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 25,
+    "maxAge": 80,
+    "repeat": { "cooldown": 3, "max": 3 },
+    "roles": {
+      "cocuk": { "kin": ["cocuk"], "minAge": 8, "maxAge": 13 }
+    },
+    "speaker": "cocuk",
+    "text": "{cocuk.ad} okul takımında. Cumartesi sabahki maça gelecek misin, diye üçüncü kez soruyor.",
+    "left": {
+      "label": "En önde olacağım",
+      "effects": {
+        "happiness": 2,
+        "people": {
+          "cocuk": {
+            "memory": {
+              "kind": "macima_geldi",
+              "label": "Maçıma geldi, en önde bağırdı",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "İşim var, sonra",
+      "effects": {
+        "performance": 0,
+        "people": {
+          "cocuk": {
+            "memory": {
+              "kind": "macima_gelmedi",
+              "label": "Maçıma gelmedi",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "ergen_kapi",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 28,
+    "maxAge": 85,
+    "repeat": { "cooldown": 3, "max": 2 },
+    "roles": {
+      "cocuk": { "kin": ["cocuk"], "minAge": 14, "maxAge": 17 }
+    },
+    "speaker": "cocuk",
+    "text": "{cocuk.ad} kapıyı çarpıp odasına girdi: 'Beni hiç anlamıyorsunuz!' Kapının ardından müzik yükseliyor.",
+    "left": {
+      "label": "Kapıyı tıklatırım",
+      "effects": {
+        "people": {
+          "cocuk": {
+            "memory": {
+              "kind": "beni_dinledi",
+              "label": "Kapımı tıklatıp beni dinledi",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Biraz yalnız kalsın",
+      "effects": { "happiness": -1 }
+    }
+  },
+  {
+    "id": "cenaze_es",
+    "type": "donemec",
+    "theme": "aile",
+    "minAge": 20,
+    "maxAge": 110,
+    "repeat": { "cooldown": 1 },
+    "roles": {
+      "merhum": { "kin": ["es"], "deceased": true }
+    },
+    "text": "{merhum.ad} artık yok. Ev çok sessiz; ikinci çay bardağını hâlâ dolaptan çıkarıyorsun.",
+    "left": {
+      "label": "Çocuklara sarılırım",
+      "effects": { "happiness": -12 }
+    },
+    "right": {
+      "label": "Bir süre yalnız kalırım",
+      "effects": { "happiness": -14, "health": -2 }
+    }
+  },
+  {
+    "id": "cenaze_evlat",
+    "type": "donemec",
+    "theme": "aile",
+    "minAge": 20,
+    "maxAge": 110,
+    "repeat": { "cooldown": 1 },
+    "roles": {
+      "merhum": { "kin": ["cocuk"], "deceased": true }
+    },
+    "text": "{merhum.ad|i} toprağa verdiniz. Kimse bir şey söylemiyor; söylenecek bir şey yok.",
+    "left": {
+      "label": "Birbirimize tutunuruz",
+      "effects": { "happiness": -18 }
+    },
+    "right": {
+      "label": "Sessizce otururum",
+      "effects": { "happiness": -20, "health": -3 }
+    }
+  }
+]

@@ -51,7 +51,8 @@ motoru" bölümündedir.
 | `theme` | evet | `aile`, `okul`, `ask`, `is`, `para`, `mahalle`, `saglik`, `genel`; aynı yıl aynı temadan iki olay gelmez (dönemeçler hariç) |
 | `minAge`, `maxAge` | evet | Oyuncunun yaşı, dahil |
 | `repeat` | evet | `"once"` ya da `{"cooldown": 3}`; isteğe bağlı `"max": 4` hayat boyu en fazla kaç kez geleceğini sınırlar. Daha önce gelmiş olay çekilişte her gelişinde daha az ağırlık alır |
-| `rarity` | hayır | `siradan` (varsayılan), `nadir`, `efsane`; yukarı seçeneği (`up`) yalnızca nadir ve efsanede |
+| `rarity` | hayır | `siradan` (varsayılan), `nadir`, `efsane`; yukarı seçeneği (`up`) yalnızca nadir, efsane ve dönemeçte |
+| `closing` | hayır | Yalnızca iplikte: taşınan kişi vefat ettiyse ya da çevreden ayrıldıysa olay gelmez, bu cümle yıl günlüğüne yazılır |
 | `conditions` | hayır | Oyuncunun koşulları: `flags`, `notFlags`, `gender`, `temperament`, `background`, `familyProfile`, `career`, `careers` (meslek listesi; biri yeter), `business` (işletme türü, `any` ya da `none`; `yazilim` ekipli şirketi de kapsar), `businessTypes` (tür listesi; biri yeter), `atBusiness` (`true`: uyan işletmenin başında; müşteriyle, çalışanla yüz yüze olaylar için), `minTier`, `min`, `max` |
 | `roles` | hayır | Rol yuvaları (aşağıda); uygun kişi yoksa olay gelmez |
 | `speaker` | hayır | Konuşan rol yuvası; kartta onun portresi görünür |
@@ -63,7 +64,7 @@ motoru" bölümündedir.
 `kin` (akrabalık listesi), `roles` (süren rol), `formerRoles` (bitmiş rol), `bond`, `gender`,
 `side`, `minAge`/`maxAge` (kişinin yaşı), `minGap`/`maxGap` (oyuncudan yaş farkı),
 `minCloseness`/`maxCloseness`, `minHostility`/`maxHostility`, `traits`, `notTraits`,
-`memory`/`noMemory` (anı türü), `sameCity`, `livesTogether` (oyuncuyla aynı evde; `false` ayrı evde), `offstage` (kişi sahnede değil, görüşme sayılmaz),
+`memory`/`noMemory` (anı türü; `memoryYears`: anı en az bu kadar yıl önce), `sameCity`, `livesTogether` (oyuncuyla aynı evde; `false` ayrı evde), `offstage` (kişi sahnede değil, görüşme sayılmaz),
 `deceased` (son bir yıl içinde vefat etmiş kişi; aşağıda).
 Sınırlar dahildir.
 

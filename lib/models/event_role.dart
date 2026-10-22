@@ -28,6 +28,7 @@ class RoleSlot {
     this.traits = const {},
     this.notTraits = const {},
     this.memory,
+    this.memoryYears = 0,
     this.noMemory,
     this.sameCity,
     this.livesTogether,
@@ -73,6 +74,9 @@ class RoleSlot {
 
   /// Kişinin hafızasında bu türde bir anı olmalı / olmamalı.
   final String? memory;
+
+  /// [memory] anısı en az bu kadar yıl önce yaşanmış olmalı.
+  final int memoryYears;
   final String? noMemory;
 
   /// true: oyuncuyla aynı şehirde; false: başka şehirde; null: fark etmez.
@@ -107,6 +111,7 @@ class RoleSlot {
     'traits',
     'notTraits',
     'memory',
+    'memoryYears',
     'noMemory',
     'sameCity',
     'livesTogether',
@@ -174,6 +179,7 @@ class RoleSlot {
       traits: enums('traits', Trait.values),
       notTraits: enums('notTraits', Trait.values),
       memory: r.optionalString('memory'),
+      memoryYears: r.optionalInt('memoryYears') ?? 0,
       noMemory: r.optionalString('noMemory'),
       sameCity: r.has('sameCity') ? r.optionalBool('sameCity') : null,
       livesTogether: r.has('livesTogether')

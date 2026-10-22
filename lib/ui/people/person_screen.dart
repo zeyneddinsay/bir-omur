@@ -238,6 +238,11 @@ class _InteractionTile extends StatelessWidget {
     InteractionKind.eliniOp => Icons.volunteer_activism_outlined,
     InteractionKind.kardesleOyna => Icons.toys_outlined,
     InteractionKind.cayaGit => Icons.emoji_food_beverage_outlined,
+    InteractionKind.acil => Icons.favorite_border,
+    InteractionKind.ciddi => Icons.favorite,
+    InteractionKind.teklif => Icons.diamond_outlined,
+    InteractionKind.ayril => Icons.heart_broken_outlined,
+    InteractionKind.cocukIste => Icons.child_friendly_outlined,
   };
 }
 

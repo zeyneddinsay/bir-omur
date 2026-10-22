@@ -131,6 +131,8 @@ class Person {
 
   Person copyWith({
     String? city,
+    Kinship? kin,
+    bool clearKin = false,
     Bond? bond,
     bool clearBond = false,
     List<PersonRole>? roles,
@@ -158,7 +160,7 @@ class Person {
     metAt: metAt,
     base: base,
     portraitSeed: portraitSeed,
-    kin: kin,
+    kin: clearKin ? null : (kin ?? this.kin),
     side: side,
     bond: clearBond ? null : (bond ?? this.bond),
     roles: roles ?? this.roles,

@@ -1,0 +1,327 @@
+import 'dart:math';
+
+import '../models/models.dart';
+import 'person_factory.dart';
+import 'relationships.dart';
+
+/// Kız isteme sahnesi: çiftin cinsiyetine göre üç olaydan biri.
+enum ProposalScene { damat, gelin, tanismaYemegi }
+
+/// Aşk, evlilik ve çocuklar (canlı doküman, "Aşk, evlilik ve çocuklar").
+///
+/// - Oyuncu 14 yaşındaki dönemeçte kimlerle romantik ilişki kurmak
+///   istediğini seçer ([attractionFlags]); seçmeden önce karşı cins sayılır.
+/// - Romantik bağ 18 yaşından itibaren ve yaş kuralıyla: küçük olanın yaşı en
+///   az büyüğün yarısı artı 7.
+/// - Yol: arkadaş → flört (duygularını açıkla) → sevgili (ciddi düşünüyorum)
+///   → nişanlı (teklif) → kız isteme (bir yıl sonra) → düğün (iki yıl sonra).
+abstract final class Romance {
+  static const String likesWomen = 'ilgi_kadin';
+  static const String likesMen = 'ilgi_erkek';
+  static const Set<String> attractionFlags = {likesWomen, likesMen};
+
+  /// Motorun türettiği bayraklar: hayatta bir eşi var; hayatta bir çocuğu
+  /// var.
+  static const String marriedFlag = 'evli';
+  static const String parentFlag = 'cocuklu';
+  static const Set<String> derivedFlags = {marriedFlag, parentFlag};
+
+  /// Motorun planladığı olaylar.
+  static const String weddingEvent = 'dugun';
+  static const String birthEvent = 'bebek_dogdu';
+  static const Map<ProposalScene, String> proposalEvents = {
+    ProposalScene.damat: 'kiz_isteme_damat',
+    ProposalScene.gelin: 'kiz_isteme_gelin',
+    ProposalScene.tanismaYemegi: 'aile_tanisma_yemegi',
+  };
+
+  /// Olaylardaki yuva adları.
+  static const String partnerSlot = 'nisanli';
+  static const String spouseSlot = 'es';
+
+  static const int minAge = 18;
+
+  /// "Biriyle tanış" aksiyonunun bedeli (kafe, kurs).
+  static const int meetCost = 3000;
+  static const int proposalMinAge = 20;
+
+  /// Çocuk kararı bu yaş aralığında (oyuncu ve kadın eş için üst sınır).
+  static const int childMinAge = 20;
+  static const int childMaxAge = 45;
+
+  /// En fazla çocuk; yeni karar için en küçüğün en az bu yaşta olması.
+  static const int maxChildren = 4;
+  static const int childGap = 2;
+
+  /// Çocuk kararı için şimdilik erken mi: en küçük çocuk küçük ya da
+  /// bebek yolda.
+  static bool childTooSoon(Character c) {
+    final kids = c.people.all.where((p) => p.kin == Kinship.cocuk).toList();
+    if (kids.length >= maxChildren) return true;
+    return kids.any((k) => k.ageAt(c.age) < childGap);
+  }
+
+  /// Eşiklerin yakınlıkları.
+  static const int confessMin = 50;
+  static const int seriousMin = 60;
+  static const int proposeMin = 75;
+  static const int childMin = 60;
+
+  /// Flörtten sevgiliye geçmek için en az bir yıl.
+  static const int datingYears = 1;
+
+  static const Set<Bond> romanticBonds = {
+    Bond.flort,
+    Bond.sevgili,
+    Bond.nisanli,
+  };
+
+  /// Oyuncunun ilgi duyduğu cinsiyetler.
+  static Set<Gender> attraction(Character c) {
+    final set = {
+      if (c.hasFlag(likesWomen)) Gender.kadin,
+      if (c.hasFlag(likesMen)) Gender.erkek,
+    };
+    if (set.isNotEmpty) return set;
+    return {c.gender == Gender.erkek ? Gender.kadin : Gender.erkek};
+  }
+
+  /// Yaş kuralı: ikisi de 18+ ve küçük olan en az büyüğün yarısı artı 7.
+  static bool agesFit(int a, int b) {
+    if (a < minAge || b < minAge) return false;
+    final older = max(a, b);
+    final younger = min(a, b);
+    return younger >= older ~/ 2 + 7;
+  }
+
+  /// Hayattaki eş; yoksa null.
+  static Person? spouse(Character c) =>
+      c.people.all.where((p) => p.kin == Kinship.es && p.isAlive).firstOrNull;
+
+  /// Süren romantik ilişki (flört, sevgili, nişanlı); yoksa null.
+  static Person? partner(Character c) => c.people.all
+      .where((p) => p.isAlive && romanticBonds.contains(p.bond))
+      .firstOrNull;
+
+  static bool isSingle(Character c) => spouse(c) == null && partner(c) == null;
+
+  /// Bu kişiye duygularını açabilir mi (yakınlık hariç).
+  static bool canCourt(Character c, Person p) =>
+      isSingle(c) &&
+      p.isAlive &&
+      p.kin == null &&
+      p.marital == MaritalStatus.bekar &&
+      !romanticBonds.contains(p.bond) &&
+      p.bond != Bond.eskiEs &&
+      attraction(c).contains(p.gender) &&
+      agesFit(c.age, p.ageAt(c.age));
+
+  /// Flörtün başladığı yaş ("açıldı" anısı); yoksa null.
+  static int? datingSince(Person p) =>
+      p.memories.where((m) => m.kind == 'acildi').map((m) => m.age).lastOrNull;
+
+  static ProposalScene sceneFor(Character c, Person p) {
+    if (c.gender == p.gender) return ProposalScene.tanismaYemegi;
+    return c.gender == Gender.erkek ? ProposalScene.damat : ProposalScene.gelin;
+  }
+
+  /// Çocuk kararı açılır mı: eşle, yaşlar uygun, yakınlık hariç.
+  static bool childAgeFits(Character c, Person spouse) {
+    if (c.age < childMinAge) return false;
+    final mothers = [
+      if (c.gender == Gender.kadin) c.age,
+      if (spouse.gender == Gender.kadin) spouse.ageAt(c.age),
+    ];
+    // İki erkekte evlat edinme: oyuncunun yaşı sınır.
+    if (mothers.isEmpty) return c.age <= childMaxAge;
+    return mothers.every((age) => age <= childMaxAge);
+  }
+
+  /// Evlenir: nişanlı eş olur, iki taraf da evli; eşin anne ve babası
+  /// (kayınvalide, kayınpeder) çevreye girer. Aile evinde yaşayan oyuncu
+  /// kiraya çıkar (motor [Housing] ile yapar).
+  static Character marry(Character c, String personId, PersonFactory f) {
+    final p = c.people[personId]!;
+    var book = c.people.update(
+      Relationships.addMemory(
+        p.copyWith(
+          kin: Kinship.es,
+          clearBond: true,
+          marital: MaritalStatus.evli,
+          city: c.city,
+        ),
+        Memory(
+          kind: 'evlendik',
+          label: 'Evlendik',
+          age: c.age,
+          tone: MemoryTone.olumlu,
+          severity: 3,
+        ),
+        now: c.age,
+      ),
+    );
+    final age = p.ageAt(c.age);
+    for (final (kin, gender) in [
+      (Kinship.kayinvalide, Gender.kadin),
+      (Kinship.kayinpeder, Gender.erkek),
+    ]) {
+      // Kayın aile çoğunlukla hayatta; yaşları eşe göre.
+      final parentAge = age + f.between(22, 34);
+      if (parentAge > 85 || f.random.nextDouble() < 0.1) continue;
+      (book, _) = addKinPerson(
+        book,
+        f,
+        now: c.age,
+        age: parentAge,
+        city: p.city,
+        kin: kin,
+        gender: gender,
+        surname: p.surname,
+        base: 35,
+      );
+    }
+    return c.copyWith(people: book);
+  }
+
+  /// Ayrılık: flört, sevgili ya da nişan biterse eski sevgili; eşten
+  /// boşanırsa eski eş olur ve evlilikte biriken nakit yarı yarıya bölünür.
+  static (Character, int split) breakUp(Character c, String personId) {
+    final p = c.people[personId]!;
+    final divorce = p.kin == Kinship.es;
+    final next = p.copyWith(
+      clearKin: divorce,
+      bond: divorce ? Bond.eskiEs : Bond.eskiSevgili,
+      marital: divorce ? MaritalStatus.bekar : null,
+    );
+    final split = divorce && c.stats.money > 0 ? c.stats.money ~/ 2 : 0;
+    return (
+      c.copyWith(
+        people: c.people.update(next),
+        stats: c.stats.withMoneyDelta(-split),
+      ),
+      split,
+    );
+  }
+
+  /// Bebek doğar ya da evlat edinilir. Adı: [name] verilirse o, yoksa
+  /// bugünün adlarından rastgele.
+  static (Character, Person) addChild(
+    Character c,
+    PersonFactory f, {
+    required Gender gender,
+    String? name,
+  }) {
+    final spouse = Romance.spouse(c);
+    final surname = c.gender == Gender.erkek || spouse == null
+        ? c.surname
+        : spouse.gender == Gender.erkek
+        ? spouse.surname
+        : c.surname;
+    final (book, child) = addKinPerson(
+      c.people,
+      f,
+      now: c.age,
+      age: 0,
+      city: c.city,
+      kin: Kinship.cocuk,
+      gender: gender,
+      surname: surname,
+      base: 75,
+      name: name,
+    );
+    return (c.copyWith(people: book), child);
+  }
+
+  /// Çocuğun adı için iki öneri: kayın ailenin büyüğünün adı (çocuğun
+  /// cinsiyetinde) ve annenin önerisi (bugünün adlarından).
+  static ({String inLaw, String mother}) nameSuggestions(
+    Character c,
+    Gender gender,
+    PersonFactory f,
+  ) {
+    final elder = c.people.all
+        .where(
+          (p) =>
+              p.gender == gender &&
+              (p.kin == Kinship.kayinpeder || p.kin == Kinship.kayinvalide),
+        )
+        .firstOrNull;
+    final modern = f.families.namesFor(gender, NameEra.yeni);
+    String pick() => modern[f.random.nextInt(modern.length)];
+    final mother = pick();
+    var inLaw = elder?.name ?? f.families.namesFor(gender, NameEra.eski).first;
+    if (inLaw == mother) inLaw = pick();
+    return (inLaw: inLaw, mother: mother);
+  }
+
+  static (PeopleBook, Person) addKinPerson(
+    PeopleBook book,
+    PersonFactory f, {
+    required int now,
+    required int age,
+    required String city,
+    required Kinship kin,
+    required Gender gender,
+    required String surname,
+    required int base,
+    String? name,
+  }) {
+    final names = f.families.namesFor(gender, NameEra.forAgeGap(age - now));
+    final chosen = name ?? names[f.random.nextInt(names.length)];
+    final trait = Trait.values[f.random.nextInt(Trait.values.length)];
+    final seed = f.random.nextInt(1 << 30);
+    return book.add(
+      (id) => Person(
+        id: id,
+        name: chosen,
+        surname: surname,
+        gender: gender,
+        bornAt: now - age,
+        city: city,
+        origin: Origin.aile,
+        metAt: now,
+        base: base,
+        portraitSeed: seed,
+        kin: kin,
+        traits: {trait},
+        marital: age >= 25 ? MaritalStatus.evli : MaritalStatus.bekar,
+        occupation: age >= 65 ? 'emekli' : null,
+        lastContactAt: now,
+      ),
+    );
+  }
+
+  /// Biriyle tanışır (kafe, kurs, arkadaş ortamı): ilgi duyulan cinsiyetten,
+  /// yaş kuralına uyan, bekâr, aynı şehirden biri arkadaş olarak gelir.
+  static Character meet(Character c, PersonFactory f) {
+    final genders = attraction(c).toList();
+    final gender = genders[f.random.nextInt(genders.length)];
+    final low = max(minAge, c.age ~/ 2 + 7);
+    final high = max(low, min(c.age + 6, (c.age - 7) * 2));
+    final (book, _) = f.add(
+      c.people,
+      now: c.age,
+      age: f.between(low, high),
+      city: c.city,
+      origin: Origin.kendin,
+      base: 45,
+      gender: gender,
+      marital: MaritalStatus.bekar,
+      bond: Bond.arkadas,
+    );
+    return c.copyWith(people: book);
+  }
+
+  /// Motorun bayrakları: eş ve çocuk.
+  static Character syncFlags(Character c) {
+    final flags = {...c.flags};
+    void set(String flag, bool on) => on ? flags.add(flag) : flags.remove(flag);
+    set(marriedFlag, spouse(c) != null);
+    set(
+      parentFlag,
+      c.people.all.any((p) => p.kin == Kinship.cocuk && p.isAlive),
+    );
+    if (flags.length == c.flags.length && flags.containsAll(c.flags)) return c;
+    return c.copyWith(flags: flags);
+  }
+}

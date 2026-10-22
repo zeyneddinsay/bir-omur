@@ -79,6 +79,12 @@ enum NoteKind {
 
   /// Zor gün yılı başladı: `sebep` ya da `vefat|kişi`.
   zorGun,
+
+  /// Evlendi: eşin kimliği.
+  evlendin,
+
+  /// Çocuğu oldu: çocuğun kimliği.
+  bebek,
 }
 
 class LifeNote {

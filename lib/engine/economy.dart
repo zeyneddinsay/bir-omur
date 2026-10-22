@@ -35,6 +35,8 @@ class EconomyReport {
     this.loanPaid = 0,
     this.carCost = 0,
     this.livingCost = 0,
+    this.childCost = 0,
+    this.spouseIncome = 0,
     this.goldPriceChange = 0,
   });
 
@@ -46,6 +48,10 @@ class EconomyReport {
 
   /// Ev dışında yaşamanın yıllık gideri (yurt, kira evi, kendi evin).
   final int livingCost;
+
+  /// Evdeki çocukların gideri ve çalışan eşin hanenin bütçesine kattığı.
+  final int childCost;
+  final int spouseIncome;
   final double goldPriceChange;
 }
 
@@ -90,6 +96,39 @@ abstract final class Economy {
   static const int dormCost = 60000;
 
   /// Nerede yaşandığına göre yıllık yaşam gideri.
+  /// Evdeki (18 yaşından küçük) çocuk başına yıllık gider.
+  static const int childYearlyCost = 100000;
+
+  /// Çalışan eşin hanenin bütçesine kattığı (kendi gideri düşülmüş).
+  static const int spouseNetIncome = 300000;
+
+  /// Çalışmayan eşin gideri.
+  static const int spouseCost = 150000;
+
+  static int childCostOf(Character c) =>
+      c.people.all
+          .where(
+            (p) =>
+                p.isAlive &&
+                p.kin == Kinship.cocuk &&
+                p.bornAt <= c.age &&
+                p.ageAt(c.age) < 19,
+          )
+          .length *
+      childYearlyCost;
+
+  /// Eşin hane bütçesine etkisi: çalışıyorsa artı, çalışmıyorsa eksi.
+  static int spouseIncomeOf(Character c) {
+    final spouse = c.people.all
+        .where((p) => p.kin == Kinship.es && p.isAlive)
+        .firstOrNull;
+    if (spouse == null) return 0;
+    const idle = {null, 'ev_hanimi', 'emekli'};
+    final working =
+        !idle.contains(spouse.occupation) && spouse.ageAt(c.age) < 65;
+    return working ? spouseNetIncome : -spouseCost;
+  }
+
   /// Oyuncunun bu yılki yaşam gideri: aile evinde anne ya da baba yoksa
   /// (vefat, taşınma) gider kendisine kalır, kira yoktur.
   static int livingCostOf(Character c) =>
@@ -270,6 +309,10 @@ class EconomyTick {
     // Askerdeki yıl yaşam gideri yok (kira sürer).
     final livingCost = c.hasFlag('askerde') ? 0 : Economy.livingCostOf(c);
     money -= livingCost;
+    final childCost = Economy.childCostOf(c);
+    money -= childCost;
+    final spouseIncome = Economy.spouseIncomeOf(c);
+    money += spouseIncome;
 
     var loanPaid = 0;
     if (a.hasLoan) {
@@ -309,6 +352,8 @@ class EconomyTick {
         loanPaid: loanPaid,
         carCost: carCost,
         livingCost: livingCost,
+        childCost: childCost,
+        spouseIncome: spouseIncome,
         goldPriceChange: goldChange,
       ),
     );

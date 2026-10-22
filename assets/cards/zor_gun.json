@@ -6,6 +6,7 @@
     "minAge": 19,
     "maxAge": 110,
     "repeat": { "cooldown": 1 },
+    "conditions": { "flags": ["zor_gun"] },
     "roles": {
       "arayan": { "minAge": 12 }
     },
@@ -53,7 +54,11 @@
     "repeat": { "cooldown": 6, "max": 2 },
     "conditions": { "min": { "money": 2000000 }, "notFlags": ["zor_gun"] },
     "roles": {
-      "eski": { "memory": "zor_gunde_aramadi", "noMemory": "zor_gun_yuzlesme" }
+      "eski": {
+        "memory": "zor_gunde_aramadi",
+        "noMemory": "zor_gun_yuzlesme",
+        "maxCloseness": 59
+      }
     },
     "speaker": "eski",
     "text": "Zor gününde bir kez olsun aramayan {eski.ad} şimdi aradı: 'Nerelerdesin ya? Bir çayını içelim.'",
@@ -98,7 +103,7 @@
     "repeat": { "cooldown": 8, "max": 2 },
     "conditions": { "notFlags": ["zor_gun"] },
     "roles": {
-      "dost": { "memory": "zor_gunde_dertlesti", "minCloseness": 40 }
+      "dost": { "memory": "zor_gunde_dertlesti", "memoryYears": 5, "minCloseness": 40 }
     },
     "speaker": "dost",
     "text": "{dost.ad} ile yıllar sonra aynı masadasınız. 'O zor yılı hatırlıyor musun?' diyor. Hatırlıyorsun.",

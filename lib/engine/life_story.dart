@@ -40,12 +40,13 @@ class LifeStory {
   }();
 
   /// Son gününde yanında olan: önce eş ve çocuklar, sonra en yakın kişi
-  /// (yakınlık 50 ve üstü).
+  /// (yakınlık 50 ve üstü); aynı şehirdekiler önce.
   late final Person? bedside = () {
+    int score(Person p) => _closeness(p) + (p.city == c.city ? 100 : 0);
     final near = [
       for (final p in _alive)
         if (_closeness(p) >= 50) p,
-    ]..sort((a, b) => _closeness(b).compareTo(_closeness(a)));
+    ]..sort((a, b) => score(b).compareTo(score(a)));
     for (final p in near) {
       if (p.kin == Kinship.es || p.kin == Kinship.cocuk) return p;
     }
@@ -58,11 +59,14 @@ class LifeStory {
       if (p.isAlive) p,
   ];
 
-  /// Cenazeye gelenler: yakınlığı 50 ve üstü olanlar; husumetliler gelmez.
-  late final List<Person> mourners = [
+  /// Cenazeye gelenler: yakınlığı 40 ve üstü olanlar (husumetliler gelmez),
+  /// gerçek dostlar ve küs olduğu hâlde gelen.
+  late final List<Person> mourners = {
     for (final p in _alive)
-      if (_closeness(p) >= 50 && Relationships.hostility(p, _now) < 40) p,
-  ];
+      if (_closeness(p) >= 40 && Relationships.hostility(p, _now) < 40) p,
+    ...trueFriends,
+    ?cameAnyway,
+  }.toList();
 
   /// Küs olduğu hâlde gelen: husumeti yüksek ama arada sevgi de kalmış.
   late final Person? cameAnyway = () {
@@ -105,7 +109,7 @@ class LifeStory {
       c.hasFlag('zincir_sahibi') ||
       c.businesses.any((b) => _now - b.openedAt >= 10);
 
-  /// "Herkesin Dostu": akraba olmayan en az 8 yakın (60+) tanıdık.
+  /// "Herkesin Dostu": akraba olmayan en az 5 yakın (60+) tanıdık.
   bool get everyonesFriend =>
-      _alive.where((p) => p.kin == null && _closeness(p) >= 60).length >= 8;
+      _alive.where((p) => p.kin == null && _closeness(p) >= 60).length >= 5;
 }

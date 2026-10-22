@@ -3,6 +3,7 @@ import 'business.dart';
 import 'economy.dart';
 import 'housing.dart';
 import 'jobs.dart';
+import 'romance.dart';
 
 /// Bir aksiyonun neden yapılamadığı; arayüz sebebi gösterir.
 enum ActionBlocked {
@@ -39,6 +40,10 @@ enum ActionSpecial {
 
   /// Yazılım kursu: yazılımcı ilanlarını açar.
   yazilimKursu,
+
+  /// Biriyle tanış: ilgi duyulan cinsiyetten, yaşı uygun, bekâr biri
+  /// çevreye girer.
+  tanis,
 }
 
 /// Aksiyon menüsündeki bir seçenek. Adı ve açıklaması arayüzde [id] ile
@@ -119,6 +124,7 @@ class LifeAction {
       ActionSpecial.arabaSat => a.cars > 0,
       ActionSpecial.kpss => JobMarket.canSitKpss(c),
       ActionSpecial.yazilimKursu => JobMarket.canTakeCodingCourse(c),
+      ActionSpecial.tanis => Romance.isSingle(c),
     };
   }
 
@@ -138,6 +144,7 @@ class LifeAction {
     ActionSpecial.arabaSat => Housing.carSaleValue(c),
     ActionSpecial.kpss => 0,
     ActionSpecial.yazilimKursu => -JobMarket.codingCourseCost,
+    ActionSpecial.tanis => -Romance.meetCost,
     null => moneyChange(market),
   };
 
@@ -285,6 +292,12 @@ abstract final class ActionCatalog {
       minAge: 18,
       timeCost: 2,
       special: ActionSpecial.yazilimKursu,
+    ),
+    LifeAction(
+      id: 'tanis',
+      category: ActionCategory.eglence,
+      minAge: Romance.minAge,
+      special: ActionSpecial.tanis,
     ),
     LifeAction(
       id: 'altin_al',

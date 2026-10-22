@@ -205,6 +205,16 @@ abstract final class Housing {
         lastMoveAt: c.age,
       ),
     );
+    // Eş ve küçük çocuklar birlikte taşınır.
+    var book = next.people;
+    for (final p in book.all.toList()) {
+      final household =
+          p.isAlive &&
+          (p.kin == Kinship.es ||
+              (p.kin == Kinship.cocuk && p.ageAt(next.age) < 19));
+      if (household) book = book.update(p.copyWith(city: city));
+    }
+    next = next.copyWith(people: book);
     next = changeNeighbourhood(next, f);
     if (withFamily && hasParentInCity(next)) {
       next = next.copyWith(home: HomeKind.aile);

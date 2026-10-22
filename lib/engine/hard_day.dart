@@ -38,7 +38,25 @@ abstract final class HardDay {
   static const String talkedMemory = 'zor_gunde_dertlesti';
   static const String missedMemory = 'zor_gunde_aramadi';
 
-  static const int maxCallers = 3;
+  /// Aynı yıl gelebilecek arama olayı (dönemeçlere yer kalsın diye 2).
+  static const int maxCallers = 2;
+
+  /// "Dipten Döndü": en az bir kez borca düşmüş oyuncunun net serveti bu
+  /// tutara ulaşınca açılan motor bayrağı.
+  static const String comebackFlag = 'dipten_dondu';
+  static const int comebackWorth = 10000000;
+
+  /// Borç zor günü: net servet bu değerin altına inince (küçük eksiler
+  /// sayılmaz).
+  static const int debtThreshold = -100000;
+
+  /// Akraba olmayanın vefatı bu yakınlıktan itibaren zor gündür.
+  static const int griefCloseness = 80;
+
+  /// "Aramadı" anısı yalnızca bu yakınlıktaki arkadaşlara, ve aynı kişiye
+  /// bu kadar yılda bir.
+  static const int missedMinCloseness = 40;
+  static const int missedRepeatYears = 5;
 
   /// Çekirdek aile: vefatları her zaman zor gündür, aramaları beklenir.
   static const Set<Kinship> core = {
@@ -66,19 +84,30 @@ abstract final class HardDay {
     for (final id in deaths) {
       final p = after.people[id];
       if (p == null) continue;
-      if (core.contains(p.kin) || Relationships.closeness(p, after.age) >= 60) {
+      // Çekirdek aile; akraba olmayan çok yakın biri. Dede, nine ve uzak
+      // akraba cenazesi zor gün sayılmaz.
+      if (core.contains(p.kin) ||
+          (p.kin == null &&
+              Relationships.closeness(p, after.age) >= griefCloseness)) {
         return (HardDayCause.vefat, id);
       }
     }
-    if (worthBefore >= 0 && worthAfter < 0) return (HardDayCause.borc, null);
+    // Borç: öğrenci ve aileyle yaşayan sayılmaz; küçük eksiler sayılmaz.
+    final dependent =
+        after.hasFlag('universite_ogrencisi') || after.home == HomeKind.aile;
+    if (!dependent && worthBefore >= 0 && worthAfter < debtThreshold) {
+      return (HardDayCause.borc, null);
+    }
     if (!before.hasFlag('bunalim') && after.hasFlag('bunalim')) {
       return (HardDayCause.bunalim, null);
     }
     return null;
   }
 
-  /// Arayanlar: sevenler arar (yakınlık), vefalılar daha çok; para
-  /// derdinde çıkarcılar aramaz. Aynı evdekiler zaten yanındadır.
+  /// Aramak isteyenler: sevenler arar (yakınlık), vefalılar daha çok; para
+  /// derdinde çıkarcılar aramaz. Aynı evdekiler zaten yanındadır. En
+  /// yakından başlayarak sıralı; olay olarak ilk [maxCallers] gelir, öteki
+  /// arayanlar "aramadı" sayılmaz.
   static List<Person> callers(Character c, Random random, HardDayCause cause) {
     final picked = <Person>[];
     for (final p in c.people.active(c.age)) {
@@ -100,7 +129,7 @@ abstract final class HardDay {
         c.age,
       ).compareTo(Relationships.closeness(a, c.age)),
     );
-    return picked.take(maxCallers).toList();
+    return picked;
   }
 
   /// Arkadaşın (akraba olmayan, arkadaş ya da yakın arkadaş bağıyla) olup
@@ -111,6 +140,11 @@ abstract final class HardDay {
       if (!p.isAlive || p.kin != null || callerIds.contains(p.id)) continue;
       if (p.bond != Bond.arkadas && p.bond != Bond.yakinArkadas) continue;
       if (PeopleTick.livesTogether(c, p)) continue;
+      if (Relationships.closeness(p, c.age) < missedMinCloseness) continue;
+      final recent = p.memories.any(
+        (m) => m.kind == missedMemory && c.age - m.age < missedRepeatYears,
+      );
+      if (recent) continue;
       book = book.update(
         Relationships.addMemory(
           p,
