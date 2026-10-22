@@ -8,6 +8,7 @@ const String careersAssetDir = 'assets/careers/';
 const String achievementsAsset = 'assets/achievements.json';
 const String familiesAsset = 'assets/families.json';
 const String namesAsset = 'assets/names.json';
+const String interactionsAsset = 'assets/interactions.json';
 
 /// İçeriği uygulama paketinden okur. `assets/cards/` ve `assets/careers/`
 /// altındaki her JSON dosyası kendiliğinden yüklenir; yeni dosya için kod
@@ -31,5 +32,6 @@ Future<GameContent> loadContentFromAssets(AssetBundle bundle) async {
         : null,
     familiesSource: await bundle.loadString(familiesAsset),
     namesSource: await bundle.loadString(namesAsset),
+    interactionsSource: await bundle.loadString(interactionsAsset),
   );
 }

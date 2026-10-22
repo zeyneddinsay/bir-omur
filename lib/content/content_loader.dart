@@ -2,6 +2,7 @@ import '../models/models.dart';
 import '../engine/engine.dart';
 import 'card_validator.dart';
 import 'content_registry.dart';
+import 'interaction_validator.dart';
 
 /// Oyunun yüklenmiş içeriği.
 class GameContent {
@@ -10,6 +11,7 @@ class GameContent {
     required this.careers,
     this.achievements,
     required this.families,
+    required this.interactions,
     required this.registry,
     required this.warnings,
   });
@@ -22,6 +24,9 @@ class GameContent {
 
   /// Aile profilleri, meslek adları, ad ve soyad listeleri.
   final FamilyBook families;
+
+  /// Etkileşim sonuçlarının metinleri ve anı etiketleri.
+  final InteractionBook interactions;
   final ContentRegistry registry;
   final List<CardIssue> warnings;
 }
@@ -46,6 +51,7 @@ GameContent loadContent({
   String? achievementsSource,
   required String familiesSource,
   required String namesSource,
+  required String interactionsSource,
 }) {
   final registry = ContentRegistry.parse(registrySource);
   final result = CardValidator(registry).check(
@@ -59,6 +65,7 @@ GameContent loadContent({
     careers: CareerBook(result.careers),
     achievements: AchievementBook(result.achievements),
     families: _parseFamilies(familiesSource, namesSource),
+    interactions: _parseInteractions(interactionsSource),
     registry: registry,
     warnings: result.warnings.toList(),
   );
@@ -75,4 +82,23 @@ FamilyBook _parseFamilies(String familiesSource, String namesSource) {
       CardIssue(IssueLevel.error, 'families.json', e.path, e.message),
     ]);
   }
+}
+
+InteractionBook _parseInteractions(String source) {
+  final InteractionBook book;
+  try {
+    book = InteractionBook.parse(source);
+  } on CardFormatException catch (e) {
+    throw ContentException([
+      CardIssue(IssueLevel.error, 'interactions.json', e.path, e.message),
+    ]);
+  }
+  final problems = validateInteractions(book);
+  if (problems.isNotEmpty) {
+    throw ContentException([
+      for (final p in problems)
+        CardIssue(IssueLevel.error, 'interactions.json', 'interactions', p),
+    ]);
+  }
+  return book;
 }

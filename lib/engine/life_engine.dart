@@ -7,6 +7,7 @@ import 'death_check.dart';
 import 'economy.dart';
 import 'effect_resolver.dart';
 import 'event_deck.dart';
+import 'interactions.dart';
 import 'life_action.dart';
 import 'people_tick.dart';
 import 'schedule_queue.dart';
@@ -38,6 +39,8 @@ class LifeState {
     this.lastOutcome,
     this.summary,
     this.news = const [],
+    this.interactionsUsed = const {},
+    this.lastInteraction,
   });
 
   final Character character;
@@ -58,17 +61,35 @@ class LifeState {
   /// Bu yılın çevreden haberleri (yıl günlüğü).
   final List<PersonNews> news;
 
-  LifeState withNews(List<PersonNews> news) => LifeState(
-    character: character,
+  /// Bu yıl yapılan etkileşimler (`p3:bulus`); her etkileşim kişi başına
+  /// yılda bir kez yapılır.
+  final Set<String> interactionsUsed;
+
+  /// Son etkileşimin sonucu (arayüz metni için). Kaydedilmez.
+  final InteractionResult? lastInteraction;
+
+  LifeState copyWith({
+    Character? character,
+    int? timeLeft,
+    Set<String>? actionsUsed,
+    List<PersonNews>? news,
+    Set<String>? interactionsUsed,
+    InteractionResult? lastInteraction,
+  }) => LifeState(
+    character: character ?? this.character,
     phase: phase,
     queue: queue,
     pendingCards: pendingCards,
-    timeLeft: timeLeft,
-    actionsUsed: actionsUsed,
+    timeLeft: timeLeft ?? this.timeLeft,
+    actionsUsed: actionsUsed ?? this.actionsUsed,
     lastOutcome: lastOutcome,
     summary: summary,
-    news: List.unmodifiable(news),
+    news: news == null ? this.news : List.unmodifiable(news),
+    interactionsUsed: interactionsUsed ?? this.interactionsUsed,
+    lastInteraction: lastInteraction ?? this.lastInteraction,
   );
+
+  LifeState withNews(List<PersonNews> news) => copyWith(news: news);
 
   EventCard? get currentCard =>
       pendingCards.isEmpty ? null : pendingCards.first;
@@ -87,14 +108,17 @@ class LifeEngine {
     required this.seed,
     CareerBook? careers,
     FamilyBook? families,
+    InteractionBook? interactions,
   }) : careers = careers ?? CareerBook.empty,
        families = families ?? FamilyBook.minimal,
+       interactions = interactions ?? InteractionBook.minimal,
        _random = SeededRandom(seed);
 
   LifeEngine._restored(
     this.deck,
     this.careers,
     this.families,
+    this.interactions,
     this.seed,
     this._random,
   );
@@ -104,6 +128,9 @@ class LifeEngine {
 
   /// Doğumda aile üretimi için; yalnızca [startLife] kullanır.
   final FamilyBook families;
+
+  /// Etkileşimlerin anı etiketleri (sonuç metinlerini arayüz kurar).
+  final InteractionBook interactions;
   final int seed;
   final SeededRandom _random;
 
@@ -249,14 +276,53 @@ class LifeEngine {
       _lastJobSearch = result;
     }
     character = YearTick.updateHardshipFlags(character);
-    return _state = LifeState(
+    return _state = _state.copyWith(
       character: character,
-      phase: YearPhase.actions,
-      queue: _state.queue,
       timeLeft: _state.timeLeft - action.timeCost,
       actionsUsed: {..._state.actionsUsed, actionId},
-      lastOutcome: _state.lastOutcome,
-      news: _state.news,
+    );
+  }
+
+  /// [personId] kişisiyle şu an görünen etkileşimler; aksiyon aşaması
+  /// dışında hepsi vakit yüzünden kapalıdır.
+  List<InteractionOption> interactionsWith(String personId) {
+    final p = _state.character.people[personId];
+    if (p == null) return const [];
+    return Interactions.optionsFor(
+      _state.character,
+      p,
+      timeLeft: _state.phase == YearPhase.actions ? _state.timeLeft : 0,
+      used: _state.interactionsUsed,
+    );
+  }
+
+  /// Bir kişiyle etkileşir (İnsanlar sekmesi). Yalnızca aksiyon aşamasında.
+  LifeState interact(InteractionRequest request) {
+    if (_state.phase != YearPhase.actions) {
+      throw StateError('Etkileşimler yalnızca kartlardan sonra yapılır');
+    }
+    final option = interactionsWith(request.personId)
+        .where((o) => o.kind == request.kind)
+        .firstOrNull;
+    if (option == null) {
+      throw StateError('${request.kind.name} bu kişiyle yapılamaz');
+    }
+    final (character, result) = Interactions.resolve(
+      _random,
+      _state.character,
+      request,
+      timeLeft: _state.timeLeft,
+      used: _state.interactionsUsed,
+      memoryLabels: interactions.memoryLabels,
+    );
+    return _state = _state.copyWith(
+      character: YearTick.updateHardshipFlags(character),
+      timeLeft: _state.timeLeft - option.timeCost,
+      interactionsUsed: {
+        ..._state.interactionsUsed,
+        Interactions.usedKey(request.personId, request.kind),
+      },
+      lastInteraction: result,
     );
   }
 
@@ -314,6 +380,7 @@ class LifeEngine {
     'actionsUsed': _state.actionsUsed.toList(),
     'cause': _state.summary?.cause.name,
     'news': [for (final n in _state.news) n.toJson()],
+    'interactionsUsed': _state.interactionsUsed.toList(),
   };
 
   /// [toSnapshot] ile kaydedilmiş hayatı kaldığı yerden sürdürür.
@@ -324,6 +391,7 @@ class LifeEngine {
     required EventDeck deck,
     CareerBook? careers,
     FamilyBook? families,
+    InteractionBook? interactions,
     required Map<String, dynamic> snapshot,
   }) {
     final version = snapshot['version'];
@@ -334,6 +402,7 @@ class LifeEngine {
       deck,
       careers ?? CareerBook.empty,
       families ?? FamilyBook.minimal,
+      interactions ?? InteractionBook.minimal,
       snapshot['seed'] as int,
       SeededRandom.fromState(snapshot['rng'] as int),
     ).._market = Market.fromJson(snapshot['market'] as Map<String, dynamic>);
@@ -381,11 +450,14 @@ class LifeEngine {
       ),
     };
     final news = snapshot['news'] as List?;
-    if (news != null) {
-      engine._state = engine._state.withNews([
-        for (final n in news) PersonNews.fromJson(n as Map<String, dynamic>),
-      ]);
-    }
+    final used = snapshot['interactionsUsed'] as List?;
+    engine._state = engine._state.copyWith(
+      news: [
+        for (final n in news ?? const [])
+          PersonNews.fromJson(n as Map<String, dynamic>),
+      ],
+      interactionsUsed: {...?used?.cast<String>()},
+    );
     return engine;
   }
 

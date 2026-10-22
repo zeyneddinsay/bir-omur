@@ -171,6 +171,7 @@ class LifeController extends Notifier<LifeState?> {
       deck: content.deck,
       careers: content.careers,
       families: content.families,
+      interactions: content.interactions,
       seed: seed ?? ref.read(seedGeneratorProvider)(),
     );
     _engine = engine;
@@ -192,6 +193,7 @@ class LifeController extends Notifier<LifeState?> {
         deck: content.deck,
         careers: content.careers,
         families: content.families,
+        interactions: content.interactions,
         snapshot: snapshot,
       );
       _engine = engine;

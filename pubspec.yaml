@@ -39,6 +39,7 @@ flutter:
     - assets/achievements.json
     - assets/families.json
     - assets/names.json
+    - assets/interactions.json
     - assets/portraits/
     - assets/sounds/
     - assets/fonts/OFL.txt

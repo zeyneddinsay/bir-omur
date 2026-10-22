@@ -141,7 +141,7 @@ D1 adımları (kişiler ve İnsanlar sekmesi):
 - [x] Aile profilleri ve doğum: `assets/families.json`, `assets/names.json` (ad kuşakları), `lib/engine/family_generator.dart`
 - [x] Kişilerin yılı: `lib/engine/people_tick.dart` (kendi hayatı, haberler, sınıflar, aynı evde soğumama, arşiv)
 - [x] Vakit puanı: `ActionCatalog.timeFor`, aksiyonların vakit bedeli (`timeCost`)
-- [ ] Etkileşimler ve Ara sohbeti
+- [x] Etkileşimler ve Ara sohbeti: `lib/engine/interactions.dart`, metinler `assets/interactions.json` (yükleyici denetler), `lib/content/person_text.dart`
 - [ ] Yeni olay formatı ve card_lint; eski kartların silinmesi
 - [ ] D1 içeriği (yaklaşık 40 olay)
 - [ ] Kayıt sürüm 2

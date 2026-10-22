@@ -12,6 +12,7 @@ GameContent loadContentFromDisk([String assetsDir = 'assets']) {
     achievementsSource: _readOptional('$assetsDir/achievements.json'),
     familiesSource: File('$assetsDir/families.json').readAsStringSync(),
     namesSource: File('$assetsDir/names.json').readAsStringSync(),
+    interactionsSource: File('$assetsDir/interactions.json').readAsStringSync(),
   );
 }
 

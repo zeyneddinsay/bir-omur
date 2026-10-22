@@ -47,6 +47,7 @@ void main(List<String> args) {
       seed: seed,
       careers: content.careers,
       families: content.families,
+      interactions: content.interactions,
     );
     final player = _RandomPlayer(seed);
     var inDebt = false;

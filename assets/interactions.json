@@ -1,0 +1,154 @@
+{
+  "_aciklama": "Etkileşim sonuçlarının metinleri ve anı etiketleri. Metinlerde yalnızca şu yer tutucular kullanılır: {kisi.ad}, {kisi.soyad}, {kisi.hitap.abi|evlat|amca|bey}, {kisi.akraba} (deden, babaannen, dayın…), {oyuncu.ad}; ek gerekiyorsa {kisi.ad|e} gibi. Bir sonuca kişilik özelliğine özel metin yazılabilir: 'hediye.iyi.cikarci'. Anı etiketleri kişinin gözünden yazılır.",
+  "texts": {
+    "bulus.iyi": [
+      "{kisi.ad|le} çay bahçesinde oturdunuz. Konu konuyu açtı, çaylar soğudu.",
+      "{kisi.ad|le} vakit geçirdin. Ayrılırken \"Bunu sık yapalım\" dedi; ikiniz de yapmayacağınızı biliyorsunuz.",
+      "{kisi.ad|le} uzun uzun yürüdünüz. Eve dönünce \"İyi ki görüştük\" dedin."
+    ],
+    "bulus.iyi.dedikoducu": [
+      "{kisi.ad} iki saatte mahallenin bütün haberlerini verdi. Sen yalnızca çay içtin."
+    ],
+    "bulus.iyi.cikarci": [
+      "{kisi.ad|le} güzel vakit geçirdiniz. Hesap gelince telefonu çaldı; çok önemli bir aramaymış."
+    ],
+    "bulus.sikici": [
+      "{kisi.ad|le} buluştunuz. İkiniz de telefonunuza baktınız.",
+      "{kisi.ad|le} oturdunuz ama konu bir türlü açılmadı. Hava durumundan konuştunuz."
+    ],
+    "bulus.tartisma": [
+      "{kisi.ad|le} buluşma tartışmaya döndü. Çayın parasını kimin ödeyeceğine bile anlaşamadınız.",
+      "{kisi.ad} eski meseleleri açtı. Masadan erken kalktınız."
+    ],
+    "hediye.iyi": [
+      "{kisi.ad|e} küçük bir hediye aldın. \"Hiç gerek yoktu\" dedi ve hemen açtı.",
+      "Hediyeni gören {kisi.ad} gülümsedi. Paketini bile saklayacakmış."
+    ],
+    "hediye.iyi.cikarci": [
+      "{kisi.ad} hediyeyi çok beğendi. Fiyatına da hemen baktı."
+    ],
+    "hediye.iyi.comert": [
+      "{kisi.ad} hediyene çok sevindi. Ertesi hafta kapına bir tepsi baklava bıraktı."
+    ],
+    "hediye.reddetti": [
+      "{kisi.ad} hediyeni kapıda aldı, içeri davet etmedi.",
+      "Hediyen geri geldi. Yanında not bile yok."
+    ],
+    "dertles.iyi": [
+      "{kisi.ad|e} içini döktün. Sözünü hiç kesmedi; sonunda \"Geçecek\" dedi.",
+      "{kisi.ad|le} gece yarısına kadar konuştunuz. Hafiflemiş hissettin."
+    ],
+    "dertles.yayildi": [
+      "{kisi.ad|e} içini döktün. Ertesi gün bütün mahalle biliyordu.",
+      "{kisi.ad} kimseye söylemeyeceğine yemin etti. Bakkal bile geçmiş olsun dedi."
+    ],
+    "borc.verdi": [
+      "{kisi.ad} cüzdanı açtı: \"Ne zaman olursa ver, acelesi yok.\"",
+      "{kisi.ad} hiç sorgulamadan parayı verdi. Yalnızca bir kez iç çekti."
+    ],
+    "borc.vermedi": [
+      "{kisi.ad} \"Ben de sıkışığım bu ara\" dedi. Yeni telefonu masadaydı.",
+      "{kisi.ad} borç vermedi: \"Para arkadaşlığı bozar.\""
+    ],
+    "borcode.iyi": [
+      "{kisi.ad|e} borcunu ödedin. \"Hiç aklımda yoktu\" dedi; tarihini biliyordu.",
+      "Borcunu ödedin. {kisi.ad} parayı saymadan cebine koydu."
+    ],
+    "lafsok.iyi": [
+      "{kisi.ad|e} laf soktun. Bir an sustu, sonra konuyu değiştirdi.",
+      "Söylediğin {kisi.ad|in} hoşuna gitmedi. Yüzünden belliydi."
+    ],
+    "lafsok.gecti": [
+      "{kisi.ad|e} laf soktun. Güldü geçti; üstüne bir de seni taklit etti."
+    ],
+    "uzaklas.iyi": [
+      "{kisi.ad|le} artık görüşmüyorsun. Rehberde bir isim olarak duruyor."
+    ],
+    "ara.halhatir": [
+      "{kisi.ad|i} aradın. On dakika hal hatır, beş dakika \"Başka ne var ne yok\".",
+      "{kisi.ad|i} aradın. \"Sesini duymak iyi geldi\" dedi."
+    ],
+    "ara.yillarsonra": [
+      "Yıllar sonra {kisi.ad|i} aradın. Önce sesini tanımadı, sonra \"Sen misin?\" diye bağırdı.",
+      "{kisi.ad|i} yıllar sonra aradın. Telefonu kapatmak yarım saat sürdü."
+    ],
+    "ara.acmadi": [
+      "{kisi.ad|i} aradın. Telefon çaldı, çaldı, kapandı.",
+      "{kisi.ad|i} aradın. Meşgule attı."
+    ],
+    "ara.nostalji.olumlu": [
+      "{kisi.ad|le} eski günleri andınız. İkiniz de aynı yerde güldünüz.",
+      "\"Hatırlıyor musun?\" dedin. {kisi.ad} hatırlıyordu, hem de senden iyi."
+    ],
+    "ara.nostalji.baristik": [
+      "{kisi.ad|e} \"Çocukluk işte\" dedin. Bir sessizlik oldu, sonra \"Gel bir kahve içelim\" dedi.",
+      "Eski meseleyi açtın, gülerek kapattınız. {kisi.ad} \"Ne kadar saçmaymış\" dedi."
+    ],
+    "ara.nostalji.kirgin": [
+      "\"Hâlâ gülüyor musun buna?\" dedi {kisi.ad}. Telefon kısa sürdü.",
+      "{kisi.ad} o günü senin kadar komik bulmuyor. Sesi soğudu."
+    ],
+    "ara.ozur.kabul": [
+      "{kisi.ad|e} özür diledin. \"Tamam, geçti\" dedi; sesi gerçekten yumuşamıştı.",
+      "Özrünü duyan {kisi.ad} bir süre sustu, sonra \"Ben de çok üstüne gittim\" dedi."
+    ],
+    "ara.ozur.red": [
+      "{kisi.ad} özrünü dinledi ama \"Bakalım\" demekle yetindi.",
+      "\"Şimdi mi aklına geldi?\" dedi {kisi.ad}. Telefonu kapattı."
+    ],
+    "ara.igne.iyi": [
+      "\"Hatırladın mı?\" diye iğneledin. {kisi.ad} hiç gülmedi.",
+      "{kisi.ad|e} eski bir yarayı hatırlattın. Telefonu yüzüne kapattı."
+    ],
+    "ara.igne.guldu": [
+      "{kisi.ad|i} iğneledin. Kahkahayı bastı: \"Sen hiç değişmemişsin.\""
+    ],
+    "anne.yemek": [
+      "Annenin yemeğini övdün. Sen itiraz edemeden tabağına bir kepçe daha koydu.",
+      "\"Eline sağlık anne\" dedin. Akşam bunu üç kişiye anlattı."
+    ],
+    "baba.mac": [
+      "Babanla maç izledin. İkinci yarıda ikiniz de hakeme kızdınız; çok iyi anlaştınız.",
+      "Babanla maç izlediniz. Golü görünce sana sarıldı; yıllardır yapmamıştı."
+    ],
+    "baba.mac.kaybettik": [
+      "Babanla maç izlediniz. Takım kaybetti; yemekte ikiniz de konuşmadınız."
+    ],
+    "dede.el": [
+      "{kisi.akraba|in} elini öptün. Seni yanına oturtup çocukluğunu anlattı; üçüncü kez.",
+      "Elini öptüğün {kisi.akraba} gözlerini sildi: \"Ne çabuk büyüdün.\""
+    ],
+    "dede.el.harclik": [
+      "{kisi.akraba|in} elini öptün. Avucuna katlanmış bir para sıkıştırdı: \"Annene söyleme.\""
+    ],
+    "kardes.oyun": [
+      "{kisi.ad|le} oynadınız. Kimin kazandığında anlaşamadınız ama çok güldünüz.",
+      "{kisi.ad|le} saklambaç oynadınız. {kisi.ad} hâlâ dolapta."
+    ],
+    "komsu.cay": [
+      "{kisi.ad} {kisi.hitap.amca} çay koydu. İki saatte üç komşunun hikâyesini dinledin.",
+      "{kisi.ad} {kisi.hitap.amca} kapıyı açar açmaz \"Gel otur, sana anlatacaklarım var\" dedi."
+    ]
+  },
+  "memories": {
+    "bulus": "Birlikte vakit geçirdik",
+    "bulus_tartisma": "Buluşmamız tartışmaya döndü",
+    "hediye": "Bana hediye aldı",
+    "dertles": "Benimle dertleşti",
+    "borcunu_odedi": "Borcunu ödedi",
+    "borc_vermedi": "Borç istediğimde vermedi",
+    "laf_soktu": "Bana laf soktu",
+    "aradi": "Arayıp hatırımı sordu",
+    "yillar_sonra": "Yıllar sonra aradı",
+    "eski_gunler": "Eski günleri andık",
+    "baristik": "Eski meseleyi gülerek kapattık",
+    "hala_kirgin": "Eski meseleyi açıp beni kırdı",
+    "ozur_diledi": "Benden özür diledi",
+    "igneledi": "Eski bir meseleyle beni iğneledi",
+    "yemegini_ovdu": "Yemeğimi övdü",
+    "mac_izledik": "Birlikte maç izledik",
+    "elini_optu": "Elimi öptü",
+    "birlikte_oynadik": "Birlikte oynadık",
+    "caya_geldi": "Çayıma geldi"
+  }
+}

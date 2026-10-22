@@ -29,6 +29,8 @@ class Person {
     this.impression = Impression.none,
     int? lastContactAt,
     this.archived = false,
+    this.loan = 0,
+    this.reunited = false,
   }) : assert(base >= 0 && base <= 100),
        assert(health >= 0 && health <= 100),
        roles = List.unmodifiable(roles),
@@ -101,6 +103,13 @@ class Person {
   /// "Eski tanıdıklar" listesinde mi. Arşivdeki kişinin yılı işlemez.
   final bool archived;
 
+  /// Oyuncunun bu kişiye borcu (TL); yoksa 0.
+  final int loan;
+
+  /// Yıllar sonra arandı mı. "Uzun aradan sonra arama" çarpanı kişi başına
+  /// bir kez uygulanır.
+  final bool reunited;
+
   static const int maxMemories = 8;
 
   bool get isAlive => diedAt == null;
@@ -130,6 +139,8 @@ class Person {
     Impression? impression,
     int? lastContactAt,
     bool? archived,
+    int? loan,
+    bool? reunited,
   }) => Person(
     id: id,
     name: name,
@@ -155,6 +166,8 @@ class Person {
     impression: impression ?? this.impression,
     lastContactAt: lastContactAt ?? this.lastContactAt,
     archived: archived ?? this.archived,
+    loan: loan ?? this.loan,
+    reunited: reunited ?? this.reunited,
   );
 
   Map<String, Object> toJson() => {
@@ -185,6 +198,8 @@ class Person {
     'impression': impression.toJson(),
     'lastContactAt': lastContactAt,
     'archived': archived,
+    if (loan != 0) 'loan': loan,
+    if (reunited) 'reunited': true,
   };
 
   factory Person.fromJson(Map<String, dynamic> json) => Person(
@@ -228,6 +243,8 @@ class Person {
     impression: Impression.fromJson(json['impression'] as Map<String, dynamic>),
     lastContactAt: json['lastContactAt'] as int,
     archived: json['archived'] as bool,
+    loan: json['loan'] as int? ?? 0,
+    reunited: json['reunited'] as bool? ?? false,
   );
 }
 

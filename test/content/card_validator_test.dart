@@ -299,6 +299,7 @@ void main() {
   test('loadContent hatada durur, temizse desteyi kurar', () {
     final families = File('assets/families.json').readAsStringSync();
     final names = File('assets/names.json').readAsStringSync();
+    final interactions = File('assets/interactions.json').readAsStringSync();
     const registry =
         '{"flags": {"universite_ogrencisi": "", "ev_sahibi": "", "asker_anilari": "", "tasindi": ""}, "speakers": {}}';
     expect(
@@ -309,6 +310,7 @@ void main() {
         },
         familiesSource: families,
         namesSource: names,
+        interactionsSource: interactions,
       ),
       throwsA(isA<ContentException>()),
     );
@@ -319,6 +321,7 @@ void main() {
       },
       familiesSource: families,
       namesSource: names,
+      interactionsSource: interactions,
     );
     expect(content.deck.cards.map((c) => c.id), ['a', 'b']);
   });
