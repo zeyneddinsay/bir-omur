@@ -479,7 +479,14 @@ class PeopleTick {
   /// düşer; önce rolü bitmiş olanlar.
   void _archive() {
     final active = _book.active(_now).toList();
-    final candidates = active.where((p) => !coreKin.contains(p.kin)).toList();
+    // Çekirdek aile ve sevgili, nişanlı arşive düşmez.
+    final candidates = active
+        .where(
+          (p) =>
+              !coreKin.contains(p.kin) &&
+              !Romance.romanticBonds.contains(p.bond),
+        )
+        .toList();
     var excess = active.length - maxActive;
     if (excess <= 0) return;
     candidates.sort((a, b) {

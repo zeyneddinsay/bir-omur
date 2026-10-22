@@ -17,6 +17,15 @@ class ScheduleQueue {
     ]),
   );
 
+  /// [cardIds] olaylarını sıradan çıkarır (ayrılınca düğün, boşanınca
+  /// doğum gibi).
+  ScheduleQueue without(Set<String> cardIds) => ScheduleQueue(
+    List.unmodifiable([
+      for (final e in entries)
+        if (!cardIds.contains(e.cardId)) e,
+    ]),
+  );
+
   /// [age] yaşına kadar zamanı gelmiş olayları planlandıkları sırayla
   /// çıkarır. Kaçırılan yıllar da dahildir.
   (List<ScheduledCard> due, ScheduleQueue rest) takeDue(int age) {

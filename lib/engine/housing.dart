@@ -212,16 +212,7 @@ abstract final class Housing {
     if (city == c.hometown && c.age >= 55) {
       next = next.copyWith(flags: {...next.flags, homecomingFlag});
     }
-    // Eş ve küçük çocuklar birlikte taşınır.
-    var book = next.people;
-    for (final p in book.all.toList()) {
-      final household =
-          p.isAlive &&
-          (p.kin == Kinship.es ||
-              (p.kin == Kinship.cocuk && p.ageAt(next.age) < 19));
-      if (household) book = book.update(p.copyWith(city: city));
-    }
-    next = next.copyWith(people: book);
+    next = moveHousehold(next);
     next = changeNeighbourhood(next, f);
     if (withFamily && hasParentInCity(next)) {
       next = next.copyWith(home: HomeKind.aile);
@@ -275,10 +266,25 @@ abstract final class Housing {
     return identical(book, c.people) ? c : c.copyWith(people: book);
   }
 
+  /// Eş ve 18 yaşından küçük çocuklar oyuncunun şehrine taşınır.
+  static Character moveHousehold(Character c) {
+    var book = c.people;
+    for (final p in book.all.toList()) {
+      final household =
+          p.isAlive &&
+          p.city != c.city &&
+          (p.kin == Kinship.es ||
+              (p.kin == Kinship.cocuk && p.ageAt(c.age) < 19));
+      if (household) book = book.update(p.copyWith(city: c.city));
+    }
+    return c.copyWith(people: book);
+  }
+
   /// Okul yüzünden şehir ya da ev değişince (yurda yerleşme, mezuniyet):
   /// mahalle değişir; kiraya çıkana şehrin kirası ve ev sahibi gelir.
   static Character settle(Character c, PersonFactory f) {
     var next = changeNeighbourhood(c, f);
+    next = moveHousehold(next);
     // Başka şehirdeki işletme müdüre kalır.
     for (final b in next.businesses) {
       if (b.present && b.city != next.city) {

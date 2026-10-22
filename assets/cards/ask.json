@@ -32,7 +32,7 @@
     },
     "speaker": "nisanli",
     "text": "Kız istemedesin. Çiçek, çikolata, 'Hayırlı bir iş için geldik' cümlesi tamam. Önüne gelen kahve belli ki tuzlu.",
-    "closing": "{nisanli.ad} ile nişan bozuldu; kız isteme günü hiç gelmedi.",
+    "closing": "{nisanli.ad} ile kız isteme günü hiç gelmedi.",
     "left": {
       "label": "Son yudumuna kadar",
       "effects": {
@@ -66,7 +66,7 @@
     },
     "speaker": "nisanli",
     "text": "Seni istemeye geldiler. Kahveleri sen yapıyorsun; {nisanli.ad} için olan fincanın yanında tuz kavanozu duruyor.",
-    "closing": "{nisanli.ad} ile nişan bozuldu; kahveler hiç pişmedi.",
+    "closing": "{nisanli.ad} için o kahveler hiç pişmedi.",
     "left": {
       "label": "Bir kaşık tuz",
       "effects": {
@@ -111,7 +111,7 @@
     },
     "speaker": "nisanli",
     "text": "İki aile ilk kez aynı sofrada. Ortam biraz gergin; {nisanli.ad} masanın altından elini tuttu.",
-    "closing": "{nisanli.ad} ile nişan bozuldu; o sofra hiç kurulmadı.",
+    "closing": "{nisanli.ad} ile o sofra hiç kurulmadı.",
     "left": {
       "label": "Ben konuşurum",
       "effects": {
@@ -151,8 +151,8 @@
       "effects": { "money": -700000, "gold": 60, "happiness": 8 }
     },
     "right": {
-      "label": "Sade bir nikâh",
-      "effects": { "money": -150000, "gold": 10, "happiness": 5 }
+      "label": "Belediyede nikâh",
+      "effects": { "money": -30000, "gold": 5, "happiness": 4 }
     }
   },
   {
@@ -164,16 +164,16 @@
     "repeat": { "cooldown": 1 },
     "rarity": "nadir",
     "roles": {
-      "es": { "minAge": 18 }
+      "es": { "kin": ["es"] }
     },
     "speaker": "es",
-    "text": "Bebek geldi! Kayın taraf büyüklerinin adını, annen dizideki bir adı istiyor. {es.ad} sana bakıyor.",
+    "text": "Bebek geldi! Büyükler kendi büyüklerinin adını, gençler bugünün adlarını öneriyor. {es.ad} sana bakıyor.",
     "left": {
-      "label": "Kayın tarafın dediği",
+      "label": "Büyüklerin dediği",
       "effects": { "happiness": 8 }
     },
     "right": {
-      "label": "Annemin dediği",
+      "label": "Bugünün bir adı",
       "effects": { "happiness": 8 }
     },
     "up": {
@@ -350,7 +350,9 @@
     "maxAge": 90,
     "repeat": { "cooldown": 5, "max": 3 },
     "roles": {
-      "es": { "kin": ["es"] }
+      "es": { "kin": ["es"] },
+      "kayin": { "kin": ["kayinvalide", "kayinpeder"], "offstage": true },
+      "anne": { "kin": ["anne"], "offstage": true }
     },
     "speaker": "es",
     "text": "Bayram yaklaşıyor. {es.ad}: 'Bu sefer bizimkilere gidiyoruz, geçen sefer seninkilerdeydik.'",
@@ -614,7 +616,7 @@
     },
     "text": "{merhum.ad} artık yok. Ev çok sessiz; ikinci çay bardağını hâlâ dolaptan çıkarıyorsun.",
     "left": {
-      "label": "Çocuklara sarılırım",
+      "label": "Sevdiklerime sarılırım",
       "effects": { "happiness": -12 }
     },
     "right": {

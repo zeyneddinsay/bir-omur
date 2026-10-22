@@ -300,7 +300,7 @@ class LifeEngine {
         final id = event.people[Romance.partnerSlot];
         if (id == null) return (c, const []);
         var married = Romance.marry(c, id, _factory);
-        if (married.home == HomeKind.aile) {
+        if (married.home == HomeKind.aile || married.home == HomeKind.yurt) {
           married = Housing.rentAlone(married, _factory);
         }
         return (
@@ -459,7 +459,17 @@ class LifeEngine {
     var queue = _state.queue;
     final age = character.age;
     final person = character.people[request.personId]!;
+    var people = character.people;
     switch (result.outcome) {
+      case 'ayril.iyi':
+        // Ayrılınca kız isteme ve düğün olmaz.
+        queue = queue.without({
+          ...Romance.proposalEvents.values,
+          Romance.weddingEvent,
+        });
+      case 'ayril.bosanma':
+        queue = queue.without({Romance.birthEvent});
+        people = Romance.clearInLaws(people);
       case 'teklif.evet':
         final scene =
             Romance.proposalEvents[Romance.sceneFor(character, person)]!;
@@ -490,7 +500,7 @@ class LifeEngine {
           YearTick.updateHardshipFlags(
             _booked(
               _state.character,
-              character,
+              character.copyWith(people: people),
               MoneySource.etkilesim,
               ref: request.kind.name,
             ),
@@ -1490,6 +1500,12 @@ class LifeEngine {
       // Kayıttan sonra içerikten kaldırılmış iplik sessizce düşer.
       final card = deck.byId(entry.cardId);
       if (card == null || !card.conditions.isMetBy(character)) continue;
+      if (age > card.maxAge) continue;
+      // Askerdeyken aşk olayları (kız isteme, düğün) bir yıl bekler.
+      if (character.hasFlag('askerde') && card.theme == EventTheme.ask) {
+        rest = rest.add(entry.cardId, atAge: age + 1, people: entry.people);
+        continue;
+      }
       if (milestones.length + chained.length >= EventDeck.maxPerYear) {
         rest = rest.add(entry.cardId, atAge: age + 1, people: entry.people);
         continue;
@@ -1502,7 +1518,9 @@ class LifeEngine {
         busy: busy,
       );
       if (people == null) {
-        if (entry.people.isNotEmpty) {
+        // Kapanış cümlesi yazılmış ipliklerde günlüğe yazılır; ötekiler
+        // sessizce düşer.
+        if (entry.people.isNotEmpty && card.closing != null) {
           yearNotes.add(
             LifeNote(
               NoteKind.iplikKapandi,

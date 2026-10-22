@@ -231,7 +231,15 @@ D4b adımları (aşk, evlilik, çocuklar; `lib/engine/romance.dart`):
 - [x] Hane bütçesi: çalışan eş +300 bin, çalışmayan eş −150 bin, evdeki her çocuk −100 bin (deftere ayrı kalemler).
 - [x] Çocuklar 24 yaşından sonra evlenir; evli çocuğun torunu olur. Rozetler geri döndü: Dört Kuşak Bir Fotoğrafta (`dort_kusak`), Dipten Döndü (`dipten_dondu`).
 - [x] Olaylar (`assets/cards/ask.json`, 21 olay): yıl dönümü, kıskançlık, ilk tatil, "annen beni sevmedi", bayram kimde, kayınvalide ziyareti, ev işleri, ilk adım, veli toplantısı, okul maçı, ergen, eşin ve evladın cenazesi. `dugunde_soru` ve `baba_ogudu` evlilere gelmez.
-- [ ] D4b bağımsız mantık denetimi
+- [x] D4b bağımsız mantık denetimi (12 bulgu) ve düzeltmeler:
+  - Çocuk adı önerisi büyüklerin ve bugünün adlarından, kardeşlerin ve eşin adı tekrar önerilmez.
+  - Boşanınca ve yeniden evlenince eski kayın aile kayın olmaktan çıkar. Boşanınca planlı doğum, ayrılınca kız isteme ve düğün iptal olur.
+  - Eş ve küçük çocuklar okul yüzünden şehir değişince de oyuncuyla gelir; yurtta evlenen kiraya çıkar.
+  - Sevgili ve nişanlı arşive düşmez, onlarla "Uzaklaş" yok. Teklif 70 yaşına kadar.
+  - Eşte düğme "Boşan"; ayrılık ve boşanma onay ister (bölünecek birikim gösterilir).
+  - Düğünde ucuz seçenek: belediyede nikâh (30 bin). Askerdeyken aşk olayları bir yıl bekler. Kapanış cümlesi yalnızca yazılmış ipliklerde.
+  - Emekli eş bütçeyi eksiltmez. Erkek oyuncu ya da erkek eş için çocuk kararında üst yaş 55.
+  - Bayram kimde olayı kayın aile ve anne yaşıyorsa gelir. "Evlen" baskısı sevgilisi olana ve evlenmiş olana gelmez (`iliskide`, `evlenmis` bayrakları).
 - D5 notları: test oyuncusunda evlenen %93, boşanan %6, hayat başına 2,7 çocuk, medyan evlilik yaşı 34. "Patron" lakabı %51 (test oyuncusu neredeyse her hayatta işletme açıyor). Zor gün hayat başına 4,1 yıl.
 
 ## Bekleyen aşama: F3a — Dağıtıma hazırlık

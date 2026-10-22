@@ -163,7 +163,7 @@
     "minAge": 20,
     "maxAge": 90,
     "repeat": { "cooldown": 5, "max": 2 },
-    "conditions": { "business": "yazilim", "atBusiness": true },
+    "conditions": { "business": "yazilim" },
     "text": "Gece üçte telefon: sistem çökmüş, müşterinin kampanyası sabah dokuzda başlıyor.",
     "left": {
       "label": "Kalkıp düzeltirim",

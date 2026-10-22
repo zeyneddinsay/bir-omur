@@ -24,7 +24,17 @@ abstract final class Romance {
   /// var.
   static const String marriedFlag = 'evli';
   static const String parentFlag = 'cocuklu';
-  static const Set<String> derivedFlags = {marriedFlag, parentFlag};
+
+  /// Süren bir romantik ilişki (flört, sevgili, nişanlı); en az bir kez
+  /// evlenmiş.
+  static const String datingFlag = 'iliskide';
+  static const String everMarriedFlag = 'evlenmis';
+  static const Set<String> derivedFlags = {
+    marriedFlag,
+    parentFlag,
+    datingFlag,
+    everMarriedFlag,
+  };
 
   /// Motorun planladığı olaylar.
   static const String weddingEvent = 'dugun';
@@ -49,6 +59,12 @@ abstract final class Romance {
   static const int childMinAge = 20;
   static const int childMaxAge = 45;
 
+  /// Erkek oyuncu ve iki erkekte evlat edinme için üst yaş.
+  static const int fatherMaxAge = 55;
+
+  /// Teklif bu yaşa kadar (kız isteme sahneleri gençlere göre yazıldı).
+  static const int proposalMaxAge = 70;
+
   /// En fazla çocuk; yeni karar için en küçüğün en az bu yaşta olması.
   static const int maxChildren = 4;
   static const int childGap = 2;
@@ -56,7 +72,9 @@ abstract final class Romance {
   /// Çocuk kararı için şimdilik erken mi: en küçük çocuk küçük ya da
   /// bebek yolda.
   static bool childTooSoon(Character c) {
-    final kids = c.people.all.where((p) => p.kin == Kinship.cocuk).toList();
+    final kids = c.people.all
+        .where((p) => p.kin == Kinship.cocuk && p.isAlive)
+        .toList();
     if (kids.length >= maxChildren) return true;
     return kids.any((k) => k.ageAt(c.age) < childGap);
   }
@@ -132,8 +150,10 @@ abstract final class Romance {
       if (c.gender == Gender.kadin) c.age,
       if (spouse.gender == Gender.kadin) spouse.ageAt(c.age),
     ];
-    // İki erkekte evlat edinme: oyuncunun yaşı sınır.
-    if (mothers.isEmpty) return c.age <= childMaxAge;
+    if (c.gender == Gender.erkek && c.age > fatherMaxAge) return false;
+    if (spouse.gender == Gender.erkek && spouse.ageAt(c.age) > fatherMaxAge) {
+      return false;
+    }
     return mothers.every((age) => age <= childMaxAge);
   }
 
@@ -142,13 +162,22 @@ abstract final class Romance {
   /// kiraya çıkar (motor [Housing] ile yapar).
   static Character marry(Character c, String personId, PersonFactory f) {
     final p = c.people[personId]!;
-    var book = c.people.update(
+    // Önceki evliliğin kayın ailesi artık kayın değildir.
+    var book = clearInLaws(c.people);
+    book = book.update(
       Relationships.addMemory(
         p.copyWith(
           kin: Kinship.es,
           clearBond: true,
           marital: MaritalStatus.evli,
           city: c.city,
+          // Eş artık ev sahibin ya da ev arkadaşın değildir.
+          roles: [
+            for (final r in p.roles)
+              r.kind == RoleKind.evSahibi || r.kind == RoleKind.evArkadasi
+                  ? r.ended()
+                  : r,
+          ],
         ),
         Memory(
           kind: 'evlendik',
@@ -183,11 +212,24 @@ abstract final class Romance {
     return c.copyWith(people: book);
   }
 
+  /// Kayınvalide ve kayınpederin akrabalığı biter (boşanma, yeniden
+  /// evlilik); tanıdık olarak kalırlar.
+  static PeopleBook clearInLaws(PeopleBook book) {
+    var next = book;
+    for (final p in book.all) {
+      if (p.kin == Kinship.kayinvalide || p.kin == Kinship.kayinpeder) {
+        next = next.update(p.copyWith(clearKin: true, bond: Bond.tanidik));
+      }
+    }
+    return next;
+  }
+
   /// Ayrılık: flört, sevgili ya da nişan biterse eski sevgili; eşten
   /// boşanırsa eski eş olur ve evlilikte biriken nakit yarı yarıya bölünür.
   static (Character, int split) breakUp(Character c, String personId) {
     final p = c.people[personId]!;
     final divorce = p.kin == Kinship.es;
+    final book = divorce ? clearInLaws(c.people) : c.people;
     final next = p.copyWith(
       clearKin: divorce,
       bond: divorce ? Bond.eskiEs : Bond.eskiSevgili,
@@ -196,7 +238,7 @@ abstract final class Romance {
     final split = divorce && c.stats.money > 0 ? c.stats.money ~/ 2 : 0;
     return (
       c.copyWith(
-        people: c.people.update(next),
+        people: book.update(next),
         stats: c.stats.withMoneyDelta(-split),
       ),
       split,
@@ -239,18 +281,42 @@ abstract final class Romance {
     Gender gender,
     PersonFactory f,
   ) {
-    final elder = c.people.all
-        .where(
-          (p) =>
-              p.gender == gender &&
-              (p.kin == Kinship.kayinpeder || p.kin == Kinship.kayinvalide),
-        )
-        .firstOrNull;
-    final modern = f.families.namesFor(gender, NameEra.yeni);
-    String pick() => modern[f.random.nextInt(modern.length)];
-    final mother = pick();
-    var inLaw = elder?.name ?? f.families.namesFor(gender, NameEra.eski).first;
-    if (inLaw == mother) inLaw = pick();
+    // Çocukların, oyuncunun ve eşin adı yeniden önerilmez.
+    final taken = {
+      c.name,
+      for (final p in c.people.all)
+        if (p.kin == Kinship.cocuk || p.kin == Kinship.es) p.name,
+    };
+    String pick(List<String> names) {
+      final free = [
+        for (final n in names)
+          if (!taken.contains(n)) n,
+      ];
+      final pool = free.isEmpty ? names : free;
+      return pool[f.random.nextInt(pool.length)];
+    }
+
+    // Büyüklerin adı: kayın aile ya da oyuncunun anne-babası, dede-ninesi.
+    const elders = {
+      Kinship.kayinpeder,
+      Kinship.kayinvalide,
+      Kinship.anne,
+      Kinship.baba,
+      Kinship.dede,
+      Kinship.nine,
+    };
+    final elderNames = [
+      for (final p in c.people.all)
+        if (p.gender == gender &&
+            elders.contains(p.kin) &&
+            !taken.contains(p.name))
+          p.name,
+    ];
+    final inLaw = elderNames.isNotEmpty
+        ? elderNames[f.random.nextInt(elderNames.length)]
+        : pick(f.families.namesFor(gender, NameEra.eski));
+    taken.add(inLaw);
+    final mother = pick(f.families.namesFor(gender, NameEra.yeni));
     return (inLaw: inLaw, mother: mother);
   }
 
@@ -317,6 +383,11 @@ abstract final class Romance {
     final flags = {...c.flags};
     void set(String flag, bool on) => on ? flags.add(flag) : flags.remove(flag);
     set(marriedFlag, spouse(c) != null);
+    set(datingFlag, partner(c) != null);
+    set(
+      everMarriedFlag,
+      c.people.all.any((p) => p.kin == Kinship.es || p.bond == Bond.eskiEs),
+    );
     set(
       parentFlag,
       c.people.all.any((p) => p.kin == Kinship.cocuk && p.isAlive),

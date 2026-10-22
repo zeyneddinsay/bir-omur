@@ -149,11 +149,23 @@ class PersonScreen extends ConsumerWidget {
                 for (final option in options)
                   _InteractionTile(
                     option: option,
-                    onTap: () => option.kind == InteractionKind.ara
-                        ? _openCall(context, p.id)
-                        : controller.interact(
-                            InteractionRequest(option.kind, p.id),
-                          ),
+                    divorce:
+                        option.kind == InteractionKind.ayril &&
+                        p.kin == Kinship.es,
+                    onTap: () => switch (option.kind) {
+                      InteractionKind.ara => _openCall(context, p.id),
+                      InteractionKind.ayril => _confirmBreakUp(
+                        context,
+                        p,
+                        c,
+                        () => controller.interact(
+                          InteractionRequest(option.kind, p.id),
+                        ),
+                      ),
+                      _ => controller.interact(
+                        InteractionRequest(option.kind, p.id),
+                      ),
+                    },
                   ),
             ],
             const SizedBox(height: 16),
@@ -185,6 +197,41 @@ class PersonScreen extends ConsumerWidget {
     return text == null ? null : PersonText.render(text, p, c);
   }
 
+  /// Ayrılık ve boşanma geri alınamaz: önce sorulur; boşanmada bölünecek
+  /// birikim gösterilir.
+  static Future<void> _confirmBreakUp(
+    BuildContext context,
+    Person p,
+    Character c,
+    VoidCallback action,
+  ) async {
+    final l10n = AppLocalizations.of(context);
+    final divorce = p.kin == Kinship.es;
+    final half = c.stats.money > 0 ? c.stats.money ~/ 2 : 0;
+    final yes = await showDialog<bool>(
+      context: context,
+      builder: (dialog) => AlertDialog(
+        content: Text(
+          divorce
+              ? l10n.divorceConfirm(l10n.money(half))
+              : l10n.breakUpConfirm(p.name),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialog).pop(false),
+            child: Text(l10n.cancel),
+          ),
+          FilledButton(
+            key: const Key('break_up_yes'),
+            onPressed: () => Navigator.of(dialog).pop(true),
+            child: Text(l10n.breakUpYes),
+          ),
+        ],
+      ),
+    );
+    if (yes ?? false) action();
+  }
+
   static void _openCall(BuildContext context, String personId) {
     showModalBottomSheet<void>(
       context: context,
@@ -196,10 +243,17 @@ class PersonScreen extends ConsumerWidget {
 }
 
 class _InteractionTile extends StatelessWidget {
-  const _InteractionTile({required this.option, required this.onTap});
+  const _InteractionTile({
+    required this.option,
+    required this.onTap,
+    this.divorce = false,
+  });
 
   final InteractionOption option;
   final VoidCallback onTap;
+
+  /// Eşte "Ayrıl" yerine "Boşan".
+  final bool divorce;
 
   @override
   Widget build(BuildContext context) {
@@ -215,7 +269,9 @@ class _InteractionTile extends StatelessWidget {
       contentPadding: EdgeInsets.zero,
       enabled: option.enabled,
       leading: Icon(_icon(option.kind)),
-      title: Text(l10n.interactionName(option.kind)),
+      title: Text(
+        divorce ? l10n.interaction_bosan : l10n.interactionName(option.kind),
+      ),
       subtitle: Text(switch (option.blocked) {
         final reason? => l10n.blockedReason(reason),
         null => cost,

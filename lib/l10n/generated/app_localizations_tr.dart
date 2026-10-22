@@ -1927,7 +1927,23 @@ class AppLocalizationsTr extends AppLocalizations {
   String get interaction_acil => 'Duygularını açıkla';
 
   @override
-  String get interaction_ciddi => 'Ciddi düşünüyorum, de';
+  String get interaction_ciddi => 'Ciddiyim, de';
+
+  @override
+  String get interaction_bosan => 'Boşan';
+
+  @override
+  String divorceConfirm(String amount) {
+    return 'Boşanırsan birikimin yarısı ($amount) ona kalır. Emin misin?';
+  }
+
+  @override
+  String breakUpConfirm(String name) {
+    return '$name ile ayrılmak istediğine emin misin?';
+  }
+
+  @override
+  String get breakUpYes => 'Evet, ayrılıyorum';
 
   @override
   String get interaction_teklif => 'Evlenme teklif et';

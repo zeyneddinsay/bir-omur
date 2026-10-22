@@ -3211,8 +3211,32 @@ abstract class AppLocalizations {
   /// No description provided for @interaction_ciddi.
   ///
   /// In tr, this message translates to:
-  /// **'Ciddi düşünüyorum, de'**
+  /// **'Ciddiyim, de'**
   String get interaction_ciddi;
+
+  /// No description provided for @interaction_bosan.
+  ///
+  /// In tr, this message translates to:
+  /// **'Boşan'**
+  String get interaction_bosan;
+
+  /// No description provided for @divorceConfirm.
+  ///
+  /// In tr, this message translates to:
+  /// **'Boşanırsan birikimin yarısı ({amount}) ona kalır. Emin misin?'**
+  String divorceConfirm(String amount);
+
+  /// No description provided for @breakUpConfirm.
+  ///
+  /// In tr, this message translates to:
+  /// **'{name} ile ayrılmak istediğine emin misin?'**
+  String breakUpConfirm(String name);
+
+  /// No description provided for @breakUpYes.
+  ///
+  /// In tr, this message translates to:
+  /// **'Evet, ayrılıyorum'**
+  String get breakUpYes;
 
   /// No description provided for @interaction_teklif.
   ///

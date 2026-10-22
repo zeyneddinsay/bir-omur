@@ -123,10 +123,10 @@ abstract final class Economy {
         .where((p) => p.kin == Kinship.es && p.isAlive)
         .firstOrNull;
     if (spouse == null) return 0;
-    const idle = {null, 'ev_hanimi', 'emekli'};
-    final working =
-        !idle.contains(spouse.occupation) && spouse.ageAt(c.age) < 65;
-    return working ? spouseNetIncome : -spouseCost;
+    // Emekli eşin aylığı kendi giderini karşılar.
+    if (spouse.occupation == 'emekli' || spouse.ageAt(c.age) >= 65) return 0;
+    const idle = {null, 'ev_hanimi', 'ogrenci'};
+    return idle.contains(spouse.occupation) ? -spouseCost : spouseNetIncome;
   }
 
   /// Oyuncunun bu yılki yaşam gideri: aile evinde anne ya da baba yoksa
