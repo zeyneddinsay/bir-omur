@@ -10,10 +10,15 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:bir_omur/content/disk_content_source.dart';
+import 'package:bir_omur/content/event_text.dart';
 import 'package:bir_omur/engine/engine.dart';
 import 'package:bir_omur/models/models.dart';
 
 void main(List<String> args) {
+  if (args.isNotEmpty && args[0] == 'hikaye') {
+    _story(args.length > 1 ? int.parse(args[1]) : 1);
+    return;
+  }
   final lives = args.isNotEmpty ? int.parse(args[0]) : 500;
   final firstSeed = args.length > 1 ? int.parse(args[1]) : 0;
 
@@ -683,4 +688,100 @@ class _BusinessStats {
       );
     }
   }
+}
+
+/// Hikâye dökümü: bir hayatı yıl yıl yazar (kartlar, seçimler,
+/// etkileşimler, günlük notları, çevrenin haberleri). Akışı okumak için.
+///
+///   `dart run tools/life_report/bin/life_report.dart hikaye TOHUM`
+void _story(int seed) {
+  final content = loadContentFromDisk();
+  final engine = LifeEngine(
+    deck: content.deck,
+    seed: seed,
+    careers: content.careers,
+    families: content.families,
+    interactions: content.interactions,
+  );
+  final player = _RandomPlayer(seed);
+  engine.startLife();
+  var c = engine.state.character;
+  stdout.writeln(
+    '${c.name} ${c.surname} · ${c.gender.name} · ${c.hometown} · '
+    '${c.familyProfile} · ${c.background.id}',
+  );
+  for (final p in c.people.all) {
+    stdout.writeln('  aile: ${p.kin?.name} ${p.name} (${p.ageAt(0)})');
+  }
+  var age = -1;
+  var lastNotes = 0;
+  var lastActions = <String>{};
+  var lastUsed = <String>{};
+  while (!engine.state.isOver) {
+    final state = engine.state;
+    c = state.character;
+    if (c.age != age) {
+      age = c.age;
+      lastNotes = 0;
+      lastActions = {};
+      lastUsed = {};
+      stdout.writeln(
+        '\n— $age yaş · ${c.city} · ${c.home.name} · '
+        '${c.job?.careerId ?? '-'} · para ${(c.stats.money / 1000).round()} bin · '
+        'S${c.stats.health} M${c.stats.happiness} B${c.stats.knowledge} '
+        'İ${c.stats.reputation} A${c.stats.family}',
+      );
+      for (final n in state.news) {
+        final p = c.people[n.personId];
+        stdout.writeln(
+          '  haber: ${n.kind.name} ${p?.name ?? ''} '
+          '(${p?.kin?.name ?? p?.bond?.name ?? ''}) ${n.detail ?? ''}',
+        );
+      }
+    }
+    for (final n in state.notes.skip(lastNotes)) {
+      stdout.writeln('  not: ${n.kind.name} ${n.detail ?? ''}');
+    }
+    lastNotes = state.notes.length;
+    for (final a in state.actionsUsed.difference(lastActions)) {
+      stdout.writeln('  aksiyon: $a');
+    }
+    lastActions = {...state.actionsUsed};
+    for (final u in state.interactionsUsed.difference(lastUsed)) {
+      final [id, kind] = u.split(':');
+      final p = c.people[id];
+      stdout.writeln(
+        '  etkileşim: $kind → ${p?.name} '
+        '(${p?.kin?.name ?? p?.bond?.name ?? p?.roles.where((r) => r.active).map((r) => r.kind.name).join('/') ?? ''})'
+        '${state.lastInteraction?.personId == id ? ' = ${state.lastInteraction?.outcome}' : ''}',
+      );
+    }
+    lastUsed = {...state.interactionsUsed};
+    if (state.phase == YearPhase.cards) {
+      final e = state.currentEvent!;
+      final text = EventText.render(e.card.text, e.people, c);
+      player.step(engine);
+      final out = engine.state.lastOutcome;
+      final roll = out?.rollSucceeded == null
+          ? ''
+          : (out!.rollSucceeded! ? ' [zar tuttu]' : ' [zar tutmadı]');
+      stdout.writeln('  KART ${e.card.id} ${e.people}: $text');
+      stdout.writeln(
+        '     → ${EventText.render(out?.choice.label ?? '?', e.people, c)}$roll',
+      );
+      continue;
+    }
+    player.step(engine);
+  }
+  final s = engine.state.summary!;
+  stdout.writeln(
+    '\nÖLÜM ${s.deathAge} · ${s.cause.name} · ${s.nickname.name} · '
+    'servet ${(s.netWorth / 1000).round()} bin',
+  );
+  final story = LifeStory(s.character);
+  stdout.writeln(
+    '  yanında: ${story.bedside?.name} · cenaze ${story.mourners.length} · '
+    'yakınlar ${story.closest.map((p) => p.name).join(', ')} · '
+    'gerçek dost ${story.trueFriends.map((p) => p.name).join(', ')}',
+  );
 }

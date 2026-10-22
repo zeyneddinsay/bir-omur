@@ -1,0 +1,479 @@
+[
+  {
+    "id": "teneffus_yillar_sonra",
+    "type": "kisi",
+    "theme": "is",
+    "minAge": 23,
+    "maxAge": 50,
+    "repeat": "once",
+    "roles": {
+      "eski": { "memory": "rezil_etti", "memoryYears": 8, "noMemory": "eski_defter" }
+    },
+    "speaker": "eski",
+    "text": "{eski.ad} yıllar sonra yazdı: 'Bizim şirkette ilan açıldı, aklıma sen geldin. O teneffüsü ben çoktan unuttum.'",
+    "left": {
+      "label": "Sağ ol, bakarım",
+      "effects": {
+        "happiness": 3,
+        "people": {
+          "eski": {
+            "heal": "rezil_etti",
+            "memory": {
+              "kind": "eski_defter",
+              "label": "Yıllar sonra barıştık, ilanı ona ben söyledim",
+              "tone": "olumlu",
+              "severity": 3
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Ben unutmadım",
+      "effects": {
+        "people": {
+          "eski": {
+            "memory": {
+              "kind": "eski_defter",
+              "label": "Uzattığım eli geri çevirdi",
+              "tone": "olumsuz",
+              "severity": 2
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "kopya_tesekkuru",
+    "type": "kisi",
+    "theme": "genel",
+    "minAge": 25,
+    "maxAge": 60,
+    "repeat": "once",
+    "roles": {
+      "eski": { "memory": "kopya_vermedi", "memoryYears": 8 }
+    },
+    "speaker": "eski",
+    "text": "Bir düğünde {eski.ad} yanına geldi: 'O sınavda kâğıdını göstermemiştin. İyi ki göstermemişsin; çalışmayı öyle öğrendim.'",
+    "left": {
+      "label": "Kızmıştın ama",
+      "effects": {
+        "happiness": 3,
+        "people": {
+          "eski": {
+            "heal": "kopya_vermedi",
+            "memory": {
+              "kind": "kopya_tesekkuru",
+              "label": "Yıllar önceki o 'hayır' için ona teşekkür ettim",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Hatırlamıyorum bile",
+      "effects": { "reputation": 1 }
+    }
+  },
+  {
+    "id": "kopya_ortakligi",
+    "type": "kisi",
+    "theme": "genel",
+    "minAge": 25,
+    "maxAge": 60,
+    "repeat": "once",
+    "roles": {
+      "eski": { "memory": "kopya_verdi", "memoryYears": 8 }
+    },
+    "speaker": "eski",
+    "text": "{eski.ad} çocuğunun karnesini paylaşmış, altına yazmış: 'Ben olsam sana kopya diye mesaj atardım, hatırlar mısın?'",
+    "left": {
+      "label": "Suç ortağım!",
+      "effects": {
+        "happiness": 3,
+        "people": {
+          "eski": {
+            "memory": {
+              "kind": "eski_gunler_kopya",
+              "label": "O kopya gününü birlikte gülerek andık",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Çocuk görmesin",
+      "effects": { "reputation": 1 }
+    }
+  },
+  {
+    "id": "el_yapimi_kutu",
+    "type": "kisi",
+    "theme": "genel",
+    "minAge": 25,
+    "maxAge": 70,
+    "repeat": "once",
+    "roles": {
+      "eski": { "memory": "el_yapimi_hediye", "memoryYears": 10 }
+    },
+    "speaker": "eski",
+    "text": "{eski.ad} taşınırken eski bir kutu bulmuş. İçinden senin makasla yaptığın doğum günü hediyesi çıkmış; fotoğrafını attı.",
+    "left": {
+      "label": "Hâlâ saklıyor musun?",
+      "effects": {
+        "happiness": 5,
+        "people": {
+          "eski": {
+            "memory": {
+              "kind": "kutudaki_hediye",
+              "label": "Çocukken yaptığı hediyeyi sakladığımı öğrendi",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Ne kötü yapmışım",
+      "effects": { "happiness": 2 }
+    }
+  },
+  {
+    "id": "dogum_gunu_rovans",
+    "type": "kisi",
+    "theme": "genel",
+    "minAge": 28,
+    "maxAge": 60,
+    "repeat": "once",
+    "roles": {
+      "eski": { "memory": "dogum_gunume_gelmedi", "memoryYears": 10 }
+    },
+    "speaker": "eski",
+    "text": "{eski.ad} çocuğunun doğum gününe çağırdı: 'Bu sefer gelirsin, değil mi? Benimkine gelmemiştin ama.' Gülüyor; yarısı şaka.",
+    "left": {
+      "label": "En büyük hediye benden",
+      "effects": {
+        "money": -2000,
+        "people": {
+          "eski": {
+            "heal": "dogum_gunume_gelmedi",
+            "memory": {
+              "kind": "rovans_geldi",
+              "label": "Yıllar sonra bu sefer geldi, hem de hediyeyle",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Yine olmayacak",
+      "effects": {
+        "people": {
+          "eski": {
+            "memory": {
+              "kind": "yine_gelmedi",
+              "label": "Yine gelmedi",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "cam_hikayesi",
+    "type": "kisi",
+    "theme": "mahalle",
+    "minAge": 25,
+    "maxAge": 70,
+    "repeat": "once",
+    "roles": {
+      "eski": { "memory": "birlikte_kactik", "memoryYears": 10, "sameCity": true }
+    },
+    "speaker": "eski",
+    "text": "{eski.ad} ile karşılaştınız; ikiniz aynı anda o camı hatırladınız. 'Camın sahibi hâlâ orada oturuyor' diyor.",
+    "left": {
+      "label": "Gidip özür dileyelim",
+      "effects": {
+        "reputation": 2,
+        "happiness": 2,
+        "people": {
+          "eski": {
+            "memory": {
+              "kind": "cam_ozru",
+              "label": "Yıllar sonra o cam için birlikte özür diledik",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Hâlâ kaçıyoruz",
+      "effects": { "happiness": 4 }
+    }
+  },
+  {
+    "id": "ele_veren_hatirlanir",
+    "type": "kisi",
+    "theme": "mahalle",
+    "minAge": 25,
+    "maxAge": 70,
+    "repeat": "once",
+    "roles": {
+      "eski": { "memory": "ele_verdi", "memoryYears": 10 }
+    },
+    "speaker": "eski",
+    "text": "Bir düğünde {eski.ad} masaya anlatıyor: 'Topu cama ben atmıştım ama beni ele veren buydu!' Herkes gülüyor, o pek gülmüyor.",
+    "left": {
+      "label": "Özür dilerim, cidden",
+      "effects": {
+        "people": {
+          "eski": {
+            "heal": "ele_verdi",
+            "memory": {
+              "kind": "ele_verme_ozru",
+              "label": "Çocukken beni ele verdiği için özür diledi",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Çocuktuk be",
+      "effects": { "happiness": 1 }
+    }
+  },
+  {
+    "id": "deneme_rakibi",
+    "type": "kisi",
+    "theme": "is",
+    "minAge": 26,
+    "maxAge": 55,
+    "repeat": "once",
+    "roles": {
+      "eski": { "memory": "deneme_rekabet", "memoryYears": 8 }
+    },
+    "speaker": "eski",
+    "text": "Deneme sınavlarında yarıştığın {eski.ad} ile aynı toplantıdasınız. Kartvizit uzatırken gülümsedi: 'Bu sefer kim önde?'",
+    "left": {
+      "label": "Bu sefer berabere",
+      "effects": {
+        "people": {
+          "eski": {
+            "heal": "deneme_rekabet",
+            "memory": {
+              "kind": "rekabet_bitti",
+              "label": "Eski rekabeti gülerek kapattık",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Tabii ki ben",
+      "effects": {
+        "reputation": 1,
+        "people": {
+          "eski": {
+            "memory": {
+              "kind": "rekabet_suruyor",
+              "label": "Yıllar sonra bile rekabeti sürdürdü",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "girisim_teklifi",
+    "type": "kisi",
+    "theme": "is",
+    "minAge": 25,
+    "maxAge": 55,
+    "repeat": "once",
+    "conditions": { "min": { "money": 400000 } },
+    "roles": {
+      "is": { "roles": ["isArkadasi"], "minAge": 24 }
+    },
+    "speaker": "is",
+    "text": "{is.ad} istifa ediyor: 'Kendi şirketimi kuruyorum. Küçük bir payla yanımda olur musun? Üç yıla ya batarız ya uçarız.'",
+    "left": {
+      "label": "Varım, 300 bin",
+      "effects": {
+        "money": -300000,
+        "people": {
+          "is": {
+            "memory": {
+              "kind": "girisime_ortak",
+              "label": "Şirketime ilk parayı o koydu",
+              "tone": "olumlu",
+              "severity": 3
+            }
+          }
+        },
+        "schedule": { "event": "girisim_sonucu", "inYears": 3, "with": ["is"] }
+      }
+    },
+    "right": {
+      "label": "Sana şans dilerim",
+      "effects": { "happiness": -1 }
+    }
+  },
+  {
+    "id": "girisim_sonucu",
+    "type": "iplik",
+    "theme": "para",
+    "minAge": 26,
+    "maxAge": 70,
+    "repeat": { "cooldown": 1 },
+    "roles": {
+      "is": { "minAge": 24 }
+    },
+    "speaker": "is",
+    "text": "Üç yıl doldu. {is.ad} aradı, sesi garip: 'Oturuyor musun? Şirketle ilgili bir haberim var.'",
+    "closing": "{is.ad} ile kurduğunuz şirketten bir daha haber alamadın; o 300 bin hikâye oldu.",
+    "left": {
+      "label": "Söyle, hazırım",
+      "roll": { "stat": "luck", "threshold": 55 },
+      "success": { "money": 1200000, "happiness": 8 },
+      "fail": { "happiness": -4 }
+    },
+    "right": {
+      "label": "Kötü haberse sonra",
+      "roll": { "stat": "luck", "threshold": 55 },
+      "success": { "money": 1200000, "happiness": 6 },
+      "fail": { "happiness": -2 }
+    }
+  },
+  {
+    "id": "komsu_genci_borc",
+    "type": "kisi",
+    "theme": "para",
+    "minAge": 30,
+    "maxAge": 75,
+    "repeat": "once",
+    "conditions": { "min": { "money": 200000 } },
+    "roles": {
+      "genc": { "roles": ["komsu"], "maxGap": -12, "minAge": 18 }
+    },
+    "speaker": "genc",
+    "text": "Komşunun oğlu {genc.ad} kapında, utanarak: 'Ehliyet kursu için biraz para lazım. Söz, iki yıla öderim.'",
+    "left": {
+      "label": "Al, dert etme",
+      "effects": {
+        "money": -50000,
+        "people": {
+          "genc": {
+            "memory": {
+              "kind": "borc_verdi",
+              "label": "Zor anımda bana borç verdi",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        },
+        "schedule": { "event": "komsu_genci_doner", "inYears": 2, "with": ["genc"] }
+      }
+    },
+    "right": {
+      "label": "Annen bilmesin mi?",
+      "effects": {
+        "people": {
+          "genc": {
+            "memory": {
+              "kind": "borc_vermedi",
+              "label": "Borç istedim, vermedi",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "komsu_genci_doner",
+    "type": "iplik",
+    "theme": "para",
+    "minAge": 32,
+    "maxAge": 80,
+    "repeat": { "cooldown": 1 },
+    "roles": {
+      "genc": { "minAge": 18 }
+    },
+    "speaker": "genc",
+    "text": "{genc.ad} kapında, elinde bir zarf ve bir kutu baklava: 'Ehliyeti aldım, işe de girdim. Borcum, bir de teşekkürüm.'",
+    "closing": "{genc.ad} verdiğin borcu hiç getirmedi; sen de annesine hiç söylemedin.",
+    "left": {
+      "label": "Baklava yeter",
+      "effects": {
+        "reputation": 2,
+        "people": {
+          "genc": {
+            "memory": {
+              "kind": "borcumu_bagisladi",
+              "label": "Borcumu bağışladı",
+              "tone": "olumlu",
+              "severity": 3
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Eline sağlık",
+      "effects": { "money": 50000, "happiness": 2 }
+    }
+  },
+  {
+    "id": "eski_sevgili_davet",
+    "type": "kisi",
+    "theme": "ask",
+    "minAge": 22,
+    "maxAge": 60,
+    "repeat": "once",
+    "roles": {
+      "eski": { "bond": ["eskiSevgili"], "minAge": 18 }
+    },
+    "speaker": "eski",
+    "text": "Posta kutunda bir davetiye: {eski.ad} evleniyor. Zarfın içinde küçük bir not: 'Gelirsen sevinirim.'",
+    "left": {
+      "label": "Giderim, gönül rahat",
+      "effects": {
+        "happiness": 2,
+        "people": {
+          "eski": {
+            "memory": {
+              "kind": "dugunume_geldi",
+              "label": "Düğünüme geldi, içtenlikle kutladı",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Bir buket yollarım",
+      "effects": { "money": -1500 }
+    }
+  }
+
+]

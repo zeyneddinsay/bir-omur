@@ -35,11 +35,29 @@ abstract final class RoleMatcher {
           (p.lastEventAt != null && p.lastEventAt! >= died)) {
         return false;
       }
-    } else if (!p.isAlive || p.archived) {
+    } else if (!p.isAlive || (p.archived && slot.memory == null)) {
+      // Anı yuvası arşivdeki eski tanıdığı da bulur: geçmiş geri döner.
       return false;
     }
     if (p.bornAt > now) return false;
     if (slot.kin.isNotEmpty && !slot.kin.contains(p.kin)) return false;
+    // Akraba istemeyen rol ya da anı yuvası akrabayı, eşi ya da sevgiliyi
+    // seçmez: eş "eski sıra arkadaşın" diye karşına çıkmaz.
+    final asksStranger =
+        slot.kin.isEmpty &&
+        (slot.roles.isNotEmpty ||
+            slot.formerRoles.isNotEmpty ||
+            slot.memory != null);
+    if (asksStranger &&
+        (p.kin != null ||
+            (slot.bonds.isEmpty &&
+                const {
+                  Bond.flort,
+                  Bond.sevgili,
+                  Bond.nisanli,
+                }.contains(p.bond)))) {
+      return false;
+    }
     if (slot.roles.isNotEmpty && !slot.roles.any((r) => p.hasRole(r))) {
       return false;
     }

@@ -343,7 +343,7 @@
     "repeat": { "cooldown": 3, "max": 4 },
     "conditions": { "flags": ["kiraci"] },
     "roles": {
-      "ev": { "roles": ["evSahibi"] }
+      "ev": { "roles": ["evSahibi"], "minGap": 12 }
     },
     "speaker": "ev",
     "text": "Ev sahibin {ev.ad}: 'Kirayı ben artırmıyorum {oyuncu.hitap.evlat}, piyasa artırıyor.'",
@@ -391,7 +391,7 @@
     "repeat": { "cooldown": 6, "max": 2 },
     "conditions": { "flags": ["kiraci"] },
     "roles": {
-      "ev": { "roles": ["evSahibi"] }
+      "ev": { "roles": ["evSahibi"], "minGap": 12 }
     },
     "speaker": "ev",
     "text": "Kombi bozuldu, evde nefesin görünüyor. {ev.ad}: 'Bu kışı idare edin, yazın bakarız.'",

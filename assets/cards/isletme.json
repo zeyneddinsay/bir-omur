@@ -358,7 +358,13 @@
     "repeat": { "cooldown": 8, "max": 2 },
     "conditions": { "businessTypes": ["simit", "berber", "oto_yikama"] },
     "roles": {
-      "teyze": { "roles": ["komsu"], "gender": "kadin", "minAge": 50, "sameCity": true }
+      "teyze": {
+        "roles": ["komsu"],
+        "gender": "kadin",
+        "minAge": 50,
+        "minGap": 12,
+        "sameCity": true
+      }
     },
     "speaker": "teyze",
     "text": "{teyze.ad} kapına nazarlık astı: 'Dükkân çok kalabalık oluyor {oyuncu.hitap.evlat}, göz değer.'",

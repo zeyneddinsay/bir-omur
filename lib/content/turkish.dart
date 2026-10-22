@@ -290,6 +290,19 @@ List<TemplateProblem> templateProblems(String template) {
 /// Şablondaki yer tutucuları [resolve] ile çözüp ekleri ekler. [resolve]
 /// null dönerse [StateError] fırlatır: olay seçicisi rolleri doldurmadan
 /// metin istememelidir.
+/// Yazılan metin bir cümle başında mı bitiyor: boş, nokta, ünlem, soru ya da
+/// iki nokta üstüne açılan alıntıdan sonra.
+bool _startsSentence(String before) {
+  var s = before.trimRight();
+  if (s.isEmpty) return true;
+  if (s.endsWith("'") || s.endsWith('"')) {
+    s = s.substring(0, s.length - 1).trimRight();
+    if (s.isEmpty || s.endsWith(':')) return true;
+  }
+  if (before.length == s.length) return false;
+  return s.endsWith('.') || s.endsWith('!') || s.endsWith('?');
+}
+
 String renderTemplate(
   String template,
   TemplateValue? Function(String path) resolve,
@@ -306,11 +319,14 @@ String renderTemplate(
     if (value == null) {
       throw StateError('Yer tutucu çözülemedi: {${token.path}}');
     }
-    out.write(
-      token.suffix == null
-          ? value.text
-          : withSuffix(value.text, token.suffix!, proper: value.proper),
-    );
+    var text = token.suffix == null
+        ? value.text
+        : withSuffix(value.text, token.suffix!, proper: value.proper);
+    // Cümle başındaki küçük harfli sözcük ("annen", "dayın") büyür.
+    if (_startsSentence(out.toString()) && text.isNotEmpty) {
+      text = upperTr(text[0]) + text.substring(1);
+    }
+    out.write(text);
     cursor = token.end;
   }
   out.write(template.substring(cursor));

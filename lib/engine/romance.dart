@@ -123,9 +123,15 @@ abstract final class Romance {
 
   static bool isSingle(Character c) => spouse(c) == null && partner(c) == null;
 
+  /// Eşini son iki yılda kaybetti: yas süresince yeni ilişki açılmaz.
+  static bool mourning(Character c) => c.people.all.any(
+    (p) => p.kin == Kinship.es && p.diedAt != null && c.age - p.diedAt! < 2,
+  );
+
   /// Bu kişiye duygularını açabilir mi (yakınlık hariç).
   static bool canCourt(Character c, Person p) =>
       isSingle(c) &&
+      !mourning(c) &&
       p.isAlive &&
       p.kin == null &&
       p.marital == MaritalStatus.bekar &&
@@ -332,8 +338,9 @@ abstract final class Romance {
     required int base,
     String? name,
   }) {
-    final names = f.families.namesFor(gender, NameEra.forAgeGap(age - now));
-    final chosen = name ?? names[f.random.nextInt(names.length)];
+    final chosen =
+        name ??
+        f.pickName(f.families.namesFor(gender, NameEra.forAgeGap(age - now)));
     final trait = Trait.values[f.random.nextInt(Trait.values.length)];
     final seed = f.random.nextInt(1 << 30);
     return book.add(

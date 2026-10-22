@@ -116,7 +116,9 @@ class EffectResolver {
       final p = id == null ? null : people[id];
       if (p == null) continue;
       var updated = p.copyWith(lastEventAt: c.age);
-      if (!slot.offstage) updated = Relationships.touch(updated, c.age);
+      if (!slot.offstage) {
+        updated = Relationships.touch(updated, c.age).copyWith(archived: false);
+      }
       people = people.update(updated);
     }
     return c.copyWith(people: people);

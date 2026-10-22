@@ -115,7 +115,8 @@ class LifeAction {
     return switch (s) {
       ActionSpecial.evdenCik => c.home == HomeKind.aile,
       ActionSpecial.evArkadasi =>
-        c.home == HomeKind.aile || c.home == HomeKind.kira,
+        (c.home == HomeKind.aile || c.home == HomeKind.kira) &&
+            Romance.spouse(c) == null,
       ActionSpecial.aileyeDon => c.home.paysRent && Housing.hasParentInCity(c),
       ActionSpecial.evAl => a.houses == 0,
       ActionSpecial.evSat => a.houses > 0,
@@ -124,7 +125,7 @@ class LifeAction {
       ActionSpecial.arabaSat => a.cars > 0,
       ActionSpecial.kpss => JobMarket.canSitKpss(c),
       ActionSpecial.yazilimKursu => JobMarket.canTakeCodingCourse(c),
-      ActionSpecial.tanis => Romance.isSingle(c),
+      ActionSpecial.tanis => Romance.isSingle(c) && !Romance.mourning(c),
     };
   }
 

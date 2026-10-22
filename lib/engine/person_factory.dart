@@ -6,10 +6,23 @@ import '../models/models.dart';
 /// komşu, bakkal, iş arkadaşı, üniversite ve bölük arkadaşı. Ad, kuşağına
 /// göre [FamilyBook]'tan seçilir.
 class PersonFactory {
-  PersonFactory(this.random, this.families);
+  PersonFactory(this.random, this.families, {this.avoidName});
 
   final Random random;
   final FamilyBook families;
+
+  /// Oyuncunun adı: yeni kişilere verilmez (aynı adlı üç kişi karışır).
+  final String? avoidName;
+
+  /// [names] içinden [avoidName] dışındaki bir ad.
+  String pickName(List<String> names) {
+    final pool = [
+      for (final n in names)
+        if (n != avoidName) n,
+    ];
+    final from = pool.isEmpty ? names : pool;
+    return from[random.nextInt(from.length)];
+  }
 
   /// Yeni bir kişi ekler; kitabın yeni hâlini ve kişiyi döndürür.
   ///
@@ -117,8 +130,7 @@ class PersonFactory {
     Bond bond = Bond.tanidik,
   }) {
     final g = gender ?? Gender.values[random.nextInt(Gender.values.length)];
-    final names = families.namesFor(g, NameEra.forAgeGap(age - now));
-    final name = names[random.nextInt(names.length)];
+    final name = pickName(families.namesFor(g, NameEra.forAgeGap(age - now)));
     final surname = families.surnames[random.nextInt(families.surnames.length)];
     final traits = <Trait>{?requiredTrait};
     final target = random.nextDouble() < 0.7 ? 2 : 1;

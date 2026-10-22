@@ -244,7 +244,11 @@ class LifeEngine {
       event,
       side,
     );
-    final notes = [..._state.notes, ...lifeNotes];
+    final notes = [
+      ..._state.notes,
+      ...lifeNotes,
+      ..._worldSmall(_state.character, afterLife),
+    ];
     final character = Relationships.syncFamilyBond(
       Romance.syncFlags(YearTick.updateHardshipFlags(afterLife)),
     );
@@ -1163,7 +1167,8 @@ class LifeEngine {
     );
   }
 
-  PersonFactory get _factory => PersonFactory(_random, families);
+  PersonFactory get _factory =>
+      PersonFactory(_random, families, avoidName: _state.character.name);
 
   /// YKS tercihinde puanın yettiği bölüm ve şehirler; tercih beklemiyorsa
   /// boş.

@@ -112,6 +112,8 @@ abstract final class HardDay {
     final picked = <Person>[];
     for (final p in c.people.active(c.age)) {
       if (!p.isAlive || p.ageAt(c.age) < 12) continue;
+      // Aile zaten yanındadır; arayanlar dostlar ve tanıdıklardır.
+      if (p.kin != null) continue;
       if (PeopleTick.livesTogether(c, p)) continue;
       final closeness = Relationships.closeness(p, c.age);
       if (closeness < 40) continue;
