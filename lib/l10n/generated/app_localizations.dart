@@ -352,11 +352,11 @@ abstract class AppLocalizations {
   /// **'Bu yıl ne yapacaksın?'**
   String get actionsTitle;
 
-  /// No description provided for @actionsLeft.
+  /// No description provided for @timeLeft.
   ///
   /// In tr, this message translates to:
-  /// **'{count, plural, =0{Bu yılın hakları bitti} =1{1 hakkın kaldı} other{{count} hakkın kaldı}}'**
-  String actionsLeft(int count);
+  /// **'{count, plural, =0{Bu yılın vakti bitti} other{Vakit: {count}}}'**
+  String timeLeft(int count);
 
   /// No description provided for @actionFree.
   ///

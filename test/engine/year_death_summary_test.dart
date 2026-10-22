@@ -227,26 +227,35 @@ void main() {
   });
 
   group('ActionCatalog', () {
-    test('yıllık hak evreye göre: çocuk 2, öğrenci 4, çalışan 2, emekli 4', () {
-      expect(ActionCatalog.allowanceFor(testCharacter(age: 5)), 2);
-      expect(ActionCatalog.allowanceFor(testCharacter(age: 16)), 4);
-      expect(ActionCatalog.allowanceFor(testCharacter(age: 25)), 2);
+    test('yıllık vakit: 0–5 yaş 0, 6–10 yaş 2, öğrenci 5, çalışan 3, '
+        'işsiz 5, emekli 6', () {
+      int time(Character c) => ActionCatalog.timeFor(c);
+      const job = Job(careerId: 'memur', tier: 1);
+      expect(time(testCharacter(age: 0)), 0);
+      expect(time(testCharacter(age: 5)), 0);
+      expect(time(testCharacter(age: 6)), 2);
+      expect(time(testCharacter(age: 10)), 2);
+      expect(time(testCharacter(age: 11)), 5);
+      expect(time(testCharacter(age: 18)), 5);
       expect(
-        ActionCatalog.allowanceFor(
-          testCharacter(age: 21, flags: {ActionCatalog.studentFlag}),
-        ),
-        4,
+        time(testCharacter(age: 21, flags: {ActionCatalog.studentFlag})),
+        5,
       );
-      expect(ActionCatalog.allowanceFor(testCharacter(age: 40)), 2);
+      expect(time(testCharacter(age: 25, job: job)), 3);
+      expect(time(testCharacter(age: 25)), 5, reason: 'işsiz');
+      expect(time(testCharacter(age: 40, job: job)), 3);
+      expect(time(testCharacter(age: 70, pension: 140000)), 6);
       expect(
-        ActionCatalog.allowanceFor(testCharacter(age: 70, pension: 140000)),
-        4,
-      );
-      expect(
-        ActionCatalog.allowanceFor(testCharacter(age: 60, pension: 140000)),
-        4,
+        time(testCharacter(age: 60, pension: 140000)),
+        6,
         reason: 'erken emekli',
       );
+    });
+
+    test('tatil 2 vakit, diğer aksiyonlar 1', () {
+      for (final a in ActionCatalog.all) {
+        expect(a.timeCost, a.id == 'tatil' ? 2 : 1, reason: a.id);
+      }
     });
 
     test('ücretli aksiyonlar: spor 500 TL, tatil 25.000 TL', () {

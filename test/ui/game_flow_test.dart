@@ -120,17 +120,31 @@ void main() {
     expect(find.textContaining('göbek adında anlaşamıyorlar'), findsOneWidget);
   });
 
-  testWidgets('aksiyon hakkı düşer, Yaşlan yaşı artırır', (tester) async {
+  testWidgets('vakit düşer, Yaşlan yaşı artırır', (tester) async {
     await _bornAs(tester, 'Ali');
     await tester.tap(find.byKey(const Key('choose_right')));
     await tester.pumpAndSettle();
-    expect(find.text('2 hakkın kaldı'), findsOneWidget);
+    expect(find.text('Bu yılın vakti bitti'), findsOneWidget);
+    // 6 yaşına kadar yıllar yalnızca olaylarla geçer.
+    var steps = 0;
+    while (find.text('Vakit: 2').evaluate().isEmpty) {
+      expect(++steps, lessThan(60), reason: '6 yaşına gelinemedi');
+      if (find.byKey(const Key('choose_left')).evaluate().isNotEmpty) {
+        await tester.tap(find.byKey(const Key('choose_left')));
+      } else {
+        await tester.tap(find.byKey(const Key('age_up')));
+      }
+      await tester.pumpAndSettle();
+    }
+    expect(find.textContaining('6 yaş'), findsOneWidget);
+    await tester.ensureVisible(find.byKey(const Key('action_oyun_oyna')));
     await tester.tap(find.byKey(const Key('action_oyun_oyna')));
     await tester.pumpAndSettle();
-    expect(find.text('1 hakkın kaldı'), findsOneWidget);
+    expect(find.text('Vakit: 1'), findsOneWidget);
+    await tester.ensureVisible(find.byKey(const Key('age_up')));
     await tester.tap(find.byKey(const Key('age_up')));
     await tester.pumpAndSettle();
-    expect(find.textContaining('1 yaş'), findsOneWidget);
+    expect(find.textContaining('7 yaş'), findsOneWidget);
   });
 
   for (final size in const [Size(390, 844), Size(320, 568)]) {

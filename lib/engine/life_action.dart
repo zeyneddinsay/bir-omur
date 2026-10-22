@@ -16,6 +16,7 @@ class LifeAction {
     this.searchesJob = false,
     this.minAge = 0,
     this.maxAge,
+    this.timeCost = 1,
   });
 
   final String id;
@@ -33,6 +34,9 @@ class LifeAction {
   final bool searchesJob;
   final int minAge;
   final int? maxAge;
+
+  /// Harcadığı vakit; büyük işler (tatil) 2.
+  final int timeCost;
 
   /// Yaşa ve (iş arama için) duruma göre bu karakter yapabilir mi.
   bool isAvailableFor(Character c) {
@@ -147,6 +151,7 @@ abstract final class ActionCatalog {
       category: ActionCategory.eglence,
       minAge: 19,
       cost: 25000,
+      timeCost: 2,
       effect: Effect(stats: {StatKind.happiness: 10, StatKind.health: 2}),
     ),
     LifeAction(
@@ -182,15 +187,28 @@ abstract final class ActionCatalog {
       if (a.isAvailableFor(c)) a,
   ];
 
-  /// Yıllık aksiyon hakkı: çocuk 2, öğrenci 4, çalışan 2, emekli 4.
-  /// Erken emekli olan da emekli sayılır.
-  static int allowanceFor(Character c) {
-    if (c.isRetired) return 4;
-    return switch (c.stage) {
-      LifeStage.bebek || LifeStage.ilkokul => 2,
-      LifeStage.ortaokul || LifeStage.lise => 4,
-      LifeStage.genc => c.hasFlag(studentFlag) ? 4 : 2,
-      LifeStage.yetiskin || LifeStage.olgun || LifeStage.yasli => 2,
-    };
+  /// Bu yaştan önce yıllar yalnızca olaylarla geçer; kararları aile verir.
+  static const int firstTimeAge = 6;
+
+  /// Yıllık vakit (karar: 22 Ekim 2026). Her aksiyon ve etkileşim
+  /// [LifeAction.timeCost] kadar vakit harcar; kalan vakit sonraki yıla
+  /// geçmez.
+  ///
+  /// | Durum | Vakit |
+  /// | 0–5 yaş | 0 |
+  /// | 6–10 yaş | 2 |
+  /// | öğrenci (11–18, üniversite) | 5 |
+  /// | maaşlı çalışan | 3 |
+  /// | işsiz | 5 |
+  /// | emekli (erken emekli dahil) | 6 |
+  ///
+  /// Yarı zamanlı iş, fazla mesai ve kendi işi D2 ve D3'te eklenir.
+  static int timeFor(Character c) {
+    if (c.age < firstTimeAge) return 0;
+    if (c.isRetired) return 6;
+    if (c.age <= 10) return 2;
+    if (c.age <= 18 || c.hasFlag(studentFlag)) return 5;
+    if (c.job != null) return 3;
+    return 5;
   }
 }

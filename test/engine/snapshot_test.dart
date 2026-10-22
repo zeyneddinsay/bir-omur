@@ -126,13 +126,16 @@ void main() {
     test('aksiyon aşamasında kalan hak ve yapılanlar korunur', () {
       final engine = LifeEngine(deck: EventDeck([]), seed: 1);
       engine.startLife();
+      while (engine.state.character.age < ActionCatalog.firstTimeAge) {
+        engine.advanceYear();
+      }
       engine.doAction('oyun_oyna');
       final restored = LifeEngine.restore(
         deck: EventDeck([]),
         snapshot: _throughJson(engine.toSnapshot()),
       );
       expect(restored.state.phase, YearPhase.actions);
-      expect(restored.state.actionsLeft, 1);
+      expect(restored.state.timeLeft, 1);
       expect(restored.state.actionsUsed, {'oyun_oyna'});
       expect(() => restored.doAction('oyun_oyna'), throwsStateError);
     });
@@ -148,7 +151,7 @@ void main() {
         snapshot: _throughJson(engine.toSnapshot()),
       );
       expect(restored.state.phase, YearPhase.actions);
-      expect(restored.state.actionsLeft, 2);
+      expect(restored.state.timeLeft, 0);
     });
 
     test('zincir sırası kayıtla taşınır', () {

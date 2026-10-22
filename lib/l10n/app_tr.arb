@@ -62,8 +62,8 @@
   "rollFail": "Bu sefer olmadı.",
 
   "actionsTitle": "Bu yıl ne yapacaksın?",
-  "actionsLeft": "{count, plural, =0{Bu yılın hakları bitti} =1{1 hakkın kaldı} other{{count} hakkın kaldı}}",
-  "@actionsLeft": { "placeholders": { "count": { "type": "int" } } },
+  "timeLeft": "{count, plural, =0{Bu yılın vakti bitti} other{Vakit: {count}}}",
+  "@timeLeft": { "placeholders": { "count": { "type": "int" } } },
   "actionFree": "Ücretsiz",
   "moneyGain": "+{amount} TL",
   "@moneyGain": { "placeholders": { "amount": { "type": "int", "format": "decimalPattern" } } },

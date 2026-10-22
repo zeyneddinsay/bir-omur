@@ -173,10 +173,7 @@ class _ActionMenu extends ConsumerWidget {
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
           child: Text(l10n.actionsTitle, style: theme.textTheme.titleLarge),
         ),
-        Text(
-          l10n.actionsLeft(state.actionsLeft),
-          key: const Key('actions_left'),
-        ),
+        Text(l10n.timeLeft(state.timeLeft), key: const Key('actions_left')),
         if (controller.engine.lastJobSearch case final search?)
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),

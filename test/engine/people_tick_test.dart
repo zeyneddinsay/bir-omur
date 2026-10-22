@@ -249,6 +249,43 @@ void main() {
     expect(after.people.active(30).length, PeopleTick.maxActive);
   });
 
+  test('haberler kart seçimi ve aksiyon boyunca korunur', () {
+    final engine = LifeEngine(
+      deck: EventDeck([
+        for (var age = 0; age <= 30; age++)
+          EventCard.fromJson({
+            'id': 'kart_$age',
+            'stage': LifeStage.forAge(age).id,
+            'minAge': age,
+            'maxAge': age,
+            'mandatory': true,
+            'text': 'Bir olay.',
+            'left': {'label': 'Sol'},
+            'right': {'label': 'Sağ'},
+          }),
+      ]),
+      seed: 4,
+      families: families,
+    );
+    engine.startLife();
+    var checked = 0;
+    while (engine.state.character.age < 30) {
+      while (engine.state.phase == YearPhase.cards) {
+        final before = engine.state.news;
+        engine.choose(ChoiceSide.left);
+        expect(engine.state.news, before);
+      }
+      final before = engine.state.news;
+      if (engine.state.timeLeft > 0) {
+        engine.doAction('aileyle_vakit');
+        expect(engine.state.news, before);
+      }
+      if (before.isNotEmpty) checked++;
+      engine.advanceYear();
+    }
+    expect(checked, greaterThan(3));
+  });
+
   test('haberler kayda girip çıkar', () {
     final engine = LifeEngine(
       deck: EventDeck(const []),

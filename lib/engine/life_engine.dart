@@ -33,7 +33,7 @@ class LifeState {
     required this.phase,
     this.queue = const ScheduleQueue(),
     this.pendingCards = const [],
-    this.actionsLeft = 0,
+    this.timeLeft = 0,
     this.actionsUsed = const {},
     this.lastOutcome,
     this.summary,
@@ -46,7 +46,7 @@ class LifeState {
 
   /// Bu yıl henüz kaydırılmamış kartlar; ilki ekrandaki karttır.
   final List<EventCard> pendingCards;
-  final int actionsLeft;
+  final int timeLeft;
 
   /// Bu yıl yapılmış aksiyonlar; aynı aksiyon yılda bir kez yapılır.
   final Set<String> actionsUsed;
@@ -63,7 +63,7 @@ class LifeState {
     phase: phase,
     queue: queue,
     pendingCards: pendingCards,
-    actionsLeft: actionsLeft,
+    timeLeft: timeLeft,
     actionsUsed: actionsUsed,
     lastOutcome: lastOutcome,
     summary: summary,
@@ -186,20 +186,26 @@ class LifeEngine {
         queue: queue,
         pendingCards: remaining,
         lastOutcome: storedOutcome,
+        news: _state.news,
       );
     }
-    return _state = _actionsPhase(character, queue, lastOutcome: storedOutcome);
+    return _state = _actionsPhase(
+      character,
+      queue,
+      lastOutcome: storedOutcome,
+    ).withNews(_state.news);
   }
 
   /// Bu yıl yapılabilecek aksiyonlar ve yapılıp yapılamayacakları.
   List<(LifeAction action, bool enabled)> availableActions() {
     final c = _state.character;
-    final canAct = _state.phase == YearPhase.actions && _state.actionsLeft > 0;
+    final canAct = _state.phase == YearPhase.actions;
     return [
       for (final action in ActionCatalog.availableFor(c))
         (
           action,
           canAct &&
+              _state.timeLeft >= action.timeCost &&
               action.canAfford(c, _market) &&
               !_state.actionsUsed.contains(action.id),
         ),
@@ -215,8 +221,8 @@ class LifeEngine {
     if (_state.phase != YearPhase.actions) {
       throw StateError('Aksiyonlar yalnızca kartlardan sonra yapılır');
     }
-    if (_state.actionsLeft <= 0) {
-      throw StateError('Bu yılın aksiyon hakkı bitti');
+    if (_state.timeLeft < action.timeCost) {
+      throw StateError('Bu yılın vakti yetmiyor');
     }
     if (!action.isAvailableFor(c)) {
       throw StateError('$actionId şu an yapılamaz');
@@ -247,9 +253,10 @@ class LifeEngine {
       character: character,
       phase: YearPhase.actions,
       queue: _state.queue,
-      actionsLeft: _state.actionsLeft - 1,
+      timeLeft: _state.timeLeft - action.timeCost,
       actionsUsed: {..._state.actionsUsed, actionId},
       lastOutcome: _state.lastOutcome,
+      news: _state.news,
     );
   }
 
@@ -303,7 +310,7 @@ class LifeEngine {
       for (final e in _state.queue.entries) {'card': e.cardId, 'age': e.atAge},
     ],
     'pending': [for (final c in _state.pendingCards) c.id],
-    'actionsLeft': _state.actionsLeft,
+    'timeLeft': _state.timeLeft,
     'actionsUsed': _state.actionsUsed.toList(),
     'cause': _state.summary?.cause.name,
     'news': [for (final n in _state.news) n.toJson()],
@@ -369,7 +376,7 @@ class LifeEngine {
         character: character,
         phase: phase,
         queue: queue,
-        actionsLeft: snapshot['actionsLeft'] as int,
+        timeLeft: snapshot['timeLeft'] as int,
         actionsUsed: {...(snapshot['actionsUsed'] as List).cast<String>()},
       ),
     };
@@ -421,7 +428,7 @@ class LifeEngine {
       character: character,
       phase: YearPhase.actions,
       queue: queue,
-      actionsLeft: ActionCatalog.allowanceFor(character),
+      timeLeft: ActionCatalog.timeFor(character),
       lastOutcome: lastOutcome,
     );
   }

@@ -28,7 +28,7 @@ void main() {
       final engine = LifeEngine(deck: EventDeck([]), seed: 1);
       final state = engine.startLife();
       expect(state.phase, YearPhase.actions);
-      expect(state.actionsLeft, 2);
+      expect(state.timeLeft, 0, reason: '0–5 yaşta vakit yok');
     });
 
     test('kartlar bitince aksiyonlar, sonra yaşlanma', () {
@@ -54,16 +54,22 @@ void main() {
       expect(state.phase, YearPhase.actions);
       expect(state.character.hasFlag('secti'), isTrue);
 
+      expect(state.timeLeft, 0);
+      expect(() => engine.doAction('oyun_oyna'), throwsStateError);
+
+      state = engine.advanceYear();
+      expect(state.character.age, 1);
+      while (state.character.age < ActionCatalog.firstTimeAge) {
+        state = engine.advanceYear();
+      }
+      expect(state.timeLeft, 2);
       state = engine.doAction('oyun_oyna');
-      expect(state.actionsLeft, 1);
+      expect(state.timeLeft, 1);
       expect(
         () => engine.doAction('oyun_oyna'),
         throwsStateError,
         reason: 'yılda bir kez',
       );
-
-      state = engine.advanceYear();
-      expect(state.character.age, 1);
     });
 
     test('yukarı seçeneği olmayan kartta yukarı kaydırılamaz', () {

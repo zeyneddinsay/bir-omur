@@ -15,7 +15,7 @@ Canlı tasarım dokümanı: https://claude.ai/code/artifact/5e791558-0c95-419c-a
 ## Kesinleşmiş tasarım kararları
 
 - **Tur = 1 yaş.** Her yıl 1–3 olay kartı gelir. Kart sola ya da sağa kaydırılarak seçilir; nadir kartlarda yukarı kaydırma üçüncü seçenektir.
-- **Aksiyon menüsü:** Yıllık hak sayısı hayat evresine göre değişir: çocuk 2, öğrenci 4, çalışan 2, emekli 4. Bazı aksiyonlar para da ister (örnek: spor 500 TL, tatil 25.000 TL).
+- **Vakit:** Her yıl bir vakit puanı vardır; aksiyonlar ve kişilerle etkileşimler vakit harcar (tatil 2, diğerleri 1). Vakit: 0–5 yaş 0, 6–10 yaş 2, öğrenci 5, maaşlı çalışan 3, kendi işinin başında 2, iş ve işletme birlikte 1, işsiz 5, emekli 6 (22 Ekim 2026; eski "yıllık hak" kararının yerine). Bazı aksiyonlar para da ister (örnek: spor 500 TL, tatil 25.000 TL).
 - **Göstergeler:** Sağlık, Mutluluk, Bilgi, İtibar ve Aile Bağı 0–100 arasındadır. Para TL cinsindendir, üst sınırı yoktur.
 - **Gizli değerler:** mizaç (Sakin, Asabi, Hayalperest, Hesapçı), şans, memleket, futbol takımı ve kalıcı bayraklar (`ev_sahibi`, `askerligini_yapti` gibi).
 - **Ölüm:** Yalnızca Sağlık 0 olunca ya da yaşa bağlı ölüm ihtimali gerçekleşince ölünür. Mutluluk ya da Para 0 olursa oyun bitmez, bir "zor dönem" kart zinciri başlar.
@@ -129,7 +129,7 @@ Bu aşamada alınan kararlar (22 Ekim 2026):
 - Temel kural: ilişkiler oyuncunun arkasından değişmez. Yakınlık ve husumet ancak oyuncunun bir seçimiyle değişir; kişilik özellikleri davranışı değiştirir, çubuğu değil.
 - Ekonomi gerçek 2026 rakamlarına çekilir (mevcut tutarlar yaklaşık × 3,3; ayrıntı dokümanın "Ekonomi ölçeği" bölümünde).
 - Oyuncu romantik ilişkide cinsiyet seçebilir. 18 yaşından önce romantik bağ yalnızca platonik ve en fazla 1 yaş farkla olur.
-- Yıllık vakit puanı, aşağıdaki "Aksiyon menüsü" kararının yerine geçer (D1'de uygulanır): 0–5 yaş 0, 6–10 yaş 2, öğrenci 5, maaşlı çalışan 3, kendi işinin başında 2, iş ve işletme birlikte 1, işsiz 5, emekli 6.
+- Yıllık vakit puanı eski aksiyon hakkının yerine geçti (yukarıda "Vakit"); yarı zamanlı iş, fazla mesai ve kendi işi D2 ve D3'te eklenir.
 - İlk sürüm kapsamı dar başlar: 6 kişilik özelliği; 4 işletme (simit, berber, oto yıkama, yazılım; fabrika yalnızca aileden devralma); alan başına 1 meslek. Kalanlar güncellemelerle gelir.
 - Mevcut Esnaf mesleği kaldırılacak; "kendi dükkânı" işletme sistemine geçer.
 - Eski 150 kart taşınmaz; olaylar yeni formatta sıfırdan yazılır. Oyun mantığı (karakter, yıl döngüsü, olaylar, card_lint, ana ekran) baştan yazılır; altyapı (tohumlu rastgelelik, kayıt, servisler, portre, tema) kalır.
@@ -140,7 +140,7 @@ D1 adımları (kişiler ve İnsanlar sekmesi):
 - [x] Kişi ve hafıza modeli: `lib/models/person.dart`, `lib/engine/relationships.dart` (yakınlık ve husumet anılardan hesaplanır)
 - [x] Aile profilleri ve doğum: `assets/families.json`, `assets/names.json` (ad kuşakları), `lib/engine/family_generator.dart`
 - [x] Kişilerin yılı: `lib/engine/people_tick.dart` (kendi hayatı, haberler, sınıflar, aynı evde soğumama, arşiv)
-- [ ] Vakit puanı
+- [x] Vakit puanı: `ActionCatalog.timeFor`, aksiyonların vakit bedeli (`timeCost`)
 - [ ] Etkileşimler ve Ara sohbeti
 - [ ] Yeni olay formatı ve card_lint; eski kartların silinmesi
 - [ ] D1 içeriği (yaklaşık 40 olay)

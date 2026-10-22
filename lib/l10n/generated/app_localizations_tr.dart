@@ -166,13 +166,12 @@ class AppLocalizationsTr extends AppLocalizations {
   String get actionsTitle => 'Bu yıl ne yapacaksın?';
 
   @override
-  String actionsLeft(int count) {
+  String timeLeft(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count hakkın kaldı',
-      one: '1 hakkın kaldı',
-      zero: 'Bu yılın hakları bitti',
+      other: 'Vakit: $count',
+      zero: 'Bu yılın vakti bitti',
     );
     return '$_temp0';
   }

@@ -40,7 +40,7 @@ LifeState simulateLife(
         reason: 'yaş atlamaz',
       );
       expect(c.age, lessThanOrEqualTo(DeathCheck.maxAge));
-      expect(state.actionsLeft, greaterThanOrEqualTo(0));
+      expect(state.timeLeft, greaterThanOrEqualTo(0));
       switch (state.phase) {
         case YearPhase.cards:
           expect(state.pendingCards, isNotEmpty);
