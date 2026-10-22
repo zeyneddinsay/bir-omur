@@ -8,6 +8,7 @@
     "meslek_lisesi": "Lise seçiminde meslek lisesi (motor: ustalık yolu, YKS'de puan düşük)",
     "yks_iyi_gecti": "YKS sabahı iyi geçti (motor: puana +15)",
     "ehliyet_var": "Ehliyeti var",
+    "staj_yapti": "Üniversitede staj yaptı (motor: iş mülakatlarında artı)",
     "memlekete_dondu": "Yaşlılığında memlekete döndü"
   },
   "reviewedTerms": {}

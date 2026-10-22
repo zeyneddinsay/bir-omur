@@ -374,6 +374,14 @@ class CardValidator {
     final sides = {'left': card.left, 'right': card.right, 'up': ?card.up};
     for (final MapEntry(key: side, value: choice) in sides.entries) {
       for (final effect in choice.allEffects) {
+        if (effect.performance != 0 &&
+            (conditionCareer == null ||
+                conditionCareer == Conditions.noCareer)) {
+          error(
+            '.$side',
+            'performans etkisi bir işi olmayı ister (conditions.career)',
+          );
+        }
         if (effect.career case JoinCareer(:final careerId, :final tier)) {
           final career = _careersById[careerId];
           if (career == null) {

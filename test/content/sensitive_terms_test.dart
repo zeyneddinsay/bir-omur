@@ -52,6 +52,7 @@ void main() {
           'meslek_lisesi': '',
           'yks_iyi_gecti': '',
           'ehliyet_var': '',
+          'staj_yapti': '',
           'asker_anilari': '',
           'tasindi': '',
         },

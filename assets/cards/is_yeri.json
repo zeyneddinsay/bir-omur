@@ -1,0 +1,575 @@
+[
+  {
+    "id": "cuma_epostasi",
+    "type": "yer",
+    "theme": "is",
+    "minAge": 19,
+    "maxAge": 64,
+    "repeat": { "cooldown": 4, "max": 3 },
+    "conditions": { "career": "any" },
+    "text": "Cuma 17.58. Konusu 'ACİL' olan bir e-posta düştü. Çantan çoktan omzunda.",
+    "left": {
+      "label": "Açar, hallederim",
+      "effects": { "performance": 5, "happiness": -2 }
+    },
+    "right": {
+      "label": "Pazartesi bakarım",
+      "effects": { "performance": -3, "happiness": 2 }
+    }
+  },
+  {
+    "id": "cay_ocagi",
+    "type": "kisi",
+    "theme": "is",
+    "minAge": 19,
+    "maxAge": 64,
+    "repeat": { "cooldown": 5, "max": 2 },
+    "conditions": { "career": "any" },
+    "roles": {
+      "is": { "roles": ["isArkadasi"], "traits": ["dedikoducu"] }
+    },
+    "speaker": "is",
+    "text": "Çay ocağında {is.ad} fısıldıyor: 'Müdür ayrılıyormuş. Benden duymuş olma.'",
+    "left": {
+      "label": "Yayma bunu",
+      "effects": {
+        "reputation": 1,
+        "people": {
+          "is": {
+            "memory": {
+              "kind": "dedikoduya_kulak_asmadi",
+              "label": "Dedikoduma kulak asmadı",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Kime kime söyledin?",
+      "effects": {
+        "reputation": -2,
+        "people": {
+          "is": {
+            "memory": {
+              "kind": "dedikodu_ortagi",
+              "label": "Çay ocağında sırlarımızı paylaştık",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "yilbasi_cekilisi",
+    "type": "kisi",
+    "theme": "is",
+    "minAge": 19,
+    "maxAge": 64,
+    "repeat": { "cooldown": 6, "max": 2 },
+    "conditions": { "career": "any" },
+    "roles": {
+      "patron": { "roles": ["patron"] }
+    },
+    "speaker": "patron",
+    "text": "Yılbaşı çekilişinde kâğıdı açtın: {patron.ad}. Patronun. Bütçe sınırı belli, yaratıcılık sınırı belirsiz.",
+    "left": {
+      "label": "Şık bir kalem",
+      "effects": {
+        "money": -1500,
+        "people": {
+          "patron": {
+            "memory": {
+              "kind": "yilbasi_hediyesi",
+              "label": "Yılbaşında bana zarif bir hediye aldı",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Esprili bir kupa",
+      "effects": { "money": -800 },
+      "roll": { "stat": "luck", "threshold": 50 },
+      "success": {
+        "reputation": 2,
+        "people": {
+          "patron": {
+            "memory": {
+              "kind": "kupa_guldurdu",
+              "label": "Yılbaşı kupasıyla herkesi güldürdü",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      },
+      "fail": {
+        "people": {
+          "patron": {
+            "memory": {
+              "kind": "kupa_ters",
+              "label": "Yılbaşı hediyesiyle beni tiye aldı",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "rapor_yetismiyor",
+    "type": "kisi",
+    "theme": "is",
+    "minAge": 19,
+    "maxAge": 64,
+    "repeat": { "cooldown": 4, "max": 3 },
+    "conditions": { "career": "any" },
+    "roles": {
+      "is": { "roles": ["isArkadasi"] }
+    },
+    "speaker": "is",
+    "text": "{is.ad} raporu yetiştiremiyor; gözleri ekrandan sana kayıyor. Saat dokuz olmuş.",
+    "left": {
+      "label": "Kalıp yardım ederim",
+      "effects": {
+        "health": -1,
+        "happiness": -1,
+        "people": {
+          "is": {
+            "memory": {
+              "kind": "rapora_yardim",
+              "label": "Gece kalıp raporuma yardım etti",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Benim de işim var",
+      "effects": {
+        "performance": 2,
+        "people": {
+          "is": {
+            "memory": {
+              "kind": "yardim_etmedi",
+              "label": "Zor anımda yardım etmedi",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "aileyiz_toplantisi",
+    "type": "kisi",
+    "theme": "is",
+    "minAge": 19,
+    "maxAge": 64,
+    "repeat": { "cooldown": 6, "max": 2 },
+    "conditions": { "career": "any" },
+    "roles": {
+      "patron": { "roles": ["patron"] }
+    },
+    "speaker": "patron",
+    "text": "{patron.ad} toplantıda: 'Biz burada bir aileyiz. Zam konusunu da ailece düşünürüz.'",
+    "left": {
+      "label": "Gülümser geçerim",
+      "effects": { "happiness": -1 }
+    },
+    "right": {
+      "label": "Aile zam da verir",
+      "roll": { "stat": "reputation", "threshold": 55 },
+      "success": {
+        "reputation": 2,
+        "people": {
+          "patron": {
+            "memory": {
+              "kind": "zekice_cevap",
+              "label": "Toplantıda zekice bir cevap verdi",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "fail": {
+        "performance": -5,
+        "people": {
+          "patron": {
+            "memory": {
+              "kind": "toplantida_laf",
+              "label": "Toplantıda herkesin önünde laf soktu",
+              "tone": "olumsuz",
+              "severity": 2
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "fikir_hirsizligi",
+    "type": "kisi",
+    "theme": "is",
+    "minAge": 21,
+    "maxAge": 64,
+    "repeat": "once",
+    "conditions": { "career": "any" },
+    "roles": {
+      "is": { "roles": ["isArkadasi"], "traits": ["kiskanc"] }
+    },
+    "speaker": "is",
+    "text": "{is.ad} senin fikrini toplantıda kendi fikriymiş gibi anlattı. Müdür çok beğendi.",
+    "left": {
+      "label": "Orada düzeltirim",
+      "effects": {
+        "performance": 4,
+        "reputation": 2,
+        "people": {
+          "is": {
+            "memory": {
+              "kind": "toplantida_mahcup",
+              "label": "Toplantıda beni mahcup etti",
+              "tone": "olumsuz",
+              "severity": 2
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Sonra yüz yüze konuşurum",
+      "roll": { "stat": "reputation", "threshold": 50 },
+      "success": {
+        "people": {
+          "is": {
+            "memory": {
+              "kind": "ozur_bekledi",
+              "label": "Fikrini çaldığımı yüzüme söyledi, büyütmedi",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "fail": { "performance": -3, "happiness": -2 }
+    }
+  },
+  {
+    "id": "metrobus_arizasi",
+    "type": "genel",
+    "theme": "is",
+    "minAge": 19,
+    "maxAge": 64,
+    "repeat": { "cooldown": 5, "max": 2 },
+    "conditions": { "career": "any" },
+    "text": "Toplu taşıma arızalandı; işe yarım saat geç kalacaksın. Taksi durağı karşıda duruyor.",
+    "left": {
+      "label": "Taksiye atlarım",
+      "effects": { "money": -1500 }
+    },
+    "right": {
+      "label": "Geç kalırım",
+      "effects": { "performance": -3 }
+    }
+  },
+  {
+    "id": "akraba_torpil",
+    "type": "kisi",
+    "theme": "is",
+    "minAge": 26,
+    "maxAge": 64,
+    "repeat": "once",
+    "conditions": { "career": "any", "minTier": 2 },
+    "roles": {
+      "akraba": { "kin": ["amca", "hala", "dayi", "teyze"] }
+    },
+    "speaker": "akraba",
+    "text": "{akraba.akraba}: 'Senin şirkette bizim oğlana bir iş yok mu? Çok efendi çocuktur.'",
+    "left": {
+      "label": "Bir bakarım",
+      "effects": {
+        "reputation": -1,
+        "people": {
+          "akraba": {
+            "memory": {
+              "kind": "isi_sordu",
+              "label": "Oğlum için iş sordu",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Torpil yapmam",
+      "effects": {
+        "reputation": 1,
+        "people": {
+          "akraba": {
+            "memory": {
+              "kind": "torpil_yapmadi",
+              "label": "Oğlum için parmağını kıpırdatmadı",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "kira_zammi",
+    "type": "kisi",
+    "theme": "para",
+    "minAge": 18,
+    "maxAge": 90,
+    "repeat": { "cooldown": 3, "max": 4 },
+    "conditions": { "flags": ["kiraci"] },
+    "roles": {
+      "ev": { "roles": ["evSahibi"] }
+    },
+    "speaker": "ev",
+    "text": "Ev sahibin {ev.ad}: 'Kirayı ben artırmıyorum {oyuncu.hitap.evlat}, piyasa artırıyor.'",
+    "left": {
+      "label": "Peki, kabul",
+      "effects": {
+        "rentChange": 50000,
+        "people": {
+          "ev": {
+            "memory": {
+              "kind": "zamma_razi",
+              "label": "Kira zammına itiraz etmedi",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Pazarlık ederim",
+      "roll": { "stat": "reputation", "threshold": 50 },
+      "success": { "rentChange": 20000 },
+      "fail": {
+        "rentChange": 80000,
+        "people": {
+          "ev": {
+            "memory": {
+              "kind": "kira_pazarligi",
+              "label": "Kira konusunda benimle pazarlığa girişti",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "kombi_bozuldu",
+    "type": "kisi",
+    "theme": "mahalle",
+    "minAge": 18,
+    "maxAge": 90,
+    "repeat": { "cooldown": 6, "max": 2 },
+    "conditions": { "flags": ["kiraci"] },
+    "roles": {
+      "ev": { "roles": ["evSahibi"] }
+    },
+    "speaker": "ev",
+    "text": "Kombi bozuldu, evde nefesin görünüyor. {ev.ad}: 'Bu kışı idare edin, yazın bakarız.'",
+    "left": {
+      "label": "Kendim yaptırırım",
+      "effects": {
+        "money": -8000,
+        "people": {
+          "ev": {
+            "memory": {
+              "kind": "kombiyi_yaptirdi",
+              "label": "Kombiyi kendi cebinden yaptırdı",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Kiracı hakkımı ararım",
+      "roll": { "stat": "knowledge", "threshold": 50 },
+      "success": { "happiness": 2 },
+      "fail": {
+        "health": -3,
+        "people": {
+          "ev": {
+            "memory": {
+              "kind": "hak_aradi",
+              "label": "Kombi için kapıma dayandı",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "yeni_komsu_kek",
+    "type": "kisi",
+    "theme": "mahalle",
+    "minAge": 18,
+    "maxAge": 90,
+    "repeat": { "cooldown": 5, "max": 3 },
+    "conditions": { "flags": ["tasindi"] },
+    "roles": {
+      "komsu": { "roles": ["komsu"], "sameCity": true, "noMemory": "kek_sorgusu" }
+    },
+    "speaker": "komsu",
+    "text": "{komsu.ad} {komsu.hitap.amca} kapıda, elinde kek: 'Hoş geldiniz! Nereden geldiniz, ne iş yapıyorsunuz, kira kaç?'",
+    "left": {
+      "label": "Her şeyi anlatırım",
+      "effects": {
+        "reputation": -1,
+        "people": {
+          "komsu": {
+            "memory": {
+              "kind": "kek_sorgusu",
+              "label": "Kapıda her şeyini anlattı",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Teşekkürler, kek güzel",
+      "effects": {
+        "happiness": 1,
+        "people": {
+          "komsu": {
+            "memory": {
+              "kind": "kek_sorgusu",
+              "label": "Keki aldı, sorularımı savuşturdu",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "kredi_karti",
+    "type": "genel",
+    "theme": "para",
+    "minAge": 20,
+    "maxAge": 70,
+    "repeat": { "cooldown": 8, "max": 2 },
+    "text": "Banka aradı: 'Size özel limitli kredi kartı tanımladık, kargoya veriyoruz.' Sen bir şey istememiştin.",
+    "left": {
+      "label": "Kesinlikle istemem",
+      "effects": { "knowledge": 1 }
+    },
+    "right": {
+      "label": "Gelsin, dursun",
+      "roll": { "stat": "knowledge", "threshold": 50 },
+      "success": { "happiness": 2 },
+      "fail": { "money": -20000, "happiness": -3 }
+    }
+  },
+  {
+    "id": "altin_gunu",
+    "type": "kisi",
+    "theme": "mahalle",
+    "minAge": 25,
+    "maxAge": 75,
+    "repeat": { "cooldown": 5, "max": 3 },
+    "conditions": { "gender": "kadin" },
+    "roles": {
+      "komsu": { "roles": ["komsu"], "sameCity": true }
+    },
+    "speaker": "komsu",
+    "text": "{komsu.ad} {komsu.hitap.amca}: 'Altın günü bu ay sende! Herkes bir gram getirecek, börekler senden.'",
+    "left": {
+      "label": "Sofrayı kurarım",
+      "effects": {
+        "money": -5000,
+        "gold": 5,
+        "happiness": 2,
+        "people": {
+          "komsu": {
+            "memory": {
+              "kind": "altin_gunu",
+              "label": "Altın gününde sofrası çok güzeldi",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Bu ay olmaz",
+      "effects": {
+        "people": {
+          "komsu": {
+            "memory": {
+              "kind": "altin_gunu_ekti",
+              "label": "Altın gününü ekti",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "kahve_maci",
+    "type": "kisi",
+    "theme": "mahalle",
+    "minAge": 25,
+    "maxAge": 75,
+    "repeat": { "cooldown": 5, "max": 3 },
+    "conditions": { "gender": "erkek" },
+    "roles": {
+      "bakkal": { "roles": ["bakkal"], "sameCity": true }
+    },
+    "speaker": "bakkal",
+    "text": "Bakkal {bakkal.ad} {bakkal.hitap.amca} dükkânın önüne televizyon çıkarmış: 'Derbi var, çay benden!'",
+    "left": {
+      "label": "Bir çay içerim",
+      "effects": {
+        "happiness": 3,
+        "people": {
+          "bakkal": {
+            "memory": {
+              "kind": "mac_izledik",
+              "label": "Dükkânın önünde birlikte maç izledik",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Evde izlerim",
+      "effects": { "happiness": 1 }
+    }
+  }
+]

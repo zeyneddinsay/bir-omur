@@ -15,6 +15,7 @@ final _registry = ContentRegistry(
     'meslek_lisesi': '',
     'yks_iyi_gecti': '',
     'ehliyet_var': '',
+    'staj_yapti': '',
     'asker_anilari': '',
     'tasindi': '',
   },
@@ -253,6 +254,30 @@ void main() {
         result,
         'a.left.people.merhum',
         messageContains: 'vefat',
+      );
+    });
+
+    test('performans etkisi iş koşulu ister', () {
+      Map<String, dynamic> card({Map<String, dynamic>? conditions}) => _card(
+        'a',
+        extra: {
+          'conditions': ?conditions,
+          'left': {
+            'label': 'Sol',
+            'effects': {'performance': 5},
+          },
+        },
+      );
+      _expectSingleError(
+        _check([card()]),
+        'a.left',
+        messageContains: 'performans',
+      );
+      expect(
+        _check([
+          card(conditions: {'career': 'any'}),
+        ]).errors,
+        isEmpty,
       );
     });
 
@@ -509,7 +534,7 @@ void main() {
     final names = File('assets/names.json').readAsStringSync();
     final interactions = File('assets/interactions.json').readAsStringSync();
     const registry =
-        '{"flags": {"iyi_lise": "", "meslek_lisesi": "", "yks_iyi_gecti": "", "ehliyet_var": "", "asker_anilari": ""}}';
+        '{"flags": {"iyi_lise": "", "meslek_lisesi": "", "yks_iyi_gecti": "", "ehliyet_var": "", "staj_yapti": "", "asker_anilari": ""}}';
     expect(
       () => loadContent(
         registrySource: registry,

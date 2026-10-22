@@ -40,6 +40,7 @@ class ContentRegistry {
     EducationRules.vocationalFlag,
     EducationRules.goodExamFlag,
     ActionCatalog.licenseFlag,
+    JobMarket.internshipFlag,
   };
 
   /// Motorun kendisinin planladığı iplikler (örnek: mezuniyet); hiçbir

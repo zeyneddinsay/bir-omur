@@ -86,7 +86,8 @@ Uygun kişi seçilirken yakınlığı ya da husumeti yüksek kişiler iki kat a�
 ## Etkiler
 
 - **Göstergeler ve diğerleri:** Göstergeler (`health`, `happiness`, `knowledge`, `reputation`), `money`,
-  varlıklar, `career`, `addFlags`, `removeFlags`.
+  varlıklar, `career`, `addFlags`, `removeFlags`. İşteki performans için `performance` (artı ya da eksi); yalnızca
+  `conditions.career` ile (işi olana) gelen olaylarda kullanılır.
 - **Aile Bağı:** Değiştirilemez; ailenin yakınlığından hesaplanır.
 - **Kişilere etki (`people`):** yuva adı → `memory` (`kind`, `label` kişinin gözünden, `tone`:
   `olumlu`/`olumsuz`, `severity` 1–3, isteğe bağlı `owner`: `kisi`/`oyuncu`/`ikisi`), `heal` (anı türü

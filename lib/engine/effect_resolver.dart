@@ -163,6 +163,14 @@ class EffectResolver {
     if (effect.career case final change?) {
       next = Careers.applyChange(next, change, careers ?? CareerBook.empty);
     }
+    if (effect.performance != 0 && next.job != null) {
+      final job = next.job!;
+      next = next.copyWith(
+        job: job.copyWith(
+          performance: (job.performance + effect.performance).clamp(0, 100),
+        ),
+      );
+    }
     return Economy.syncDerivedFlags(next);
   }
 

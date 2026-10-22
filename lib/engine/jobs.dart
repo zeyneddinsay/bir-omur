@@ -100,6 +100,9 @@ abstract final class JobMarket {
   /// Yazılım kursunu bitiren (yazılımcı ilanları için).
   static const String codingFlag = 'yazilim_kursu';
 
+  /// Üniversitede staj yapan (kartın açtığı bayrak); mülakatta +8.
+  static const String internshipFlag = 'staj_yapti';
+
   /// Şehir türüne göre yıllık ilan sayısı.
   static int listingCount(CityType type) => switch (type) {
     CityType.buyuk => 6,
@@ -251,8 +254,9 @@ abstract final class JobMarket {
     final value = kind == null ? c.luck : c.stats[kind];
     final luckBonus = kind == null ? 0 : (c.luck - 50) / 10;
     final reputation = (c.stats.reputation - 50) / 10;
+    final internship = c.hasFlag(internshipFlag) ? 8 : 0;
     final dice = random.nextInt(101);
-    return (value + dice) / 2 + luckBonus + reputation >= threshold
+    return (value + dice) / 2 + luckBonus + reputation + internship >= threshold
         ? InterviewResult.alindi
         : InterviewResult.olmadi;
   }

@@ -21,6 +21,7 @@ class Effect {
     this.removeFlags = const [],
     this.schedule,
     this.people = const {},
+    this.performance = 0,
   });
 
   static const Effect none = Effect();
@@ -37,6 +38,7 @@ class Effect {
   static const String removeFlagsKey = 'removeFlags';
   static const String scheduleKey = 'schedule';
   static const String peopleKey = 'people';
+  static const String performanceKey = 'performance';
 
   /// Kart JSON'unda bir etki nesnesinin alabileceği bütün anahtarlar.
   static final Set<String> knownKeys = {
@@ -53,6 +55,7 @@ class Effect {
     removeFlagsKey,
     scheduleKey,
     peopleKey,
+    performanceKey,
   };
 
   final Map<StatKind, int> stats;
@@ -83,6 +86,9 @@ class Effect {
   /// Rol yuvasındaki kişilere etkiler: yuva adı → etki.
   final Map<String, PersonEffect> people;
 
+  /// İşteki performansa etki (işi yoksa etkisizdir).
+  final int performance;
+
   bool get isEmpty =>
       stats.isEmpty &&
       money == 0 &&
@@ -96,7 +102,8 @@ class Effect {
       addFlags.isEmpty &&
       removeFlags.isEmpty &&
       schedule == null &&
-      people.isEmpty;
+      people.isEmpty &&
+      performance == 0;
 
   factory Effect.fromJson(JsonReader r) {
     r.rejectUnknownKeys(knownKeys);
@@ -122,6 +129,7 @@ class Effect {
       removeFlags: r.optionalStringList(removeFlagsKey),
       schedule: schedule == null ? null : ScheduledEvent.fromJson(schedule),
       people: _people(r.optionalObject(peopleKey)),
+      performance: r.optionalInt(performanceKey) ?? 0,
     );
   }
 

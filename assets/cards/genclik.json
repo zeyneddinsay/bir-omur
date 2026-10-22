@@ -1,0 +1,418 @@
+[
+  {
+    "id": "sanayi_staji",
+    "type": "genel",
+    "theme": "okul",
+    "minAge": 16,
+    "maxAge": 18,
+    "repeat": "once",
+    "conditions": { "flags": ["meslek_lisesi"] },
+    "text": "Meslek lisesinin stajı sanayide. Usta ilk gün eline çaydanlığı verdi: 'Önce çay, sonra motor.'",
+    "left": {
+      "label": "Çayı demlerim",
+      "effects": { "reputation": 2, "happiness": -1 }
+    },
+    "right": {
+      "label": "Motora bakmak istiyorum",
+      "roll": { "stat": "luck", "threshold": 50 },
+      "success": { "knowledge": 3, "happiness": 2 },
+      "fail": { "reputation": -2 }
+    }
+  },
+  {
+    "id": "deneme_sinavi",
+    "type": "kisi",
+    "theme": "okul",
+    "minAge": 16,
+    "maxAge": 18,
+    "repeat": "once",
+    "roles": {
+      "rakip": { "roles": ["sinifArkadasi"], "minGap": -1, "maxGap": 1 }
+    },
+    "speaker": "rakip",
+    "text": "Deneme sınavında {rakip.ad} birinci, sen ikinci oldun. Listede adlarınız alt alta duruyor.",
+    "left": {
+      "label": "Tebrik ederim",
+      "effects": {
+        "people": {
+          "rakip": {
+            "memory": {
+              "kind": "deneme_tebrik",
+              "label": "Denemede birinci olunca beni tebrik etti",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Bir dahakine görürsün",
+      "effects": {
+        "knowledge": 3,
+        "people": {
+          "rakip": {
+            "memory": {
+              "kind": "deneme_rekabet",
+              "label": "Deneme sonucunda bana meydan okudu",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "oda_arkadasi_bulasik",
+    "type": "kisi",
+    "theme": "okul",
+    "minAge": 18,
+    "maxAge": 26,
+    "repeat": "once",
+    "roles": {
+      "oda": { "roles": ["odaArkadasi"] }
+    },
+    "speaker": "oda",
+    "text": "Yurt odasında lavabo dolu. {oda.ad} 'Akşam yıkarım' diyor; üç gündür akşam olmadı.",
+    "left": {
+      "label": "Kibarca hatırlatırım",
+      "roll": { "stat": "reputation", "threshold": 45 },
+      "success": {
+        "happiness": 1,
+        "people": {
+          "oda": {
+            "memory": {
+              "kind": "bulasik_anlasma",
+              "label": "Bulaşık nöbetini güzelce konuştuk",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "fail": {
+        "happiness": -2,
+        "people": {
+          "oda": {
+            "memory": {
+              "kind": "bulasik_kavgasi",
+              "label": "Bulaşık yüzünden bana söylendi",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Ben yıkarım",
+      "effects": {
+        "happiness": -2,
+        "people": {
+          "oda": {
+            "memory": {
+              "kind": "bulasigimi_yikadi",
+              "label": "Bulaşığımı tek kelime etmeden yıkadı",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "ev_arkadasi_fatura",
+    "type": "kisi",
+    "theme": "para",
+    "minAge": 18,
+    "maxAge": 40,
+    "repeat": { "cooldown": 4, "max": 2 },
+    "roles": {
+      "ev": { "roles": ["evArkadasi"] }
+    },
+    "speaker": "ev",
+    "text": "Doğalgaz faturası geldi. {ev.ad}: 'Ben bu ay hep dışarıdaydım, yarı yarıya olmaz bence.'",
+    "left": {
+      "label": "Yarı yarıya ödenir",
+      "effects": {
+        "money": -2000,
+        "people": {
+          "ev": {
+            "memory": {
+              "kind": "fatura_tartismasi",
+              "label": "Fatura konusunda bana hak vermedi",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Bu sefer ben öderim",
+      "effects": {
+        "money": -4000,
+        "people": {
+          "ev": {
+            "memory": {
+              "kind": "faturayi_odedi",
+              "label": "Faturanın hepsini o ödedi",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "vize_gecesi",
+    "type": "kisi",
+    "theme": "okul",
+    "minAge": 18,
+    "maxAge": 28,
+    "repeat": { "cooldown": 2, "max": 2 },
+    "conditions": { "flags": ["universite_ogrencisi"] },
+    "roles": {
+      "arkadas": { "roles": ["sinifArkadasi"] }
+    },
+    "speaker": "arkadas",
+    "text": "Yarın vize var. {arkadas.ad}: 'Kafede birlikte çalışalım' diyor; ikiniz de biliyorsunuz ki sohbet edeceksiniz.",
+    "left": {
+      "label": "Kütüphaneye giderim",
+      "effects": { "knowledge": 4, "happiness": -2 }
+    },
+    "right": {
+      "label": "Kafeye gidelim",
+      "effects": {
+        "happiness": 3,
+        "knowledge": 1,
+        "people": {
+          "arkadas": {
+            "memory": {
+              "kind": "vize_kafe",
+              "label": "Vize gecesi kafede sabaha kadar konuştuk",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "proje_grubu",
+    "type": "kisi",
+    "theme": "okul",
+    "minAge": 19,
+    "maxAge": 28,
+    "repeat": "once",
+    "conditions": { "flags": ["universite_ogrencisi"] },
+    "roles": {
+      "arkadas": { "roles": ["sinifArkadasi"] }
+    },
+    "speaker": "arkadas",
+    "text": "Proje grubunda {arkadas.ad} hiçbir şey yapmadı ama sunumda ilk sözü almak istiyor.",
+    "left": {
+      "label": "Söz onun olsun",
+      "effects": {
+        "reputation": -1,
+        "people": {
+          "arkadas": {
+            "memory": {
+              "kind": "sunumu_verdi",
+              "label": "Sunumda ilk sözü bana bıraktı",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Hocaya anlatırım",
+      "effects": {
+        "knowledge": 2,
+        "people": {
+          "arkadas": {
+            "memory": {
+              "kind": "hocaya_soyledi",
+              "label": "Projede çalışmadığımı hocaya anlattı",
+              "tone": "olumsuz",
+              "severity": 2
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "kulup_standi",
+    "type": "genel",
+    "theme": "genel",
+    "minAge": 18,
+    "maxAge": 26,
+    "repeat": "once",
+    "conditions": { "flags": ["universite_ogrencisi"] },
+    "text": "Dağcılık kulübü stant açmış: 'Hafta sonu kamp var, çadır bizden, çorba senden.'",
+    "left": {
+      "label": "Yazılırım",
+      "effects": { "money": -3000, "happiness": 4, "health": 2 }
+    },
+    "right": {
+      "label": "Kampım yurt odası",
+      "effects": { "knowledge": 1 }
+    }
+  },
+  {
+    "id": "staj_teklifi",
+    "type": "genel",
+    "theme": "is",
+    "minAge": 20,
+    "maxAge": 26,
+    "repeat": "once",
+    "conditions": { "flags": ["universite_ogrencisi"] },
+    "text": "Üçüncü sınıf, staj zamanı. Bir şirket yazmış: 'Ücretsiz staj, öğle yemeği bizden, tecrübe ömürlük.'",
+    "left": {
+      "label": "Kabul ederim",
+      "effects": {
+        "addFlags": ["staj_yapti"],
+        "knowledge": 3,
+        "happiness": -2
+      }
+    },
+    "right": {
+      "label": "Yaz tatil yapacağım",
+      "effects": { "happiness": 4 }
+    }
+  },
+  {
+    "id": "harclik_gecikti",
+    "type": "kisi",
+    "theme": "para",
+    "minAge": 18,
+    "maxAge": 26,
+    "repeat": "once",
+    "conditions": {
+      "flags": ["universite_ogrencisi"],
+      "familyProfile": ["memur", "esnaf", "ciftci"]
+    },
+    "roles": {
+      "veli": { "kin": ["anne", "baba"], "offstage": false }
+    },
+    "speaker": "veli",
+    "text": "{veli.akraba} aradı, sesi mahcup: 'Bu ay harçlığı biraz geç göndersem olur mu {oyuncu.hitap.evlat}?'",
+    "left": {
+      "label": "Dert etme, idare ederim",
+      "effects": {
+        "happiness": -1,
+        "people": {
+          "veli": {
+            "memory": {
+              "kind": "anlayis_gosterdi",
+              "label": "Darda kaldığımızda anlayış gösterdi",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Benim de kiram var",
+      "effects": {
+        "people": {
+          "veli": {
+            "memory": {
+              "kind": "harclik_sitemi",
+              "label": "Harçlık gecikince sitem etti",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "bolukten_arama",
+    "type": "kisi",
+    "theme": "genel",
+    "minAge": 23,
+    "maxAge": 70,
+    "repeat": { "cooldown": 8, "max": 2 },
+    "roles": {
+      "asker": { "formerRoles": ["bolukArkadasi"] }
+    },
+    "speaker": "asker",
+    "text": "Bölükten {asker.ad} aradı: 'Hatırladın mı, nöbette bana bir bardak çay getirmiştin?'",
+    "left": {
+      "label": "Unutur muyum!",
+      "effects": {
+        "happiness": 3,
+        "people": {
+          "asker": {
+            "bond": "arkadas",
+            "memory": {
+              "kind": "eski_gunler",
+              "label": "Bölük günlerini gülerek andık",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Pek hatırlamıyorum",
+      "effects": {
+        "people": {
+          "asker": {
+            "memory": {
+              "kind": "bolugu_unuttu",
+              "label": "Bölük günlerimizi hatırlamadı",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "issiz_mezun",
+    "type": "kisi",
+    "theme": "is",
+    "minAge": 22,
+    "maxAge": 30,
+    "repeat": "once",
+    "conditions": { "flags": ["universite_mezunu"], "career": "none" },
+    "roles": {
+      "akraba": { "kin": ["hala", "teyze", "amca", "dayi"] }
+    },
+    "speaker": "akraba",
+    "text": "{akraba.akraba}: 'Bizim komşunun oğlu bankaya girdi. Sen niye girmiyorsun, diplomayı çerçeveye mi koydun?'",
+    "left": {
+      "label": "İlanlara bakıyorum",
+      "effects": { "happiness": -1, "knowledge": 1 }
+    },
+    "right": {
+      "label": "Herkesin yolu ayrı",
+      "effects": {
+        "happiness": 1,
+        "people": {
+          "akraba": {
+            "memory": {
+              "kind": "ters_cevap",
+              "label": "İş sorunca bana ters cevap verdi",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  }
+]
