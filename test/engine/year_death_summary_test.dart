@@ -181,7 +181,7 @@ void main() {
 
     test('en belirgin özellik kazanır', () {
       expect(
-        nick(testCharacter(family: 95, reputation: 85)),
+        nick(testCharacter(family: 95, reputation: 76)),
         Nickname.bayramlarinBasKosesi,
       );
       expect(
@@ -192,14 +192,14 @@ void main() {
     });
 
     test('itibar eşiği aşınca iki kat sayılır', () {
-      // İtibar 86: (86-80)×2 = 12, aile 90: 10 → Sözü Dinlenen.
+      // İtibar eşiği 70: (76-70)×2 = 12, aile 90: 10 → Sözü Dinlenen.
       expect(
-        nick(testCharacter(reputation: 86, family: 90)),
+        nick(testCharacter(reputation: 76, family: 90)),
         Nickname.sozuDinlenen,
       );
-      // İtibar 84: 8, aile 90: 10 → Bayramların Baş Köşesi.
+      // İtibar 74: 8, aile 90: 10 → Bayramların Baş Köşesi.
       expect(
-        nick(testCharacter(reputation: 84, family: 90)),
+        nick(testCharacter(reputation: 74, family: 90)),
         Nickname.bayramlarinBasKosesi,
       );
     });
@@ -207,7 +207,7 @@ void main() {
     test('ev sahipliği küçük bir pay sayılır', () {
       const house = Assets(houses: 1);
       expect(
-        nick(testCharacter(assets: house, reputation: 82)),
+        nick(testCharacter(assets: house, reputation: 72)),
         Nickname.evSahibi,
       );
       expect(
