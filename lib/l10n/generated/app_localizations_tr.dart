@@ -1153,6 +1153,229 @@ class AppLocalizationsTr extends AppLocalizations {
       'Yazılım kursunu bitirdin; yazılımcı ilanlarına başvurabilirsin.';
 
   @override
+  String get business_simit => 'Simit ve çay tezgâhı';
+
+  @override
+  String get business_berber => 'Berber salonu';
+
+  @override
+  String get business_oto_yikama => 'Oto yıkama';
+
+  @override
+  String get business_yazilim => 'Yazılım şirketi (tek başına)';
+
+  @override
+  String get business_yazilim_ekip => 'Yazılım şirketi (ekiple)';
+
+  @override
+  String get businessTitle => 'Kendi işin';
+
+  @override
+  String businessSign(String surname, String type) {
+    return '$surname · $type';
+  }
+
+  @override
+  String get businessOpenTitle => 'İşletme aç';
+
+  @override
+  String get businessOpenHint =>
+      'Paran yetmezse kuruluşun %70\'ine kadar kredi çekilir (5 yıl). İşi olan ya da itibarı 50 ve üstü olana kredi verilir.';
+
+  @override
+  String businessSetup(String money, String profit) {
+    return 'Kuruluş $money · normal yılda yaklaşık $profit kâr';
+  }
+
+  @override
+  String get businessBlocked_yas => 'Yaşın tutmuyor';
+
+  @override
+  String get businessBlocked_sart =>
+      'Yazılımcı olarak çalışmış ya da bilgisayar mezunu olmalısın';
+
+  @override
+  String get businessBlocked_para => 'Peşinata bile paran yetmiyor';
+
+  @override
+  String get businessBlocked_zatenVar => 'Bu işletmen zaten var';
+
+  @override
+  String get businessBlocked_cokFazla => 'En fazla iki işletme';
+
+  @override
+  String get businessBlocked_iflas => 'Bu işte batalı iki yıl olmadı';
+
+  @override
+  String get businessBlocked_vakit => 'Bu yılın vakti yetmiyor (2 vakit)';
+
+  @override
+  String get businessBlocked_askerde => 'Askerdesin';
+
+  @override
+  String businessLastProfit(String money) {
+    return 'Geçen yıl: $money';
+  }
+
+  @override
+  String businessExpected(String money) {
+    return 'Bu yıl beklenen: $money';
+  }
+
+  @override
+  String get businessReputation => 'İtibar';
+
+  @override
+  String businessFacts(int branches, int staff, int rivals) {
+    return '$branches şube · $staff çalışan · yakında $rivals rakip';
+  }
+
+  @override
+  String get businessPresent => 'Başındayım';
+
+  @override
+  String get businessManaged => 'Müdürde';
+
+  @override
+  String get businessLaborHint => 'Emek işi: başında durmazsan müşteri azalır.';
+
+  @override
+  String businessManagedHint(String money) {
+    return 'Başında durmak vaktini 2\'ye (işin de varsa 1\'e) indirir; müdüre bırakmak yılda $money maaş ister.';
+  }
+
+  @override
+  String get price_ucuz => 'Ucuz';
+
+  @override
+  String get price_normal => 'Normal';
+
+  @override
+  String get price_pahali => 'Pahalı';
+
+  @override
+  String businessAdvertise(String money) {
+    return 'Reklam ver · $money · 1 vakit';
+  }
+
+  @override
+  String businessExpand(String money) {
+    return 'Şube aç · $money · 2 vakit';
+  }
+
+  @override
+  String businessUpgrade(String money) {
+    return 'Ekip kur · $money · 2 vakit';
+  }
+
+  @override
+  String get businessPartner => 'Ortak al';
+
+  @override
+  String businessPartnerOffer(String name, String money) {
+    return '$name: $money koyar, kârın %30\'u onun';
+  }
+
+  @override
+  String businessPartnerNow(String name) {
+    return 'Ortağın: $name';
+  }
+
+  @override
+  String businessSell(String money) {
+    return 'Sat · $money';
+  }
+
+  @override
+  String businessClose(String money) {
+    return 'Kapat · $money';
+  }
+
+  @override
+  String get businessDisposeConfirm =>
+      'Emin misin? Çalışanların eski çalışanın olur.';
+
+  @override
+  String get businessDisposeYes => 'Evet';
+
+  @override
+  String note_isletmeAcildi(String name) {
+    return '$name açıldı. Hayırlı olsun!';
+  }
+
+  @override
+  String note_isletmeKar(String name, String money) {
+    return '$name bu yıl $money kâr etti.';
+  }
+
+  @override
+  String note_isletmeZarar(String name, String money) {
+    return '$name bu yıl $money zarar etti.';
+  }
+
+  @override
+  String note_isletmeBatti(String name) {
+    return '$name battı. Kepenkler indi; borçlar kaldı.';
+  }
+
+  @override
+  String note_isletmeSatildi(String name) {
+    return '$name satıldı.';
+  }
+
+  @override
+  String note_isletmeKapandi(String name) {
+    return '$name kapandı.';
+  }
+
+  @override
+  String note_subeAcildi(String name) {
+    return '$name yeni bir şube açtı.';
+  }
+
+  @override
+  String note_isletmeBuyudu(String name) {
+    return '$name artık bir ekip.';
+  }
+
+  @override
+  String note_ortakAlindi(String person, String name) {
+    return '$person işine ortak oldu: $name.';
+  }
+
+  @override
+  String money_isletme(String name, String what) {
+    return '$name: $what';
+  }
+
+  @override
+  String get bizMoney_kar => 'yılın kârı';
+
+  @override
+  String get bizMoney_kredi => 'kredi taksidi';
+
+  @override
+  String get bizMoney_kurulus => 'kuruluş';
+
+  @override
+  String get bizMoney_reklam => 'reklam';
+
+  @override
+  String get bizMoney_sube => 'büyüme';
+
+  @override
+  String get bizMoney_ortak => 'ortağın sermayesi';
+
+  @override
+  String get bizMoney_satis => 'satış';
+
+  @override
+  String get bizMoney_kapanis => 'kapanış';
+
+  @override
+  String get bizMoney_iflas => 'batış, ekipman satıldı';
+
+  @override
   String get journalTitle => 'Bu yılın günlüğü';
 
   @override

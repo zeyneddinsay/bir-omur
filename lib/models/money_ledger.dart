@@ -50,6 +50,10 @@ enum MoneySource {
   /// Başka şehre taşınma; [MoneyEntry.ref] yeni şehir.
   tasinma,
 
+  /// İşletme: kâr, zarar, kuruluş, reklam, şube, satış; [MoneyEntry.ref]
+  /// `tür:ne`.
+  isletme,
+
   /// Ev, araba, taşınma gibi varlık hareketleri.
   varlik,
 }

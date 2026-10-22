@@ -30,6 +30,7 @@ class RoleSlot {
     this.memory,
     this.noMemory,
     this.sameCity,
+    this.livesTogether,
     this.offstage = false,
     this.deceased = false,
   });
@@ -77,6 +78,9 @@ class RoleSlot {
   /// true: oyuncuyla aynı şehirde; false: başka şehirde; null: fark etmez.
   final bool? sameCity;
 
+  /// true: oyuncuyla aynı evde; false: ayrı evde; null: fark etmez.
+  final bool? livesTogether;
+
   /// Kişi sahnede değil (hakkında konuşuluyor): olay görüşme sayılmaz.
   final bool offstage;
 
@@ -105,6 +109,7 @@ class RoleSlot {
     'memory',
     'noMemory',
     'sameCity',
+    'livesTogether',
     'offstage',
     'deceased',
   };
@@ -171,6 +176,9 @@ class RoleSlot {
       memory: r.optionalString('memory'),
       noMemory: r.optionalString('noMemory'),
       sameCity: r.has('sameCity') ? r.optionalBool('sameCity') : null,
+      livesTogether: r.has('livesTogether')
+          ? r.optionalBool('livesTogether')
+          : null,
       offstage: r.optionalBool('offstage') || r.optionalBool('deceased'),
       deceased: r.optionalBool('deceased'),
     );

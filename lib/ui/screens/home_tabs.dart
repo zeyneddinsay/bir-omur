@@ -9,6 +9,7 @@ import '../people/people_tab.dart';
 import '../people/people_text.dart';
 import '../people/people_view.dart';
 import '../providers.dart';
+import '../widgets/business_card.dart';
 import '../widgets/education_card.dart';
 import '../widgets/home_card.dart';
 import '../widgets/job_card.dart';
@@ -40,6 +41,7 @@ class HomeTabs extends ConsumerWidget {
           children: [
             _WorkHeader(engine: engine),
             JobCard(state: state),
+            BusinessSection(state: state),
             EducationCard(state: state),
             ListingsCard(state: state),
           ],

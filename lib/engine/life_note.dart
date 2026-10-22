@@ -50,6 +50,22 @@ enum NoteKind {
   kpssGecti,
   kpssKaldi,
   yazilimKursu,
+
+  /// İşletme açıldı; detay tür.
+  isletmeAcildi,
+
+  /// İşletmenin yılı; detay `tür|kâr`.
+  isletmeYili,
+
+  /// Nakit eksiye düştü, işletme battı; detay tür.
+  isletmeBatti,
+  isletmeSatildi,
+  isletmeKapandi,
+  subeAcildi,
+  isletmeBuyudu,
+
+  /// Ortak alındı; detay `tür|kişi adı`.
+  ortakAlindi,
 }
 
 class LifeNote {

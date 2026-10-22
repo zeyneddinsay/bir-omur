@@ -1,5 +1,6 @@
 import 'assets.dart';
 import 'career.dart';
+import 'business.dart';
 import 'education.dart';
 import 'home.dart';
 import 'life_counters.dart';
@@ -135,7 +136,11 @@ class Character {
     String? city,
     this.home = HomeKind.aile,
     this.education = Education.none,
+    List<Business> businesses = const [],
+    Map<String, int> bankruptcies = const {},
   }) : assert(age >= 0),
+       businesses = List.unmodifiable(businesses),
+       bankruptcies = Map.unmodifiable(bankruptcies),
        city = city ?? hometown,
        ledger = List.unmodifiable(ledger),
        assert(luck >= 0 && luck <= 100),
@@ -156,6 +161,12 @@ class Character {
 
   /// Lise, YKS, üniversite.
   final Education education;
+
+  /// Oyuncunun işletmeleri.
+  final List<Business> businesses;
+
+  /// Batan işletme türü → batış yaşı (aynı türü 2 yıl açamaz).
+  final Map<String, int> bankruptcies;
 
   /// Bu yılın ve geçen yılın para hareketleri, kaynaklarıyla (Varlıklar
   /// sekmesi). Daha eskileri tutulmaz.
@@ -237,6 +248,8 @@ class Character {
     String? city,
     HomeKind? home,
     Education? education,
+    List<Business>? businesses,
+    Map<String, int>? bankruptcies,
   }) {
     return Character(
       name: name ?? this.name,
@@ -263,6 +276,8 @@ class Character {
       city: city ?? this.city,
       home: home ?? this.home,
       education: education ?? this.education,
+      businesses: businesses ?? this.businesses,
+      bankruptcies: bankruptcies ?? this.bankruptcies,
     );
   }
 
@@ -302,6 +317,9 @@ class Character {
     'city': city,
     'home': home.id,
     if (education != Education.none) 'education': education.toJson(),
+    if (businesses.isNotEmpty)
+      'businesses': [for (final b in businesses) b.toJson()],
+    if (bankruptcies.isNotEmpty) 'bankruptcies': bankruptcies,
     if (ledger.isNotEmpty) 'ledger': [for (final e in ledger) e.toJson()],
   };
 
@@ -346,6 +364,14 @@ class Character {
       city: json['city'] as String?,
       home: HomeKind.fromId(json['home'] as String? ?? 'aile') ?? HomeKind.aile,
       education: Education.fromJson(json['education'] as Map<String, dynamic>?),
+      businesses: [
+        for (final b in json['businesses'] as List? ?? const [])
+          Business.fromJson(b as Map<String, dynamic>),
+      ],
+      bankruptcies: {
+        ...?(json['bankruptcies'] as Map<String, dynamic>?)
+            ?.cast<String, int>(),
+      },
       ledger: [
         for (final e in json['ledger'] as List? ?? const [])
           MoneyEntry.fromJson(e as Map<String, dynamic>),

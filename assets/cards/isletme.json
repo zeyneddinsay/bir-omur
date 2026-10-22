@@ -1,0 +1,477 @@
+[
+  {
+    "id": "zabita_tabela",
+    "type": "genel",
+    "theme": "is",
+    "minAge": 16,
+    "maxAge": 90,
+    "repeat": { "cooldown": 6, "max": 3 },
+    "conditions": { "business": "any" },
+    "text": "Zabıta kapıda: 'Tabelanız yönetmeliğe uymuyor, yarım metre taşmış.' Yan dükkânın tabelası iki metre.",
+    "left": {
+      "label": "Hemen düzeltirim",
+      "effects": { "money": -15000, "business": 2 }
+    },
+    "right": {
+      "label": "Yan dükkân ne olacak?",
+      "roll": { "stat": "reputation", "threshold": 55 },
+      "success": { "happiness": 3 },
+      "fail": { "money": -40000, "happiness": -3 }
+    }
+  },
+  {
+    "id": "simit_yagmur",
+    "type": "genel",
+    "theme": "is",
+    "minAge": 16,
+    "maxAge": 90,
+    "repeat": { "cooldown": 3, "max": 4 },
+    "conditions": { "business": "simit" },
+    "text": "Sabahtan beri sağanak. Tezgâhta altmış simit soğuyor, sokakta bir tek sen varsın.",
+    "left": {
+      "label": "Kapı kapı dolaşırım",
+      "effects": { "health": -2, "money": 3000, "business": 2 }
+    },
+    "right": {
+      "label": "Bugün paydos",
+      "effects": { "money": -2500, "happiness": 2 }
+    }
+  },
+  {
+    "id": "simit_sabah_musterisi",
+    "type": "genel",
+    "theme": "is",
+    "minAge": 16,
+    "maxAge": 90,
+    "repeat": { "cooldown": 4, "max": 3 },
+    "conditions": { "business": "simit" },
+    "text": "Her sabah gelen beyefendi bugün de geldi: 'Dünkünden olmasın ama, çıtır olsun.'",
+    "left": {
+      "label": "Fırından yeni çıktı",
+      "effects": { "business": 3, "happiness": 1 }
+    },
+    "right": {
+      "label": "Hepsi bugünün abi",
+      "effects": { "business": -1, "reputation": 1 }
+    }
+  },
+  {
+    "id": "berber_fotograf",
+    "type": "genel",
+    "theme": "is",
+    "minAge": 18,
+    "maxAge": 90,
+    "repeat": { "cooldown": 4, "max": 3 },
+    "conditions": { "business": "berber" },
+    "text": "Müşteri telefonu uzattı: 'Aynısından.' Fotoğraftakinin saçı başka, kafası başka, yaşı başka.",
+    "left": {
+      "label": "Elimden geleni yaparım",
+      "roll": { "stat": "knowledge", "threshold": 50 },
+      "success": { "business": 4, "happiness": 2 },
+      "fail": { "business": -3, "happiness": -1 }
+    },
+    "right": {
+      "label": "Size başkası yakışır",
+      "effects": { "business": 1, "reputation": 1 }
+    }
+  },
+  {
+    "id": "berber_sohbet",
+    "type": "genel",
+    "theme": "is",
+    "minAge": 18,
+    "maxAge": 90,
+    "repeat": { "cooldown": 5, "max": 3 },
+    "conditions": { "business": "berber" },
+    "text": "Koltuktaki müşteri yarım saattir ekonomiyi anlatıyor. Arkada sırada dört kişi var.",
+    "left": {
+      "label": "Haklısın, valla",
+      "effects": { "business": 2, "happiness": -1 }
+    },
+    "right": {
+      "label": "Makası hızlandırırım",
+      "effects": { "money": 4000, "business": -1 }
+    }
+  },
+  {
+    "id": "yikama_camur",
+    "type": "genel",
+    "theme": "is",
+    "minAge": 18,
+    "maxAge": 90,
+    "repeat": { "cooldown": 4, "max": 3 },
+    "conditions": { "business": "oto_yikama" },
+    "text": "Yarım saat önce yıkadığınız araba çamura bulanmış geri geldi. Sahibi kollarını kavuşturmuş.",
+    "left": {
+      "label": "Bir daha yıkarız",
+      "effects": { "money": -1500, "business": 3 }
+    },
+    "right": {
+      "label": "Yağmuru biz yağdırmadık",
+      "effects": { "business": -3, "happiness": 1 }
+    }
+  },
+  {
+    "id": "yikama_filo",
+    "type": "genel",
+    "theme": "is",
+    "minAge": 18,
+    "maxAge": 90,
+    "repeat": { "cooldown": 6, "max": 2 },
+    "rarity": "nadir",
+    "conditions": { "business": "oto_yikama" },
+    "text": "Bir kargo firması kırk aracını her hafta size yıkatmak istiyor. Ama fiyatta yüzde otuz indirim istiyorlar.",
+    "left": {
+      "label": "Anlaştık",
+      "effects": { "money": 180000, "health": -2, "business": -1 }
+    },
+    "right": {
+      "label": "Bu fiyata olmaz",
+      "effects": { "business": 1 }
+    },
+    "up": {
+      "label": "Yüzde on beşte buluşalım",
+      "roll": { "stat": "reputation", "threshold": 60 },
+      "success": { "money": 260000, "business": 1 },
+      "fail": { "happiness": -2 }
+    }
+  },
+  {
+    "id": "yazilim_buyuk_musteri",
+    "type": "genel",
+    "theme": "is",
+    "minAge": 20,
+    "maxAge": 90,
+    "repeat": { "cooldown": 4, "max": 3 },
+    "conditions": { "business": "yazilim" },
+    "text": "Büyük bir müşteri 'küçük bir değişiklik' istiyor. Tarif ettiği şey ayrı bir uygulama.",
+    "left": {
+      "label": "Ek ücretle yaparız",
+      "roll": { "stat": "reputation", "threshold": 50 },
+      "success": { "money": 120000, "business": 1 },
+      "fail": { "business": -4 }
+    },
+    "right": {
+      "label": "Müşteri her zaman haklı",
+      "effects": { "health": -3, "happiness": -2, "business": 4 }
+    }
+  },
+  {
+    "id": "yazilim_sunucu",
+    "type": "genel",
+    "theme": "is",
+    "minAge": 20,
+    "maxAge": 90,
+    "repeat": { "cooldown": 5, "max": 2 },
+    "conditions": { "business": "yazilim" },
+    "text": "Gece üçte telefon: sistem çökmüş, müşterinin kampanyası sabah dokuzda başlıyor.",
+    "left": {
+      "label": "Kalkıp düzeltirim",
+      "effects": { "health": -3, "business": 4 }
+    },
+    "right": {
+      "label": "Sabah bakarım",
+      "effects": { "business": -6, "happiness": 1 }
+    }
+  },
+  {
+    "id": "calisan_zam",
+    "type": "kisi",
+    "theme": "is",
+    "minAge": 18,
+    "maxAge": 90,
+    "repeat": { "cooldown": 3, "max": 4 },
+    "conditions": { "business": "any" },
+    "roles": {
+      "calisan": { "roles": ["calisan"] }
+    },
+    "speaker": "calisan",
+    "text": "{calisan.ad} çay getirirken boğazını temizledi: 'Kusura bakma {oyuncu.hitap.abi}, kira arttı. Bir zam olsa...'",
+    "left": {
+      "label": "Haklısın, yaparız",
+      "effects": {
+        "money": -60000,
+        "business": 2,
+        "people": {
+          "calisan": {
+            "memory": {
+              "kind": "zam_verdi",
+              "label": "Zor zamanda maaşımı artırdı",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Şimdi olmaz",
+      "effects": {
+        "people": {
+          "calisan": {
+            "memory": {
+              "kind": "zam_vermedi",
+              "label": "Zam istedim, olmaz dedi",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "calisan_gec_kaldi",
+    "type": "kisi",
+    "theme": "is",
+    "minAge": 18,
+    "maxAge": 90,
+    "repeat": { "cooldown": 4, "max": 3 },
+    "conditions": { "business": "any" },
+    "roles": {
+      "calisan": { "roles": ["calisan"] }
+    },
+    "speaker": "calisan",
+    "text": "{calisan.ad} bu hafta üçüncü kez geç geldi. 'Otobüs kaçtı' diyor, saçları ıslak.",
+    "left": {
+      "label": "Son kez, tamam mı?",
+      "effects": {
+        "business": -1,
+        "people": {
+          "calisan": {
+            "memory": {
+              "kind": "hos_gordu",
+              "label": "Geç kaldım, hoş gördü",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Maaştan keserim",
+      "effects": {
+        "money": 5000,
+        "people": {
+          "calisan": {
+            "memory": {
+              "kind": "maastan_kesti",
+              "label": "Geç kaldım diye maaşımdan kesti",
+              "tone": "olumsuz",
+              "severity": 2
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "rakip_indirim",
+    "type": "kisi",
+    "theme": "is",
+    "minAge": 16,
+    "maxAge": 90,
+    "repeat": { "cooldown": 4, "max": 3 },
+    "conditions": { "business": "any" },
+    "roles": {
+      "rakip": { "roles": ["rakip"], "sameCity": true }
+    },
+    "speaker": "rakip",
+    "text": "{rakip.ad} camına kocaman yazmış: 'HER ŞEY YARI FİYATINA.' Senin müşterilerin önünde sıraya girmiş.",
+    "left": {
+      "label": "Ben de indiririm",
+      "effects": {
+        "money": -40000,
+        "business": 2,
+        "people": {
+          "rakip": {
+            "memory": {
+              "kind": "fiyat_savasi",
+              "label": "Fiyat savaşına girdik",
+              "tone": "olumsuz",
+              "severity": 2
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Kalite konuşur",
+      "roll": { "stat": "reputation", "threshold": 55 },
+      "success": { "business": 3, "happiness": 2 },
+      "fail": { "business": -4, "happiness": -2 }
+    }
+  },
+  {
+    "id": "rakip_cay",
+    "type": "kisi",
+    "theme": "is",
+    "minAge": 16,
+    "maxAge": 90,
+    "repeat": { "cooldown": 6, "max": 2 },
+    "conditions": { "business": "any" },
+    "roles": {
+      "rakip": { "roles": ["rakip"], "sameCity": true, "maxHostility": 30 }
+    },
+    "speaker": "rakip",
+    "text": "{rakip.ad} elinde iki çayla geldi: 'Komşuyuz sonuçta. Kiraları birlikte konuşalım mı?'",
+    "left": {
+      "label": "Otur bakalım",
+      "effects": {
+        "happiness": 2,
+        "people": {
+          "rakip": {
+            "memory": {
+              "kind": "rakiple_cay",
+              "label": "Rakip olsak da çayımı içti",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "İşim var, sağ ol",
+      "effects": {
+        "business": 1,
+        "people": {
+          "rakip": {
+            "memory": {
+              "kind": "cayimi_geri_cevirdi",
+              "label": "Getirdiğim çayı geri çevirdi",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "dukkan_nazarlik",
+    "type": "kisi",
+    "theme": "is",
+    "minAge": 16,
+    "maxAge": 90,
+    "repeat": { "cooldown": 8, "max": 2 },
+    "conditions": { "business": "any" },
+    "roles": {
+      "teyze": { "roles": ["komsu"], "gender": "kadin", "minAge": 50, "sameCity": true }
+    },
+    "speaker": "teyze",
+    "text": "{teyze.ad} kapına nazarlık astı: 'Dükkân çok kalabalık oluyor {oyuncu.hitap.evlat}, göz değer.'",
+    "left": {
+      "label": "Sağ ol teyzeciğim",
+      "effects": {
+        "happiness": 2,
+        "people": {
+          "teyze": {
+            "memory": {
+              "kind": "nazarlik_asti",
+              "label": "Dükkânına nazarlık astım, sevindi",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Vitrini kapatıyor ama",
+      "effects": {
+        "business": 1,
+        "people": {
+          "teyze": {
+            "memory": {
+              "kind": "nazarligi_cikardi",
+              "label": "Astığım nazarlığı çıkardı",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "dukkan_veresiye",
+    "type": "kisi",
+    "theme": "is",
+    "minAge": 16,
+    "maxAge": 90,
+    "repeat": { "cooldown": 5, "max": 3 },
+    "conditions": { "business": "any" },
+    "roles": {
+      "komsu": { "roles": ["komsu"], "sameCity": true }
+    },
+    "speaker": "komsu",
+    "text": "{komsu.ad}: 'Ay sonu biraz sıkıştım. Deftere yazsan, maaş yatınca hemen getiririm.'",
+    "left": {
+      "label": "Yazarım, dert etme",
+      "roll": { "stat": "luck", "threshold": 45 },
+      "success": {
+        "business": 2,
+        "people": {
+          "komsu": {
+            "memory": {
+              "kind": "veresiye_verdi",
+              "label": "Sıkışınca veresiye verdi",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      },
+      "fail": {
+        "money": -8000,
+        "people": {
+          "komsu": {
+            "memory": {
+              "kind": "veresiye_verdi",
+              "label": "Sıkışınca veresiye verdi",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Veresiye defteri kapalı",
+      "effects": {
+        "people": {
+          "komsu": {
+            "memory": {
+              "kind": "veresiye_vermedi",
+              "label": "Sıkıştım, veresiye vermedi",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "dukkan_kirasi",
+    "type": "genel",
+    "theme": "para",
+    "minAge": 16,
+    "maxAge": 90,
+    "repeat": { "cooldown": 5, "max": 3 },
+    "conditions": { "business": "any" },
+    "text": "Dükkânın sahibi aradı: 'Bu bölge çok değerlendi. Kirayı ikiye katlıyorum, ya da çıkarsın.'",
+    "left": {
+      "label": "Pazarlık ederim",
+      "roll": { "stat": "reputation", "threshold": 55 },
+      "success": { "money": -30000 },
+      "fail": { "money": -90000, "happiness": -2 }
+    },
+    "right": {
+      "label": "Mahkemede görüşürüz",
+      "effects": { "money": -50000, "happiness": -3, "business": -1 }
+    }
+  }
+]

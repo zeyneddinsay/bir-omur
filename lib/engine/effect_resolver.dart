@@ -61,7 +61,12 @@ class EffectResolver {
     }
 
     var next = _countCardEffect(
-      applyEffect(character, choice.effects, careers: careers),
+      applyEffect(
+        character,
+        choice.effects,
+        careers: careers,
+        business: card.conditions.business,
+      ),
       choice.effects,
     );
     next = applyPeopleEffect(next, choice.effects, event.people);
@@ -72,7 +77,12 @@ class EffectResolver {
       succeeded = rollSucceeds(next, roll);
       final branch = succeeded ? choice.success! : choice.fail!;
       next = _countCardEffect(
-        applyEffect(next, branch, careers: careers),
+        applyEffect(
+          next,
+          branch,
+          careers: careers,
+          business: card.conditions.business,
+        ),
         branch,
       );
       next = applyPeopleEffect(next, branch, event.people);
@@ -144,11 +154,13 @@ class EffectResolver {
   /// Gösterge, para, varlık, iş ve bayrak değişikliklerini uygular. Zincir
   /// kartını uygulamaz; o sıra (ScheduleQueue) motorun işidir.
   ///
-  /// İş değişikliği olan bir etki [careers] ister.
+  /// İş değişikliği olan bir etki [careers] ister. İşletme etkisi
+  /// [business] koşuluna uyan işletmelere uygulanır.
   static Character applyEffect(
     Character character,
     Effect effect, {
     CareerBook? careers,
+    String? business,
   }) {
     if (effect.isEmpty) return character;
     var stats = character.stats.withMoneyDelta(effect.money);
@@ -162,6 +174,20 @@ class EffectResolver {
     );
     if (effect.career case final change?) {
       next = Careers.applyChange(next, change, careers ?? CareerBook.empty);
+    }
+    if (effect.business != 0) {
+      next = next.copyWith(
+        businesses: [
+          for (final b in next.businesses)
+            business == null ||
+                    business == Conditions.anyCareer ||
+                    Conditions.matchesBusiness(b.type, business)
+                ? b.copyWith(
+                    reputation: (b.reputation + effect.business).clamp(0, 100),
+                  )
+                : b,
+        ],
+      );
     }
     if (effect.performance != 0 && next.job != null) {
       final job = next.job!;

@@ -236,6 +236,24 @@ class LifeController extends Notifier<LifeState?> {
 
   void setTempo(Tempo tempo) => _update(engine.setTempo(tempo));
 
+  void openBusiness(String type) => _update(engine.openBusiness(type));
+
+  void setBusinessPresent(String id, bool present) =>
+      _update(engine.setBusinessPresent(id, present));
+
+  void setBusinessPrice(String id, PriceLevel price) =>
+      _update(engine.setBusinessPrice(id, price));
+
+  void advertiseBusiness(String id) => _update(engine.advertiseBusiness(id));
+
+  void expandBusiness(String id) => _update(engine.expandBusiness(id));
+
+  void takePartner(String id, String personId) =>
+      _update(engine.takePartner(id, personId));
+
+  void disposeBusiness(String id, {required bool sell}) =>
+      _update(engine.disposeBusiness(id, sell: sell));
+
   /// Başka şehre taşınır (Varlıklar sekmesi).
   void moveTo(String city, {bool withFamily = false}) =>
       _update(engine.moveTo(city, withFamily: withFamily));

@@ -9,7 +9,8 @@
     "roles": {
       "buyuk": {
         "kin": ["anne", "baba", "dede", "nine", "amca", "hala", "dayi", "teyze"],
-        "minAge": 50
+        "minAge": 50,
+        "livesTogether": false
       }
     },
     "speaker": "buyuk",
@@ -55,7 +56,7 @@
     "maxAge": 80,
     "repeat": { "cooldown": 5, "max": 5 },
     "roles": {
-      "anne": { "kin": ["anne"], "sameCity": true }
+      "anne": { "kin": ["anne"], "sameCity": true, "livesTogether": false }
     },
     "speaker": "anne",
     "text": "{anne.akraba} kapıya bir poşet bıraktı: üç kap yemek, bir kavanoz turşu. 'Kaplarımı geri getir ama.'",
@@ -146,7 +147,7 @@
     "maxAge": 85,
     "repeat": { "cooldown": 7, "max": 4 },
     "roles": {
-      "kardes": { "kin": ["kardes"], "minAge": 18 }
+      "kardes": { "kin": ["kardes"], "minAge": 18, "livesTogether": false }
     },
     "speaker": "kardes",
     "text": "{kardes.akraba} gece yarısı aradı, sesi titriyor: 'Uyumadın değil mi? Biraz konuşabilir miyiz?'",

@@ -6,6 +6,7 @@ import '../../l10n/generated/app_localizations.dart';
 import '../../models/models.dart';
 import '../l10n_names.dart';
 import '../people/people_text.dart';
+import 'business_card.dart';
 
 /// Varlıklar sekmesinde bu yılın ve geçen yılın para hareketleri: paranın
 /// nereden gelip nereye gittiği.
@@ -54,10 +55,7 @@ class LedgerView extends StatelessWidget {
           children: [
             Text(l10n.ledgerTitle, style: theme.textTheme.titleMedium),
             if (c.ledger.any((e) => e.source == MoneySource.enflasyon))
-              Text(
-                l10n.ledgerInflationHint,
-                style: theme.textTheme.bodySmall,
-              ),
+              Text(l10n.ledgerInflationHint, style: theme.textTheme.bodySmall),
             section(l10n.ledgerThisYear(c.age), c.age),
             if (c.age > 0) section(l10n.ledgerLastYear(c.age - 1), c.age - 1),
           ],
@@ -96,6 +94,14 @@ String describeMoney(
   },
   MoneySource.is_ => l10n.money_is(e.ref ?? ''),
   MoneySource.tasinma => l10n.money_tasinma(e.ref ?? ''),
+  MoneySource.isletme => () {
+    final ref = e.ref ?? ':';
+    final colon = ref.indexOf(':');
+    return l10n.money_isletme(
+      businessTypeName(l10n, ref.substring(0, colon)),
+      businessMoneyWhat(l10n, ref.substring(colon + 1)),
+    );
+  }(),
   MoneySource.varlik => l10n.money_varlik(e.ref ?? ''),
 };
 

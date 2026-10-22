@@ -40,6 +40,7 @@ void main(List<String> args) {
   final topTier = <String, int>{};
   var retiredEarly = 0;
   final people = _PeopleStats();
+  final biz = _BusinessStats();
 
   for (var i = 0; i < lives; i++) {
     final seed = firstSeed + i;
@@ -56,8 +57,13 @@ void main(List<String> args) {
     Job? lastJob;
     var retireAge = 0;
     engine.startLife();
+    var age = engine.state.character.age;
     while (!engine.state.isOver) {
       player.step(engine);
+      if (engine.state.character.age != age) {
+        age = engine.state.character.age;
+        biz.addNotes(engine.state.notes);
+      }
       final flags = engine.state.character.flags;
       inDebt |= flags.contains(EngineFlags.borclu);
       depressed |= flags.contains(EngineFlags.bunalim);
@@ -68,6 +74,7 @@ void main(List<String> args) {
     final summary = engine.state.summary!;
     final c = summary.character;
     people.add(c, interactions: player.interactions);
+    biz.addLife(c, opened: player.openedBusinesses);
     deathAges.add(summary.deathAge);
     netWorths.add(summary.netWorth);
     for (final a in badges.earnedBy(summary)) {
@@ -199,6 +206,7 @@ void main(List<String> args) {
     stdout.writeln('  ${a.id.padRight(28)} ${pct(badgeCounts[a.id] ?? 0)}');
   }
   people.write(lives);
+  biz.write(lives);
 }
 
 /// Açık ilanlardan biri şu anki işten daha iyi mi.
@@ -226,6 +234,55 @@ class _RandomPlayer {
 
   /// Bu hayatta yapılan etkileşim sayısı.
   int interactions = 0;
+
+  /// Bu hayatta açılan işletme türleri.
+  final List<String> openedBusinesses = [];
+
+  /// Akıllıca işletme: parası kuruluşun iki katıysa ara sıra beklenen kârı
+  /// en yüksek türü açar; iki yıl üst üste zarar edeni satar; kâr edeni
+  /// reklamla ve şubeyle büyütür.
+  bool _businessMove(LifeEngine engine) {
+    final c = engine.state.character;
+    for (final b in c.businesses) {
+      final losing =
+          b.profits.length >= 2 &&
+          b.profits.reversed.take(2).every((p) => p < 0);
+      if (losing) {
+        engine.disposeBusiness(b.id, sell: true);
+        return true;
+      }
+      if (!b.present && BusinessTypes.require(b.type).laborBound) {
+        engine.setBusinessPresent(b.id, true);
+        return true;
+      }
+      if ((b.lastProfit ?? 0) > 0 &&
+          engine.canExpand(b.id) &&
+          _random.nextInt(3) == 0) {
+        engine.expandBusiness(b.id);
+        return true;
+      }
+      if (engine.canAdvertise(b.id) &&
+          b.reputation < 60 &&
+          _random.nextInt(3) == 0) {
+        engine.advertiseBusiness(b.id);
+        return true;
+      }
+    }
+    if (c.businesses.length < BusinessRules.maxBusinesses &&
+        _random.nextInt(c.job == null ? 6 : 25) == 0) {
+      final open = [
+        for (final (t, blocked) in engine.businessOptions())
+          if (blocked == null && c.stats.money >= t.setupCost * 2) t,
+      ];
+      if (open.isNotEmpty) {
+        final t = open[_random.nextInt(open.length)];
+        engine.openBusiness(t.id);
+        openedBusinesses.add(t.id);
+        return true;
+      }
+    }
+    return false;
+  }
 
   void step(LifeEngine engine) {
     final state = engine.state;
@@ -304,6 +361,7 @@ class _RandomPlayer {
             return;
           }
         }
+        if (_businessMove(engine)) return;
         final requests = engine.possibleInteractions();
         if (requests.isNotEmpty && _random.nextBool()) {
           engine.interact(requests[_random.nextInt(requests.length)]);
@@ -437,5 +495,61 @@ class _PeopleStats {
         '  41 yaşını gören erkeklerde askerlik yaparak ${share(_served, _men41)}, '
         'bedelli ${share(_bedelli, _men41)}',
       );
+  }
+}
+
+/// İşletmeler (D3): açılan, batan, yaşayan ve türlere göre yıllık kâr.
+class _BusinessStats {
+  var _livesWithBusiness = 0;
+  var _heldAtDeath = 0;
+  final _opened = <String, int>{};
+  final _bankrupt = <String, int>{};
+  final _profitSum = <String, int>{};
+  final _years = <String, int>{};
+  final _losingYears = <String, int>{};
+
+  void addNotes(List<LifeNote> notes) {
+    for (final n in notes) {
+      if (n.kind == NoteKind.isletmeYili) {
+        final [type, amount] = n.detail!.split('|');
+        final profit = int.parse(amount);
+        _profitSum.update(type, (v) => v + profit, ifAbsent: () => profit);
+        _years.update(type, (v) => v + 1, ifAbsent: () => 1);
+        if (profit < 0) {
+          _losingYears.update(type, (v) => v + 1, ifAbsent: () => 1);
+        }
+      } else if (n.kind == NoteKind.isletmeBatti) {
+        _bankrupt.update(n.detail!, (v) => v + 1, ifAbsent: () => 1);
+      }
+    }
+  }
+
+  void addLife(Character c, {required List<String> opened}) {
+    if (opened.isNotEmpty) _livesWithBusiness++;
+    if (c.businesses.isNotEmpty) _heldAtDeath++;
+    for (final t in opened) {
+      _opened.update(t, (v) => v + 1, ifAbsent: () => 1);
+    }
+  }
+
+  void write(int lives) {
+    String pct(int n, int of) =>
+        of == 0 ? '-' : '%${(100 * n / of).toStringAsFixed(0)}';
+    stdout
+      ..writeln()
+      ..writeln(
+        'İşletmeler: işletme açan hayat ${pct(_livesWithBusiness, lives)}, '
+        'ölürken işletmesi olan ${pct(_heldAtDeath, lives)}',
+      );
+    final types = {..._opened.keys, ..._years.keys}.toList()..sort();
+    for (final t in types) {
+      final years = _years[t] ?? 0;
+      final avg = years == 0 ? 0 : (_profitSum[t] ?? 0) ~/ years;
+      stdout.writeln(
+        '  ${t.padRight(14)} açılış ${_opened[t] ?? 0}, batış ${_bankrupt[t] ?? 0}, '
+        'yıl $years, ortalama kâr ${(avg / 1000).round()} bin, '
+        'zarar yılı ${pct(_losingYears[t] ?? 0, years)}',
+      );
+    }
   }
 }

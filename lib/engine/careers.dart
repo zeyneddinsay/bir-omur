@@ -172,8 +172,13 @@ abstract final class Careers {
   static Character leaveJob(Character c) {
     if (c.job == null) return c;
     const work = {RoleKind.patron, RoleKind.mudur, RoleKind.isArkadasi};
+    // İşletmenin müdürü ve çalışanları işten ayrılınca kalır.
+    final ownStaff = {
+      for (final b in c.businesses) ...[...b.staff, ?b.managerId],
+    };
     var book = c.people;
     for (final p in book.all.toList()) {
+      if (ownStaff.contains(p.id)) continue;
       if (!p.roles.any((r) => r.active && work.contains(r.kind))) continue;
       book = book.update(
         p.copyWith(

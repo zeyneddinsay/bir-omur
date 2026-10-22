@@ -32,6 +32,8 @@ class Conditions {
     this.temperament,
     this.background,
     this.career,
+    this.careers = const [],
+    this.business,
     this.minTier,
     this.min = const {},
     this.max = const {},
@@ -75,6 +77,23 @@ class Conditions {
   static const String noCareer = 'none';
   static const String anyCareer = 'any';
 
+  /// Boş değilse işi bunlardan biri olmalı (kamu ya da ofis işleri gibi).
+  final List<String> careers;
+
+  /// İşletme türü ([anyCareer] her işletme, [noCareer] işletmesi yok).
+  /// `yazilim`, büyütülmüş `yazilim_ekip` işletmesini de kapsar.
+  final String? business;
+
+  bool hasBusiness(Character c) => switch (business) {
+    null => true,
+    noCareer => c.businesses.isEmpty,
+    anyCareer => c.businesses.isNotEmpty,
+    final id => c.businesses.any((b) => matchesBusiness(b.type, id)),
+  };
+
+  static bool matchesBusiness(String type, String id) =>
+      type == id || type.startsWith('${id}_');
+
   /// Değer en az bu kadar olmalı (dahil).
   final Map<String, int> min;
 
@@ -97,6 +116,8 @@ class Conditions {
     if (temperament != null && c.temperament != temperament) return false;
     if (background != null && c.background != background) return false;
     if (!_careerMatches(c)) return false;
+    if (careers.isNotEmpty && !careers.contains(c.job?.careerId)) return false;
+    if (!hasBusiness(c)) return false;
     for (final entry in min.entries) {
       if (_valueOf(c, entry.key) < entry.value) return false;
     }
@@ -143,6 +164,8 @@ class Conditions {
       'temperament',
       'background',
       'career',
+      'careers',
+      'business',
       'minTier',
       'min',
       'max',
@@ -191,6 +214,8 @@ class Conditions {
       temperament: temperament,
       background: background,
       career: r.optionalString('career'),
+      careers: r.optionalStringList('careers'),
+      business: r.optionalString('business'),
       minTier: r.optionalInt('minTier'),
       min: _thresholds(r.optionalObject('min')),
       max: _thresholds(r.optionalObject('max')),

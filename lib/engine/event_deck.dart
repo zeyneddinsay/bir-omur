@@ -80,6 +80,10 @@ abstract final class RoleMatcher {
     if (slot.sameCity != null && (p.city == c.city) != slot.sameCity) {
       return false;
     }
+    if (slot.livesTogether case final together?
+        when PeopleTick.livesTogether(c, p) != together) {
+      return false;
+    }
     return true;
   }
 

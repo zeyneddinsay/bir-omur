@@ -364,6 +364,8 @@ abstract final class ActionCatalog {
     if (c.age < firstTimeAge) return 0;
     // Askerdeki yıl: vakit yok.
     if (c.hasFlag('askerde')) return 0;
+    // Kendi işinin başında: 2; iş ve işletme birlikte: 1 (yaşa bakmaz).
+    if (c.businesses.any((b) => b.present)) return c.job != null ? 1 : 2;
     if (c.isRetired || c.age >= 65) return 6;
     if (c.age <= 10) return 2;
     if (c.age <= 18 || c.hasFlag(studentFlag)) return 5;

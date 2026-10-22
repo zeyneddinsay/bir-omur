@@ -6,6 +6,7 @@ import '../../l10n/generated/app_localizations.dart';
 import '../../models/models.dart';
 import '../providers.dart';
 import 'home_card.dart';
+import 'business_card.dart';
 import 'life_status.dart';
 
 String departmentName(AppLocalizations l10n, String? id) => switch (id) {
@@ -77,6 +78,33 @@ String noteLine(AppLocalizations l10n, LifeNote note, CareerBook careers) {
     NoteKind.kpssGecti => l10n.note_kpssGecti,
     NoteKind.kpssKaldi => l10n.note_kpssKaldi,
     NoteKind.yazilimKursu => l10n.note_yazilimKursu,
+    NoteKind.isletmeAcildi => l10n.note_isletmeAcildi(
+      businessTypeName(l10n, d),
+    ),
+    NoteKind.isletmeYili when parts.length == 2 => () {
+      final amount = int.tryParse(parts[1]) ?? 0;
+      final name = businessTypeName(l10n, parts[0]);
+      return amount >= 0
+          ? l10n.note_isletmeKar(name, l10n.money(amount))
+          : l10n.note_isletmeZarar(name, l10n.money(-amount));
+    }(),
+    NoteKind.isletmeYili => d,
+    NoteKind.isletmeBatti => l10n.note_isletmeBatti(businessTypeName(l10n, d)),
+    NoteKind.isletmeSatildi => l10n.note_isletmeSatildi(
+      businessTypeName(l10n, d),
+    ),
+    NoteKind.isletmeKapandi => l10n.note_isletmeKapandi(
+      businessTypeName(l10n, d),
+    ),
+    NoteKind.subeAcildi => l10n.note_subeAcildi(businessTypeName(l10n, d)),
+    NoteKind.isletmeBuyudu => l10n.note_isletmeBuyudu(
+      businessTypeName(l10n, d),
+    ),
+    NoteKind.ortakAlindi when parts.length == 2 => l10n.note_ortakAlindi(
+      parts[1],
+      businessTypeName(l10n, parts[0]),
+    ),
+    NoteKind.ortakAlindi => d,
   };
 }
 

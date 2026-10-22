@@ -87,6 +87,7 @@ class AutoPlayer {
             return engine.requestRaise();
           }
         }
+        if (businessMove(engine) case final next?) return next;
         // Yılların yarısında önce biriyle etkileşir (Ara dahil).
         final people = engine.possibleInteractions();
         if (people.isNotEmpty && _random.nextBool()) {
@@ -97,6 +98,46 @@ class AutoPlayer {
       case YearPhase.dead:
         return state;
     }
+  }
+
+  /// İşletme hamlesi: ara sıra işletme açar; açtıklarında fiyatı, başında
+  /// durmayı, reklamı, büyütmeyi, ortaklığı ve satışı dener. Hamle yoksa
+  /// null.
+  LifeState? businessMove(LifeEngine engine) {
+    final c = engine.state.character;
+    if (c.businesses.length < BusinessRules.maxBusinesses &&
+        _random.nextInt(c.job == null ? 8 : 30) == 0) {
+      final open = [
+        for (final (t, blocked) in engine.businessOptions())
+          if (blocked == null) t,
+      ];
+      if (open.isNotEmpty) {
+        return engine.openBusiness(open[_random.nextInt(open.length)].id);
+      }
+    }
+    for (final b in c.businesses) {
+      switch (_random.nextInt(30)) {
+        case 0:
+          return engine.setBusinessPresent(b.id, !b.present);
+        case 1:
+          return engine.setBusinessPrice(
+            b.id,
+            PriceLevel.values[_random.nextInt(PriceLevel.values.length)],
+          );
+        case 2 || 3 when engine.canAdvertise(b.id):
+          return engine.advertiseBusiness(b.id);
+        case 4 || 5 when engine.canExpand(b.id):
+          return engine.expandBusiness(b.id);
+        case 6:
+          final partners = engine.partnerCandidates(b.id);
+          if (partners.isNotEmpty) {
+            return engine.takePartner(b.id, partners.first.id);
+          }
+        case 7 when (b.lastProfit ?? 0) < 0:
+          return engine.disposeBusiness(b.id, sell: _random.nextBool());
+      }
+    }
+    return null;
   }
 
   /// YKS tercihi: çoğunlukla bir bölüme (rastgele), bazen başka yol.

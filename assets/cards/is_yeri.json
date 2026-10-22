@@ -6,7 +6,7 @@
     "minAge": 19,
     "maxAge": 64,
     "repeat": { "cooldown": 4, "max": 3 },
-    "conditions": { "career": "any" },
+    "conditions": { "careers": ["plaza", "yazilimci", "emlakci", "memur"] },
     "text": "Cuma 17.58. Konusu 'ACİL' olan bir e-posta düştü. Çantan çoktan omzunda.",
     "left": {
       "label": "Açar, hallederim",
@@ -70,7 +70,9 @@
     "minAge": 19,
     "maxAge": 64,
     "repeat": { "cooldown": 6, "max": 2 },
-    "conditions": { "career": "any" },
+    "conditions": {
+      "careers": ["plaza", "yazilimci", "emlakci", "memur", "hemsire"]
+    },
     "roles": {
       "patron": { "roles": ["patron"] }
     },
@@ -130,7 +132,7 @@
     "minAge": 19,
     "maxAge": 64,
     "repeat": { "cooldown": 4, "max": 3 },
-    "conditions": { "career": "any" },
+    "conditions": { "careers": ["plaza", "yazilimci", "emlakci", "memur"] },
     "roles": {
       "is": { "roles": ["isArkadasi"] }
     },
@@ -177,7 +179,9 @@
     "minAge": 19,
     "maxAge": 64,
     "repeat": { "cooldown": 6, "max": 2 },
-    "conditions": { "career": "any" },
+    "conditions": {
+      "careers": ["plaza", "yazilimci", "emlakci", "garson", "oto_tamircisi"]
+    },
     "roles": {
       "patron": { "roles": ["patron"] }
     },
@@ -225,7 +229,7 @@
     "minAge": 21,
     "maxAge": 64,
     "repeat": "once",
-    "conditions": { "career": "any" },
+    "conditions": { "careers": ["plaza", "yazilimci", "emlakci", "memur"] },
     "roles": {
       "is": { "roles": ["isArkadasi"], "traits": ["kiskanc"] }
     },
@@ -291,7 +295,7 @@
     "minAge": 26,
     "maxAge": 64,
     "repeat": "once",
-    "conditions": { "career": "any", "minTier": 2 },
+    "conditions": { "careers": ["plaza", "yazilimci", "emlakci"], "minTier": 2 },
     "roles": {
       "akraba": { "kin": ["amca", "hala", "dayi", "teyze"] }
     },

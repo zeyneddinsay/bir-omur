@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import '../engine/achievements.dart';
+import '../engine/business_types.dart';
 import '../engine/education.dart';
 import '../models/models.dart';
 import 'content_registry.dart';
@@ -371,12 +372,35 @@ class CardValidator {
         error('.conditions.minTier', 'kademe 1–$maxTier arasında olmalı');
       }
     }
+    for (final id in card.conditions.careers) {
+      if (!_careersById.containsKey(id)) {
+        error('.conditions.careers', 'bilinmeyen meslek "$id"');
+      }
+    }
+    if (card.conditions.careers.isNotEmpty && conditionCareer != null) {
+      error('.conditions', 'career ile careers birlikte kullanılmaz');
+    }
+    final business = card.conditions.business;
+    if (business != null &&
+        business != Conditions.anyCareer &&
+        business != Conditions.noCareer &&
+        BusinessTypes.byId(business) == null) {
+      error('.conditions.business', 'bilinmeyen işletme "$business"');
+    }
+    final hasJob =
+        card.conditions.careers.isNotEmpty ||
+        (conditionCareer != null && conditionCareer != Conditions.noCareer);
     final sides = {'left': card.left, 'right': card.right, 'up': ?card.up};
     for (final MapEntry(key: side, value: choice) in sides.entries) {
       for (final effect in choice.allEffects) {
-        if (effect.performance != 0 &&
-            (conditionCareer == null ||
-                conditionCareer == Conditions.noCareer)) {
+        if (effect.business != 0 &&
+            (business == null || business == Conditions.noCareer)) {
+          error(
+            '.$side',
+            'işletme etkisi bir işletmeyi ister (conditions.business)',
+          );
+        }
+        if (effect.performance != 0 && !hasJob) {
           error(
             '.$side',
             'performans etkisi bir işi olmayı ister (conditions.career)',

@@ -1966,6 +1966,354 @@ abstract class AppLocalizations {
   /// **'Yazılım kursunu bitirdin; yazılımcı ilanlarına başvurabilirsin.'**
   String get note_yazilimKursu;
 
+  /// No description provided for @business_simit.
+  ///
+  /// In tr, this message translates to:
+  /// **'Simit ve çay tezgâhı'**
+  String get business_simit;
+
+  /// No description provided for @business_berber.
+  ///
+  /// In tr, this message translates to:
+  /// **'Berber salonu'**
+  String get business_berber;
+
+  /// No description provided for @business_oto_yikama.
+  ///
+  /// In tr, this message translates to:
+  /// **'Oto yıkama'**
+  String get business_oto_yikama;
+
+  /// No description provided for @business_yazilim.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yazılım şirketi (tek başına)'**
+  String get business_yazilim;
+
+  /// No description provided for @business_yazilim_ekip.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yazılım şirketi (ekiple)'**
+  String get business_yazilim_ekip;
+
+  /// No description provided for @businessTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kendi işin'**
+  String get businessTitle;
+
+  /// No description provided for @businessSign.
+  ///
+  /// In tr, this message translates to:
+  /// **'{surname} · {type}'**
+  String businessSign(String surname, String type);
+
+  /// No description provided for @businessOpenTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'İşletme aç'**
+  String get businessOpenTitle;
+
+  /// No description provided for @businessOpenHint.
+  ///
+  /// In tr, this message translates to:
+  /// **'Paran yetmezse kuruluşun %70\'ine kadar kredi çekilir (5 yıl). İşi olan ya da itibarı 50 ve üstü olana kredi verilir.'**
+  String get businessOpenHint;
+
+  /// No description provided for @businessSetup.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kuruluş {money} · normal yılda yaklaşık {profit} kâr'**
+  String businessSetup(String money, String profit);
+
+  /// No description provided for @businessBlocked_yas.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yaşın tutmuyor'**
+  String get businessBlocked_yas;
+
+  /// No description provided for @businessBlocked_sart.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yazılımcı olarak çalışmış ya da bilgisayar mezunu olmalısın'**
+  String get businessBlocked_sart;
+
+  /// No description provided for @businessBlocked_para.
+  ///
+  /// In tr, this message translates to:
+  /// **'Peşinata bile paran yetmiyor'**
+  String get businessBlocked_para;
+
+  /// No description provided for @businessBlocked_zatenVar.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu işletmen zaten var'**
+  String get businessBlocked_zatenVar;
+
+  /// No description provided for @businessBlocked_cokFazla.
+  ///
+  /// In tr, this message translates to:
+  /// **'En fazla iki işletme'**
+  String get businessBlocked_cokFazla;
+
+  /// No description provided for @businessBlocked_iflas.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu işte batalı iki yıl olmadı'**
+  String get businessBlocked_iflas;
+
+  /// No description provided for @businessBlocked_vakit.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu yılın vakti yetmiyor (2 vakit)'**
+  String get businessBlocked_vakit;
+
+  /// No description provided for @businessBlocked_askerde.
+  ///
+  /// In tr, this message translates to:
+  /// **'Askerdesin'**
+  String get businessBlocked_askerde;
+
+  /// No description provided for @businessLastProfit.
+  ///
+  /// In tr, this message translates to:
+  /// **'Geçen yıl: {money}'**
+  String businessLastProfit(String money);
+
+  /// No description provided for @businessExpected.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu yıl beklenen: {money}'**
+  String businessExpected(String money);
+
+  /// No description provided for @businessReputation.
+  ///
+  /// In tr, this message translates to:
+  /// **'İtibar'**
+  String get businessReputation;
+
+  /// No description provided for @businessFacts.
+  ///
+  /// In tr, this message translates to:
+  /// **'{branches} şube · {staff} çalışan · yakında {rivals} rakip'**
+  String businessFacts(int branches, int staff, int rivals);
+
+  /// No description provided for @businessPresent.
+  ///
+  /// In tr, this message translates to:
+  /// **'Başındayım'**
+  String get businessPresent;
+
+  /// No description provided for @businessManaged.
+  ///
+  /// In tr, this message translates to:
+  /// **'Müdürde'**
+  String get businessManaged;
+
+  /// No description provided for @businessLaborHint.
+  ///
+  /// In tr, this message translates to:
+  /// **'Emek işi: başında durmazsan müşteri azalır.'**
+  String get businessLaborHint;
+
+  /// No description provided for @businessManagedHint.
+  ///
+  /// In tr, this message translates to:
+  /// **'Başında durmak vaktini 2\'ye (işin de varsa 1\'e) indirir; müdüre bırakmak yılda {money} maaş ister.'**
+  String businessManagedHint(String money);
+
+  /// No description provided for @price_ucuz.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ucuz'**
+  String get price_ucuz;
+
+  /// No description provided for @price_normal.
+  ///
+  /// In tr, this message translates to:
+  /// **'Normal'**
+  String get price_normal;
+
+  /// No description provided for @price_pahali.
+  ///
+  /// In tr, this message translates to:
+  /// **'Pahalı'**
+  String get price_pahali;
+
+  /// No description provided for @businessAdvertise.
+  ///
+  /// In tr, this message translates to:
+  /// **'Reklam ver · {money} · 1 vakit'**
+  String businessAdvertise(String money);
+
+  /// No description provided for @businessExpand.
+  ///
+  /// In tr, this message translates to:
+  /// **'Şube aç · {money} · 2 vakit'**
+  String businessExpand(String money);
+
+  /// No description provided for @businessUpgrade.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ekip kur · {money} · 2 vakit'**
+  String businessUpgrade(String money);
+
+  /// No description provided for @businessPartner.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ortak al'**
+  String get businessPartner;
+
+  /// No description provided for @businessPartnerOffer.
+  ///
+  /// In tr, this message translates to:
+  /// **'{name}: {money} koyar, kârın %30\'u onun'**
+  String businessPartnerOffer(String name, String money);
+
+  /// No description provided for @businessPartnerNow.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ortağın: {name}'**
+  String businessPartnerNow(String name);
+
+  /// No description provided for @businessSell.
+  ///
+  /// In tr, this message translates to:
+  /// **'Sat · {money}'**
+  String businessSell(String money);
+
+  /// No description provided for @businessClose.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kapat · {money}'**
+  String businessClose(String money);
+
+  /// No description provided for @businessDisposeConfirm.
+  ///
+  /// In tr, this message translates to:
+  /// **'Emin misin? Çalışanların eski çalışanın olur.'**
+  String get businessDisposeConfirm;
+
+  /// No description provided for @businessDisposeYes.
+  ///
+  /// In tr, this message translates to:
+  /// **'Evet'**
+  String get businessDisposeYes;
+
+  /// No description provided for @note_isletmeAcildi.
+  ///
+  /// In tr, this message translates to:
+  /// **'{name} açıldı. Hayırlı olsun!'**
+  String note_isletmeAcildi(String name);
+
+  /// No description provided for @note_isletmeKar.
+  ///
+  /// In tr, this message translates to:
+  /// **'{name} bu yıl {money} kâr etti.'**
+  String note_isletmeKar(String name, String money);
+
+  /// No description provided for @note_isletmeZarar.
+  ///
+  /// In tr, this message translates to:
+  /// **'{name} bu yıl {money} zarar etti.'**
+  String note_isletmeZarar(String name, String money);
+
+  /// No description provided for @note_isletmeBatti.
+  ///
+  /// In tr, this message translates to:
+  /// **'{name} battı. Kepenkler indi; borçlar kaldı.'**
+  String note_isletmeBatti(String name);
+
+  /// No description provided for @note_isletmeSatildi.
+  ///
+  /// In tr, this message translates to:
+  /// **'{name} satıldı.'**
+  String note_isletmeSatildi(String name);
+
+  /// No description provided for @note_isletmeKapandi.
+  ///
+  /// In tr, this message translates to:
+  /// **'{name} kapandı.'**
+  String note_isletmeKapandi(String name);
+
+  /// No description provided for @note_subeAcildi.
+  ///
+  /// In tr, this message translates to:
+  /// **'{name} yeni bir şube açtı.'**
+  String note_subeAcildi(String name);
+
+  /// No description provided for @note_isletmeBuyudu.
+  ///
+  /// In tr, this message translates to:
+  /// **'{name} artık bir ekip.'**
+  String note_isletmeBuyudu(String name);
+
+  /// No description provided for @note_ortakAlindi.
+  ///
+  /// In tr, this message translates to:
+  /// **'{person} işine ortak oldu: {name}.'**
+  String note_ortakAlindi(String person, String name);
+
+  /// No description provided for @money_isletme.
+  ///
+  /// In tr, this message translates to:
+  /// **'{name}: {what}'**
+  String money_isletme(String name, String what);
+
+  /// No description provided for @bizMoney_kar.
+  ///
+  /// In tr, this message translates to:
+  /// **'yılın kârı'**
+  String get bizMoney_kar;
+
+  /// No description provided for @bizMoney_kredi.
+  ///
+  /// In tr, this message translates to:
+  /// **'kredi taksidi'**
+  String get bizMoney_kredi;
+
+  /// No description provided for @bizMoney_kurulus.
+  ///
+  /// In tr, this message translates to:
+  /// **'kuruluş'**
+  String get bizMoney_kurulus;
+
+  /// No description provided for @bizMoney_reklam.
+  ///
+  /// In tr, this message translates to:
+  /// **'reklam'**
+  String get bizMoney_reklam;
+
+  /// No description provided for @bizMoney_sube.
+  ///
+  /// In tr, this message translates to:
+  /// **'büyüme'**
+  String get bizMoney_sube;
+
+  /// No description provided for @bizMoney_ortak.
+  ///
+  /// In tr, this message translates to:
+  /// **'ortağın sermayesi'**
+  String get bizMoney_ortak;
+
+  /// No description provided for @bizMoney_satis.
+  ///
+  /// In tr, this message translates to:
+  /// **'satış'**
+  String get bizMoney_satis;
+
+  /// No description provided for @bizMoney_kapanis.
+  ///
+  /// In tr, this message translates to:
+  /// **'kapanış'**
+  String get bizMoney_kapanis;
+
+  /// No description provided for @bizMoney_iflas.
+  ///
+  /// In tr, this message translates to:
+  /// **'batış, ekipman satıldı'**
+  String get bizMoney_iflas;
+
   /// No description provided for @journalTitle.
   ///
   /// In tr, this message translates to:
