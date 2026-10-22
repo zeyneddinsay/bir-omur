@@ -1675,6 +1675,11 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
+  String news_yegenDogdu(String name) {
+    return 'Yeğenin $name dünyaya geldi.';
+  }
+
+  @override
   String news_torunDogdu(String name) {
     return 'Torunun $name dünyaya geldi!';
   }

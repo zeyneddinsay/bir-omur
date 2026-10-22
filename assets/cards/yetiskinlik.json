@@ -98,7 +98,7 @@
     "theme": "aile",
     "minAge": 25,
     "maxAge": 80,
-    "repeat": { "cooldown": 6, "max": 3 },
+    "repeat": { "cooldown": 6, "max": 2 },
     "roles": {
       "baba": { "kin": ["baba"] }
     },
@@ -145,7 +145,7 @@
     "theme": "aile",
     "minAge": 20,
     "maxAge": 85,
-    "repeat": { "cooldown": 7, "max": 4 },
+    "repeat": { "cooldown": 7, "max": 2 },
     "roles": {
       "kardes": { "kin": ["kardes"], "minAge": 18, "livesTogether": false }
     },
@@ -279,7 +279,7 @@
     "theme": "mahalle",
     "minAge": 19,
     "maxAge": 85,
-    "repeat": { "cooldown": 5, "max": 4 },
+    "repeat": { "cooldown": 5, "max": 2 },
     "roles": {
       "komsu": { "roles": ["komsu"], "sameCity": true }
     },
@@ -368,7 +368,7 @@
     "theme": "mahalle",
     "minAge": 25,
     "maxAge": 85,
-    "repeat": { "cooldown": 8, "max": 4 },
+    "repeat": { "cooldown": 8, "max": 2 },
     "text": "Apartman toplantısı. Konu yine asansör; biri 'Ben merdiven kullanıyorum' diye aidat ödemek istemiyor.",
     "left": {
       "label": "Söz alıp ortayı bul",
@@ -404,7 +404,7 @@
     "theme": "saglik",
     "minAge": 60,
     "maxAge": 110,
-    "repeat": { "cooldown": 6, "max": 4 },
+    "repeat": { "cooldown": 6, "max": 2 },
     "text": "Doktor tahlillere baktı, gözlüğünün üstünden süzdü: 'Tuzu azaltacağız, her gün de yürüyeceğiz.'",
     "left": {
       "label": "Söz, yürüyeceğim",

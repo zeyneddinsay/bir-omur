@@ -20,6 +20,9 @@ enum NewsKind {
 
   /// Torun doğdu.
   torunDogdu,
+
+  /// Yeğen doğdu.
+  yegenDogdu,
 }
 
 /// Bir kişi hakkında bir haber. Metni arayüz kurar.
@@ -248,6 +251,31 @@ class PeopleTick {
         random.nextDouble() < 0.08) {
       p = p.copyWith(marital: MaritalStatus.evli);
       _report(p, NewsKind.evlendi);
+    }
+
+    // Evli kardeşin bebeği: yeğen (kardeş başına ortalama ikiyi geçmez).
+    if (p.kin == Kinship.kardes &&
+        p.marital == MaritalStatus.evli &&
+        age >= 25 &&
+        age <= 42 &&
+        random.nextDouble() < 0.12) {
+      final siblings = _book.all.where((x) => x.kin == Kinship.kardes).length;
+      final nephews = _book.all.where((x) => x.kin == Kinship.yegen).length;
+      if (nephews < 2 * siblings) {
+        final (book, baby) = Romance.addKinPerson(
+          _book,
+          PersonFactory(random, families),
+          now: _now,
+          age: 0,
+          city: p.city,
+          kin: Kinship.yegen,
+          gender: random.nextBool() ? Gender.kadin : Gender.erkek,
+          surname: p.surname,
+          base: 45,
+        );
+        _book = book;
+        _news.add(PersonNews(NewsKind.yegenDogdu, baby.id));
+      }
     }
 
     // Evli çocuğun bebeği: torun (çocuk başına ortalama ikiyi geçmez).

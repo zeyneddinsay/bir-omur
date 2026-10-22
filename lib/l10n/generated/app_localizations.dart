@@ -2746,6 +2746,12 @@ abstract class AppLocalizations {
   /// **'{name} vefat etti.'**
   String news_vefat(String name);
 
+  /// No description provided for @news_yegenDogdu.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yeğenin {name} dünyaya geldi.'**
+  String news_yegenDogdu(String name);
+
   /// No description provided for @news_torunDogdu.
   ///
   /// In tr, this message translates to:

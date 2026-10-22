@@ -586,6 +586,8 @@
   "news_emekliOldu": "{name} emekli oldu.",
   "@news_emekliOldu": { "placeholders": { "name": { "type": "String" } } },
   "news_vefat": "{name} vefat etti.",
+  "news_yegenDogdu": "Yeğenin {name} dünyaya geldi.",
+  "@news_yegenDogdu": { "placeholders": { "name": { "type": "String" } } },
   "news_torunDogdu": "Torunun {name} dünyaya geldi!",
   "@news_torunDogdu": { "placeholders": { "name": { "type": "String" } } },
   "@news_vefat": { "placeholders": { "name": { "type": "String" } } },

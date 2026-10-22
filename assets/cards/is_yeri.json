@@ -501,7 +501,7 @@
     "theme": "mahalle",
     "minAge": 25,
     "maxAge": 75,
-    "repeat": { "cooldown": 5, "max": 3 },
+    "repeat": { "cooldown": 5, "max": 2 },
     "conditions": { "gender": "kadin" },
     "roles": {
       "komsu": { "roles": ["komsu"], "sameCity": true }

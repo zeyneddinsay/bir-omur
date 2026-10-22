@@ -194,7 +194,7 @@
     "theme": "mahalle",
     "minAge": 62,
     "maxAge": 95,
-    "repeat": { "cooldown": 3, "max": 3 },
+    "repeat": { "cooldown": 3, "max": 2 },
     "text": "Kahvehanede tavla masası boşaldı. Yan masadaki emekli öğretmen pulları diziyor: 'Bir el atalım mı?'",
     "left": {
       "label": "Mars ederim",
@@ -213,7 +213,7 @@
     "theme": "genel",
     "minAge": 65,
     "maxAge": 100,
-    "repeat": { "cooldown": 5, "max": 3 },
+    "repeat": { "cooldown": 5, "max": 2 },
     "conditions": { "notFlags": ["evli"] },
     "text": "Akşam ev çok sessiz. Telefon rehberinde uzun zamandır aramadığın isimler var.",
     "left": {
@@ -329,5 +329,252 @@
       "label": "Mobil bankacılık",
       "effects": { "knowledge": 1 }
     }
+  },
+  {
+    "id": "eski_is_arkadasi",
+    "type": "kisi",
+    "theme": "is",
+    "minAge": 26,
+    "maxAge": 64,
+    "repeat": { "cooldown": 6, "max": 2 },
+    "roles": {
+      "eski": { "formerRoles": ["isArkadasi"], "sameCity": true }
+    },
+    "speaker": "eski",
+    "text": "Eski iş arkadaşın {eski.ad} ile metroda karşılaştınız. 'Eski ekibi topluyorum, bir akşam yemeği?' dedi.",
+    "left": {
+      "label": "Ben de gelirim",
+      "effects": {
+        "happiness": 3,
+        "people": {
+          "eski": {
+            "memory": {
+              "kind": "eski_ekip",
+              "label": "Eski ekibin yemeğine geldi",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Bakarız artık",
+      "effects": { "happiness": -1 }
+    }
+  },
+  {
+    "id": "kuzen_dugunu",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 20,
+    "maxAge": 70,
+    "repeat": { "cooldown": 6, "max": 2 },
+    "roles": {
+      "kuzen": { "kin": ["kuzen", "yegen"], "minAge": 20, "maxAge": 40 }
+    },
+    "text": "{kuzen.akraba} {kuzen.ad} evleniyor. Takı masasının önünde sıra var; cebindeki zarf sana biraz ince geldi.",
+    "left": {
+      "label": "Çeyrek takarım",
+      "effects": {
+        "gold": -2,
+        "people": {
+          "kuzen": {
+            "memory": {
+              "kind": "dugunume_taki",
+              "label": "Düğünüme altın taktı",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Zarf yeter",
+      "effects": { "money": -3000 }
+    }
+  },
+  {
+    "id": "yegen_harcligi",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 25,
+    "maxAge": 85,
+    "repeat": { "cooldown": 4, "max": 3 },
+    "roles": {
+      "yegen": { "kin": ["yegen"], "minAge": 5, "maxAge": 14 }
+    },
+    "speaker": "yegen",
+    "text": "Bayram sabahı yeğenin {yegen.ad} elini öpüp bekliyor. Gözleri cebinde.",
+    "left": {
+      "label": "Bir kâğıt para",
+      "effects": {
+        "money": -500,
+        "people": {
+          "yegen": {
+            "memory": {
+              "kind": "bayram_harcligi_verdi",
+              "label": "Bayramda en çok harçlığı o verdi",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Şeker yeter",
+      "effects": { "happiness": 1 }
+    }
+  },
+  {
+    "id": "arkadas_dugunu",
+    "type": "kisi",
+    "theme": "genel",
+    "minAge": 22,
+    "maxAge": 50,
+    "repeat": { "cooldown": 4, "max": 2 },
+    "roles": {
+      "dost": { "bond": ["arkadas", "yakinArkadas"], "minAge": 20 }
+    },
+    "speaker": "dost",
+    "text": "{dost.ad} evleniyor ve seni sağdıç ya da nedime yapmak istiyor: 'Sensiz olmaz bu iş.'",
+    "left": {
+      "label": "Onur duyarım",
+      "effects": {
+        "money": -15000,
+        "happiness": 4,
+        "people": {
+          "dost": {
+            "memory": {
+              "kind": "dugunumde_yanimdaydi",
+              "label": "Düğünümde yanımda duran oydu",
+              "tone": "olumlu",
+              "severity": 3
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Misafir olayım",
+      "effects": { "money": -3000 }
+    }
+  },
+  {
+    "id": "anneye_kim_bakacak",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 35,
+    "maxAge": 80,
+    "repeat": "once",
+    "rarity": "nadir",
+    "roles": {
+      "anne": { "kin": ["anne"], "minAge": 75, "offstage": true },
+      "kardes": { "kin": ["kardes"], "minAge": 25 }
+    },
+    "speaker": "kardes",
+    "text": "{anne.akraba} artık evde yalnız kalamıyor. {kardes.akraba}: 'Benim evim küçük, biliyorsun.'",
+    "left": {
+      "label": "Yanıma alırım",
+      "effects": {
+        "happiness": -2,
+        "people": {
+          "anne": {
+            "memory": {
+              "kind": "beni_yanina_aldi",
+              "label": "Yaşlandığımda beni yanına aldı",
+              "tone": "olumlu",
+              "severity": 3
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Bakıcı tutarız",
+      "effects": { "money": -200000 }
+    },
+    "up": {
+      "label": "Kardeşimle sırayla",
+      "effects": {
+        "people": {
+          "kardes": {
+            "memory": {
+              "kind": "anneye_sirayla",
+              "label": "Anneme birlikte, sırayla baktık",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "cocuklarla_tatil",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 28,
+    "maxAge": 65,
+    "repeat": { "cooldown": 4, "max": 3 },
+    "roles": {
+      "cocuk": { "kin": ["cocuk"], "minAge": 5, "maxAge": 15 }
+    },
+    "speaker": "cocuk",
+    "text": "{cocuk.ad} haritayı açmış: 'Bu yaz denize gidiyoruz, değil mi? Söz vermiştin!'",
+    "left": {
+      "label": "Bavulları hazırla!",
+      "effects": {
+        "money": -60000,
+        "happiness": 6,
+        "people": {
+          "cocuk": {
+            "memory": {
+              "kind": "deniz_tatili",
+              "label": "O yaz bizi denize götürdü",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Bu yıl olmaz",
+      "effects": {
+        "people": {
+          "cocuk": {
+            "memory": {
+              "kind": "tatil_sozu",
+              "label": "Söz verdiği tatile gitmedik",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "bel_tutulmasi",
+    "type": "genel",
+    "theme": "saglik",
+    "minAge": 35,
+    "maxAge": 64,
+    "repeat": { "cooldown": 8, "max": 2 },
+    "text": "Yerden bir kalem aldın ve belin orada kaldı. Herkesin bir önerisi var: sıcak havlu, ısırgan, bir de o meşhur krem.",
+    "left": {
+      "label": "Doktora giderim",
+      "effects": { "money": -3000, "health": 2 }
+    },
+    "right": {
+      "label": "O meşhur krem",
+      "roll": { "stat": "luck", "threshold": 50 },
+      "success": { "happiness": 2 },
+      "fail": { "health": -3 }
+    }
   }
+
 ]

@@ -5,7 +5,7 @@
     "theme": "mahalle",
     "minAge": 18,
     "maxAge": 80,
-    "repeat": { "cooldown": 4, "max": 4 },
+    "repeat": { "cooldown": 4, "max": 2 },
     "roles": {
       "komsu": { "roles": ["komsu"], "sameCity": true }
     },
@@ -116,7 +116,7 @@
     "theme": "genel",
     "minAge": 15,
     "maxAge": 55,
-    "repeat": { "cooldown": 8, "max": 3 },
+    "repeat": "once",
     "text": "Yaşlı bir amca seni durdurdu: 'Gül Sokak ne tarafta {oyuncu.hitap.evlat}?' Elinde buruşuk bir kâğıt var.",
     "left": {
       "label": "Elinden tutup götür",
@@ -212,7 +212,7 @@
     "theme": "genel",
     "minAge": 25,
     "maxAge": 60,
-    "repeat": { "cooldown": 10, "max": 3 },
+    "repeat": "once",
     "roles": {
       "eski": { "formerRoles": ["sinifArkadasi"] }
     },
@@ -257,7 +257,7 @@
     "theme": "mahalle",
     "minAge": 65,
     "maxAge": 110,
-    "repeat": { "cooldown": 6, "max": 4 },
+    "repeat": { "cooldown": 6, "max": 2 },
     "text": "Parktaki bankta emekliler kendi zamanlarını anlatıyor. Herkes sana döndü: 'Sen anlat bakalım.'",
     "left": {
       "label": "Ben gençken...",

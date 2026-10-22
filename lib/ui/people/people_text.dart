@@ -176,6 +176,7 @@ extension PeopleNames on AppLocalizations {
       NewsKind.emekliOldu => news_emekliOldu(name),
       NewsKind.vefat => news_vefat(name),
       NewsKind.torunDogdu => news_torunDogdu(p.name),
+      NewsKind.yegenDogdu => news_yegenDogdu(p.name),
     };
   }
 }
