@@ -166,7 +166,7 @@
     "left": {
       "label": "Davul zurnayla uğurlan",
       "effects": {
-        "addFlags": ["askerligini_yapti", "asker_anilari"],
+        "addFlags": ["askerde"],
         "money": -10000,
         "happiness": 3,
         "reputation": 2
@@ -175,7 +175,7 @@
     "right": {
       "label": "Sessizce gidip dön",
       "effects": {
-        "addFlags": ["askerligini_yapti", "asker_anilari"],
+        "addFlags": ["askerde"],
         "health": 3
       }
     }
@@ -196,7 +196,7 @@
     "left": {
       "label": "Gidip yaparım",
       "effects": {
-        "addFlags": ["askerligini_yapti", "asker_anilari"],
+        "addFlags": ["askerde"],
         "health": 3,
         "reputation": 2
       }

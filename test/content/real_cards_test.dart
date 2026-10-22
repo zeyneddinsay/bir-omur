@@ -231,6 +231,13 @@ void main() {
         } else if (deathAge(life) > 41) {
           expect(c.hasFlag('askerligini_yapti'), isTrue);
         }
+        // Yaparak yapan bölük arkadaşlarıyla döner; bedelli yalnız.
+        final comrades = c.people.all.where((p) => p.origin == Origin.askerlik);
+        expect(
+          comrades.length,
+          c.hasFlag('asker_anilari') ? Military.comrades : 0,
+        );
+        expect(c.hasFlag('askerde'), isFalse, reason: 'askerde ölmedi');
       }
     });
 

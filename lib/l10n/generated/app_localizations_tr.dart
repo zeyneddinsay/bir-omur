@@ -982,9 +982,8 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String note_askerlik(String what) {
-    return '$what';
-  }
+  String get note_askerlik =>
+      'Askerlik bitti. Bölük arkadaşların artık İnsanlar sekmesinde.';
 
   @override
   String get journalTitle => 'Bu yılın günlüğü';

@@ -46,7 +46,7 @@ String noteLine(AppLocalizations l10n, LifeNote note) {
     NoteKind.dersKaldi => l10n.note_dersKaldi,
     NoteKind.mezunOldu => l10n.note_mezunOldu(departmentName(l10n, d)),
     NoteKind.eveDondu => l10n.note_eveDondu(d),
-    NoteKind.askerlik => l10n.note_askerlik(d),
+    NoteKind.askerlik => l10n.note_askerlik,
   };
 }
 

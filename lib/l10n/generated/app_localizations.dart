@@ -1675,8 +1675,8 @@ abstract class AppLocalizations {
   /// No description provided for @note_askerlik.
   ///
   /// In tr, this message translates to:
-  /// **'{what}'**
-  String note_askerlik(String what);
+  /// **'Askerlik bitti. Bölük arkadaşların artık İnsanlar sekmesinde.'**
+  String get note_askerlik;
 
   /// No description provided for @journalTitle.
   ///

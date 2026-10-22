@@ -350,6 +350,8 @@ abstract final class ActionCatalog {
   /// Yarı zamanlı iş, fazla mesai ve kendi işi D2 ve D3'te eklenir.
   static int timeFor(Character c) {
     if (c.age < firstTimeAge) return 0;
+    // Askerdeki yıl: vakit yok.
+    if (c.hasFlag('askerde')) return 0;
     if (c.isRetired || c.age >= 65) return 6;
     if (c.age <= 10) return 2;
     if (c.age <= 18 || c.hasFlag(studentFlag)) return 5;

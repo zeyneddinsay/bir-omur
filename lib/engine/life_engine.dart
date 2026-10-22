@@ -13,6 +13,7 @@ import 'housing.dart';
 import 'interactions.dart';
 import 'life_action.dart';
 import 'life_note.dart';
+import 'military.dart';
 import 'people_tick.dart';
 import 'person_factory.dart';
 import 'relationships.dart';
@@ -458,11 +459,14 @@ class LifeEngine {
     ]);
     _lastJobSearch = null;
     final (studied, notes, queue) = _schoolYear(afterCareer, _state.queue);
+    final soldier = Military.inService(studied);
+    final served = Military.returnHome(studied, _factory);
+    if (soldier) notes.add(const LifeNote(NoteKind.askerlik));
     final (character, news) = PeopleTick(
       _random,
       families,
       cities: BirthGenerator.hometowns,
-    ).apply(Economy.syncDerivedFlags(YearTick.updateHardshipFlags(studied)));
+    ).apply(Economy.syncDerivedFlags(YearTick.updateHardshipFlags(served)));
     return _state = _beginYear(
       Relationships.syncFamilyBond(
         Housing.ensureNeighbours(character, _factory),

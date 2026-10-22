@@ -13,6 +13,7 @@ export 'interactions.dart';
 export 'life_action.dart';
 export 'life_engine.dart';
 export 'life_note.dart';
+export 'military.dart';
 export 'people_tick.dart';
 export 'person_factory.dart';
 export 'relationships.dart';
