@@ -830,7 +830,11 @@ void main() {
       );
       final son = testCharacter(gender: Gender.erkek);
       expect(
-        PersonText.render('{oyuncu.hitap.evlat}, {kisi.hitap.abi}', mother, son),
+        PersonText.render(
+          '{oyuncu.hitap.evlat}, {kisi.hitap.abi}',
+          mother,
+          son,
+        ),
         'Oğlum, abla',
       );
       expect(

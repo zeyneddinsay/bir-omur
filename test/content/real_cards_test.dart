@@ -202,7 +202,11 @@ void main() {
         final graduated = c.history.any((r) => r.cardId == 'mezuniyet');
         expect(c.hasFlag('universite_mezunu'), graduated);
         if (c.hasFlag(ActionCatalog.studentFlag)) {
-          expect(deathAge(life), lessThanOrEqualTo(26), reason: 'öğrenci kaldı');
+          expect(
+            deathAge(life),
+            lessThanOrEqualTo(26),
+            reason: 'öğrenci kaldı',
+          );
         }
       }
     });

@@ -593,4 +593,410 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get nickname_mahalleninBildikYuzu => 'Mahallenin Bildik Yüzü';
+
+  @override
+  String get tabMe => 'Ben';
+
+  @override
+  String get tabPeople => 'İnsanlar';
+
+  @override
+  String get tabSchoolWork => 'Okul / İş';
+
+  @override
+  String get tabAssets => 'Varlıklar';
+
+  @override
+  String get tabActivities => 'Aktiviteler';
+
+  @override
+  String get noActionsHere => 'Bu yaşta burada yapacak bir şey yok.';
+
+  @override
+  String get journalTitle => 'Bu yılın günlüğü';
+
+  @override
+  String get journalEmpty => 'Sakin bir yıl. Kimseden ses yok.';
+
+  @override
+  String journalChoice(String label) {
+    return 'Seçimin: “$label”';
+  }
+
+  @override
+  String news_kardesDogdu(String name) {
+    return '$name doğdu. Artık bir kardeşin var.';
+  }
+
+  @override
+  String news_yeniSinif_ilkokul(String name) {
+    return 'İlkokul başladı. Öğretmenin $name; yeni bir sınıfın var.';
+  }
+
+  @override
+  String news_yeniSinif_ortaokul(String name) {
+    return 'Ortaokul başladı. Yeni sınıf, yeni öğretmen: $name.';
+  }
+
+  @override
+  String news_yeniSinif_lise(String name) {
+    return 'Lise başladı. Yeni sınıf, yeni öğretmen: $name.';
+  }
+
+  @override
+  String news_evlendi(String name) {
+    return '$name evlendi.';
+  }
+
+  @override
+  String news_tasindi(String name, String city) {
+    return '$name taşındı. Yeni şehri: $city.';
+  }
+
+  @override
+  String news_isBuldu(String name, String job) {
+    return '$name iş buldu: $job.';
+  }
+
+  @override
+  String news_emekliOldu(String name) {
+    return '$name emekli oldu.';
+  }
+
+  @override
+  String news_vefat(String name) {
+    return '$name vefat etti.';
+  }
+
+  @override
+  String get group_aile => 'Aile';
+
+  @override
+  String get group_okul => 'Okul';
+
+  @override
+  String get group_arkadaslar => 'Arkadaşlar';
+
+  @override
+  String get group_mahalle => 'Mahalle';
+
+  @override
+  String get group_eski => 'Eski tanıdıklar';
+
+  @override
+  String get group_vefat => 'Kaybettiklerin';
+
+  @override
+  String get peopleEmpty => 'Henüz kimseyi tanımıyorsun.';
+
+  @override
+  String get role_siraArkadasi => 'Sıra arkadaşın';
+
+  @override
+  String get role_sinifArkadasi => 'Sınıf arkadaşın';
+
+  @override
+  String get role_ogretmen => 'Öğretmenin';
+
+  @override
+  String get role_odaArkadasi => 'Oda arkadaşın';
+
+  @override
+  String get role_bolukArkadasi => 'Bölük arkadaşın';
+
+  @override
+  String get role_patron => 'Patronun';
+
+  @override
+  String get role_mudur => 'Müdürün';
+
+  @override
+  String get role_isArkadasi => 'İş arkadaşın';
+
+  @override
+  String get role_calisan => 'Çalışanın';
+
+  @override
+  String get role_musteri => 'Müşterin';
+
+  @override
+  String get role_ortak => 'Ortağın';
+
+  @override
+  String get role_rakip => 'Rakibin';
+
+  @override
+  String get role_komsu => 'Komşun';
+
+  @override
+  String get role_bakkal => 'Mahallenin bakkalı';
+
+  @override
+  String get role_muhtar => 'Muhtar';
+
+  @override
+  String get role_evSahibi => 'Ev sahibin';
+
+  @override
+  String get role_kiraci => 'Kiracın';
+
+  @override
+  String get role_doktor => 'Doktorun';
+
+  @override
+  String relationSide(String kin, String side) {
+    return '$kin ($side)';
+  }
+
+  @override
+  String get side_anne => 'anne tarafı';
+
+  @override
+  String get side_baba => 'baba tarafı';
+
+  @override
+  String relationFormer(String role) {
+    return 'Eskiden: $role';
+  }
+
+  @override
+  String get bond_tanidik => 'Tanıdık';
+
+  @override
+  String get bond_arkadas => 'Arkadaşın';
+
+  @override
+  String get bond_yakinArkadas => 'Yakın arkadaşın';
+
+  @override
+  String get bond_flort => 'Flörtün';
+
+  @override
+  String get bond_sevgili => 'Sevgilin';
+
+  @override
+  String get bond_nisanli => 'Nişanlın';
+
+  @override
+  String get bond_eskiSevgili => 'Eski sevgilin';
+
+  @override
+  String get bond_eskiEs => 'Eski eşin';
+
+  @override
+  String get color_dost => 'Dost';
+
+  @override
+  String get color_kiskancYakin => 'Sever ama kıskanır';
+
+  @override
+  String get color_tanidik => 'Tanıdık';
+
+  @override
+  String get color_dusman => 'Husumetli';
+
+  @override
+  String get trait_kiskanc => 'Kıskanç';
+
+  @override
+  String get trait_comert => 'Cömert';
+
+  @override
+  String get trait_cikarci => 'Çıkarcı';
+
+  @override
+  String get trait_vefali => 'Vefalı';
+
+  @override
+  String get trait_dedikoducu => 'Dedikoducu';
+
+  @override
+  String get trait_gamsiz => 'Gamsız';
+
+  @override
+  String personAge(int age) {
+    return '$age yaşında';
+  }
+
+  @override
+  String personDiedAt(int age) {
+    return '$age yaşında vefat etti';
+  }
+
+  @override
+  String personMet(int age) {
+    return '$age yaşındayken tanıştınız';
+  }
+
+  @override
+  String personLastContact(int years) {
+    String _temp0 = intl.Intl.pluralLogic(
+      years,
+      locale: localeName,
+      other: '$years yıldır görüşmüyorsunuz',
+      one: 'Geçen yıl görüştünüz',
+      zero: 'Bu yıl görüştünüz',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get personArchived =>
+      'Uzun süredir görüşmüyorsunuz; rehberinde duruyor.';
+
+  @override
+  String get closenessLabel => 'Yakınlık';
+
+  @override
+  String get hostilityLabel => 'Husumet';
+
+  @override
+  String get traitsTitle => 'Kişiliği';
+
+  @override
+  String get memoriesTitle => 'Seninle ilgili hatırladıkları';
+
+  @override
+  String get memoriesEmpty => 'Henüz ortak bir anınız yok.';
+
+  @override
+  String memoryAge(int age) {
+    return '$age yaşında';
+  }
+
+  @override
+  String get memoryMine => 'Senin aklında kalan';
+
+  @override
+  String get memoryHealed => 'Yumuşadı';
+
+  @override
+  String get interactionsTitle => 'Ne yapacaksın?';
+
+  @override
+  String get interactionsAfterCards => 'Önce bu yılın olaylarını bitir.';
+
+  @override
+  String get interaction_bulus => 'Buluş';
+
+  @override
+  String get interaction_ara => 'Ara';
+
+  @override
+  String get interaction_hediye => 'Hediye al';
+
+  @override
+  String get interaction_dertles => 'Dertleş';
+
+  @override
+  String get interaction_borcIste => 'Borç iste';
+
+  @override
+  String get interaction_borcOde => 'Borcunu öde';
+
+  @override
+  String get interaction_lafSok => 'Laf sok';
+
+  @override
+  String get interaction_uzaklas => 'Uzaklaş';
+
+  @override
+  String get interaction_yemegiOv => 'Yemeğini öv';
+
+  @override
+  String get interaction_macIzle => 'Maç izle';
+
+  @override
+  String get interaction_eliniOp => 'Elini öp';
+
+  @override
+  String get interaction_kardesleOyna => 'Birlikte oyna';
+
+  @override
+  String get interaction_cayaGit => 'Çaya git';
+
+  @override
+  String interactionCost(int time) {
+    String _temp0 = intl.Intl.pluralLogic(
+      time,
+      locale: localeName,
+      other: '$time vakit',
+      one: '1 vakit',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String interactionCostMoney(int time, String money) {
+    String _temp0 = intl.Intl.pluralLogic(
+      time,
+      locale: localeName,
+      other: '$time vakit',
+      one: '1 vakit',
+    );
+    return '$_temp0 · $money';
+  }
+
+  @override
+  String get blocked_vakit => 'Bu yılın vakti bitti';
+
+  @override
+  String get blocked_yas => 'Bunun için çok küçüksün';
+
+  @override
+  String get blocked_karsiYas => 'O bunun için çok küçük';
+
+  @override
+  String get blocked_para => 'Paran yetmiyor';
+
+  @override
+  String get blocked_uzak => 'Başka şehirde yaşıyor';
+
+  @override
+  String get blocked_yakinlikDusuk => 'Bunu konuşacak kadar yakın değilsiniz';
+
+  @override
+  String get blocked_buYil => 'Bu yıl zaten yaptın';
+
+  @override
+  String get blocked_borcVar => 'Önce eski borç ödenmeli';
+
+  @override
+  String get blocked_aniYok => 'Bu tonda konuşacak bir anınız yok';
+
+  @override
+  String get blocked_kirginlikYok => 'Özür dileyecek bir kırgınlık yok';
+
+  @override
+  String get callTitle => 'Nasıl konuşacaksın?';
+
+  @override
+  String get callPickMemory => 'Hangi anıyı açacaksın?';
+
+  @override
+  String get tone_halHatir => 'Hal hatır sor';
+
+  @override
+  String get tone_nostalji => 'Eski günleri an';
+
+  @override
+  String get tone_ozur => 'Özür dile';
+
+  @override
+  String get tone_igne => 'İğnele';
+
+  @override
+  String get tone_halHatir_hint => 'Küçük ama sıcak bir yakınlık';
+
+  @override
+  String get tone_nostalji_hint => 'Ortak bir anıyı açarsın';
+
+  @override
+  String get tone_ozur_hint => 'Eski bir kırgınlığı kapatmayı denersin';
+
+  @override
+  String get tone_igne_hint => 'Eski bir meseleyi yüzüne vurursun';
+
+  @override
+  String get lastInteractionTitle => 'Son görüşmeniz';
 }

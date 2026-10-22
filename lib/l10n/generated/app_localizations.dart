@@ -1011,6 +1011,702 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Mahallenin Bildik Yüzü'**
   String get nickname_mahalleninBildikYuzu;
+
+  /// No description provided for @tabMe.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ben'**
+  String get tabMe;
+
+  /// No description provided for @tabPeople.
+  ///
+  /// In tr, this message translates to:
+  /// **'İnsanlar'**
+  String get tabPeople;
+
+  /// No description provided for @tabSchoolWork.
+  ///
+  /// In tr, this message translates to:
+  /// **'Okul / İş'**
+  String get tabSchoolWork;
+
+  /// No description provided for @tabAssets.
+  ///
+  /// In tr, this message translates to:
+  /// **'Varlıklar'**
+  String get tabAssets;
+
+  /// No description provided for @tabActivities.
+  ///
+  /// In tr, this message translates to:
+  /// **'Aktiviteler'**
+  String get tabActivities;
+
+  /// No description provided for @noActionsHere.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu yaşta burada yapacak bir şey yok.'**
+  String get noActionsHere;
+
+  /// No description provided for @journalTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu yılın günlüğü'**
+  String get journalTitle;
+
+  /// No description provided for @journalEmpty.
+  ///
+  /// In tr, this message translates to:
+  /// **'Sakin bir yıl. Kimseden ses yok.'**
+  String get journalEmpty;
+
+  /// No description provided for @journalChoice.
+  ///
+  /// In tr, this message translates to:
+  /// **'Seçimin: “{label}”'**
+  String journalChoice(String label);
+
+  /// No description provided for @news_kardesDogdu.
+  ///
+  /// In tr, this message translates to:
+  /// **'{name} doğdu. Artık bir kardeşin var.'**
+  String news_kardesDogdu(String name);
+
+  /// No description provided for @news_yeniSinif_ilkokul.
+  ///
+  /// In tr, this message translates to:
+  /// **'İlkokul başladı. Öğretmenin {name}; yeni bir sınıfın var.'**
+  String news_yeniSinif_ilkokul(String name);
+
+  /// No description provided for @news_yeniSinif_ortaokul.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ortaokul başladı. Yeni sınıf, yeni öğretmen: {name}.'**
+  String news_yeniSinif_ortaokul(String name);
+
+  /// No description provided for @news_yeniSinif_lise.
+  ///
+  /// In tr, this message translates to:
+  /// **'Lise başladı. Yeni sınıf, yeni öğretmen: {name}.'**
+  String news_yeniSinif_lise(String name);
+
+  /// No description provided for @news_evlendi.
+  ///
+  /// In tr, this message translates to:
+  /// **'{name} evlendi.'**
+  String news_evlendi(String name);
+
+  /// No description provided for @news_tasindi.
+  ///
+  /// In tr, this message translates to:
+  /// **'{name} taşındı. Yeni şehri: {city}.'**
+  String news_tasindi(String name, String city);
+
+  /// No description provided for @news_isBuldu.
+  ///
+  /// In tr, this message translates to:
+  /// **'{name} iş buldu: {job}.'**
+  String news_isBuldu(String name, String job);
+
+  /// No description provided for @news_emekliOldu.
+  ///
+  /// In tr, this message translates to:
+  /// **'{name} emekli oldu.'**
+  String news_emekliOldu(String name);
+
+  /// No description provided for @news_vefat.
+  ///
+  /// In tr, this message translates to:
+  /// **'{name} vefat etti.'**
+  String news_vefat(String name);
+
+  /// No description provided for @group_aile.
+  ///
+  /// In tr, this message translates to:
+  /// **'Aile'**
+  String get group_aile;
+
+  /// No description provided for @group_okul.
+  ///
+  /// In tr, this message translates to:
+  /// **'Okul'**
+  String get group_okul;
+
+  /// No description provided for @group_arkadaslar.
+  ///
+  /// In tr, this message translates to:
+  /// **'Arkadaşlar'**
+  String get group_arkadaslar;
+
+  /// No description provided for @group_mahalle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Mahalle'**
+  String get group_mahalle;
+
+  /// No description provided for @group_eski.
+  ///
+  /// In tr, this message translates to:
+  /// **'Eski tanıdıklar'**
+  String get group_eski;
+
+  /// No description provided for @group_vefat.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kaybettiklerin'**
+  String get group_vefat;
+
+  /// No description provided for @peopleEmpty.
+  ///
+  /// In tr, this message translates to:
+  /// **'Henüz kimseyi tanımıyorsun.'**
+  String get peopleEmpty;
+
+  /// No description provided for @role_siraArkadasi.
+  ///
+  /// In tr, this message translates to:
+  /// **'Sıra arkadaşın'**
+  String get role_siraArkadasi;
+
+  /// No description provided for @role_sinifArkadasi.
+  ///
+  /// In tr, this message translates to:
+  /// **'Sınıf arkadaşın'**
+  String get role_sinifArkadasi;
+
+  /// No description provided for @role_ogretmen.
+  ///
+  /// In tr, this message translates to:
+  /// **'Öğretmenin'**
+  String get role_ogretmen;
+
+  /// No description provided for @role_odaArkadasi.
+  ///
+  /// In tr, this message translates to:
+  /// **'Oda arkadaşın'**
+  String get role_odaArkadasi;
+
+  /// No description provided for @role_bolukArkadasi.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bölük arkadaşın'**
+  String get role_bolukArkadasi;
+
+  /// No description provided for @role_patron.
+  ///
+  /// In tr, this message translates to:
+  /// **'Patronun'**
+  String get role_patron;
+
+  /// No description provided for @role_mudur.
+  ///
+  /// In tr, this message translates to:
+  /// **'Müdürün'**
+  String get role_mudur;
+
+  /// No description provided for @role_isArkadasi.
+  ///
+  /// In tr, this message translates to:
+  /// **'İş arkadaşın'**
+  String get role_isArkadasi;
+
+  /// No description provided for @role_calisan.
+  ///
+  /// In tr, this message translates to:
+  /// **'Çalışanın'**
+  String get role_calisan;
+
+  /// No description provided for @role_musteri.
+  ///
+  /// In tr, this message translates to:
+  /// **'Müşterin'**
+  String get role_musteri;
+
+  /// No description provided for @role_ortak.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ortağın'**
+  String get role_ortak;
+
+  /// No description provided for @role_rakip.
+  ///
+  /// In tr, this message translates to:
+  /// **'Rakibin'**
+  String get role_rakip;
+
+  /// No description provided for @role_komsu.
+  ///
+  /// In tr, this message translates to:
+  /// **'Komşun'**
+  String get role_komsu;
+
+  /// No description provided for @role_bakkal.
+  ///
+  /// In tr, this message translates to:
+  /// **'Mahallenin bakkalı'**
+  String get role_bakkal;
+
+  /// No description provided for @role_muhtar.
+  ///
+  /// In tr, this message translates to:
+  /// **'Muhtar'**
+  String get role_muhtar;
+
+  /// No description provided for @role_evSahibi.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ev sahibin'**
+  String get role_evSahibi;
+
+  /// No description provided for @role_kiraci.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kiracın'**
+  String get role_kiraci;
+
+  /// No description provided for @role_doktor.
+  ///
+  /// In tr, this message translates to:
+  /// **'Doktorun'**
+  String get role_doktor;
+
+  /// No description provided for @relationSide.
+  ///
+  /// In tr, this message translates to:
+  /// **'{kin} ({side})'**
+  String relationSide(String kin, String side);
+
+  /// No description provided for @side_anne.
+  ///
+  /// In tr, this message translates to:
+  /// **'anne tarafı'**
+  String get side_anne;
+
+  /// No description provided for @side_baba.
+  ///
+  /// In tr, this message translates to:
+  /// **'baba tarafı'**
+  String get side_baba;
+
+  /// No description provided for @relationFormer.
+  ///
+  /// In tr, this message translates to:
+  /// **'Eskiden: {role}'**
+  String relationFormer(String role);
+
+  /// No description provided for @bond_tanidik.
+  ///
+  /// In tr, this message translates to:
+  /// **'Tanıdık'**
+  String get bond_tanidik;
+
+  /// No description provided for @bond_arkadas.
+  ///
+  /// In tr, this message translates to:
+  /// **'Arkadaşın'**
+  String get bond_arkadas;
+
+  /// No description provided for @bond_yakinArkadas.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yakın arkadaşın'**
+  String get bond_yakinArkadas;
+
+  /// No description provided for @bond_flort.
+  ///
+  /// In tr, this message translates to:
+  /// **'Flörtün'**
+  String get bond_flort;
+
+  /// No description provided for @bond_sevgili.
+  ///
+  /// In tr, this message translates to:
+  /// **'Sevgilin'**
+  String get bond_sevgili;
+
+  /// No description provided for @bond_nisanli.
+  ///
+  /// In tr, this message translates to:
+  /// **'Nişanlın'**
+  String get bond_nisanli;
+
+  /// No description provided for @bond_eskiSevgili.
+  ///
+  /// In tr, this message translates to:
+  /// **'Eski sevgilin'**
+  String get bond_eskiSevgili;
+
+  /// No description provided for @bond_eskiEs.
+  ///
+  /// In tr, this message translates to:
+  /// **'Eski eşin'**
+  String get bond_eskiEs;
+
+  /// No description provided for @color_dost.
+  ///
+  /// In tr, this message translates to:
+  /// **'Dost'**
+  String get color_dost;
+
+  /// No description provided for @color_kiskancYakin.
+  ///
+  /// In tr, this message translates to:
+  /// **'Sever ama kıskanır'**
+  String get color_kiskancYakin;
+
+  /// No description provided for @color_tanidik.
+  ///
+  /// In tr, this message translates to:
+  /// **'Tanıdık'**
+  String get color_tanidik;
+
+  /// No description provided for @color_dusman.
+  ///
+  /// In tr, this message translates to:
+  /// **'Husumetli'**
+  String get color_dusman;
+
+  /// No description provided for @trait_kiskanc.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kıskanç'**
+  String get trait_kiskanc;
+
+  /// No description provided for @trait_comert.
+  ///
+  /// In tr, this message translates to:
+  /// **'Cömert'**
+  String get trait_comert;
+
+  /// No description provided for @trait_cikarci.
+  ///
+  /// In tr, this message translates to:
+  /// **'Çıkarcı'**
+  String get trait_cikarci;
+
+  /// No description provided for @trait_vefali.
+  ///
+  /// In tr, this message translates to:
+  /// **'Vefalı'**
+  String get trait_vefali;
+
+  /// No description provided for @trait_dedikoducu.
+  ///
+  /// In tr, this message translates to:
+  /// **'Dedikoducu'**
+  String get trait_dedikoducu;
+
+  /// No description provided for @trait_gamsiz.
+  ///
+  /// In tr, this message translates to:
+  /// **'Gamsız'**
+  String get trait_gamsiz;
+
+  /// No description provided for @personAge.
+  ///
+  /// In tr, this message translates to:
+  /// **'{age} yaşında'**
+  String personAge(int age);
+
+  /// No description provided for @personDiedAt.
+  ///
+  /// In tr, this message translates to:
+  /// **'{age} yaşında vefat etti'**
+  String personDiedAt(int age);
+
+  /// No description provided for @personMet.
+  ///
+  /// In tr, this message translates to:
+  /// **'{age} yaşındayken tanıştınız'**
+  String personMet(int age);
+
+  /// No description provided for @personLastContact.
+  ///
+  /// In tr, this message translates to:
+  /// **'{years, plural, =0{Bu yıl görüştünüz} =1{Geçen yıl görüştünüz} other{{years} yıldır görüşmüyorsunuz}}'**
+  String personLastContact(int years);
+
+  /// No description provided for @personArchived.
+  ///
+  /// In tr, this message translates to:
+  /// **'Uzun süredir görüşmüyorsunuz; rehberinde duruyor.'**
+  String get personArchived;
+
+  /// No description provided for @closenessLabel.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yakınlık'**
+  String get closenessLabel;
+
+  /// No description provided for @hostilityLabel.
+  ///
+  /// In tr, this message translates to:
+  /// **'Husumet'**
+  String get hostilityLabel;
+
+  /// No description provided for @traitsTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kişiliği'**
+  String get traitsTitle;
+
+  /// No description provided for @memoriesTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Seninle ilgili hatırladıkları'**
+  String get memoriesTitle;
+
+  /// No description provided for @memoriesEmpty.
+  ///
+  /// In tr, this message translates to:
+  /// **'Henüz ortak bir anınız yok.'**
+  String get memoriesEmpty;
+
+  /// No description provided for @memoryAge.
+  ///
+  /// In tr, this message translates to:
+  /// **'{age} yaşında'**
+  String memoryAge(int age);
+
+  /// No description provided for @memoryMine.
+  ///
+  /// In tr, this message translates to:
+  /// **'Senin aklında kalan'**
+  String get memoryMine;
+
+  /// No description provided for @memoryHealed.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yumuşadı'**
+  String get memoryHealed;
+
+  /// No description provided for @interactionsTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ne yapacaksın?'**
+  String get interactionsTitle;
+
+  /// No description provided for @interactionsAfterCards.
+  ///
+  /// In tr, this message translates to:
+  /// **'Önce bu yılın olaylarını bitir.'**
+  String get interactionsAfterCards;
+
+  /// No description provided for @interaction_bulus.
+  ///
+  /// In tr, this message translates to:
+  /// **'Buluş'**
+  String get interaction_bulus;
+
+  /// No description provided for @interaction_ara.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ara'**
+  String get interaction_ara;
+
+  /// No description provided for @interaction_hediye.
+  ///
+  /// In tr, this message translates to:
+  /// **'Hediye al'**
+  String get interaction_hediye;
+
+  /// No description provided for @interaction_dertles.
+  ///
+  /// In tr, this message translates to:
+  /// **'Dertleş'**
+  String get interaction_dertles;
+
+  /// No description provided for @interaction_borcIste.
+  ///
+  /// In tr, this message translates to:
+  /// **'Borç iste'**
+  String get interaction_borcIste;
+
+  /// No description provided for @interaction_borcOde.
+  ///
+  /// In tr, this message translates to:
+  /// **'Borcunu öde'**
+  String get interaction_borcOde;
+
+  /// No description provided for @interaction_lafSok.
+  ///
+  /// In tr, this message translates to:
+  /// **'Laf sok'**
+  String get interaction_lafSok;
+
+  /// No description provided for @interaction_uzaklas.
+  ///
+  /// In tr, this message translates to:
+  /// **'Uzaklaş'**
+  String get interaction_uzaklas;
+
+  /// No description provided for @interaction_yemegiOv.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yemeğini öv'**
+  String get interaction_yemegiOv;
+
+  /// No description provided for @interaction_macIzle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Maç izle'**
+  String get interaction_macIzle;
+
+  /// No description provided for @interaction_eliniOp.
+  ///
+  /// In tr, this message translates to:
+  /// **'Elini öp'**
+  String get interaction_eliniOp;
+
+  /// No description provided for @interaction_kardesleOyna.
+  ///
+  /// In tr, this message translates to:
+  /// **'Birlikte oyna'**
+  String get interaction_kardesleOyna;
+
+  /// No description provided for @interaction_cayaGit.
+  ///
+  /// In tr, this message translates to:
+  /// **'Çaya git'**
+  String get interaction_cayaGit;
+
+  /// No description provided for @interactionCost.
+  ///
+  /// In tr, this message translates to:
+  /// **'{time, plural, =1{1 vakit} other{{time} vakit}}'**
+  String interactionCost(int time);
+
+  /// No description provided for @interactionCostMoney.
+  ///
+  /// In tr, this message translates to:
+  /// **'{time, plural, =1{1 vakit} other{{time} vakit}} · {money}'**
+  String interactionCostMoney(int time, String money);
+
+  /// No description provided for @blocked_vakit.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu yılın vakti bitti'**
+  String get blocked_vakit;
+
+  /// No description provided for @blocked_yas.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bunun için çok küçüksün'**
+  String get blocked_yas;
+
+  /// No description provided for @blocked_karsiYas.
+  ///
+  /// In tr, this message translates to:
+  /// **'O bunun için çok küçük'**
+  String get blocked_karsiYas;
+
+  /// No description provided for @blocked_para.
+  ///
+  /// In tr, this message translates to:
+  /// **'Paran yetmiyor'**
+  String get blocked_para;
+
+  /// No description provided for @blocked_uzak.
+  ///
+  /// In tr, this message translates to:
+  /// **'Başka şehirde yaşıyor'**
+  String get blocked_uzak;
+
+  /// No description provided for @blocked_yakinlikDusuk.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bunu konuşacak kadar yakın değilsiniz'**
+  String get blocked_yakinlikDusuk;
+
+  /// No description provided for @blocked_buYil.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu yıl zaten yaptın'**
+  String get blocked_buYil;
+
+  /// No description provided for @blocked_borcVar.
+  ///
+  /// In tr, this message translates to:
+  /// **'Önce eski borç ödenmeli'**
+  String get blocked_borcVar;
+
+  /// No description provided for @blocked_aniYok.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu tonda konuşacak bir anınız yok'**
+  String get blocked_aniYok;
+
+  /// No description provided for @blocked_kirginlikYok.
+  ///
+  /// In tr, this message translates to:
+  /// **'Özür dileyecek bir kırgınlık yok'**
+  String get blocked_kirginlikYok;
+
+  /// No description provided for @callTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Nasıl konuşacaksın?'**
+  String get callTitle;
+
+  /// No description provided for @callPickMemory.
+  ///
+  /// In tr, this message translates to:
+  /// **'Hangi anıyı açacaksın?'**
+  String get callPickMemory;
+
+  /// No description provided for @tone_halHatir.
+  ///
+  /// In tr, this message translates to:
+  /// **'Hal hatır sor'**
+  String get tone_halHatir;
+
+  /// No description provided for @tone_nostalji.
+  ///
+  /// In tr, this message translates to:
+  /// **'Eski günleri an'**
+  String get tone_nostalji;
+
+  /// No description provided for @tone_ozur.
+  ///
+  /// In tr, this message translates to:
+  /// **'Özür dile'**
+  String get tone_ozur;
+
+  /// No description provided for @tone_igne.
+  ///
+  /// In tr, this message translates to:
+  /// **'İğnele'**
+  String get tone_igne;
+
+  /// No description provided for @tone_halHatir_hint.
+  ///
+  /// In tr, this message translates to:
+  /// **'Küçük ama sıcak bir yakınlık'**
+  String get tone_halHatir_hint;
+
+  /// No description provided for @tone_nostalji_hint.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ortak bir anıyı açarsın'**
+  String get tone_nostalji_hint;
+
+  /// No description provided for @tone_ozur_hint.
+  ///
+  /// In tr, this message translates to:
+  /// **'Eski bir kırgınlığı kapatmayı denersin'**
+  String get tone_ozur_hint;
+
+  /// No description provided for @tone_igne_hint.
+  ///
+  /// In tr, this message translates to:
+  /// **'Eski bir meseleyi yüzüne vurursun'**
+  String get tone_igne_hint;
+
+  /// No description provided for @lastInteractionTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Son görüşmeniz'**
+  String get lastInteractionTitle;
 }
 
 class _AppLocalizationsDelegate

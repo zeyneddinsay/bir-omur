@@ -215,6 +215,10 @@ class LifeController extends Notifier<LifeState?> {
 
   void advanceYear() => _update(engine.advanceYear());
 
+  /// İnsanlar sekmesinden bir kişiyle etkileşim (Ara dahil).
+  void interact(InteractionRequest request) =>
+      _update(engine.interact(request));
+
   /// Sürdürülemeyen (eski sürüm) yarım hayat kaydını siler.
   void discardSavedLife() {
     _write(_store.clearCurrentLife);

@@ -166,6 +166,8 @@ void main() {
       await tester.pumpAndSettle();
     }
     expect(find.textContaining('6 yaş'), findsOneWidget);
+    await tester.tap(find.byKey(const Key('tab_activities')));
+    await tester.pumpAndSettle();
     await tester.ensureVisible(find.byKey(const Key('action_oyun_oyna')));
     await tester.tap(find.byKey(const Key('action_oyun_oyna')));
     await tester.pumpAndSettle();

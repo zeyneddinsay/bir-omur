@@ -58,9 +58,25 @@ class AssetsButton extends StatelessWidget {
   }
 }
 
-/// Varlıklar paneli: nakit, altın, ev, araba, kira, kredi, net servet.
+/// Varlıklar paneli (üst çubuktaki cüzdandan açılır).
 class AssetsSheet extends StatelessWidget {
   const AssetsSheet({super.key, required this.engine});
+
+  final LifeEngine engine;
+
+  @override
+  Widget build(BuildContext context) => SafeArea(
+    child: SingleChildScrollView(
+      padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
+      child: AssetsSummary(engine: engine),
+    ),
+  );
+}
+
+/// Varlıklar: nakit, altın, ev, araba, kira, kredi, net servet. Hem panelde
+/// hem Varlıklar sekmesinde kullanılır.
+class AssetsSummary extends StatelessWidget {
+  const AssetsSummary({super.key, required this.engine});
 
   final LifeEngine engine;
 
@@ -106,56 +122,51 @@ class AssetsSheet extends StatelessWidget {
       if (c.isRetired) (l10n.assetPension, tl(c.pension)),
     ];
 
-    return SafeArea(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(l10n.assetsTitle, style: theme.textTheme.titleLarge),
-            Text(
-              '${l10n.hometownLine(c.hometown, c.team)} · '
-              '${l10n.backgroundName(c.background)}',
-              key: const Key('sheet_background'),
-              style: theme.textTheme.bodySmall,
-            ),
-            const SizedBox(height: 12),
-            for (final (label, value) in rows)
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 6),
-                child: Row(
-                  children: [
-                    Expanded(child: Text(label)),
-                    Text(value, style: theme.textTheme.titleSmall),
-                  ],
-                ),
-              ),
-            const Divider(height: 24),
-            Row(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(l10n.assetsTitle, style: theme.textTheme.titleLarge),
+        Text(
+          '${l10n.hometownLine(c.hometown, c.team)} · '
+          '${l10n.backgroundName(c.background)}',
+          key: const Key('sheet_background'),
+          style: theme.textTheme.bodySmall,
+        ),
+        const SizedBox(height: 12),
+        for (final (label, value) in rows)
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 6),
+            child: Row(
               children: [
-                Expanded(
-                  child: Text(
-                    l10n.assetNetWorth,
-                    style: theme.textTheme.titleMedium,
-                  ),
-                ),
-                Text(
-                  tl(Economy.netWorth(c, market)),
-                  key: const Key('net_worth'),
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    color: theme.colorScheme.primary,
-                  ),
-                ),
+                Expanded(child: Text(label)),
+                Text(value, style: theme.textTheme.titleSmall),
               ],
             ),
-            const SizedBox(height: 8),
+          ),
+        const Divider(height: 24),
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+                l10n.assetNetWorth,
+                style: theme.textTheme.titleMedium,
+              ),
+            ),
             Text(
-              l10n.assetGoldPrice(tl(market.goldPrice)),
-              style: theme.textTheme.bodySmall,
+              tl(Economy.netWorth(c, market)),
+              key: const Key('net_worth'),
+              style: theme.textTheme.titleMedium?.copyWith(
+                color: theme.colorScheme.primary,
+              ),
             ),
           ],
         ),
-      ),
+        const SizedBox(height: 8),
+        Text(
+          l10n.assetGoldPrice(tl(market.goldPrice)),
+          style: theme.textTheme.bodySmall,
+        ),
+      ],
     );
   }
 }

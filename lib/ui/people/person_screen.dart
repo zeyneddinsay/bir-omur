@@ -1,0 +1,365 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../content/person_text.dart';
+import '../../engine/engine.dart';
+import '../../l10n/generated/app_localizations.dart';
+import '../../models/models.dart';
+import '../portrait/portrait.dart';
+import '../portrait/portrait_spec.dart';
+import '../providers.dart';
+import 'people_tab.dart';
+import 'people_text.dart';
+
+/// Bir kişinin sayfası: kim olduğu, seninle bağı, hatırladıkları ve
+/// yapabileceğin etkileşimler.
+class PersonScreen extends ConsumerWidget {
+  const PersonScreen({super.key, required this.personId});
+
+  final String personId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    final state = ref.watch(lifeProvider);
+    final content = ref.watch(contentProvider).value;
+    final p = state?.character.people[personId];
+    if (state == null || content == null || p == null) {
+      return const Scaffold(body: SizedBox.shrink());
+    }
+    final c = state.character;
+    final now = c.age;
+    final controller = ref.read(lifeProvider.notifier);
+    final options = state.phase == YearPhase.actions
+        ? controller.engine.interactionsWith(p.id)
+        : const <InteractionOption>[];
+    final result = state.lastInteraction;
+    final resultText = result != null && result.personId == p.id
+        ? _resultText(content.interactions, result, p, c)
+        : null;
+    final occupation = content.families.occupations[p.occupation];
+    final yearsApart = now - p.lastContactAt;
+
+    return Scaffold(
+      appBar: AppBar(title: Text('${p.name} ${p.surname}'.trim())),
+      body: SafeArea(
+        child: ListView(
+          key: const Key('person_screen'),
+          padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+          children: [
+            Row(
+              children: [
+                Portrait(
+                  spec: PortraitDesigner.ofPerson(
+                    p,
+                    playerAge: p.isAlive ? now : p.diedAt!,
+                  ),
+                  size: 80,
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        l10n.relationOf(p),
+                        key: const Key('person_relation'),
+                        style: theme.textTheme.titleMedium,
+                      ),
+                      Text(
+                        [
+                          if (p.isAlive)
+                            l10n.personAge(p.ageAt(now))
+                          else
+                            l10n.personDiedAt(p.ageAt(p.diedAt!)),
+                          ?occupation,
+                          p.city,
+                        ].join(' · '),
+                      ),
+                      if (p.metAt > 0) Text(l10n.personMet(p.metAt)),
+                      if (p.isAlive)
+                        Text(
+                          l10n.personLastContact(yearsApart),
+                          style: theme.textTheme.bodySmall,
+                        ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            if (p.isAlive) ...[
+              const SizedBox(height: 16),
+              RelationBars(person: p, now: now),
+              const SizedBox(height: 8),
+              Text(
+                l10n.colorName(Relationships.colorOf(p, now)),
+                key: const Key('person_color'),
+                style: theme.textTheme.labelLarge,
+              ),
+            ],
+            if (p.archived && p.isAlive)
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Text(
+                  l10n.personArchived,
+                  style: theme.textTheme.bodySmall,
+                ),
+              ),
+            if (resultText != null) ...[
+              const SizedBox(height: 16),
+              Container(
+                key: const Key('interaction_result'),
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.secondaryContainer,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l10n.lastInteractionTitle,
+                      style: theme.textTheme.labelMedium,
+                    ),
+                    const SizedBox(height: 4),
+                    Text(resultText),
+                  ],
+                ),
+              ),
+            ],
+            if (p.traits.isNotEmpty) ...[
+              const SizedBox(height: 16),
+              Text(l10n.traitsTitle, style: theme.textTheme.titleSmall),
+              const SizedBox(height: 4),
+              Wrap(
+                spacing: 8,
+                children: [
+                  for (final t in p.traits)
+                    Chip(label: Text(l10n.traitName(t))),
+                ],
+              ),
+            ],
+            if (p.isAlive) ...[
+              const SizedBox(height: 16),
+              Text(l10n.interactionsTitle, style: theme.textTheme.titleSmall),
+              if (state.phase != YearPhase.actions)
+                Text(l10n.interactionsAfterCards)
+              else
+                for (final option in options)
+                  _InteractionTile(
+                    option: option,
+                    onTap: () => option.kind == InteractionKind.ara
+                        ? _openCall(context, p.id)
+                        : controller.interact(
+                            InteractionRequest(option.kind, p.id),
+                          ),
+                  ),
+            ],
+            const SizedBox(height: 16),
+            Text(l10n.memoriesTitle, style: theme.textTheme.titleSmall),
+            if (p.memories.isEmpty)
+              Padding(
+                padding: const EdgeInsets.only(top: 4),
+                child: Text(l10n.memoriesEmpty),
+              )
+            else
+              for (final m in p.memories.reversed) _MemoryTile(memory: m),
+          ],
+        ),
+      ),
+    );
+  }
+
+  static String? _resultText(
+    InteractionBook book,
+    InteractionResult result,
+    Person p,
+    Character c,
+  ) {
+    final text = book.textFor(
+      result.outcome,
+      result.variant,
+      traits: [for (final t in p.traits) t.name],
+    );
+    return text == null ? null : PersonText.render(text, p, c);
+  }
+
+  static void _openCall(BuildContext context, String personId) {
+    showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      isScrollControlled: true,
+      builder: (_) => CallSheet(personId: personId),
+    );
+  }
+}
+
+class _InteractionTile extends StatelessWidget {
+  const _InteractionTile({required this.option, required this.onTap});
+
+  final InteractionOption option;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final cost = option.moneyCost > 0
+        ? l10n.interactionCostMoney(
+            option.timeCost,
+            l10n.money(option.moneyCost),
+          )
+        : l10n.interactionCost(option.timeCost);
+    return ListTile(
+      key: Key('interaction_${option.kind.name}'),
+      contentPadding: EdgeInsets.zero,
+      enabled: option.enabled,
+      leading: Icon(_icon(option.kind)),
+      title: Text(l10n.interactionName(option.kind)),
+      subtitle: Text(switch (option.blocked) {
+        final reason? => l10n.blockedReason(reason),
+        null => cost,
+      }),
+      onTap: option.enabled ? onTap : null,
+    );
+  }
+
+  static IconData _icon(InteractionKind kind) => switch (kind) {
+    InteractionKind.bulus => Icons.local_cafe_outlined,
+    InteractionKind.ara => Icons.call_outlined,
+    InteractionKind.hediye => Icons.card_giftcard,
+    InteractionKind.dertles => Icons.forum_outlined,
+    InteractionKind.borcIste => Icons.request_quote_outlined,
+    InteractionKind.borcOde => Icons.price_check,
+    InteractionKind.lafSok => Icons.mood_bad_outlined,
+    InteractionKind.uzaklas => Icons.do_not_disturb_on_outlined,
+    InteractionKind.yemegiOv => Icons.restaurant,
+    InteractionKind.macIzle => Icons.sports_soccer,
+    InteractionKind.eliniOp => Icons.volunteer_activism_outlined,
+    InteractionKind.kardesleOyna => Icons.toys_outlined,
+    InteractionKind.cayaGit => Icons.emoji_food_beverage_outlined,
+  };
+}
+
+class _MemoryTile extends StatelessWidget {
+  const _MemoryTile({required this.memory});
+
+  final Memory memory;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final scheme = Theme.of(context).colorScheme;
+    final positive = memory.tone == MemoryTone.olumlu;
+    final notes = [
+      l10n.memoryAge(memory.age),
+      if (memory.owner == MemoryOwner.oyuncu) l10n.memoryMine,
+      if (memory.healed) l10n.memoryHealed,
+    ];
+    return ListTile(
+      contentPadding: EdgeInsets.zero,
+      leading: Icon(
+        positive ? Icons.favorite_border : Icons.heart_broken_outlined,
+        color: positive ? Colors.green.shade600 : scheme.error,
+      ),
+      title: Text('“${memory.label}”'),
+      subtitle: Text(notes.join(' · ')),
+    );
+  }
+}
+
+/// Ara sohbeti: önce ton, nostalji ve iğnelemede sonra anı.
+class CallSheet extends ConsumerStatefulWidget {
+  const CallSheet({super.key, required this.personId});
+
+  final String personId;
+
+  @override
+  ConsumerState<CallSheet> createState() => _CallSheetState();
+}
+
+class _CallSheetState extends ConsumerState<CallSheet> {
+  CallTone? _tone;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    final state = ref.watch(lifeProvider);
+    final p = state?.character.people[widget.personId];
+    if (state == null || p == null) return const SizedBox.shrink();
+    final now = state.character.age;
+    final tone = _tone;
+
+    final children = tone == null
+        ? [
+            Text(l10n.callTitle, style: theme.textTheme.titleLarge),
+            for (final t in CallTone.values)
+              _toneTile(l10n, t, Interactions.toneBlocked(p, t, now)),
+          ]
+        : [
+            Text(l10n.callPickMemory, style: theme.textTheme.titleLarge),
+            for (final m in Interactions.callMemories(
+              p,
+              now,
+              tone: tone == CallTone.igne ? MemoryTone.olumsuz : null,
+            ))
+              ListTile(
+                key: Key('call_memory_${m.kind}'),
+                contentPadding: EdgeInsets.zero,
+                leading: Icon(
+                  m.tone == MemoryTone.olumlu
+                      ? Icons.favorite_border
+                      : Icons.heart_broken_outlined,
+                ),
+                title: Text('“${m.label}”'),
+                subtitle: Text(l10n.memoryAge(m.age)),
+                onTap: () => _call(tone, memoryKind: m.kind),
+              ),
+          ];
+
+    return SafeArea(
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: children,
+        ),
+      ),
+    );
+  }
+
+  Widget _toneTile(AppLocalizations l10n, CallTone tone, Blocked? blocked) =>
+      ListTile(
+        key: Key('call_tone_${tone.name}'),
+        contentPadding: EdgeInsets.zero,
+        enabled: blocked == null,
+        title: Text(l10n.toneName(tone)),
+        subtitle: Text(
+          blocked == null ? l10n.toneHint(tone) : l10n.blockedReason(blocked),
+        ),
+        onTap: blocked != null
+            ? null
+            : () {
+                if (tone == CallTone.nostalji || tone == CallTone.igne) {
+                  setState(() => _tone = tone);
+                } else {
+                  _call(tone);
+                }
+              },
+      );
+
+  void _call(CallTone tone, {String? memoryKind}) {
+    ref
+        .read(lifeProvider.notifier)
+        .interact(
+          InteractionRequest(
+            InteractionKind.ara,
+            widget.personId,
+            tone: tone,
+            memoryKind: memoryKind,
+          ),
+        );
+    Navigator.of(context).pop();
+  }
+}

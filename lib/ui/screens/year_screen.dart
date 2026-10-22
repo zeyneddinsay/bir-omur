@@ -8,6 +8,7 @@ import '../../l10n/generated/app_localizations.dart';
 import '../../models/models.dart';
 import '../l10n_names.dart';
 import '../providers.dart';
+import 'home_tabs.dart';
 import 'settings_screen.dart';
 import '../portrait/portrait.dart';
 import '../portrait/portrait_spec.dart';
@@ -31,6 +32,9 @@ class _YearScreenState extends ConsumerState<YearScreen> {
 
   /// Geçen yıl şeridinin kapatıldığı yaş; yeni yılda şerit yine görünür.
   int? _closedSummaryAge;
+
+  /// Serbest zamanda açık sekme; yıllar arasında korunur.
+  HomeTab _tab = HomeTab.me;
 
   @override
   Widget build(BuildContext context) {
@@ -73,6 +77,44 @@ class _YearScreenState extends ConsumerState<YearScreen> {
           SettingsScreen.button(context),
         ],
       ),
+      bottomNavigationBar: state.phase == YearPhase.actions
+          ? Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Divider(height: 1),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          l10n.timeLeft(state.timeLeft),
+                          key: const Key('actions_left'),
+                          style: Theme.of(context).textTheme.titleSmall,
+                        ),
+                      ),
+                      // Temada düğmeler tam genişlik ister; satırda sınır.
+                      ConstrainedBox(
+                        constraints: const BoxConstraints(maxWidth: 180),
+                        child: FilledButton.icon(
+                          key: const Key('age_up'),
+                          onPressed: ref
+                              .read(lifeProvider.notifier)
+                              .advanceYear,
+                          icon: const Icon(Icons.cake),
+                          label: Text(l10n.ageUpButton),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                HomeNavigation(
+                  tab: _tab,
+                  onTab: (tab) => setState(() => _tab = tab),
+                ),
+              ],
+            )
+          : null,
       body: SafeArea(
         child: Column(
           children: [
@@ -107,7 +149,7 @@ class _YearScreenState extends ConsumerState<YearScreen> {
             Expanded(
               child: switch (state.phase) {
                 YearPhase.cards => _cardPhase(state, l10n),
-                _ => _ActionMenu(state: state),
+                _ => HomeTabs(state: state, tab: _tab),
               },
             ),
           ],
@@ -156,95 +198,3 @@ Set<StatKind> affectedStats(Choice choice) => {
 };
 
 bool affectsMoney(Choice choice) => choice.allEffects.any((e) => e.money != 0);
-
-class _ActionMenu extends ConsumerWidget {
-  const _ActionMenu({required this.state});
-
-  final LifeState state;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = AppLocalizations.of(context);
-    final controller = ref.read(lifeProvider.notifier);
-    final actions = controller.engine.availableActions();
-    final theme = Theme.of(context);
-
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
-          child: Text(l10n.actionsTitle, style: theme.textTheme.titleLarge),
-        ),
-        Text(l10n.timeLeft(state.timeLeft), key: const Key('actions_left')),
-        if (controller.engine.lastJobSearch case final search?)
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-            child: Text(
-              switch (search.careerId) {
-                final id? => l10n.jobFound(
-                  controller.engine.careers.byId(id)?.name ?? id,
-                ),
-                null => l10n.jobNotFound,
-              },
-              key: const Key('job_search_result'),
-              textAlign: TextAlign.center,
-              style: theme.textTheme.titleSmall?.copyWith(
-                color: search.found
-                    ? theme.colorScheme.primary
-                    : theme.colorScheme.error,
-              ),
-            ),
-          ),
-        const SizedBox(height: 8),
-        Expanded(
-          child: ListView(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            children: [
-              for (final (action, enabled) in actions)
-                Card(
-                  child: ListTile(
-                    key: Key('action_${action.id}'),
-                    enabled: enabled,
-                    leading: Icon(_categoryIcon(action.category)),
-                    title: Text(l10n.actionName(action.id) ?? action.id),
-                    subtitle: Text(switch (action.moneyChange(
-                      controller.engine.market,
-                    )) {
-                      0 => l10n.actionFree,
-                      < 0 && final change => l10n.money(-change),
-                      final change => l10n.moneyGain(change),
-                    }),
-                    trailing: state.actionsUsed.contains(action.id)
-                        ? const Icon(Icons.check)
-                        : null,
-                    onTap: enabled
-                        ? () => controller.doAction(action.id)
-                        : null,
-                  ),
-                ),
-            ],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(16),
-          child: SizedBox(
-            width: double.infinity,
-            child: FilledButton.icon(
-              key: const Key('age_up'),
-              onPressed: controller.advanceYear,
-              icon: const Icon(Icons.cake),
-              label: Text(l10n.ageUpButton),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  static IconData _categoryIcon(ActionCategory category) => switch (category) {
-    ActionCategory.okulIs => Icons.work_outline,
-    ActionCategory.para => Icons.savings_outlined,
-    ActionCategory.saglik => Icons.health_and_safety_outlined,
-    ActionCategory.eglence => Icons.celebration_outlined,
-  };
-}
