@@ -132,6 +132,22 @@ Bu aşamada alınan kararlar (22 Ekim 2026):
 - Yıllık vakit puanı, aşağıdaki "Aksiyon menüsü" kararının yerine geçer (D1'de uygulanır): 0–5 yaş 0, 6–10 yaş 2, öğrenci 5, maaşlı çalışan 3, kendi işinin başında 2, iş ve işletme birlikte 1, işsiz 5, emekli 6.
 - İlk sürüm kapsamı dar başlar: 6 kişilik özelliği; 4 işletme (simit, berber, oto yıkama, yazılım; fabrika yalnızca aileden devralma); alan başına 1 meslek. Kalanlar güncellemelerle gelir.
 - Mevcut Esnaf mesleği kaldırılacak; "kendi dükkânı" işletme sistemine geçer.
+- Eski 150 kart taşınmaz; olaylar yeni formatta sıfırdan yazılır. Oyun mantığı (karakter, yıl döngüsü, olaylar, card_lint, ana ekran) baştan yazılır; altyapı (tohumlu rastgelelik, kayıt, servisler, portre, tema) kalır.
+
+D1 adımları (kişiler ve İnsanlar sekmesi):
+
+- [x] Türkçe ek motoru: `lib/content/turkish.dart` (`{ad|e}` gibi ekler, hitaplar, şablon denetimi)
+- [ ] Kişi ve hafıza modeli
+- [ ] Aile profilleri ve doğum
+- [ ] Kişilerin yılı (yaşlanma, solma, sınıflar, arşiv)
+- [ ] Vakit puanı
+- [ ] Etkileşimler ve Ara sohbeti
+- [ ] Yeni olay formatı ve card_lint; eski kartların silinmesi
+- [ ] D1 içeriği (yaklaşık 40 olay)
+- [ ] Kayıt sürüm 2
+- [ ] Arayüz: sekmeli ana ekran, İnsanlar, kişi detayı, Ara akışı, yıl günlüğü
+- [ ] 300 hayat simülasyonu ve `life_report`
+- [ ] Telefonda deneme (D1 kapısı)
 
 ## Bekleyen aşama: F3a — Dağıtıma hazırlık
 

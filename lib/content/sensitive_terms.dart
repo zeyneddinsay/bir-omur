@@ -4,6 +4,10 @@
 /// `reviewedTerms` listesine yazılır ve bir daha uyarı vermez.
 library;
 
+import 'turkish.dart';
+
+export 'turkish.dart' show lowerTr;
+
 class SensitiveTerm {
   const SensitiveTerm(this.term, this.category, {this.wholeWord = false});
 
@@ -132,10 +136,6 @@ const List<SensitiveTerm> sensitiveTerms = [
   SensitiveTerm('karı', _asagilama, wholeWord: true),
   SensitiveTerm('kaşar', _asagilama),
 ];
-
-/// Türkçe küçük harf: "I" → "ı", "İ" → "i".
-String lowerTr(String text) =>
-    text.replaceAll('I', 'ı').replaceAll('İ', 'i').toLowerCase();
 
 /// Metinde geçen incelenecek kelimeler.
 List<SensitiveTerm> findSensitiveTerms(String text) {

@@ -1,3 +1,4 @@
+import '../content/turkish.dart';
 import '../engine/engine.dart';
 import '../l10n/generated/app_localizations.dart';
 import '../models/models.dart';
@@ -71,5 +72,5 @@ extension L10nNames on AppLocalizations {
 /// Türkçe büyük harf: `toUpperCase()` "i" harfini "I" yapar; Türkçede
 /// "İ" olmalı (ve "ı" → "I").
 extension TurkishCase on String {
-  String toUpperTr() => replaceAll('i', 'İ').replaceAll('ı', 'I').toUpperCase();
+  String toUpperTr() => upperTr(this);
 }
