@@ -7,13 +7,10 @@ import 'package:bir_omur/engine/seeded_random.dart';
 import 'package:bir_omur/models/models.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-FamilyBook realBook() => FamilyBook.parse(
-  familiesSource: File('assets/families.json').readAsStringSync(),
-  namesSource: File('assets/names.json').readAsStringSync(),
-);
+import '../helpers/families.dart';
 
 void main() {
-  final book = realBook();
+  final book = realFamilies();
   const seeds = 5000;
 
   FamilyResult family(int seed) => FamilyGenerator(

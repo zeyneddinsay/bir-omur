@@ -191,6 +191,7 @@ class LifeController extends Notifier<LifeState?> {
       final engine = LifeEngine.restore(
         deck: content.deck,
         careers: content.careers,
+        families: content.families,
         snapshot: snapshot,
       );
       _engine = engine;

@@ -139,7 +139,7 @@ D1 adımları (kişiler ve İnsanlar sekmesi):
 - [x] Türkçe ek motoru: `lib/content/turkish.dart` (`{ad|e}` gibi ekler, hitaplar, şablon denetimi)
 - [x] Kişi ve hafıza modeli: `lib/models/person.dart`, `lib/engine/relationships.dart` (yakınlık ve husumet anılardan hesaplanır)
 - [x] Aile profilleri ve doğum: `assets/families.json`, `assets/names.json` (ad kuşakları), `lib/engine/family_generator.dart`
-- [ ] Kişilerin yılı (yaşlanma, solma, sınıflar, arşiv)
+- [x] Kişilerin yılı: `lib/engine/people_tick.dart` (kendi hayatı, haberler, sınıflar, aynı evde soğumama, arşiv)
 - [ ] Vakit puanı
 - [ ] Etkileşimler ve Ara sohbeti
 - [ ] Yeni olay formatı ve card_lint; eski kartların silinmesi

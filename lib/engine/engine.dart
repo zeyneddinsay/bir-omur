@@ -8,6 +8,7 @@ export 'event_deck.dart';
 export 'family_generator.dart';
 export 'life_action.dart';
 export 'life_engine.dart';
+export 'people_tick.dart';
 export 'relationships.dart';
 export 'schedule_queue.dart';
 export 'seeded_random.dart';

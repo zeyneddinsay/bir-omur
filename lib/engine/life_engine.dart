@@ -8,6 +8,7 @@ import 'economy.dart';
 import 'effect_resolver.dart';
 import 'event_deck.dart';
 import 'life_action.dart';
+import 'people_tick.dart';
 import 'schedule_queue.dart';
 import 'seeded_random.dart';
 import 'summary_builder.dart';
@@ -36,6 +37,7 @@ class LifeState {
     this.actionsUsed = const {},
     this.lastOutcome,
     this.summary,
+    this.news = const [],
   });
 
   final Character character;
@@ -52,6 +54,21 @@ class LifeState {
   /// Son kart seçiminin sonucu (arayüzde zar sonucunu göstermek için).
   final ChoiceOutcome? lastOutcome;
   final LifeSummary? summary;
+
+  /// Bu yılın çevreden haberleri (yıl günlüğü).
+  final List<PersonNews> news;
+
+  LifeState withNews(List<PersonNews> news) => LifeState(
+    character: character,
+    phase: phase,
+    queue: queue,
+    pendingCards: pendingCards,
+    actionsLeft: actionsLeft,
+    actionsUsed: actionsUsed,
+    lastOutcome: lastOutcome,
+    summary: summary,
+    news: List.unmodifiable(news),
+  );
 
   EventCard? get currentCard =>
       pendingCards.isEmpty ? null : pendingCards.first;
@@ -74,8 +91,13 @@ class LifeEngine {
        families = families ?? FamilyBook.minimal,
        _random = SeededRandom(seed);
 
-  LifeEngine._restored(this.deck, this.careers, this.seed, this._random)
-    : families = FamilyBook.minimal;
+  LifeEngine._restored(
+    this.deck,
+    this.careers,
+    this.families,
+    this.seed,
+    this._random,
+  );
 
   final EventDeck deck;
   final CareerBook careers;
@@ -259,10 +281,13 @@ class LifeEngine {
     );
     _lastCareer = careerReport;
     _lastJobSearch = null;
-    final character = Economy.syncDerivedFlags(
-      YearTick.updateHardshipFlags(afterCareer),
+    final (
+      character,
+      news,
+    ) = PeopleTick(_random, families, cities: BirthGenerator.hometowns).apply(
+      Economy.syncDerivedFlags(YearTick.updateHardshipFlags(afterCareer)),
     );
-    return _state = _beginYear(character, _state.queue);
+    return _state = _beginYear(character, _state.queue).withNews(news);
   }
 
   /// Hayatın tam durumu; JSON'a çevrilip kaydedilebilir. Son kartın zar
@@ -281,6 +306,7 @@ class LifeEngine {
     'actionsLeft': _state.actionsLeft,
     'actionsUsed': _state.actionsUsed.toList(),
     'cause': _state.summary?.cause.name,
+    'news': [for (final n in _state.news) n.toJson()],
   };
 
   /// [toSnapshot] ile kaydedilmiş hayatı kaldığı yerden sürdürür.
@@ -290,6 +316,7 @@ class LifeEngine {
   factory LifeEngine.restore({
     required EventDeck deck,
     CareerBook? careers,
+    FamilyBook? families,
     required Map<String, dynamic> snapshot,
   }) {
     final version = snapshot['version'];
@@ -299,6 +326,7 @@ class LifeEngine {
     final engine = LifeEngine._restored(
       deck,
       careers ?? CareerBook.empty,
+      families ?? FamilyBook.minimal,
       snapshot['seed'] as int,
       SeededRandom.fromState(snapshot['rng'] as int),
     ).._market = Market.fromJson(snapshot['market'] as Map<String, dynamic>);
@@ -345,6 +373,12 @@ class LifeEngine {
         actionsUsed: {...(snapshot['actionsUsed'] as List).cast<String>()},
       ),
     };
+    final news = snapshot['news'] as List?;
+    if (news != null) {
+      engine._state = engine._state.withNews([
+        for (final n in news) PersonNews.fromJson(n as Map<String, dynamic>),
+      ]);
+    }
     return engine;
   }
 

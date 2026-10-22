@@ -3,8 +3,12 @@ import 'package:bir_omur/models/models.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'auto_player.dart';
+import 'families.dart';
 
-/// Bir hayatı oynatır ve her adımda değişmezleri denetler.
+final FamilyBook _families = realFamilies();
+
+/// Bir hayatı oynatır ve her adımda değişmezleri denetler. Aile kitabı
+/// verilmezse oyunun gerçek aile dosyaları kullanılır.
 LifeState simulateLife(
   EventDeck deck,
   int seed, {
@@ -15,7 +19,7 @@ LifeState simulateLife(
     deck: deck,
     seed: seed,
     careers: careers,
-    families: families,
+    families: families ?? _families,
   );
   var lastAge = 0;
   return AutoPlayer(seed).play(
