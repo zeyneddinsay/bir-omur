@@ -31,6 +31,7 @@ class ContentRegistry {
     JobMarket.kpssFlag,
     JobMarket.codingFlag,
     ...BusinessRules.ownedFlags,
+    HardDay.flag,
   };
 
   /// Motorun koddan baktığı, kartların açtığı bayraklar; kayıtta
@@ -46,7 +47,10 @@ class ContentRegistry {
 
   /// Motorun kendisinin planladığı iplikler (örnek: mezuniyet); hiçbir
   /// olay planlamasa da gelirler.
-  static const Set<String> engineScheduledEvents = {LifeEngine.graduationEvent};
+  static const Set<String> engineScheduledEvents = {
+    LifeEngine.graduationEvent,
+    HardDay.callCard,
+  };
 
   factory ContentRegistry.parse(String source) {
     final json = jsonDecode(source);

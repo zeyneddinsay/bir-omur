@@ -818,6 +818,85 @@ class AppLocalizationsTr extends AppLocalizations {
   String get nickname_bizimBolukte => 'Bizim Bölükte';
 
   @override
+  String get nickname_patron => 'Patron';
+
+  @override
+  String get nickname_herkesinDostu => 'Herkesin Dostu';
+
+  @override
+  String get nickname_gurbetciRuhlu => 'Gurbetçi Ruhlu';
+
+  @override
+  String get storyTitle => 'Hayatındaki insanlar';
+
+  @override
+  String storyBedside(String relation, String name) {
+    return 'Son gününde $relation $name yanındaydı.';
+  }
+
+  @override
+  String get storyAlone => 'Son gününü sessizce, kendi köşesinde geçirdi.';
+
+  @override
+  String storyFuneral(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Cenazene $count kişi geldi.',
+      zero: 'Cenaze sessiz geçti.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String storyFuneralFriends(String names) {
+    return 'En önde $names vardı.';
+  }
+
+  @override
+  String storyCameAnyway(String name) {
+    return '$name de gelmiş, en arkada durmuş.';
+  }
+
+  @override
+  String get storyStrangers => 'Hiç tanımadığın üç akraba da oradaydı.';
+
+  @override
+  String storyClosest(String names) {
+    return 'En yakınların: $names';
+  }
+
+  @override
+  String storyTrueFriend(String name) {
+    return 'Herkes gitti, $name kaldı.';
+  }
+
+  @override
+  String storyMissed(String name) {
+    return 'Seni en çok $name özleyecek.';
+  }
+
+  @override
+  String storyBusinesses(String list) {
+    return 'Kurduğun işler: $list';
+  }
+
+  @override
+  String businessEnd_acik(String name) {
+    return '$name (hâlâ açık)';
+  }
+
+  @override
+  String businessEnd_birakildi(String name) {
+    return '$name (devrettin)';
+  }
+
+  @override
+  String businessEnd_batti(String name) {
+    return '$name (battı)';
+  }
+
+  @override
   String get nickname_mahalleninBildikYuzu => 'Mahallenin Bildik Yüzü';
 
   @override
@@ -1439,6 +1518,27 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get since_kendin => 'eskiden';
+
+  @override
+  String get note_zorGun_borc =>
+      'Zor bir yıl: borca battın. Kim aradı, kim aramadı; unutmayacaksın.';
+
+  @override
+  String get note_zorGun_kovuldun =>
+      'Zor bir yıl: işten çıkarıldın. Kim aradı, kim aramadı; unutmayacaksın.';
+
+  @override
+  String get note_zorGun_iflas =>
+      'Zor bir yıl: işletmen battı. Kim aradı, kim aramadı; unutmayacaksın.';
+
+  @override
+  String note_zorGun_vefat(String name) {
+    return 'Zor bir yıl: $name artık yok. Kim aradı, kim aramadı; unutmayacaksın.';
+  }
+
+  @override
+  String get note_zorGun_bunalim =>
+      'Zor bir yıl: içinden hiçbir şey gelmiyor. Kim aradı, kim aramadı; unutmayacaksın.';
 
   @override
   String note_iseAldin(String person, String name) {

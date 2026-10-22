@@ -2,6 +2,7 @@ import '../models/models.dart';
 import 'death_check.dart';
 import 'economy.dart';
 import 'event_deck.dart';
+import 'life_story.dart';
 
 /// Mahallenin karakteri nasıl hatırladığı. Metni arayüzde ARB'den gelir.
 enum Nickname {
@@ -14,6 +15,15 @@ enum Nickname {
   hepGulen,
   borcYigidinKamcisi,
   bizimBolukte,
+
+  /// Bir işletmeyi 10 yıl yaşattı ya da 3 şubeye çıkardı.
+  patron,
+
+  /// Akraba olmayan en az 8 yakın tanıdığı vardı.
+  herkesinDostu,
+
+  /// Üç ya da daha fazla şehirde yaşadı.
+  gurbetciRuhlu,
   mahalleninBildikYuzu,
 }
 
@@ -79,12 +89,16 @@ class SummaryBuilder {
   /// kadar kat sayılır.
   static const int reputationWeight = 2;
   static const int soldierScore = 3;
+  static const int bossScore = 6;
+  static const int friendScore = 6;
+  static const int movesScore = 4;
 
   /// Önce özel durumlar (asırlık, zengin, borçlu); sonra en belirgin özellik
   /// kazanır: her aday için eşiğin ne kadar aşıldığına bakılır, en büyüğü
   /// seçilir. Eşitlikte listedeki sıra geçerlidir.
   static Nickname nicknameFor(Character c, Market market) {
     final s = c.stats;
+    final story = LifeStory(c);
     final worth = Economy.netWorth(c, market);
     if (c.age >= 95) return Nickname.asirlikCinar;
     if (worth >= richThreshold) return Nickname.mahalleninZengini;
@@ -100,6 +114,9 @@ class SummaryBuilder {
       (Nickname.hepGulen, s.happiness - statThreshold),
       if (c.assets.houses > 0) (Nickname.evSahibi, homeOwnerScore),
       if (c.hasFlag(soldierFlag)) (Nickname.bizimBolukte, soldierScore),
+      if (story.boss) (Nickname.patron, bossScore),
+      if (story.everyonesFriend) (Nickname.herkesinDostu, friendScore),
+      if (c.counters.moves >= 2) (Nickname.gurbetciRuhlu, movesScore),
     ];
     var best = Nickname.mahalleninBildikYuzu;
     var bestScore = -1;

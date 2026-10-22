@@ -1408,6 +1408,108 @@ abstract class AppLocalizations {
   /// **'Bizim Bölükte'**
   String get nickname_bizimBolukte;
 
+  /// No description provided for @nickname_patron.
+  ///
+  /// In tr, this message translates to:
+  /// **'Patron'**
+  String get nickname_patron;
+
+  /// No description provided for @nickname_herkesinDostu.
+  ///
+  /// In tr, this message translates to:
+  /// **'Herkesin Dostu'**
+  String get nickname_herkesinDostu;
+
+  /// No description provided for @nickname_gurbetciRuhlu.
+  ///
+  /// In tr, this message translates to:
+  /// **'Gurbetçi Ruhlu'**
+  String get nickname_gurbetciRuhlu;
+
+  /// No description provided for @storyTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Hayatındaki insanlar'**
+  String get storyTitle;
+
+  /// No description provided for @storyBedside.
+  ///
+  /// In tr, this message translates to:
+  /// **'Son gününde {relation} {name} yanındaydı.'**
+  String storyBedside(String relation, String name);
+
+  /// No description provided for @storyAlone.
+  ///
+  /// In tr, this message translates to:
+  /// **'Son gününü sessizce, kendi köşesinde geçirdi.'**
+  String get storyAlone;
+
+  /// No description provided for @storyFuneral.
+  ///
+  /// In tr, this message translates to:
+  /// **'{count, plural, =0{Cenaze sessiz geçti.} other{Cenazene {count} kişi geldi.}}'**
+  String storyFuneral(int count);
+
+  /// No description provided for @storyFuneralFriends.
+  ///
+  /// In tr, this message translates to:
+  /// **'En önde {names} vardı.'**
+  String storyFuneralFriends(String names);
+
+  /// No description provided for @storyCameAnyway.
+  ///
+  /// In tr, this message translates to:
+  /// **'{name} de gelmiş, en arkada durmuş.'**
+  String storyCameAnyway(String name);
+
+  /// No description provided for @storyStrangers.
+  ///
+  /// In tr, this message translates to:
+  /// **'Hiç tanımadığın üç akraba da oradaydı.'**
+  String get storyStrangers;
+
+  /// No description provided for @storyClosest.
+  ///
+  /// In tr, this message translates to:
+  /// **'En yakınların: {names}'**
+  String storyClosest(String names);
+
+  /// No description provided for @storyTrueFriend.
+  ///
+  /// In tr, this message translates to:
+  /// **'Herkes gitti, {name} kaldı.'**
+  String storyTrueFriend(String name);
+
+  /// No description provided for @storyMissed.
+  ///
+  /// In tr, this message translates to:
+  /// **'Seni en çok {name} özleyecek.'**
+  String storyMissed(String name);
+
+  /// No description provided for @storyBusinesses.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kurduğun işler: {list}'**
+  String storyBusinesses(String list);
+
+  /// No description provided for @businessEnd_acik.
+  ///
+  /// In tr, this message translates to:
+  /// **'{name} (hâlâ açık)'**
+  String businessEnd_acik(String name);
+
+  /// No description provided for @businessEnd_birakildi.
+  ///
+  /// In tr, this message translates to:
+  /// **'{name} (devrettin)'**
+  String businessEnd_birakildi(String name);
+
+  /// No description provided for @businessEnd_batti.
+  ///
+  /// In tr, this message translates to:
+  /// **'{name} (battı)'**
+  String businessEnd_batti(String name);
+
   /// No description provided for @nickname_mahalleninBildikYuzu.
   ///
   /// In tr, this message translates to:
@@ -2409,6 +2511,36 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'eskiden'**
   String get since_kendin;
+
+  /// No description provided for @note_zorGun_borc.
+  ///
+  /// In tr, this message translates to:
+  /// **'Zor bir yıl: borca battın. Kim aradı, kim aramadı; unutmayacaksın.'**
+  String get note_zorGun_borc;
+
+  /// No description provided for @note_zorGun_kovuldun.
+  ///
+  /// In tr, this message translates to:
+  /// **'Zor bir yıl: işten çıkarıldın. Kim aradı, kim aramadı; unutmayacaksın.'**
+  String get note_zorGun_kovuldun;
+
+  /// No description provided for @note_zorGun_iflas.
+  ///
+  /// In tr, this message translates to:
+  /// **'Zor bir yıl: işletmen battı. Kim aradı, kim aramadı; unutmayacaksın.'**
+  String get note_zorGun_iflas;
+
+  /// No description provided for @note_zorGun_vefat.
+  ///
+  /// In tr, this message translates to:
+  /// **'Zor bir yıl: {name} artık yok. Kim aradı, kim aramadı; unutmayacaksın.'**
+  String note_zorGun_vefat(String name);
+
+  /// No description provided for @note_zorGun_bunalim.
+  ///
+  /// In tr, this message translates to:
+  /// **'Zor bir yıl: içinden hiçbir şey gelmiyor. Kim aradı, kim aramadı; unutmayacaksın.'**
+  String get note_zorGun_bunalim;
 
   /// No description provided for @note_iseAldin.
   ///

@@ -120,6 +120,15 @@ String noteLine(
     NoteKind.iseAldin => d,
     NoteKind.iplikKapandi => _closingLine(l10n, parts, deck, character),
     NoteKind.dunyaKucuk => _worldSmallLine(l10n, parts, character),
+    NoteKind.zorGun => switch (parts.first) {
+      'borc' => l10n.note_zorGun_borc,
+      'kovuldun' => l10n.note_zorGun_kovuldun,
+      'iflas' => l10n.note_zorGun_iflas,
+      'vefat' => l10n.note_zorGun_vefat(
+        character?.people[parts.length > 1 ? parts[1] : '']?.name ?? '',
+      ),
+      _ => l10n.note_zorGun_bunalim,
+    },
   };
 }
 

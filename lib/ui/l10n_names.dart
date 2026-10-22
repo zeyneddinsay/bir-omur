@@ -81,6 +81,9 @@ extension L10nNames on AppLocalizations {
     Nickname.hepGulen => nickname_hepGulen,
     Nickname.borcYigidinKamcisi => nickname_borcYigidinKamcisi,
     Nickname.bizimBolukte => nickname_bizimBolukte,
+    Nickname.patron => nickname_patron,
+    Nickname.herkesinDostu => nickname_herkesinDostu,
+    Nickname.gurbetciRuhlu => nickname_gurbetciRuhlu,
     Nickname.mahalleninBildikYuzu => nickname_mahalleninBildikYuzu,
   };
 

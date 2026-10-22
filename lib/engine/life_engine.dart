@@ -11,6 +11,7 @@ import 'economy.dart';
 import 'education.dart';
 import 'effect_resolver.dart';
 import 'event_deck.dart';
+import 'hard_day.dart';
 import 'housing.dart';
 import 'jobs.dart';
 import 'interactions.dart';
@@ -439,6 +440,8 @@ class LifeEngine {
     if (_state.character.hasFlag(EducationRules.pendingFlag)) {
       declineTercih(TercihKind.calis);
     }
+    final before = _state.character;
+    final worthBefore = Economy.netWorth(before, _market);
     final cause = _deathCheck.check(_state.character);
     if (cause != null) {
       final dead = _state.character.copyWith(isAlive: false);
@@ -516,16 +519,52 @@ class LifeEngine {
       families,
       cities: BirthGenerator.hometowns,
     ).apply(Economy.syncDerivedFlags(YearTick.updateHardshipFlags(served)));
-    final settled = Relationships.syncFamilyBond(
+    var settled = Relationships.syncFamilyBond(
       BusinessRules.refreshStaff(
         Housing.ensureNeighbours(character, _factory),
         _factory,
       ),
     );
+    var nextQueue = queue;
+    // Zor gün yılı: arayanların olayları bu yıl gelir; aramayan arkadaşlar
+    // unutulmaz.
+    settled = settled.copyWith(flags: {...settled.flags}..remove(HardDay.flag));
+    final hardDay = HardDay.causeOf(
+      before: before,
+      after: settled,
+      worthBefore: worthBefore,
+      worthAfter: Economy.netWorth(settled, _market),
+      fired: careerReport.fired,
+      bankrupt: businessNotes.any((n) => n.kind == NoteKind.isletmeBatti),
+      deaths: [
+        for (final n in news)
+          if (n.kind == NewsKind.vefat) n.personId,
+      ],
+    );
+    if (hardDay case (final cause, final detail)) {
+      notes.add(
+        LifeNote(
+          NoteKind.zorGun,
+          detail == null ? cause.name : '${cause.name}|$detail',
+        ),
+      );
+      final callers = HardDay.callers(settled, _random, cause);
+      if (deck.byId(HardDay.callCard) != null) {
+        for (final p in callers) {
+          nextQueue = nextQueue.add(
+            HardDay.callCard,
+            atAge: settled.age,
+            people: {HardDay.callerSlot: p.id},
+          );
+        }
+      }
+      settled = HardDay.markMissed(settled, {for (final p in callers) p.id});
+      settled = settled.copyWith(flags: {...settled.flags, HardDay.flag});
+    }
     final listings = JobMarket.listingsFor(settled, careers, _random);
     return _state = _beginYear(
       settled,
-      queue,
+      nextQueue,
       notes: notes,
     ).withNews(news).copyWith(listings: listings);
   }

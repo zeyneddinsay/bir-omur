@@ -205,6 +205,18 @@ D3 adımları (kendi işin):
   - Emek işinde ek şubeyi usta yönetir (müdür maaşı yok). Müdür maaşı 340 bin; oto yıkama cirosu 1,4 milyon.
 - D5 denge notları: test oyuncusu neredeyse her hayatta işletme açıyor, bu yüzden medyan servet yaklaşık 10 milyon. Varlıklı ailenin medyan serveti ortadan düşük çıkıyor (örneklem küçük, %5).
 
+D4a adımları (iplikler, dünya küçük, zor gün):
+
+- [x] İplik kapanışı: taşınan kişi vefat ettiyse ya da çevreden ayrıldıysa olay gelmez, günlüğe kapanış cümlesi yazılır (kartta `closing`, yoksa genel cümle).
+- [x] Dünya küçük kuralı: yeni patron, amir, usta, ev sahibi, işletme müdürü ve rakip %35 ihtimalle uygun bir tanıdıktan seçilir (`PersonFactory.addOrReuse`). Günlükte "Dünya küçük: Kerem artık patronun. Onu okuldan tanıyorsun."
+- [x] Zor gün yılı (`lib/engine/hard_day.dart`):
+  - Sebepler: borca düşmek, kovulmak, işletmenin batması, yakının (çekirdek aile ya da 60+ yakınlık) vefatı, bunalım.
+  - O yıl en çok 3 kişi arar, her biri bir olay olarak gelir (`zor_gun_aradi`). Açıp dertleşilen "gerçek dost" olur.
+  - Arkadaşın olup aramayana "Zor günümde aramadı" anısı yazılır. Para gelince "Zor günümde neredeydin?" olayı, yıllar sonra "O zor yıl" olayı gelir.
+- [x] Hayatın sonu (`lib/engine/life_story.dart`, ölüm ekranında "Hayatındaki insanlar"): son gününde yanındaki, cenazeye gelenler (gerçek dostlar önde, küs olup gelen, zenginse tanımadığın akrabalar), en yakın üç kişi, seni en çok özleyecek kişi, kurduğun işler. Yeni lakaplar: Patron, Herkesin Dostu, Gurbetçi Ruhlu.
+- [ ] D4a bağımsız mantık denetimi
+- D5 notu: zor gün hayat başına 5,5 yıl (her hayatta en az bir kez); "Bayramların Baş Köşesi" lakabı %69.
+
 ## Bekleyen aşama: F3a — Dağıtıma hazırlık
 
 Sıra kararı (15 Ekim 2026): GDD'deki F3 → F4 sırası yerine F3a (dağıtıma hazırlık) → F4 (reklam ve satın alma) → F3b (kapalı beta: Google Play kapalı testi ve TestFlight). Kullanıcı dış dağıtımı uygulama bitince yapmak istiyor. 22 Ekim 2026'da D aşaması öne alındı; kalan iki adım D5'ten sonra yapılır.

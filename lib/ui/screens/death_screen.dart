@@ -6,10 +6,12 @@ import '../../content/content_loader.dart';
 import '../../engine/engine.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../l10n_names.dart';
+import '../people/people_text.dart';
 import '../portrait/portrait.dart';
 import '../portrait/portrait_spec.dart';
 import '../providers.dart';
 import '../share/share_preview_screen.dart';
+import '../widgets/business_card.dart';
 import '../widgets/life_status.dart';
 
 /// Ölüm ve basit hayat özeti. Paylaşım görseli F2'de gelir.
@@ -93,6 +95,10 @@ class DeathScreen extends ConsumerWidget {
                           color: theme.colorScheme.primary,
                         ),
                         textAlign: TextAlign.center,
+                      ),
+                      _LifeStorySection(
+                        story: LifeStory(c),
+                        rich: summary.netWorth >= 15000000,
                       ),
                       if (moment != null && momentCard != null) ...[
                         const Divider(height: 40),
@@ -200,6 +206,73 @@ class _EarnedBadges extends ConsumerWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+/// Hayatın kişileri: veda, cenaze, en yakınlar, gerçek dost, kurulan işler.
+class _LifeStorySection extends StatelessWidget {
+  const _LifeStorySection({required this.story, required this.rich});
+
+  final LifeStory story;
+  final bool rich;
+
+  static String _lowerFirst(String s) =>
+      s.isEmpty ? s : s[0].toLowerCase() + s.substring(1);
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    final bedside = story.bedside;
+    final friends = story.trueFriends;
+    final mourners = story.mourners.length;
+    final missed = story.mostMissed;
+    final businesses = story.businesses.entries.map(
+      (e) => switch (e.value) {
+        BusinessEnd.acik => l10n.businessEnd_acik(
+          businessTypeName(l10n, e.key),
+        ),
+        BusinessEnd.birakildi => l10n.businessEnd_birakildi(
+          businessTypeName(l10n, e.key),
+        ),
+        BusinessEnd.batti => l10n.businessEnd_batti(
+          businessTypeName(l10n, e.key),
+        ),
+      },
+    );
+    final lines = <String>[
+      bedside == null
+          ? l10n.storyAlone
+          : l10n.storyBedside(
+              _lowerFirst(l10n.relationOf(bedside)),
+              bedside.name,
+            ),
+      [
+        l10n.storyFuneral(mourners),
+        if (friends.isNotEmpty && mourners > 0)
+          l10n.storyFuneralFriends(friends.map((p) => p.name).join(', ')),
+        if (story.cameAnyway case final p?) l10n.storyCameAnyway(p.name),
+        if (rich && mourners > 0) l10n.storyStrangers,
+      ].join(' '),
+      if (story.closest.isNotEmpty)
+        l10n.storyClosest(story.closest.map((p) => p.name).join(', ')),
+      if (friends.isNotEmpty) l10n.storyTrueFriend(friends.first.name),
+      if (missed != null) l10n.storyMissed(missed.name),
+      if (businesses.isNotEmpty) l10n.storyBusinesses(businesses.join(', ')),
+    ];
+    return Column(
+      key: const Key('life_story'),
+      children: [
+        const Divider(height: 40),
+        Text(l10n.storyTitle, style: theme.textTheme.labelLarge),
+        const SizedBox(height: 8),
+        for (final line in lines)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 6),
+            child: Text(line, textAlign: TextAlign.center),
+          ),
+      ],
     );
   }
 }

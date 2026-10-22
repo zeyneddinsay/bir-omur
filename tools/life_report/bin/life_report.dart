@@ -41,6 +41,10 @@ void main(List<String> args) {
   var retiredEarly = 0;
   final people = _PeopleStats();
   final biz = _BusinessStats();
+  var hardYears = 0;
+  var livesWithHardDay = 0;
+  var livesWithTrueFriend = 0;
+  var worldSmall = 0;
 
   for (var i = 0; i < lives; i++) {
     final seed = firstSeed + i;
@@ -58,11 +62,24 @@ void main(List<String> args) {
     var retireAge = 0;
     engine.startLife();
     var age = engine.state.character.age;
+    var hadHardDay = false;
+    var worldSeen = 0;
     while (!engine.state.isOver) {
       player.step(engine);
-      if (engine.state.character.age != age) {
+      final worldNow = engine.state.notes
+          .where((n) => n.kind == NoteKind.dunyaKucuk)
+          .length;
+      final newYear = engine.state.character.age != age;
+      worldSmall += newYear ? worldNow : max(0, worldNow - worldSeen);
+      worldSeen = worldNow;
+      if (newYear) {
         age = engine.state.character.age;
         biz.addNotes(engine.state.notes);
+        final notes = engine.state.notes;
+        if (notes.any((n) => n.kind == NoteKind.zorGun)) {
+          hardYears++;
+          hadHardDay = true;
+        }
       }
       final flags = engine.state.character.flags;
       inDebt |= flags.contains(EngineFlags.borclu);
@@ -75,6 +92,8 @@ void main(List<String> args) {
     final c = summary.character;
     people.add(c, interactions: player.interactions);
     biz.addLife(c, opened: player.openedBusinesses);
+    if (hadHardDay) livesWithHardDay++;
+    if (HardDay.trueFriends(c).isNotEmpty) livesWithTrueFriend++;
     deathAges.add(summary.deathAge);
     netWorths.add(summary.netWorth);
     for (final a in badges.earnedBy(summary)) {
@@ -207,6 +226,13 @@ void main(List<String> args) {
   }
   people.write(lives);
   biz.write(lives);
+  stdout
+    ..writeln()
+    ..writeln(
+      'Zor gün: hayat başına ${(hardYears / lives).toStringAsFixed(1)} yıl, '
+      'en az bir kez ${pct(livesWithHardDay)}, gerçek dostu olan ${pct(livesWithTrueFriend)}; '
+      'dünya küçük tesadüfü hayat başına ${(worldSmall / lives).toStringAsFixed(1)}',
+    );
 }
 
 /// Açık ilanlardan biri şu anki işten daha iyi mi.

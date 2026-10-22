@@ -1,0 +1,128 @@
+[
+  {
+    "id": "zor_gun_aradi",
+    "type": "iplik",
+    "theme": "genel",
+    "minAge": 19,
+    "maxAge": 110,
+    "repeat": { "cooldown": 1 },
+    "roles": {
+      "arayan": { "minAge": 12 }
+    },
+    "speaker": "arayan",
+    "text": "{arayan.ad} aradı. Bir süre ikiniz de sustunuz. Sonra: 'Duydum. Nasılsın, gerçekten?'",
+    "left": {
+      "label": "Açıp dertleşirim",
+      "effects": {
+        "happiness": 4,
+        "people": {
+          "arayan": {
+            "memory": {
+              "kind": "zor_gunde_dertlesti",
+              "label": "Zor gününde aradım, saatlerce konuştuk",
+              "tone": "olumlu",
+              "severity": 3
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "İyiyim, sağ ol",
+      "effects": {
+        "happiness": -1,
+        "people": {
+          "arayan": {
+            "memory": {
+              "kind": "zor_gunde_aradi",
+              "label": "Zor gününde aradım, kısa kesti",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "aramayan_dost_doner",
+    "type": "kisi",
+    "theme": "genel",
+    "minAge": 20,
+    "maxAge": 90,
+    "repeat": { "cooldown": 6, "max": 2 },
+    "conditions": { "min": { "money": 2000000 }, "notFlags": ["zor_gun"] },
+    "roles": {
+      "eski": { "memory": "zor_gunde_aramadi", "noMemory": "zor_gun_yuzlesme" }
+    },
+    "speaker": "eski",
+    "text": "Zor gününde bir kez olsun aramayan {eski.ad} şimdi aradı: 'Nerelerdesin ya? Bir çayını içelim.'",
+    "left": {
+      "label": "Çayını içeriz",
+      "effects": {
+        "people": {
+          "eski": {
+            "memory": {
+              "kind": "eskisi_gibi",
+              "label": "Aradım, hiçbir şey olmamış gibi davrandı",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Zor günümde neredeydin?",
+      "effects": {
+        "happiness": 2,
+        "people": {
+          "eski": {
+            "memory": {
+              "kind": "zor_gun_yuzlesme",
+              "label": "Zor gününde neredeydin, diye yüzüme vurdu",
+              "tone": "olumsuz",
+              "severity": 2
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "o_zor_yil",
+    "type": "kisi",
+    "theme": "genel",
+    "minAge": 22,
+    "maxAge": 100,
+    "repeat": { "cooldown": 8, "max": 2 },
+    "conditions": { "notFlags": ["zor_gun"] },
+    "roles": {
+      "dost": { "memory": "zor_gunde_dertlesti", "minCloseness": 40 }
+    },
+    "speaker": "dost",
+    "text": "{dost.ad} ile yıllar sonra aynı masadasınız. 'O zor yılı hatırlıyor musun?' diyor. Hatırlıyorsun.",
+    "left": {
+      "label": "İyi ki aradın",
+      "effects": {
+        "happiness": 3,
+        "people": {
+          "dost": {
+            "memory": {
+              "kind": "iyi_ki_aradin",
+              "label": "Yıllar sonra 'iyi ki aradın' dedi",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Hiç açmayalım o yılı",
+      "effects": {
+        "happiness": 1
+      }
+    }
+  }
+]

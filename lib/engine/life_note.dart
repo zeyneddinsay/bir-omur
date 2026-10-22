@@ -76,6 +76,9 @@ enum NoteKind {
 
   /// Dünya küçük: bir tanıdık yeni bir rol aldı: `kişi|rol`.
   dunyaKucuk,
+
+  /// Zor gün yılı başladı: `sebep` ya da `vefat|kişi`.
+  zorGun,
 }
 
 class LifeNote {
