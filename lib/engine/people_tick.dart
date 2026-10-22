@@ -66,7 +66,6 @@ class PeopleTick {
   /// baba, kardeş, eş ve çocuk sayılmaz, arşive de düşmez.
   static const int maxActive = 40;
 
-
   /// Anne ve baba bu yaştan önce vefat etmez (oyuncunun yaşı).
   static const int parentsSafeUntil = 18;
 

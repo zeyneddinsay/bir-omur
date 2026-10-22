@@ -1,13 +1,11 @@
 {
   "flags": {
-    "universite_ogrencisi": "Üniversitede okuyor (motor: 5 vakit, öğrenci geliri)",
-    "universite_mezunu": "Üniversiteyi bitirdi (plaza işine girebilir)",
-    "yks_kazandi": "YKS'de bir bölüm kazandı",
-    "yks_kaybetti": "YKS'de kazanamadı",
     "askerligini_yapti": "Askerlik borcunu kapattı (bedelli ya da yaparak)",
     "asker_anilari": "Askerliği yaparak geçirdi; ömür boyu 'bizim bölükte' der",
     "bedelli": "Bedelli askerlik yaptı",
-    "iyi_lise": "LGS'de iyi bir liseye yerleşti (YKS'de eşik düşer)",
+    "iyi_lise": "LGS'de iyi puan; 15 yaşında Anadolu ya da fen lisesine (motor)",
+    "meslek_lisesi": "Lise seçiminde meslek lisesi (motor: ustalık yolu, YKS'de puan düşük)",
+    "yks_iyi_gecti": "YKS sabahı iyi geçti (motor: puana +15)",
     "ehliyet_var": "Ehliyeti var",
     "memlekete_dondu": "Yaşlılığında memlekete döndü"
   },

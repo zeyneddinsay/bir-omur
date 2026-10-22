@@ -1,0 +1,57 @@
+/// Oyuncunun kendi hayatından yıl günlüğüne düşen bir not ("YKS puanın
+/// 312", "Mezun oldun"). Çevreden haberler [PersonNews]'tadır.
+enum NoteKind {
+  /// Liseye başladı; detay lise türü.
+  lise,
+
+  /// YKS sonucu; detay puan.
+  yksPuani,
+
+  /// Bir bölüme yerleşti; detay `bölüm:şehir`.
+  yerlesti,
+
+  /// Mezuna kaldı.
+  mezunaKaldi,
+
+  /// Bir ustanın yanına çırak girdi.
+  cirakOldu,
+
+  /// Okumadan çalışmayı seçti.
+  calismayiSecti,
+
+  /// Bir ders alttan kaldı; okul bir yıl uzadı.
+  dersKaldi,
+
+  /// Üniversiteden mezun oldu; detay bölüm.
+  mezunOldu,
+
+  /// Okul bitince ailesinin yanına döndü; detay şehir.
+  eveDondu,
+
+  /// Askere gitti ya da askerden döndü.
+  askerlik,
+}
+
+class LifeNote {
+  const LifeNote(this.kind, [this.detail]);
+
+  final NoteKind kind;
+  final String? detail;
+
+  Map<String, Object> toJson() => {'kind': kind.name, 'detail': ?detail};
+
+  factory LifeNote.fromJson(Map<String, dynamic> json) => LifeNote(
+    NoteKind.values.byName(json['kind'] as String),
+    json['detail'] as String?,
+  );
+
+  @override
+  bool operator ==(Object other) =>
+      other is LifeNote && other.kind == kind && other.detail == detail;
+
+  @override
+  int get hashCode => Object.hash(kind, detail);
+
+  @override
+  String toString() => 'LifeNote(${kind.name}, $detail)';
+}

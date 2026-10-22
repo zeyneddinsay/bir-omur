@@ -265,6 +265,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get action_ara_is => 'Ara işlere git';
 
   @override
+  String get action_yarim_zamanli => 'Yarı zamanlı çalış';
+
+  @override
   String get action_evden_cik => 'Evden çık, kiraya geç';
 
   @override
@@ -825,6 +828,163 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get noActionsHere => 'Bu yaşta burada yapacak bir şey yok.';
+
+  @override
+  String get dept_bilgisayar => 'Bilgisayar Mühendisliği';
+
+  @override
+  String get dept_iktisat => 'İktisat';
+
+  @override
+  String get dept_hemsirelik => 'Hemşirelik';
+
+  @override
+  String get dept_isletme => 'İşletme';
+
+  @override
+  String get dept_kamu_yonetimi => 'Kamu Yönetimi';
+
+  @override
+  String get dept_tarih => 'Tarih';
+
+  @override
+  String get dept_acikogretim => 'Açıköğretim İşletme';
+
+  @override
+  String get school_duz => 'Mahalledeki lise';
+
+  @override
+  String get school_anadolu => 'Anadolu lisesi';
+
+  @override
+  String get school_fen => 'Fen lisesi';
+
+  @override
+  String get school_meslek => 'Meslek lisesi';
+
+  @override
+  String get eduTitle => 'Okul';
+
+  @override
+  String eduYks(int score) {
+    return 'YKS puanın: $score';
+  }
+
+  @override
+  String eduUni(String dept, String city, int year) {
+    return '$dept · $city · $year. sınıf';
+  }
+
+  @override
+  String eduGraduate(String dept) {
+    return '$dept mezunu';
+  }
+
+  @override
+  String eduScholarship(String money) {
+    return 'Burs: yılda $money';
+  }
+
+  @override
+  String get eduApprentice => 'Bir ustanın yanında çıraksın.';
+
+  @override
+  String get eduOpen => 'Açıköğretimle evden okuyorsun.';
+
+  @override
+  String get tercihButton => 'Tercihini yap';
+
+  @override
+  String get tercihPending =>
+      'YKS sonucun açıklandı. Okul / İş sekmesinden tercihini yap; yapmadan yaşlanırsan okumadan çalışmayı seçmiş sayılırsın.';
+
+  @override
+  String tercihTitle(int score) {
+    return 'YKS tercihi: $score puan';
+  }
+
+  @override
+  String get tercihPrompt =>
+      'Puanının yettiği bölümler. Bir bölüme, sonra şehre dokun.';
+
+  @override
+  String get tercihNone => 'Puanın bu yıl hiçbir bölüme yetmedi.';
+
+  @override
+  String tercihCities(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count şehirde',
+      one: '1 şehirde',
+    );
+    return '$_temp0 yerleşebilirsin';
+  }
+
+  @override
+  String tercihCity(String city, String type, int score) {
+    return '$city ($type) · taban $score';
+  }
+
+  @override
+  String get tercihHome => 'Memleketinde: ailenin yanında okursun';
+
+  @override
+  String get tercihDorm => 'Yurtta kalırsın (yılda 60.000 TL)';
+
+  @override
+  String get tercihOthers => 'Ya da';
+
+  @override
+  String get tercih_mezunaKal => 'Mezuna kal, seneye yeniden gir';
+
+  @override
+  String get tercih_calis => 'Okumayacağım, çalışacağım';
+
+  @override
+  String get tercih_cirak => 'Bir ustanın yanına çırak gir';
+
+  @override
+  String note_lise(String school) {
+    return '$school başladın.';
+  }
+
+  @override
+  String note_yksPuani(String score) {
+    return 'YKS puanın: $score.';
+  }
+
+  @override
+  String note_yerlesti(String dept, String city) {
+    return '$dept bölümüne yerleştin: $city.';
+  }
+
+  @override
+  String get note_mezunaKaldi => 'Mezuna kaldın; seneye yeniden gireceksin.';
+
+  @override
+  String get note_cirakOldu => 'Bir ustanın yanına çırak girdin.';
+
+  @override
+  String get note_calismayiSecti => 'Okumak yerine çalışmayı seçtin.';
+
+  @override
+  String get note_dersKaldi => 'Bir ders alttan kaldı; okul bir yıl uzadı.';
+
+  @override
+  String note_mezunOldu(String dept) {
+    return '$dept bölümünden mezun oldun.';
+  }
+
+  @override
+  String note_eveDondu(String city) {
+    return 'Okul bitti; $city şehrine, ailenin yanına döndün.';
+  }
+
+  @override
+  String note_askerlik(String what) {
+    return '$what';
+  }
 
   @override
   String get journalTitle => 'Bu yılın günlüğü';

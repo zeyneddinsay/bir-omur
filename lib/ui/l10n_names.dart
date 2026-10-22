@@ -38,6 +38,7 @@ extension L10nNames on AppLocalizations {
     'altin_al' => action_altin_al,
     'altin_sat' => action_altin_sat,
     'ara_is' => action_ara_is,
+    'yarim_zamanli' => action_yarim_zamanli,
     'evden_cik' => action_evden_cik,
     'ev_arkadasi' => action_ev_arkadasi,
     'aileye_don' => action_aileye_don,

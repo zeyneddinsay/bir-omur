@@ -1,5 +1,6 @@
 import 'assets.dart';
 import 'career.dart';
+import 'education.dart';
 import 'home.dart';
 import 'life_counters.dart';
 import 'life_stage.dart';
@@ -133,6 +134,7 @@ class Character {
     List<MoneyEntry> ledger = const [],
     String? city,
     this.home = HomeKind.aile,
+    this.education = Education.none,
   }) : assert(age >= 0),
        city = city ?? hometown,
        ledger = List.unmodifiable(ledger),
@@ -151,6 +153,9 @@ class Character {
 
   /// Nerede yaşadığı: aileyle, yurtta, kirada…
   final HomeKind home;
+
+  /// Lise, YKS, üniversite.
+  final Education education;
 
   /// Bu yılın ve geçen yılın para hareketleri, kaynaklarıyla (Varlıklar
   /// sekmesi). Daha eskileri tutulmaz.
@@ -231,6 +236,7 @@ class Character {
     List<MoneyEntry>? ledger,
     String? city,
     HomeKind? home,
+    Education? education,
   }) {
     return Character(
       name: name ?? this.name,
@@ -256,6 +262,7 @@ class Character {
       ledger: ledger ?? this.ledger,
       city: city ?? this.city,
       home: home ?? this.home,
+      education: education ?? this.education,
     );
   }
 
@@ -294,6 +301,7 @@ class Character {
     'alive': isAlive,
     'city': city,
     'home': home.id,
+    if (education != Education.none) 'education': education.toJson(),
     if (ledger.isNotEmpty) 'ledger': [for (final e in ledger) e.toJson()],
   };
 
@@ -337,6 +345,7 @@ class Character {
       isAlive: json['alive'] as bool,
       city: json['city'] as String?,
       home: HomeKind.fromId(json['home'] as String? ?? 'aile') ?? HomeKind.aile,
+      education: Education.fromJson(json['education'] as Map<String, dynamic>?),
       ledger: [
         for (final e in json['ledger'] as List? ?? const [])
           MoneyEntry.fromJson(e as Map<String, dynamic>),

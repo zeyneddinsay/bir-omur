@@ -222,6 +222,21 @@ class _RandomPlayer {
         ];
         engine.choose(sides[_random.nextInt(sides.length)]);
       case YearPhase.actions:
+        if (state.character.hasFlag(EducationRules.pendingFlag)) {
+          final placements = engine.tercihPlacements();
+          if (placements.isNotEmpty && _random.nextInt(4) > 0) {
+            final (d, city) = placements[_random.nextInt(placements.length)];
+            engine.enroll(d.id, city);
+          } else {
+            const others = [
+              TercihKind.mezunaKal,
+              TercihKind.calis,
+              TercihKind.cirak,
+            ];
+            engine.declineTercih(others[_random.nextInt(others.length)]);
+          }
+          return;
+        }
         if (_random.nextInt(25) == 0) {
           final cities = [
             for (final (city, blocked, _) in engine.moveOptions())

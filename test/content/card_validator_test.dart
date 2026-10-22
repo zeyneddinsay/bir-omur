@@ -11,7 +11,10 @@ import '../helpers/test_cards.dart';
 final _registry = ContentRegistry(
   flags: {
     'kiraci': '',
-    'universite_ogrencisi': '',
+    'iyi_lise': '',
+    'meslek_lisesi': '',
+    'yks_iyi_gecti': '',
+    'ehliyet_var': '',
     'asker_anilari': '',
     'tasindi': '',
   },
@@ -506,7 +509,7 @@ void main() {
     final names = File('assets/names.json').readAsStringSync();
     final interactions = File('assets/interactions.json').readAsStringSync();
     const registry =
-        '{"flags": {"universite_ogrencisi": "", "asker_anilari": "", "tasindi": ""}}';
+        '{"flags": {"iyi_lise": "", "meslek_lisesi": "", "yks_iyi_gecti": "", "ehliyet_var": "", "asker_anilari": ""}}';
     expect(
       () => loadContent(
         registrySource: registry,

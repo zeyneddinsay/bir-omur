@@ -35,6 +35,9 @@ class AutoPlayer {
       case YearPhase.cards:
         return engine.choose(pickSide(state.currentEvent!.card));
       case YearPhase.actions:
+        if (state.character.hasFlag(EducationRules.pendingFlag)) {
+          return pickTercih(engine);
+        }
         // Ara sıra başka şehre taşınır.
         if (_random.nextInt(25) == 0) {
           final cities = [
@@ -58,6 +61,17 @@ class AutoPlayer {
       case YearPhase.dead:
         return state;
     }
+  }
+
+  /// YKS tercihi: çoğunlukla bir bölüme (rastgele), bazen başka yol.
+  LifeState pickTercih(LifeEngine engine) {
+    final placements = engine.tercihPlacements();
+    if (placements.isNotEmpty && _random.nextInt(4) > 0) {
+      final (d, city) = placements[_random.nextInt(placements.length)];
+      return engine.enroll(d.id, city);
+    }
+    const others = [TercihKind.mezunaKal, TercihKind.calis, TercihKind.cirak];
+    return engine.declineTercih(others[_random.nextInt(others.length)]);
   }
 
   ChoiceSide pickSide(EventCard card) {

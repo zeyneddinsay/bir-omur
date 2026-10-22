@@ -122,7 +122,14 @@ void main() {
 
   group('card_lint rozet denetimi', () {
     final registry = ContentRegistry(
-      flags: {'universite_ogrencisi': '', 'asker_anilari': '', 'tasindi': ''},
+      flags: {
+        'iyi_lise': '',
+        'meslek_lisesi': '',
+        'yks_iyi_gecti': '',
+        'ehliyet_var': '',
+        'asker_anilari': '',
+        'tasindi': '',
+      },
     );
 
     CardCheckResult check(List<Object> achievements) =>

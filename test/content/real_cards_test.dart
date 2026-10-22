@@ -54,14 +54,14 @@ void main() {
       'ilkokul_ilk_gun',
       'lgs',
       'yks',
-      'yks_iyi_lise',
+      'yks_tekrar',
       'askerlik_celbi',
       'askerlik_bedelli',
       ..._funerals.keys,
     ]) {
       expect(deck.byId(id)?.type, EventType.donemec, reason: id);
     }
-    for (final id in ['mezuna_kalma', 'mezuniyet', 'kardes_borc_iade']) {
+    for (final id in ['lise_secimi', 'mezuniyet', 'kardes_borc_iade']) {
       expect(deck.byId(id)?.type, EventType.iplik, reason: id);
     }
   });
@@ -176,40 +176,50 @@ void main() {
       }
     });
 
-    test('YKS kazanma oranı makul; iyi lise avantaj sağlar', () {
-      var good = 0, goodWon = 0, other = 0, otherWon = 0;
+    test('YKS: puan bilgiye ve liseye göre; yerleşme oranı makul', () {
+      final bySchool = <HighSchool, List<int>>{};
+      var sat = 0, placed = 0;
       for (final life in lives) {
-        final c = finalOf(life);
-        for (final r in c.history) {
-          if (r.cardId == 'yks_iyi_lise') {
-            good++;
-            if (r.rollSucceeded!) goodWon++;
-          } else if (r.cardId == 'yks') {
-            other++;
-            if (r.rollSucceeded!) otherWon++;
-          }
-        }
+        final e = finalOf(life).education;
+        if (e.yksScore == null) continue;
+        sat++;
+        bySchool.putIfAbsent(e.highSchool!, () => []).add(e.yksScore!);
+        final d = EducationRules.department(e.department);
+        if (d != null && !d.open) placed++;
       }
-      final rate = (goodWon + otherWon) / (good + other);
+      double mean(HighSchool h) {
+        final l = bySchool[h] ?? const [];
+        return l.isEmpty ? 0 : l.reduce((a, b) => a + b) / l.length;
+      }
+
       printOnFailure(
-        'iyi lise $goodWon/$good, diğer $otherWon/$other, toplam $rate',
+        'yerleşen $placed/$sat; puan ortalaması '
+        '${[for (final h in HighSchool.values) '${h.id} ${mean(h).round()}'].join(', ')}',
       );
-      expect(rate, inInclusiveRange(0.3, 0.75));
-      expect(goodWon / good, greaterThan(otherWon / other));
+      expect(sat, greaterThan(200));
+      expect(mean(HighSchool.anadolu), greaterThan(mean(HighSchool.duz)));
+      expect(mean(HighSchool.duz), greaterThan(mean(HighSchool.meslek)));
+      expect(placed / sat, inInclusiveRange(0.25, 0.85));
     });
 
-    test('öğrencilik mezuniyetle biter; mezun bayrağı gelir', () {
+    test('öğrencilik mezuniyetle biter; mezuniyet olayı gelir', () {
       for (final life in lives) {
         final c = finalOf(life);
-        final graduated = c.history.any((r) => r.cardId == 'mezuniyet');
-        expect(c.hasFlag('universite_mezunu'), graduated);
-        if (c.hasFlag(ActionCatalog.studentFlag)) {
+        final e = c.education;
+        if (e.isGraduate) {
           expect(
-            deathAge(life),
-            lessThanOrEqualTo(26),
-            reason: 'öğrenci kaldı',
+            c.history.any((r) => r.cardId == 'mezuniyet'),
+            isTrue,
+            reason: 'mezuniyet kartı',
           );
+          expect(c.hasFlag('universite_mezunu'), !e.openEducation);
+          expect(e.graduatedAt, e.uniStartAge! + e.uniYears + e.extraYears);
         }
+        if (e.isStudent) {
+          expect(deathAge(life), lessThanOrEqualTo(e.expectedGraduation!));
+          expect(c.hasFlag(ActionCatalog.studentFlag), isTrue);
+        }
+        expect(e.extraYears, lessThanOrEqualTo(EducationRules.maxExtraYears));
       }
     });
 

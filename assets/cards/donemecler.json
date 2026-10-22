@@ -56,13 +56,36 @@
       "label": "Baştan sona sırayla",
       "roll": { "stat": "knowledge", "threshold": 55 },
       "success": { "addFlags": ["iyi_lise"], "knowledge": 2, "happiness": 5 },
-      "fail": { "happiness": -3 }
+      "fail": {
+        "happiness": -3,
+        "schedule": { "event": "lise_secimi", "inYears": 1 }
+      }
     },
     "right": {
       "label": "Önce kolay sorular",
       "roll": { "stat": "luck", "threshold": 55 },
       "success": { "addFlags": ["iyi_lise"], "happiness": 5 },
-      "fail": { "happiness": -3 }
+      "fail": {
+        "happiness": -3,
+        "schedule": { "event": "lise_secimi", "inYears": 1 }
+      }
+    }
+  },
+  {
+    "id": "lise_secimi",
+    "type": "iplik",
+    "theme": "okul",
+    "minAge": 15,
+    "maxAge": 16,
+    "repeat": "once",
+    "text": "LGS puanın Anadolu lisesine yetmedi. Kayıt masasında iki form var: mahalledeki lise ve meslek lisesi.",
+    "left": {
+      "label": "Mahalledeki lise",
+      "effects": { "happiness": 1 }
+    },
+    "right": {
+      "label": "Meslek lisesi",
+      "effects": { "addFlags": ["meslek_lisesi"], "knowledge": 1 }
     }
   },
   {
@@ -72,102 +95,42 @@
     "minAge": 18,
     "maxAge": 18,
     "repeat": "once",
-    "conditions": { "notFlags": ["iyi_lise"] },
-    "text": "YKS sabahı. Yıllardır konuşulan gün bugün. Aklın şimdiden tercihlerde: memleket mi, büyükşehir mi?",
+    "conditions": { "notFlags": ["universite_ogrencisi"] },
+    "text": "YKS sabahı. Yıllardır konuşulan gün bugün. Salonun kapısında kalbin küt küt atıyor.",
     "left": {
-      "label": "Memlekette okurum",
-      "roll": { "stat": "knowledge", "threshold": 52 },
-      "success": {
-        "addFlags": ["yks_kazandi", "universite_ogrencisi"],
-        "knowledge": 3,
-        "happiness": 5,
-        "schedule": { "event": "mezuniyet", "inYears": 4 }
-      },
-      "fail": {
-        "addFlags": ["yks_kaybetti"],
-        "happiness": -6,
-        "schedule": { "event": "mezuna_kalma", "inYears": 1 }
-      }
+      "label": "Derin nefes, sakin ol",
+      "roll": { "stat": "luck", "threshold": 45 },
+      "success": { "addFlags": ["yks_iyi_gecti"], "happiness": 2 },
+      "fail": { "happiness": -2 }
     },
     "right": {
-      "label": "Büyükşehre giderim",
-      "roll": { "stat": "knowledge", "threshold": 59 },
-      "success": {
-        "addFlags": ["yks_kazandi", "universite_ogrencisi"],
-        "knowledge": 3,
-        "happiness": 8,
-        "schedule": { "event": "mezuniyet", "inYears": 4 }
-      },
-      "fail": {
-        "addFlags": ["yks_kaybetti"],
-        "happiness": -6,
-        "schedule": { "event": "mezuna_kalma", "inYears": 1 }
-      }
+      "label": "Son dakika tekrarı",
+      "effects": { "knowledge": 2 },
+      "roll": { "stat": "knowledge", "threshold": 55 },
+      "success": { "addFlags": ["yks_iyi_gecti"] },
+      "fail": { "happiness": -3 }
     }
   },
   {
-    "id": "yks_iyi_lise",
+    "id": "yks_tekrar",
     "type": "donemec",
     "theme": "okul",
-    "minAge": 18,
-    "maxAge": 18,
-    "repeat": "once",
-    "conditions": { "flags": ["iyi_lise"] },
-    "text": "YKS sabahı. Lisedeki hocaların 'Siz bu işi bilirsiniz' dedi. Kalbin şimdiden iki şehir arasında.",
-    "left": {
-      "label": "Memlekette okurum",
-      "roll": { "stat": "knowledge", "threshold": 46 },
-      "success": {
-        "addFlags": ["yks_kazandi", "universite_ogrencisi"],
-        "knowledge": 3,
-        "happiness": 5,
-        "schedule": { "event": "mezuniyet", "inYears": 4 }
-      },
-      "fail": {
-        "addFlags": ["yks_kaybetti"],
-        "happiness": -6,
-        "schedule": { "event": "mezuna_kalma", "inYears": 1 }
-      }
-    },
-    "right": {
-      "label": "Büyükşehre giderim",
-      "roll": { "stat": "knowledge", "threshold": 53 },
-      "success": {
-        "addFlags": ["yks_kazandi", "universite_ogrencisi"],
-        "knowledge": 3,
-        "happiness": 8,
-        "schedule": { "event": "mezuniyet", "inYears": 4 }
-      },
-      "fail": {
-        "addFlags": ["yks_kaybetti"],
-        "happiness": -6,
-        "schedule": { "event": "mezuna_kalma", "inYears": 1 }
-      }
-    }
-  },
-  {
-    "id": "mezuna_kalma",
-    "type": "iplik",
-    "theme": "okul",
     "minAge": 19,
-    "maxAge": 25,
-    "repeat": "once",
-    "text": "Geçen yılki sınav olmadı. Mahallede herkes aynı şeyi soruyor: 'Eee, şimdi ne yapıyorsun?'",
+    "maxAge": 30,
+    "repeat": { "cooldown": 1 },
+    "conditions": { "flags": ["mezuna_kaldi"] },
+    "text": "Bir yıl daha hazırlandın. Bu sefer salonda tanıdık yüzler de var: geçen yılın mezunları.",
     "left": {
-      "label": "Bir yıl daha denerim",
-      "effects": { "knowledge": 3 },
-      "roll": { "stat": "knowledge", "threshold": 52 },
-      "success": {
-        "removeFlags": ["yks_kaybetti"],
-        "addFlags": ["yks_kazandi", "universite_ogrencisi"],
-        "happiness": 8,
-        "schedule": { "event": "mezuniyet", "inYears": 4 }
-      },
-      "fail": { "happiness": -5 }
+      "label": "Bu sefer olacak",
+      "roll": { "stat": "luck", "threshold": 45 },
+      "success": { "addFlags": ["yks_iyi_gecti"], "happiness": 2 },
+      "fail": { "happiness": -2 }
     },
     "right": {
-      "label": "Çalışmaya başlarım",
-      "effects": { "happiness": 2 }
+      "label": "Zor sorulardan başla",
+      "roll": { "stat": "knowledge", "threshold": 60 },
+      "success": { "addFlags": ["yks_iyi_gecti"], "knowledge": 1 },
+      "fail": { "happiness": -3 }
     }
   },
   {
@@ -177,25 +140,14 @@
     "minAge": 21,
     "maxAge": 40,
     "repeat": "once",
-    "text": "Mezuniyet töreni. Kep havada, diploma elinde; dört yılın hepsi tek bir fotoğrafa sığıyor.",
+    "text": "Mezuniyet töreni. Kep havada, diploma elinde; okul yıllarının hepsi tek bir fotoğrafa sığıyor.",
     "left": {
       "label": "Kepi fırlat!",
-      "effects": {
-        "removeFlags": ["universite_ogrencisi"],
-        "addFlags": ["universite_mezunu"],
-        "knowledge": 5,
-        "happiness": 6
-      }
+      "effects": { "knowledge": 5, "happiness": 6 }
     },
     "right": {
       "label": "Hocalara teşekkür et",
-      "effects": {
-        "removeFlags": ["universite_ogrencisi"],
-        "addFlags": ["universite_mezunu"],
-        "knowledge": 5,
-        "happiness": 3,
-        "reputation": 3
-      }
+      "effects": { "knowledge": 5, "happiness": 3, "reputation": 3 }
     }
   },
   {

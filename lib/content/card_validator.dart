@@ -470,7 +470,9 @@ class CardValidator {
     if (card.type == EventType.kisi && card.roles.isEmpty) {
       error('.roles', 'kişi olayı en az bir rol yuvası ister');
     }
-    if (card.chainOnly && !scheduledIds.contains(card.id)) {
+    if (card.chainOnly &&
+        !scheduledIds.contains(card.id) &&
+        !ContentRegistry.engineScheduledEvents.contains(card.id)) {
       warning('.type', 'hiçbir olay bu ipliği planlamıyor, hiç gelmez');
     }
     if (card.type == EventType.donemec && card.rarity != Rarity.siradan) {

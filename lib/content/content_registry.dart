@@ -27,13 +27,22 @@ class ContentRegistry {
   static final Set<String> engineOwnedFlags = {
     ...EngineFlags.all,
     ...Economy.derivedFlags,
+    ...EducationRules.derivedFlags,
   };
 
-  /// Motorun koddan baktığı bayraklar; kayıtta bulunmaları gerekir.
+  /// Motorun koddan baktığı, kartların açtığı bayraklar; kayıtta
+  /// bulunmaları gerekir.
   static const Set<String> engineReferencedFlags = {
-    ActionCatalog.studentFlag,
     ...SummaryBuilder.referencedFlags,
+    EducationRules.goodSchoolFlag,
+    EducationRules.vocationalFlag,
+    EducationRules.goodExamFlag,
+    ActionCatalog.licenseFlag,
   };
+
+  /// Motorun kendisinin planladığı iplikler (örnek: mezuniyet); hiçbir
+  /// olay planlamasa da gelirler.
+  static const Set<String> engineScheduledEvents = {LifeEngine.graduationEvent};
 
   factory ContentRegistry.parse(String source) {
     final json = jsonDecode(source);

@@ -256,7 +256,7 @@ void main() {
       for (final a in ActionCatalog.all) {
         expect(
           a.timeCost,
-          const {'tatil', 'ara_is'}.contains(a.id) ? 2 : 1,
+          const {'tatil', 'ara_is', 'yarim_zamanli'}.contains(a.id) ? 2 : 1,
           reason: a.id,
         );
       }

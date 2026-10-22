@@ -215,6 +215,13 @@ class LifeController extends Notifier<LifeState?> {
 
   void advanceYear() => _update(engine.advanceYear());
 
+  /// YKS tercihi: bir bölüme yerleşir.
+  void enroll(String department, String city) =>
+      _update(engine.enroll(department, city));
+
+  /// YKS tercihi: yerleşmeden başka bir yol.
+  void declineTercih(TercihKind kind) => _update(engine.declineTercih(kind));
+
   /// Başka şehre taşınır (Varlıklar sekmesi).
   void moveTo(String city, {bool withFamily = false}) =>
       _update(engine.moveTo(city, withFamily: withFamily));

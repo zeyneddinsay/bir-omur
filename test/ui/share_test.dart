@@ -53,14 +53,14 @@ Widget _app(Widget home, {List overrides = const []}) => ProviderScope(
 /// Uzun yaşamış, sayıları dolu bir hayat.
 LifeSummary _longLife() {
   final content = uiTestContent();
-  for (var seed = 0; seed < 50; seed++) {
+  for (var seed = 0; seed < 400; seed++) {
     final engine = LifeEngine(
       deck: content.deck,
       careers: content.careers,
       seed: seed,
     );
     final end = AutoPlayer(seed).play(engine);
-    if (end.summary!.deathAge > 85 && end.summary!.biggestMoment != null) {
+    if (end.summary!.deathAge > 80 && end.summary!.biggestMoment != null) {
       return end.summary!;
     }
   }

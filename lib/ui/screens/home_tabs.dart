@@ -9,6 +9,7 @@ import '../people/people_tab.dart';
 import '../people/people_text.dart';
 import '../people/people_view.dart';
 import '../providers.dart';
+import '../widgets/education_card.dart';
 import '../widgets/home_card.dart';
 import '../widgets/ledger_view.dart';
 import '../widgets/life_status.dart';
@@ -33,7 +34,13 @@ class HomeTabs extends ConsumerWidget {
       HomeTab.work => _ActionsTab(
         state: state,
         categories: const {ActionCategory.okulIs},
-        header: _WorkHeader(engine: engine),
+        header: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            _WorkHeader(engine: engine),
+            EducationCard(state: state),
+          ],
+        ),
       ),
       HomeTab.assets => _ActionsTab(
         state: state,
@@ -110,6 +117,7 @@ class _MeTab extends ConsumerWidget {
     final occupations =
         ref.watch(contentProvider).value?.families.occupations ?? const {};
     final news = [
+      for (final n in state.notes) noteLine(l10n, n),
       for (final n in state.news) l10n.newsLine(n, c, occupations: occupations),
     ].where((line) => line.isNotEmpty).toList();
     final choices = [
@@ -123,6 +131,7 @@ class _MeTab extends ConsumerWidget {
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
+        if (c.hasFlag(EducationRules.pendingFlag)) EducationCard(state: state),
         Card(
           key: const Key('journal'),
           child: Padding(

@@ -508,6 +508,12 @@ abstract class AppLocalizations {
   /// **'Ara işlere git'**
   String get action_ara_is;
 
+  /// No description provided for @action_yarim_zamanli.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yarı zamanlı çalış'**
+  String get action_yarim_zamanli;
+
   /// No description provided for @action_evden_cik.
   ///
   /// In tr, this message translates to:
@@ -1425,6 +1431,252 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Bu yaşta burada yapacak bir şey yok.'**
   String get noActionsHere;
+
+  /// No description provided for @dept_bilgisayar.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bilgisayar Mühendisliği'**
+  String get dept_bilgisayar;
+
+  /// No description provided for @dept_iktisat.
+  ///
+  /// In tr, this message translates to:
+  /// **'İktisat'**
+  String get dept_iktisat;
+
+  /// No description provided for @dept_hemsirelik.
+  ///
+  /// In tr, this message translates to:
+  /// **'Hemşirelik'**
+  String get dept_hemsirelik;
+
+  /// No description provided for @dept_isletme.
+  ///
+  /// In tr, this message translates to:
+  /// **'İşletme'**
+  String get dept_isletme;
+
+  /// No description provided for @dept_kamu_yonetimi.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kamu Yönetimi'**
+  String get dept_kamu_yonetimi;
+
+  /// No description provided for @dept_tarih.
+  ///
+  /// In tr, this message translates to:
+  /// **'Tarih'**
+  String get dept_tarih;
+
+  /// No description provided for @dept_acikogretim.
+  ///
+  /// In tr, this message translates to:
+  /// **'Açıköğretim İşletme'**
+  String get dept_acikogretim;
+
+  /// No description provided for @school_duz.
+  ///
+  /// In tr, this message translates to:
+  /// **'Mahalledeki lise'**
+  String get school_duz;
+
+  /// No description provided for @school_anadolu.
+  ///
+  /// In tr, this message translates to:
+  /// **'Anadolu lisesi'**
+  String get school_anadolu;
+
+  /// No description provided for @school_fen.
+  ///
+  /// In tr, this message translates to:
+  /// **'Fen lisesi'**
+  String get school_fen;
+
+  /// No description provided for @school_meslek.
+  ///
+  /// In tr, this message translates to:
+  /// **'Meslek lisesi'**
+  String get school_meslek;
+
+  /// No description provided for @eduTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Okul'**
+  String get eduTitle;
+
+  /// No description provided for @eduYks.
+  ///
+  /// In tr, this message translates to:
+  /// **'YKS puanın: {score}'**
+  String eduYks(int score);
+
+  /// No description provided for @eduUni.
+  ///
+  /// In tr, this message translates to:
+  /// **'{dept} · {city} · {year}. sınıf'**
+  String eduUni(String dept, String city, int year);
+
+  /// No description provided for @eduGraduate.
+  ///
+  /// In tr, this message translates to:
+  /// **'{dept} mezunu'**
+  String eduGraduate(String dept);
+
+  /// No description provided for @eduScholarship.
+  ///
+  /// In tr, this message translates to:
+  /// **'Burs: yılda {money}'**
+  String eduScholarship(String money);
+
+  /// No description provided for @eduApprentice.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bir ustanın yanında çıraksın.'**
+  String get eduApprentice;
+
+  /// No description provided for @eduOpen.
+  ///
+  /// In tr, this message translates to:
+  /// **'Açıköğretimle evden okuyorsun.'**
+  String get eduOpen;
+
+  /// No description provided for @tercihButton.
+  ///
+  /// In tr, this message translates to:
+  /// **'Tercihini yap'**
+  String get tercihButton;
+
+  /// No description provided for @tercihPending.
+  ///
+  /// In tr, this message translates to:
+  /// **'YKS sonucun açıklandı. Okul / İş sekmesinden tercihini yap; yapmadan yaşlanırsan okumadan çalışmayı seçmiş sayılırsın.'**
+  String get tercihPending;
+
+  /// No description provided for @tercihTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'YKS tercihi: {score} puan'**
+  String tercihTitle(int score);
+
+  /// No description provided for @tercihPrompt.
+  ///
+  /// In tr, this message translates to:
+  /// **'Puanının yettiği bölümler. Bir bölüme, sonra şehre dokun.'**
+  String get tercihPrompt;
+
+  /// No description provided for @tercihNone.
+  ///
+  /// In tr, this message translates to:
+  /// **'Puanın bu yıl hiçbir bölüme yetmedi.'**
+  String get tercihNone;
+
+  /// No description provided for @tercihCities.
+  ///
+  /// In tr, this message translates to:
+  /// **'{count, plural, =1{1 şehirde} other{{count} şehirde}} yerleşebilirsin'**
+  String tercihCities(int count);
+
+  /// No description provided for @tercihCity.
+  ///
+  /// In tr, this message translates to:
+  /// **'{city} ({type}) · taban {score}'**
+  String tercihCity(String city, String type, int score);
+
+  /// No description provided for @tercihHome.
+  ///
+  /// In tr, this message translates to:
+  /// **'Memleketinde: ailenin yanında okursun'**
+  String get tercihHome;
+
+  /// No description provided for @tercihDorm.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yurtta kalırsın (yılda 60.000 TL)'**
+  String get tercihDorm;
+
+  /// No description provided for @tercihOthers.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ya da'**
+  String get tercihOthers;
+
+  /// No description provided for @tercih_mezunaKal.
+  ///
+  /// In tr, this message translates to:
+  /// **'Mezuna kal, seneye yeniden gir'**
+  String get tercih_mezunaKal;
+
+  /// No description provided for @tercih_calis.
+  ///
+  /// In tr, this message translates to:
+  /// **'Okumayacağım, çalışacağım'**
+  String get tercih_calis;
+
+  /// No description provided for @tercih_cirak.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bir ustanın yanına çırak gir'**
+  String get tercih_cirak;
+
+  /// No description provided for @note_lise.
+  ///
+  /// In tr, this message translates to:
+  /// **'{school} başladın.'**
+  String note_lise(String school);
+
+  /// No description provided for @note_yksPuani.
+  ///
+  /// In tr, this message translates to:
+  /// **'YKS puanın: {score}.'**
+  String note_yksPuani(String score);
+
+  /// No description provided for @note_yerlesti.
+  ///
+  /// In tr, this message translates to:
+  /// **'{dept} bölümüne yerleştin: {city}.'**
+  String note_yerlesti(String dept, String city);
+
+  /// No description provided for @note_mezunaKaldi.
+  ///
+  /// In tr, this message translates to:
+  /// **'Mezuna kaldın; seneye yeniden gireceksin.'**
+  String get note_mezunaKaldi;
+
+  /// No description provided for @note_cirakOldu.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bir ustanın yanına çırak girdin.'**
+  String get note_cirakOldu;
+
+  /// No description provided for @note_calismayiSecti.
+  ///
+  /// In tr, this message translates to:
+  /// **'Okumak yerine çalışmayı seçtin.'**
+  String get note_calismayiSecti;
+
+  /// No description provided for @note_dersKaldi.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bir ders alttan kaldı; okul bir yıl uzadı.'**
+  String get note_dersKaldi;
+
+  /// No description provided for @note_mezunOldu.
+  ///
+  /// In tr, this message translates to:
+  /// **'{dept} bölümünden mezun oldun.'**
+  String note_mezunOldu(String dept);
+
+  /// No description provided for @note_eveDondu.
+  ///
+  /// In tr, this message translates to:
+  /// **'Okul bitti; {city} şehrine, ailenin yanına döndün.'**
+  String note_eveDondu(String city);
+
+  /// No description provided for @note_askerlik.
+  ///
+  /// In tr, this message translates to:
+  /// **'{what}'**
+  String note_askerlik(String what);
 
   /// No description provided for @journalTitle.
   ///

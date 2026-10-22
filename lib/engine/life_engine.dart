@@ -6,11 +6,13 @@ import 'careers.dart';
 import 'cities.dart';
 import 'death_check.dart';
 import 'economy.dart';
+import 'education.dart';
 import 'effect_resolver.dart';
 import 'event_deck.dart';
 import 'housing.dart';
 import 'interactions.dart';
 import 'life_action.dart';
+import 'life_note.dart';
 import 'people_tick.dart';
 import 'person_factory.dart';
 import 'relationships.dart';
@@ -45,6 +47,7 @@ class LifeState {
     this.news = const [],
     this.interactionsUsed = const {},
     this.lastInteraction,
+    this.notes = const [],
   });
 
   final Character character;
@@ -72,6 +75,9 @@ class LifeState {
   /// Son etkileşimin sonucu (arayüz metni için). Kaydedilmez.
   final InteractionResult? lastInteraction;
 
+  /// Bu yılın oyuncunun kendi hayatından notları (yıl günlüğü).
+  final List<LifeNote> notes;
+
   LifeState copyWith({
     Character? character,
     int? timeLeft,
@@ -79,6 +85,7 @@ class LifeState {
     List<PersonNews>? news,
     Set<String>? interactionsUsed,
     InteractionResult? lastInteraction,
+    List<LifeNote>? notes,
   }) => LifeState(
     character: character ?? this.character,
     phase: phase,
@@ -91,6 +98,7 @@ class LifeState {
     news: news == null ? this.news : List.unmodifiable(news),
     interactionsUsed: interactionsUsed ?? this.interactionsUsed,
     lastInteraction: lastInteraction ?? this.lastInteraction,
+    notes: notes == null ? this.notes : List.unmodifiable(notes),
   );
 
   LifeState withNews(List<PersonNews> news) => copyWith(news: news);
@@ -237,12 +245,14 @@ class LifeEngine {
         pendingCards: remaining,
         lastOutcome: storedOutcome,
         news: _state.news,
+        notes: _state.notes,
       );
     }
     return _state = _actionsPhase(
       character,
       queue,
       lastOutcome: storedOutcome,
+      notes: _state.notes,
     ).withNews(_state.news);
   }
 
@@ -390,6 +400,10 @@ class LifeEngine {
     if (_state.phase != YearPhase.actions) {
       throw StateError('Yaşlanmadan önce kartlar bitmeli (${_state.phase})');
     }
+    // Tercih yapmadan yaşlanan, okumadan çalışmayı seçmiş sayılır.
+    if (_state.character.hasFlag(EducationRules.pendingFlag)) {
+      declineTercih(TercihKind.calis);
+    }
     final cause = _deathCheck.check(_state.character);
     if (cause != null) {
       final dead = _state.character.copyWith(isAlive: false);
@@ -443,21 +457,103 @@ class LifeEngine {
       ),
     ]);
     _lastJobSearch = null;
-    final (
-      character,
-      news,
-    ) = PeopleTick(_random, families, cities: BirthGenerator.hometowns).apply(
-      Economy.syncDerivedFlags(YearTick.updateHardshipFlags(afterCareer)),
-    );
+    final (studied, notes, queue) = _schoolYear(afterCareer, _state.queue);
+    final (character, news) = PeopleTick(
+      _random,
+      families,
+      cities: BirthGenerator.hometowns,
+    ).apply(Economy.syncDerivedFlags(YearTick.updateHardshipFlags(studied)));
     return _state = _beginYear(
       Relationships.syncFamilyBond(
         Housing.ensureNeighbours(character, _factory),
       ),
-      _state.queue,
+      queue,
+      notes: notes,
     ).withNews(news);
   }
 
+  /// Yaşlanınca okulun yılı: lise bitince (19) sınıf rolleri biter;
+  /// üniversitede dersler, burs ve mezuniyet. Mezuniyet olayı aynı yıl
+  /// gelir.
+  (Character, List<LifeNote>, ScheduleQueue) _schoolYear(
+    Character c,
+    ScheduleQueue queue,
+  ) {
+    final notes = <LifeNote>[];
+    var next = c;
+    if (next.age == EducationRules.yksAge + 1) {
+      next = EducationRules.endSchoolRoles(next, origin: Origin.okul);
+    }
+    final (afterStudy, note) = EducationRules.yearOfStudy(next, _random);
+    next = afterStudy;
+    if (note == EducationNote.dersKaldi) {
+      notes.add(const LifeNote(NoteKind.dersKaldi));
+    } else if (note == EducationNote.mezunOldu) {
+      notes.add(LifeNote(NoteKind.mezunOldu, next.education.department));
+      if (next.city != c.city) {
+        notes.add(LifeNote(NoteKind.eveDondu, next.city));
+      }
+      if (deck.byId(graduationEvent) != null) {
+        queue = queue.add(graduationEvent, atAge: next.age);
+      }
+    }
+    final burs = EducationRules.scholarshipFor(next);
+    if (burs > 0) {
+      next = next.copyWith(stats: next.stats.withMoneyDelta(burs)).withLedger([
+        MoneyEntry(age: next.age, source: MoneySource.burs, amount: burs),
+      ]);
+    }
+    return (next, notes, queue);
+  }
+
+  /// Mezuniyet yılında gelen olay (iplik).
+  static const String graduationEvent = 'mezuniyet';
+
   PersonFactory get _factory => PersonFactory(_random, families);
+
+  /// YKS tercihinde puanın yettiği bölüm ve şehirler; tercih beklemiyorsa
+  /// boş.
+  List<(Department, String)> tercihPlacements() =>
+      _state.character.hasFlag(EducationRules.pendingFlag)
+      ? EducationRules.placements(_state.character)
+      : const [];
+
+  /// Bir bölüme yerleşir.
+  LifeState enroll(String departmentId, String city) {
+    final c = _state.character;
+    final placement = tercihPlacements()
+        .where((p) => p.$1.id == departmentId && p.$2 == city)
+        .firstOrNull;
+    if (placement == null) {
+      throw StateError('$departmentId / $city tercih edilemez');
+    }
+    final next = EducationRules.enroll(c, placement.$1, city, _factory);
+    return _state = _state.copyWith(
+      character: next,
+      notes: [
+        ..._state.notes,
+        LifeNote(NoteKind.yerlesti, '$departmentId:${next.education.uniCity}'),
+      ],
+    );
+  }
+
+  /// Yerleşmeden devam: mezuna kalmak, çalışmak ya da çırak girmek.
+  LifeState declineTercih(TercihKind kind) {
+    final c = _state.character;
+    if (!c.hasFlag(EducationRules.pendingFlag) || kind == TercihKind.bolum) {
+      throw StateError('Şu an tercih yok ya da bölüm seçilmeli');
+    }
+    final next = EducationRules.decline(c, kind);
+    final note = switch (kind) {
+      TercihKind.mezunaKal => NoteKind.mezunaKaldi,
+      TercihKind.cirak => NoteKind.cirakOldu,
+      _ => NoteKind.calismayiSecti,
+    };
+    return _state = _state.copyWith(
+      character: next,
+      notes: [..._state.notes, LifeNote(note)],
+    );
+  }
 
   /// Taşınma 2 vakit sürer.
   static const int moveTimeCost = 2;
@@ -556,6 +652,7 @@ class LifeEngine {
     'actionsUsed': _state.actionsUsed.toList(),
     'cause': _state.summary?.cause.name,
     'news': [for (final n in _state.news) n.toJson()],
+    'notes': [for (final n in _state.notes) n.toJson()],
     'interactionsUsed': _state.interactionsUsed.toList(),
   };
 
@@ -634,6 +731,10 @@ class LifeEngine {
           PersonNews.fromJson(n as Map<String, dynamic>),
       ],
       interactionsUsed: {...?used?.cast<String>()},
+      notes: [
+        for (final n in snapshot['notes'] as List? ?? const [])
+          LifeNote.fromJson(n as Map<String, dynamic>),
+      ],
     );
     return engine;
   }
@@ -643,7 +744,11 @@ class LifeEngine {
   /// [EventDeck.maxPerYear] olay; sığmayan iplik sonraki yıla kalır.
   /// İpliğin kişisi artık uygun değilse (vefat, arşiv, rolü bitti) iplik
   /// düşer. (Kapanış metinleri D4a'da gelir.)
-  LifeState _beginYear(Character character, ScheduleQueue queue) {
+  LifeState _beginYear(
+    Character character,
+    ScheduleQueue queue, {
+    List<LifeNote> notes = const [],
+  }) {
     final age = character.age;
     var (due, rest) = queue.takeDue(age);
     final milestones = deck.milestones(character, _random);
@@ -680,26 +785,42 @@ class LifeEngine {
       busy: busy,
     );
     final events = [...milestones, ...chained, ...drawn];
-    if (events.isEmpty) return _actionsPhase(character, rest);
+    if (events.isEmpty) return _actionsPhase(character, rest, notes: notes);
     return LifeState(
       character: character,
       phase: YearPhase.cards,
       queue: rest,
       pendingCards: List.unmodifiable(events),
+      notes: List.unmodifiable(notes),
     );
   }
 
+  /// Kartlar bitince serbest zaman. Bu yılın kartları seçildikten sonra
+  /// belli olan okul sonuçları burada işlenir: 15 yaşında lise türü
+  /// (LGS ve lise seçimi kartlarından sonra), 18 yaşında YKS puanı.
   LifeState _actionsPhase(
     Character character,
     ScheduleQueue queue, {
     ChoiceOutcome? lastOutcome,
+    List<LifeNote> notes = const [],
   }) {
+    final newNotes = [...notes];
+    var c = EducationRules.assignHighSchool(character);
+    if (c.education.highSchool != character.education.highSchool) {
+      newNotes.add(LifeNote(NoteKind.lise, c.education.highSchool!.id));
+    }
+    final beforeYks = c;
+    c = EducationRules.sitYks(c, _random);
+    if (c.education.yksScore != beforeYks.education.yksScore) {
+      newNotes.add(LifeNote(NoteKind.yksPuani, '${c.education.yksScore}'));
+    }
     return LifeState(
-      character: character,
+      character: c,
       phase: YearPhase.actions,
       queue: queue,
-      timeLeft: ActionCatalog.timeFor(character),
+      timeLeft: ActionCatalog.timeFor(c),
       lastOutcome: lastOutcome,
+      notes: List.unmodifiable(newNotes),
     );
   }
 

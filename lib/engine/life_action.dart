@@ -173,6 +173,9 @@ abstract final class ActionCatalog {
   /// Ara işlerin bir yıllık kazancı (2026: asgari ücretin yaklaşık %60'ı).
   static const int oddJobIncome = 200000;
 
+  /// Öğrencinin yarı zamanlı işinden yıllık kazanç (kafe, kargo).
+  static const int partTimeIncome = 150000;
+
   static const List<LifeAction> all = [
     LifeAction(
       id: 'oyun_oyna',
@@ -207,6 +210,17 @@ abstract final class ActionCatalog {
       effect: Effect(
         money: oddJobIncome,
         stats: {StatKind.health: -1, StatKind.happiness: -1},
+      ),
+    ),
+    LifeAction(
+      id: 'yarim_zamanli',
+      category: ActionCategory.okulIs,
+      minAge: 18,
+      studentsOnly: true,
+      timeCost: 2,
+      effect: Effect(
+        money: partTimeIncome,
+        stats: {StatKind.health: -1, StatKind.knowledge: -1},
       ),
     ),
     LifeAction(

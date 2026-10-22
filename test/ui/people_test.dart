@@ -37,7 +37,9 @@ Future<ProviderContainer> _bornAndGrown(WidgetTester tester, int age) async {
     final state = container.read(lifeProvider)!;
     if (state.character.age >= age && state.phase == YearPhase.actions) break;
     expect(++steps, lessThan(200));
-    final key = state.phase == YearPhase.cards ? 'choose_left' : 'age_up';
+    // Seçenekler dönüşümlü: test destesinde hep aynı taraf sağlığı eritir.
+    final side = steps.isEven ? 'choose_left' : 'choose_right';
+    final key = state.phase == YearPhase.cards ? side : 'age_up';
     await tester.tap(find.byKey(Key(key)));
     await tester.pumpAndSettle();
   }
@@ -90,8 +92,18 @@ void main() {
         matching: find.byType(Scrollable),
       ),
     );
+    await tester.ensureVisible(find.byKey(Key('person_${parent.id}')));
+    await tester.pumpAndSettle();
     await tester.tap(find.byKey(Key('person_${parent.id}')));
     await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(
+      find.byKey(const Key('interaction_ara')),
+      200,
+      scrollable: find.descendant(
+        of: find.byKey(const Key('person_screen')),
+        matching: find.byType(Scrollable),
+      ),
+    );
     await tester.tap(find.byKey(const Key('interaction_ara')));
     await tester.pumpAndSettle();
     expect(find.text('Nasıl konuşacaksın?'), findsOneWidget);
@@ -121,6 +133,31 @@ void main() {
     expect(find.byKey(const Key('ledger')), findsOneWidget);
     expect(find.text('Bu yıl (19 yaş)'), findsOneWidget);
     expect(find.text('Geçen yıl (18 yaş)'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('YKS tercihi Okul / İş sekmesinden yapılır', (tester) async {
+    final container = await _bornAndGrown(tester, 18);
+    expect(
+      container
+          .read(lifeProvider)!
+          .character
+          .hasFlag(EducationRules.pendingFlag),
+      isTrue,
+    );
+    await tester.tap(find.byKey(const Key('tab_work')));
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.byKey(const Key('tercih_button')));
+    await tester.tap(find.byKey(const Key('tercih_button')));
+    await tester.pumpAndSettle();
+    expect(find.textContaining('YKS tercihi'), findsOneWidget);
+    await tester.ensureVisible(find.byKey(const Key('tercih_mezunaKal')));
+    await tester.tap(find.byKey(const Key('tercih_mezunaKal')));
+    await tester.pumpAndSettle();
+    final c = container.read(lifeProvider)!.character;
+    expect(c.hasFlag(EducationRules.pendingFlag), isFalse);
+    expect(c.hasFlag(EducationRules.retakeFlag), isTrue);
+    expect(find.byKey(const Key('tercih_button')), findsNothing);
     expect(tester.takeException(), isNull);
   });
 

@@ -48,7 +48,10 @@ void main() {
     ) => CardValidator(
       ContentRegistry(
         flags: const {
-          'universite_ogrencisi': '',
+          'iyi_lise': '',
+          'meslek_lisesi': '',
+          'yks_iyi_gecti': '',
+          'ehliyet_var': '',
           'asker_anilari': '',
           'tasindi': '',
         },
