@@ -9,6 +9,7 @@ import '../people/people_tab.dart';
 import '../people/people_text.dart';
 import '../people/people_view.dart';
 import '../providers.dart';
+import '../widgets/ledger_view.dart';
 import '../widgets/life_status.dart';
 
 /// Ana ekranın beş sekmesi (yılın olayları bittikten sonra).
@@ -38,7 +39,14 @@ class HomeTabs extends ConsumerWidget {
         categories: const {ActionCategory.para},
         header: Padding(
           padding: const EdgeInsets.fromLTRB(4, 8, 4, 8),
-          child: AssetsSummary(engine: engine),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              AssetsSummary(engine: engine),
+              const SizedBox(height: 12),
+              LedgerView(character: state.character, deck: engine.deck),
+            ],
+          ),
         ),
       ),
       HomeTab.activities => _ActionsTab(

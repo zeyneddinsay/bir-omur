@@ -201,7 +201,14 @@ class LifeEngine {
 
     final outcome = _resolver.resolve(_state.character, event, side);
     final character = Relationships.syncFamilyBond(
-      YearTick.updateHardshipFlags(outcome.character),
+      YearTick.updateHardshipFlags(
+        _booked(
+          _state.character,
+          outcome.character,
+          MoneySource.olay,
+          ref: '${event.card.id}:${side.name}',
+        ),
+      ),
     );
     var queue = _state.queue;
     for (final thread in outcome.scheduled) {
@@ -299,7 +306,9 @@ class LifeEngine {
       character = hired;
       _lastJobSearch = result;
     }
-    character = YearTick.updateHardshipFlags(character);
+    character = YearTick.updateHardshipFlags(
+      _booked(c, character, MoneySource.aksiyon, ref: actionId),
+    );
     return _state = _state.copyWith(
       character: character,
       timeLeft: _state.timeLeft - action.timeCost,
@@ -352,7 +361,14 @@ class LifeEngine {
     );
     return _state = _state.copyWith(
       character: Relationships.syncFamilyBond(
-        YearTick.updateHardshipFlags(character),
+        YearTick.updateHardshipFlags(
+          _booked(
+            _state.character,
+            character,
+            MoneySource.etkilesim,
+            ref: request.kind.name,
+          ),
+        ),
       ),
       timeLeft: _state.timeLeft - option.timeCost,
       interactionsUsed: {
@@ -386,10 +402,35 @@ class LifeEngine {
     );
     _market = market;
     _lastEconomy = report;
-    final (afterCareer, careerReport) = _careerTick.apply(
-      _yearTick.apply(afterEconomy),
-    );
+    final aged = _yearTick.apply(afterEconomy);
+    final (paid, careerReport) = _careerTick.apply(aged);
     _lastCareer = careerReport;
+    final age = aged.age;
+    final afterCareer = paid.withLedger([
+      MoneyEntry(
+        age: age,
+        source: MoneySource.enflasyon,
+        amount: -report.cashEroded,
+      ),
+      MoneyEntry(age: age, source: MoneySource.kira, amount: -report.rentPaid),
+      MoneyEntry(age: age, source: MoneySource.kredi, amount: -report.loanPaid),
+      MoneyEntry(age: age, source: MoneySource.araba, amount: -report.carCost),
+      MoneyEntry(
+        age: age,
+        source: MoneySource.aileDestegi,
+        amount: aged.stats.money - afterEconomy.stats.money,
+      ),
+      MoneyEntry(
+        age: age,
+        source: careerReport.source,
+        amount: careerReport.income,
+      ),
+      MoneyEntry(
+        age: age,
+        source: MoneySource.terfi,
+        amount: paid.stats.money - aged.stats.money - careerReport.income,
+      ),
+    ]);
     _lastJobSearch = null;
     final (
       character,
@@ -401,6 +442,21 @@ class LifeEngine {
       Relationships.syncFamilyBond(character),
       _state.queue,
     ).withNews(news);
+  }
+
+  /// [before] ile [after] arasındaki para farkını tek bir kaynakla deftere
+  /// yazar (fark yoksa yazmaz).
+  static Character _booked(
+    Character before,
+    Character after,
+    MoneySource source, {
+    String? ref,
+  }) {
+    final diff = after.stats.money - before.stats.money;
+    if (diff == 0) return after;
+    return after.withLedger([
+      MoneyEntry(age: after.age, source: source, amount: diff, ref: ref),
+    ]);
   }
 
   /// Hayatın tam durumu; JSON'a çevrilip kaydedilebilir. Son kartın zar

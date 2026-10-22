@@ -31,11 +31,15 @@ class CareerBook {
 class CareerReport {
   const CareerReport({
     required this.income,
+    this.source = MoneySource.maas,
     this.promoted = false,
     this.retired = false,
   });
 
   final int income;
+
+  /// Gelirin kaynağı: maaş, emekli aylığı, harçlık, ara işler.
+  final MoneySource source;
   final bool promoted;
   final bool retired;
 }
@@ -99,6 +103,13 @@ abstract final class Careers {
     return c.copyWith(clearJob: true, pension: pension);
   }
 
+  /// [baseIncome] gelirinin kaynağı.
+  static MoneySource baseIncomeSource(Character c) {
+    if (c.stage == LifeStage.lise) return MoneySource.harclik;
+    if (c.hasFlag(ActionCatalog.studentFlag)) return MoneySource.harclik;
+    return MoneySource.araIs;
+  }
+
   /// Bir yılın geliri, iş ve emeklilik dışındaki durumlarda.
   static int baseIncome(Character c) {
     final stage = c.stage;
@@ -127,9 +138,11 @@ class CareerTick {
     }
 
     final int income;
+    var source = MoneySource.maas;
     var worked = false;
     if (c.isRetired) {
       income = c.pension;
+      source = MoneySource.emekliAyligi;
     } else if (c.job case final job?) {
       final career = book.require(job.careerId);
       final variance = career.incomeVariance;
@@ -141,6 +154,7 @@ class CareerTick {
       (c, promoted) = _tryPromotion(c, career, job);
     } else {
       income = Careers.baseIncome(c);
+      source = Careers.baseIncomeSource(c);
     }
 
     // Ömür boyu kazanç yalnızca maaş ve emekli aylığıdır; harçlık sayılmaz.
@@ -156,7 +170,12 @@ class CareerTick {
     );
     return (
       c,
-      CareerReport(income: income, promoted: promoted, retired: retired),
+      CareerReport(
+        income: income,
+        source: source,
+        promoted: promoted,
+        retired: retired,
+      ),
     );
   }
 

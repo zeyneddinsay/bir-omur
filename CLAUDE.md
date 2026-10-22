@@ -156,7 +156,7 @@ Karar (22 Ekim 2026): Kullanıcı ara kapıları kaldırdı. D2, D3, D4a, D4b ve
 D2 adımları (eğitim, meslekler, ekonomi; telefon denemesi ve denetim bulguları dahil):
 
 - [x] D2.0 Hızlı düzeltmeler: aksiyonların yaş, iş ve öğrenci şartları; vakit bedeli ve kapalılık sebebi; bebek ve aynı evdekiyle etkileşim; iş etiketi; kart tekrarı (tazelik ağırlığı, ömür boyu sınır); kart mantık düzeltmeleri; genç ölüm metni; dönemeçlere nadirlik
-- [ ] D2.1 Para dökümü: her para hareketinin kaynağı; Varlıklar sekmesinde bu yılın ve geçen yılın dökümü
+- [x] D2.1 Para dökümü: her para hareketinin kaynağı; Varlıklar sekmesinde bu yılın ve geçen yılın dökümü
 - [ ] D2.2 Ekonomi 2026 rakamları ve yaşam gideri: ölçek × 3,3, nerede yaşadığına göre gider, harçlık, 18 yaş aile desteği, çalışmayana emekli aylığı yok
 - [ ] D2.3 Şehir ve ev: oyuncunun yaşadığı şehir, 3 şehir türü, aileyle / yurt / ev arkadaşı / kira / kendi evi; evden çık, taşın; komşular yenilenir
 - [ ] D2.4 Eğitim yolu: lise türü, YKS puanı ve tercih ekranı, üniversite yılları, yarı zamanlı iş, burs, staj, kazanamayınca seçenekler

@@ -958,6 +958,132 @@ abstract class AppLocalizations {
   /// **'Yok'**
   String get assetNone;
 
+  /// No description provided for @ledgerTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Para hareketleri'**
+  String get ledgerTitle;
+
+  /// No description provided for @ledgerThisYear.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu yıl ({age} yaş)'**
+  String ledgerThisYear(int age);
+
+  /// No description provided for @ledgerLastYear.
+  ///
+  /// In tr, this message translates to:
+  /// **'Geçen yıl ({age} yaş)'**
+  String ledgerLastYear(int age);
+
+  /// No description provided for @ledgerEmpty.
+  ///
+  /// In tr, this message translates to:
+  /// **'Para hareketi yok.'**
+  String get ledgerEmpty;
+
+  /// No description provided for @ledgerTotal.
+  ///
+  /// In tr, this message translates to:
+  /// **'Toplam'**
+  String get ledgerTotal;
+
+  /// No description provided for @money_maas.
+  ///
+  /// In tr, this message translates to:
+  /// **'Maaş'**
+  String get money_maas;
+
+  /// No description provided for @money_emekliAyligi.
+  ///
+  /// In tr, this message translates to:
+  /// **'Emekli aylığı'**
+  String get money_emekliAyligi;
+
+  /// No description provided for @money_harclik.
+  ///
+  /// In tr, this message translates to:
+  /// **'Aileden harçlık'**
+  String get money_harclik;
+
+  /// No description provided for @money_araIs.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ara işler, yevmiyeler'**
+  String get money_araIs;
+
+  /// No description provided for @money_burs.
+  ///
+  /// In tr, this message translates to:
+  /// **'Burs'**
+  String get money_burs;
+
+  /// No description provided for @money_yarimZamanli.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yarı zamanlı iş'**
+  String get money_yarimZamanli;
+
+  /// No description provided for @money_aileDestegi.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ailenin 18 yaş desteği'**
+  String get money_aileDestegi;
+
+  /// No description provided for @money_kira.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kira'**
+  String get money_kira;
+
+  /// No description provided for @money_yasamGideri.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yaşam gideri'**
+  String get money_yasamGideri;
+
+  /// No description provided for @money_kredi.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kredi taksidi'**
+  String get money_kredi;
+
+  /// No description provided for @money_araba.
+  ///
+  /// In tr, this message translates to:
+  /// **'Araba masrafı'**
+  String get money_araba;
+
+  /// No description provided for @money_enflasyon.
+  ///
+  /// In tr, this message translates to:
+  /// **'Enflasyon nakitten eritti'**
+  String get money_enflasyon;
+
+  /// No description provided for @money_terfi.
+  ///
+  /// In tr, this message translates to:
+  /// **'Terfi için yatırım'**
+  String get money_terfi;
+
+  /// No description provided for @money_olay.
+  ///
+  /// In tr, this message translates to:
+  /// **'Seçimin: “{label}”'**
+  String money_olay(String label);
+
+  /// No description provided for @money_is.
+  ///
+  /// In tr, this message translates to:
+  /// **'İş: {what}'**
+  String money_is(String what);
+
+  /// No description provided for @money_varlik.
+  ///
+  /// In tr, this message translates to:
+  /// **'{what}'**
+  String money_varlik(String what);
+
   /// No description provided for @lastYearTitle.
   ///
   /// In tr, this message translates to:

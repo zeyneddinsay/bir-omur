@@ -335,7 +335,10 @@ class Repeat {
       }
       final max = r.optionalInt('max');
       if (max != null && max < 2) {
-        throw CardFormatException('$path.max', 'en az 2 olmalı (1 için "once")');
+        throw CardFormatException(
+          '$path.max',
+          'en az 2 olmalı (1 için "once")',
+        );
       }
       return Repeat.every(years, maxTimes: max);
     }

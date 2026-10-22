@@ -2,6 +2,7 @@ import 'assets.dart';
 import 'career.dart';
 import 'life_counters.dart';
 import 'life_stage.dart';
+import 'money_ledger.dart';
 import 'people_book.dart';
 import 'stats.dart';
 
@@ -128,7 +129,9 @@ class Character {
     this.pension = 0,
     this.counters = LifeCounters.zero,
     this.isAlive = true,
+    List<MoneyEntry> ledger = const [],
   }) : assert(age >= 0),
+       ledger = List.unmodifiable(ledger),
        assert(luck >= 0 && luck <= 100),
        flags = Set.unmodifiable(flags),
        history = List.unmodifiable(history),
@@ -138,6 +141,10 @@ class Character {
   final Gender gender;
   final int age;
   final Stats stats;
+
+  /// Bu yılın ve geçen yılın para hareketleri, kaynaklarıyla (Varlıklar
+  /// sekmesi). Daha eskileri tutulmaz.
+  final List<MoneyEntry> ledger;
 
   // Gizli değerler
   final Temperament temperament;
@@ -211,6 +218,7 @@ class Character {
     PeopleBook? people,
     LifeCounters? counters,
     bool? isAlive,
+    List<MoneyEntry>? ledger,
   }) {
     return Character(
       name: name ?? this.name,
@@ -233,7 +241,17 @@ class Character {
       pension: pension ?? this.pension,
       counters: counters ?? this.counters,
       isAlive: isAlive ?? this.isAlive,
+      ledger: ledger ?? this.ledger,
     );
+  }
+
+  /// Para hareketlerini ekler; iki yıldan eski kayıtları atar.
+  Character withLedger(Iterable<MoneyEntry> entries) {
+    final kept = [
+      for (final e in [...ledger, ...entries])
+        if (e.amount != 0 && e.age >= age - 1) e,
+    ];
+    return copyWith(ledger: kept);
   }
 
   Character withRecord(CardRecord record) =>
@@ -260,6 +278,7 @@ class Character {
     'pension': pension,
     'counters': counters.toJson(),
     'alive': isAlive,
+    if (ledger.isNotEmpty) 'ledger': [for (final e in ledger) e.toJson()],
   };
 
   factory Character.fromJson(Map<String, dynamic> json) {
@@ -300,6 +319,10 @@ class Character {
         json['counters'] as Map<String, dynamic>?,
       ),
       isAlive: json['alive'] as bool,
+      ledger: [
+        for (final e in json['ledger'] as List? ?? const [])
+          MoneyEntry.fromJson(e as Map<String, dynamic>),
+      ],
     );
   }
 }

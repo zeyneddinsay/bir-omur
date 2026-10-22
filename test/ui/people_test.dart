@@ -110,6 +110,20 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
+  testWidgets('Varlıklar sekmesi paranın nereden geldiğini yazar', (
+    tester,
+  ) async {
+    final container = await _bornAndGrown(tester, 19);
+    final c = container.read(lifeProvider)!.character;
+    expect(c.ledger.where((e) => e.age == 19), isNotEmpty);
+    await tester.tap(find.byKey(const Key('tab_assets')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('ledger')), findsOneWidget);
+    expect(find.text('Bu yıl (19 yaş)'), findsOneWidget);
+    expect(find.text('Geçen yıl (18 yaş)'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('Ben sekmesinde yılın günlüğü; sekmeler arasında gezinilir', (
     tester,
   ) async {

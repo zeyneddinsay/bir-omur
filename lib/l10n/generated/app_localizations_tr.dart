@@ -567,6 +567,79 @@ class AppLocalizationsTr extends AppLocalizations {
   String get assetNone => 'Yok';
 
   @override
+  String get ledgerTitle => 'Para hareketleri';
+
+  @override
+  String ledgerThisYear(int age) {
+    return 'Bu yıl ($age yaş)';
+  }
+
+  @override
+  String ledgerLastYear(int age) {
+    return 'Geçen yıl ($age yaş)';
+  }
+
+  @override
+  String get ledgerEmpty => 'Para hareketi yok.';
+
+  @override
+  String get ledgerTotal => 'Toplam';
+
+  @override
+  String get money_maas => 'Maaş';
+
+  @override
+  String get money_emekliAyligi => 'Emekli aylığı';
+
+  @override
+  String get money_harclik => 'Aileden harçlık';
+
+  @override
+  String get money_araIs => 'Ara işler, yevmiyeler';
+
+  @override
+  String get money_burs => 'Burs';
+
+  @override
+  String get money_yarimZamanli => 'Yarı zamanlı iş';
+
+  @override
+  String get money_aileDestegi => 'Ailenin 18 yaş desteği';
+
+  @override
+  String get money_kira => 'Kira';
+
+  @override
+  String get money_yasamGideri => 'Yaşam gideri';
+
+  @override
+  String get money_kredi => 'Kredi taksidi';
+
+  @override
+  String get money_araba => 'Araba masrafı';
+
+  @override
+  String get money_enflasyon => 'Enflasyon nakitten eritti';
+
+  @override
+  String get money_terfi => 'Terfi için yatırım';
+
+  @override
+  String money_olay(String label) {
+    return 'Seçimin: “$label”';
+  }
+
+  @override
+  String money_is(String what) {
+    return 'İş: $what';
+  }
+
+  @override
+  String money_varlik(String what) {
+    return '$what';
+  }
+
+  @override
   String get lastYearTitle => 'Geçen yıl';
 
   @override

@@ -256,11 +256,7 @@ class EventDeck {
     return drawn;
   }
 
-  static int _weightedIndex(
-    List<EventCard> pool,
-    Character c,
-    Random random,
-  ) {
+  static int _weightedIndex(List<EventCard> pool, Character c, Random random) {
     final weights = [for (final card in pool) drawWeight(card, c)];
     final total = weights.fold(0.0, (sum, w) => sum + w);
     var target = random.nextDouble() * total;
