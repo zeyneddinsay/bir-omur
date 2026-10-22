@@ -255,7 +255,9 @@ class _LifeStorySection extends StatelessWidget {
         if (story.cameAnyway case final p?) l10n.storyCameAnyway(p.name),
         if (rich && mourners > 0) l10n.storyStrangers,
       ].join(' '),
-      if (story.closest.isNotEmpty)
+      // Tek yakın, özleyecek kişiyle aynıysa iki kez yazılmaz.
+      if (story.closest.length > 1 ||
+          (story.closest.isNotEmpty && story.closest.first != missed))
         l10n.storyClosest(story.closest.map((p) => p.name).join(', ')),
       if (friends.isNotEmpty) l10n.storyTrueFriend(friends.first.name),
       if (missed != null) l10n.storyMissed(missed.name),

@@ -898,6 +898,12 @@ abstract class AppLocalizations {
   /// **'İşsiz'**
   String get jobNone;
 
+  /// No description provided for @jobOwnBusiness.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kendi işinde'**
+  String get jobOwnBusiness;
+
   /// No description provided for @jobStudent.
   ///
   /// In tr, this message translates to:
@@ -2265,6 +2271,12 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Bu işi bırakalı iki yıl olmadı'**
   String get businessBlocked_yeniKapandi;
+
+  /// No description provided for @businessBlocked_kredi.
+  ///
+  /// In tr, this message translates to:
+  /// **'Peşinat var ama kredi çıkmaz: bir iş ya da 50 itibar gerekir'**
+  String get businessBlocked_kredi;
 
   /// No description provided for @businessBlocked_vakit.
   ///

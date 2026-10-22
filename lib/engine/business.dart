@@ -27,6 +27,9 @@ enum BusinessBlocked {
   /// Bu türdeki işletmesini satalı ya da kapatalı iki yıl olmadı.
   yeniKapandi,
 
+  /// Para peşinata yetiyor ama kredi verilmiyor (iş ya da itibar yok).
+  kredi,
+
   /// Bu yılın vakti yetmiyor.
   vakit,
   askerde,
@@ -185,7 +188,9 @@ abstract final class BusinessRules {
     if (recent(c.businessExits, exitWait)) return BusinessBlocked.yeniKapandi;
     final canLoan = loanAllowed(c);
     if (c.stats.money < downPayment(t, loan: canLoan)) {
-      return BusinessBlocked.para;
+      final loanWouldHelp =
+          !canLoan && c.stats.money >= downPayment(t, loan: true);
+      return loanWouldHelp ? BusinessBlocked.kredi : BusinessBlocked.para;
     }
     if (timeLeft < openTimeCost) return BusinessBlocked.vakit;
     return null;

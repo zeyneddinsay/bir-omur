@@ -38,6 +38,7 @@ String businessBlockedReason(AppLocalizations l10n, BusinessBlocked b) =>
       BusinessBlocked.cokFazla => l10n.businessBlocked_cokFazla,
       BusinessBlocked.iflas => l10n.businessBlocked_iflas,
       BusinessBlocked.yeniKapandi => l10n.businessBlocked_yeniKapandi,
+      BusinessBlocked.kredi => l10n.businessBlocked_kredi,
       BusinessBlocked.vakit => l10n.businessBlocked_vakit,
       BusinessBlocked.askerde => l10n.businessBlocked_askerde,
     };

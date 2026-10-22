@@ -180,6 +180,7 @@
   "@deathNetWorth": { "placeholders": { "amount": { "type": "String" } } },
 
   "jobNone": "İşsiz",
+  "jobOwnBusiness": "Kendi işinde",
   "jobStudent": "Üniversite öğrencisi",
   "jobRetired": "Emekli",
   "jobChild": "Öğrenci",
@@ -468,6 +469,7 @@
   "businessBlocked_cokFazla": "En fazla iki işletme",
   "businessBlocked_iflas": "Bu işte batalı iki yıl olmadı",
   "businessBlocked_yeniKapandi": "Bu işi bırakalı iki yıl olmadı",
+  "businessBlocked_kredi": "Peşinat var ama kredi çıkmaz: bir iş ya da 50 itibar gerekir",
   "businessBlocked_vakit": "Bu yılın vakti yetmiyor (2 vakit)",
   "businessBlocked_askerde": "Askerdesin",
   "businessLastProfit": "Geçen yıl: {money}",

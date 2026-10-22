@@ -4,6 +4,7 @@ import '../../engine/engine.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../models/models.dart';
 import '../l10n_names.dart';
+import 'business_card.dart';
 
 /// "Memur · Şef"; kademe adı meslek adıyla aynıysa yalnızca biri
 /// ("Memur · Memur" değil "Memur").
@@ -23,6 +24,8 @@ String jobLabel(AppLocalizations l10n, Character c, CareerBook careers) {
     return careerLine(l10n, career, job.tier);
   }
   if (c.hasFlag(ActionCatalog.studentFlag)) return l10n.jobStudent;
+  // İşi olmayan işletme sahibi: kendi işinin başında.
+  if (c.businesses.isNotEmpty) return l10n.jobOwnBusiness;
   // Okul öncesinde iş satırı yok; okul çağında "Öğrenci".
   if (c.age < 7) return '';
   if (c.age < EngineFlags.hardshipMinAge) return l10n.jobChild;
@@ -114,6 +117,12 @@ class AssetsSummary extends StatelessWidget {
             ? l10n.assetNone
             : l10n.assetCarValue(a.cars, tl(a.carValue)),
       ),
+      // İşletmeler net servete satış ya da kapanış değeriyle girer.
+      for (final b in c.businesses)
+        (
+          businessTypeName(l10n, b.type),
+          tl(BusinessRules.exitValue(b, sell: BusinessRules.canSell(b))),
+        ),
       if (c.home.paysRent) (l10n.assetRent, tl(a.rent)),
       if (a.hasLoan)
         (

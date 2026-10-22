@@ -524,6 +524,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get jobNone => 'İşsiz';
 
   @override
+  String get jobOwnBusiness => 'Kendi işinde';
+
+  @override
   String get jobStudent => 'Üniversite öğrencisi';
 
   @override
@@ -1348,6 +1351,10 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get businessBlocked_yeniKapandi => 'Bu işi bırakalı iki yıl olmadı';
+
+  @override
+  String get businessBlocked_kredi =>
+      'Peşinat var ama kredi çıkmaz: bir iş ya da 50 itibar gerekir';
 
   @override
   String get businessBlocked_vakit => 'Bu yılın vakti yetmiyor (2 vakit)';
