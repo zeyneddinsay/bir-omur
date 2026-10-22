@@ -120,9 +120,22 @@ flutter build ipa              # iOS (yalnızca Mac)
 - **F2 — Cila ve paylaşım** (15 Ekim 2026): hayatın sayıları, 9:16 paylaşım kartı, 18 rozet ve Hayat Albümü, katmanlı SVG portreler, Nunito ve sıcak tema, ses ve titreşim (yer tutucu sesler), Firebase Analytics ve Crashlytics. Kapı: kullanıcı analitik olaylarının konsola aktığını doğruladı.
 - F2 kararları: portre parçalarını Claude çizdi (`assets/portraits/README.md`, illüstratör aynı adlarla değiştirebilir); gerçek sesleri kullanıcı bulacak (`assets/sounds/README.md`); Nunito gömülü (OFL). Firebase projesi `biromur-d0006`; analitik oyuncu onay verene kadar kapalı (doğum ekranında bir kez sorulur, Ayarlar'dan değişir), karakter adı gönderilmez; Crashlytics anonim ve debug sürümünde kapalı. iOS dSYM yükleme betiği F3'e kaldı.
 
-## Mevcut aşama: F3a — Dağıtıma hazırlık
+## Mevcut aşama: D — Derin hayat (tasarım)
 
-Sıra kararı (15 Ekim 2026): GDD'deki F3 → F4 sırası yerine F3a (dağıtıma hazırlık) → F4 (reklam ve satın alma) → F3b (kapalı beta: Google Play kapalı testi ve TestFlight). Kullanıcı dış dağıtımı uygulama bitince yapmak istiyor.
+Karar (22 Ekim 2026): Oyun "her yıl kart kaydır" yapısından; kişilerin, hafızanın, işlerin ve işletmelerin birbirine bağlandığı sekmeli bir hayat simülasyonuna dönüşüyor. Tasarım, canlı dokümanın "Derin hayat (taslak)" sekmesinde. Kod, kullanıcı taslağı onaylamadan yazılmaz. Sıra: D0 taslak onayı → D1 kişiler ve İnsanlar sekmesi → D2 eğitim ve meslekler → D3 işletmeler → D4a iplikler ve zor gün → D4b aşk, evlilik, çocuklar → D5 denge ve cila. Sonra F3a'nın kalan iki adımı, F4 ve F3b.
+
+Bu aşamada alınan kararlar (22 Ekim 2026):
+
+- Temel kural: ilişkiler oyuncunun arkasından değişmez. Yakınlık ve husumet ancak oyuncunun bir seçimiyle değişir; kişilik özellikleri davranışı değiştirir, çubuğu değil.
+- Ekonomi gerçek 2026 rakamlarına çekilir (mevcut tutarlar yaklaşık × 3,3; ayrıntı dokümanın "Ekonomi ölçeği" bölümünde).
+- Oyuncu romantik ilişkide cinsiyet seçebilir. 18 yaşından önce romantik bağ yalnızca platonik ve en fazla 1 yaş farkla olur.
+- Yıllık vakit puanı, aşağıdaki "Aksiyon menüsü" kararının yerine geçer (D1'de uygulanır): 0–5 yaş 0, 6–10 yaş 2, öğrenci 5, maaşlı çalışan 3, kendi işinin başında 2, iş ve işletme birlikte 1, işsiz 5, emekli 6.
+- İlk sürüm kapsamı dar başlar: 6 kişilik özelliği; 4 işletme (simit, berber, oto yıkama, yazılım; fabrika yalnızca aileden devralma); alan başına 1 meslek. Kalanlar güncellemelerle gelir.
+- Mevcut Esnaf mesleği kaldırılacak; "kendi dükkânı" işletme sistemine geçer.
+
+## Bekleyen aşama: F3a — Dağıtıma hazırlık
+
+Sıra kararı (15 Ekim 2026): GDD'deki F3 → F4 sırası yerine F3a (dağıtıma hazırlık) → F4 (reklam ve satın alma) → F3b (kapalı beta: Google Play kapalı testi ve TestFlight). Kullanıcı dış dağıtımı uygulama bitince yapmak istiyor. 22 Ekim 2026'da D aşaması öne alındı; kalan iki adım D5'ten sonra yapılır.
 
 Adımlar:
 
