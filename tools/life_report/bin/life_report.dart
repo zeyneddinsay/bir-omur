@@ -39,6 +39,7 @@ void main(List<String> args) {
   final statHigh = <StatKind, int>{for (final k in StatKind.values) k: 0};
   final topTier = <String, int>{};
   var retiredEarly = 0;
+  final people = _PeopleStats();
 
   for (var i = 0; i < lives; i++) {
     final seed = firstSeed + i;
@@ -66,6 +67,7 @@ void main(List<String> args) {
     }
     final summary = engine.state.summary!;
     final c = summary.character;
+    people.add(c, interactions: player.interactions);
     deathAges.add(summary.deathAge);
     netWorths.add(summary.netWorth);
     for (final a in badges.earnedBy(summary)) {
@@ -196,6 +198,7 @@ void main(List<String> args) {
   for (final a in badges.all) {
     stdout.writeln('  ${a.id.padRight(28)} ${pct(badgeCounts[a.id] ?? 0)}');
   }
+  people.write(lives);
 }
 
 /// Her kartta rastgele bir yön seçen, yılların çoğunda rastgele aksiyon
@@ -204,6 +207,9 @@ class _RandomPlayer {
   _RandomPlayer(int seed) : _random = Random(seed);
 
   final Random _random;
+
+  /// Bu hayatta yapılan etkileşim sayısı.
+  int interactions = 0;
 
   void step(LifeEngine engine) {
     final state = engine.state;
@@ -216,6 +222,12 @@ class _RandomPlayer {
         ];
         engine.choose(sides[_random.nextInt(sides.length)]);
       case YearPhase.actions:
+        final requests = engine.possibleInteractions();
+        if (requests.isNotEmpty && _random.nextBool()) {
+          engine.interact(requests[_random.nextInt(requests.length)]);
+          interactions++;
+          return;
+        }
         final enabled = [
           for (final (action, ok) in engine.availableActions())
             if (ok) action,
@@ -228,5 +240,109 @@ class _RandomPlayer {
       case YearPhase.dead:
         break;
     }
+  }
+}
+
+/// Kişiler, hafıza ve olay akışı (D1). Hayat sonundaki duruma bakar.
+class _PeopleStats {
+  int _known = 0;
+  int _dead = 0;
+  int _active = 0;
+  int _archived = 0;
+  int _friends = 0;
+  int _hostile = 0;
+  int _livesWithHostile = 0;
+  int _memories = 0;
+  int _interactions = 0;
+  int _events = 0;
+  int _years = 0;
+  int _emptyYears = 0;
+  int _funerals = 0;
+  int _reached19 = 0;
+  int _universityStarted = 0;
+  int _graduated = 0;
+  int _men41 = 0;
+  int _bedelli = 0;
+  int _served = 0;
+
+  static const _funeralIds = {
+    'cenaze_cocuk',
+    'cenaze_akraba',
+    'cenaze_ebeveyn',
+  };
+
+  void add(Character c, {required int interactions}) {
+    final now = c.age;
+    final known = c.people.bornBy(now).toList();
+    _known += known.length;
+    _dead += known.where((p) => !p.isAlive).length;
+    final active = c.people.active(now).toList();
+    _active += active.length;
+    _archived += known.where((p) => p.isAlive && p.archived).length;
+    _friends += active
+        .where((p) => Relationships.colorOf(p, now) == RelationColor.dost)
+        .length;
+    final hostile = active.where((p) => Relationships.isHostile(p, now)).length;
+    _hostile += hostile;
+    if (hostile > 0) _livesWithHostile++;
+    _memories += known.fold(0, (s, p) => s + p.memories.length);
+    _interactions += interactions;
+
+    _events += c.history.length;
+    final eventAges = {for (final r in c.history) r.age};
+    for (var age = 3; age < now; age++) {
+      _years++;
+      if (!eventAges.contains(age)) _emptyYears++;
+    }
+    _funerals += c.history.where((r) => _funeralIds.contains(r.cardId)).length;
+
+    if (now > 19) {
+      _reached19++;
+      if (c.hasFlag('yks_kazandi')) _universityStarted++;
+      if (c.hasFlag('universite_mezunu')) _graduated++;
+    }
+    if (c.gender == Gender.erkek && now > 41) {
+      _men41++;
+      if (c.hasFlag('bedelli')) _bedelli++;
+      if (c.hasFlag('asker_anilari')) _served++;
+    }
+  }
+
+  void write(int lives) {
+    String avg(int n) => (n / lives).toStringAsFixed(1);
+    String share(int n, int of) =>
+        of == 0 ? '-' : '%${(100 * n / of).toStringAsFixed(0)}';
+    stdout
+      ..writeln()
+      ..writeln('Kişiler (hayat sonunda, ortalama):')
+      ..writeln(
+        '  tanınan ${avg(_known)}, vefat eden ${avg(_dead)}, aktif ${avg(_active)}, '
+        'eski tanıdık ${avg(_archived)}',
+      )
+      ..writeln(
+        '  dost ${avg(_friends)}, husumetli ${avg(_hostile)} '
+        '(en az bir husumetlisi olan hayat ${share(_livesWithHostile, lives)})',
+      )
+      ..writeln(
+        '  anı ${avg(_memories)} (kişi başına '
+        '${(_memories / (_known == 0 ? 1 : _known)).toStringAsFixed(2)}), '
+        'etkileşim ${avg(_interactions)}',
+      )
+      ..writeln()
+      ..writeln('Olay akışı:')
+      ..writeln(
+        '  hayat başına ${avg(_events)} olay, yılda '
+        '${(_events / (_years == 0 ? 1 : _years)).toStringAsFixed(2)}; '
+        '3 yaştan sonra olaysız yıl ${share(_emptyYears, _years)}',
+      )
+      ..writeln('  cenaze kartı hayat başına ${avg(_funerals)}')
+      ..writeln(
+        '  19 yaşını görenlerde üniversite ${share(_universityStarted, _reached19)}, '
+        'mezun ${share(_graduated, _reached19)}',
+      )
+      ..writeln(
+        '  41 yaşını gören erkeklerde askerlik yaparak ${share(_served, _men41)}, '
+        'bedelli ${share(_bedelli, _men41)}',
+      );
   }
 }

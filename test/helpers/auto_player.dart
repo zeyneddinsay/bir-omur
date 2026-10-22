@@ -35,6 +35,11 @@ class AutoPlayer {
       case YearPhase.cards:
         return engine.choose(pickSide(state.currentEvent!.card));
       case YearPhase.actions:
+        // Yılların yarısında önce biriyle etkileşir (Ara dahil).
+        final people = engine.possibleInteractions();
+        if (people.isNotEmpty && _random.nextBool()) {
+          return engine.interact(people[_random.nextInt(people.length)]);
+        }
         final action = pickAction(engine);
         return action == null ? engine.advanceYear() : engine.doAction(action);
       case YearPhase.dead:

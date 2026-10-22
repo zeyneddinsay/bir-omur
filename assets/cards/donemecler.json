@@ -76,7 +76,7 @@
     "text": "YKS sabahı. Yıllardır konuşulan gün bugün. Aklın şimdiden tercihlerde: memleket mi, büyükşehir mi?",
     "left": {
       "label": "Memlekette okurum",
-      "roll": { "stat": "knowledge", "threshold": 55 },
+      "roll": { "stat": "knowledge", "threshold": 52 },
       "success": {
         "addFlags": ["yks_kazandi", "universite_ogrencisi"],
         "knowledge": 3,
@@ -91,7 +91,7 @@
     },
     "right": {
       "label": "Büyükşehre giderim",
-      "roll": { "stat": "knowledge", "threshold": 62 },
+      "roll": { "stat": "knowledge", "threshold": 59 },
       "success": {
         "addFlags": ["yks_kazandi", "universite_ogrencisi"],
         "knowledge": 3,
@@ -116,7 +116,7 @@
     "text": "YKS sabahı. Lisedeki hocaların 'Siz bu işi bilirsiniz' dedi. Kalbin şimdiden iki şehir arasında.",
     "left": {
       "label": "Memlekette okurum",
-      "roll": { "stat": "knowledge", "threshold": 48 },
+      "roll": { "stat": "knowledge", "threshold": 46 },
       "success": {
         "addFlags": ["yks_kazandi", "universite_ogrencisi"],
         "knowledge": 3,
@@ -131,7 +131,7 @@
     },
     "right": {
       "label": "Büyükşehre giderim",
-      "roll": { "stat": "knowledge", "threshold": 55 },
+      "roll": { "stat": "knowledge", "threshold": 53 },
       "success": {
         "addFlags": ["yks_kazandi", "universite_ogrencisi"],
         "knowledge": 3,

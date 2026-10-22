@@ -340,6 +340,39 @@ abstract final class Interactions {
       (c.age < PeopleTick.householdUntil &&
           const {Kinship.anne, Kinship.baba, Kinship.kardes}.contains(p.kin));
 
+  /// Bu kişiyle şu an yapılabilecek bütün istekler; Ara her açık ton ve
+  /// (nostalji ve iğnelemede) her anı için ayrı. Simülasyon ve denge
+  /// raporu kullanır.
+  static List<InteractionRequest> requestsFor(
+    Person p,
+    List<InteractionOption> options,
+    int now,
+  ) => [
+    for (final o in options)
+      if (o.enabled)
+        if (o.kind != InteractionKind.ara)
+          InteractionRequest(o.kind, p.id)
+        else
+          for (final tone in CallTone.values)
+            if (toneBlocked(p, tone, now) == null)
+              ...switch (tone) {
+                CallTone.nostalji || CallTone.igne => [
+                  for (final m in callMemories(
+                    p,
+                    now,
+                    tone: tone == CallTone.igne ? MemoryTone.olumsuz : null,
+                  ))
+                    InteractionRequest(
+                      o.kind,
+                      p.id,
+                      tone: tone,
+                      memoryKind: m.kind,
+                    ),
+                ],
+                _ => [InteractionRequest(o.kind, p.id, tone: tone)],
+              },
+  ];
+
   /// Ara sohbetinde bu tonun açık olup olmadığı.
   static Blocked? toneBlocked(Person p, CallTone tone, int now) =>
       switch (tone) {

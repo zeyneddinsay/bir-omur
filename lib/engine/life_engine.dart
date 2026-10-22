@@ -309,6 +309,17 @@ class LifeEngine {
     );
   }
 
+  /// Şu an yapılabilecek bütün etkileşim istekleri, yaşayan herkesle
+  /// (simülasyon ve denge raporu için).
+  List<InteractionRequest> possibleInteractions() {
+    final c = _state.character;
+    return [
+      for (final p in c.people.bornBy(c.age))
+        if (p.isAlive)
+          ...Interactions.requestsFor(p, interactionsWith(p.id), c.age),
+    ];
+  }
+
   /// Bir kişiyle etkileşir (İnsanlar sekmesi). Yalnızca aksiyon aşamasında.
   LifeState interact(InteractionRequest request) {
     if (_state.phase != YearPhase.actions) {
