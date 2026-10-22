@@ -238,7 +238,13 @@ class _TercihSheetState extends ConsumerState<TercihSheet> {
                 d.scoreIn(city),
               ),
             ),
-            subtitle: Text(city == c.city ? l10n.tercihHome : l10n.tercihDorm),
+            subtitle: Text(
+              city != c.city
+                  ? l10n.tercihDorm
+                  : c.home == HomeKind.aile
+                  ? l10n.tercihHome
+                  : l10n.tercihHomeOwn,
+            ),
             onTap: () => done(() => controller.enroll(d.id, city)),
           ),
       const Divider(height: 24),

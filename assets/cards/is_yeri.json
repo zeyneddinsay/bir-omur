@@ -71,7 +71,7 @@
     "maxAge": 64,
     "repeat": { "cooldown": 6, "max": 2 },
     "conditions": {
-      "careers": ["plaza", "yazilimci", "emlakci", "memur", "hemsire"]
+      "careers": ["plaza", "yazilimci", "emlakci"]
     },
     "roles": {
       "patron": { "roles": ["patron"] }
@@ -437,7 +437,7 @@
     "minAge": 18,
     "maxAge": 90,
     "repeat": { "cooldown": 5, "max": 3 },
-    "conditions": { "flags": ["tasindi"] },
+    "conditions": { "flags": ["yeni_tasindi"] },
     "roles": {
       "komsu": { "roles": ["komsu"], "sameCity": true, "noMemory": "kek_sorgusu" }
     },

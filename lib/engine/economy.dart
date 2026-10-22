@@ -73,6 +73,10 @@ abstract final class Economy {
   static const int maxRentFactor = 2;
 
   /// Şehrin taban yıllık kirası (100 m², 2026: orta şehir 330 bin).
+  /// Bir evin bu şehirdeki fiyatı.
+  static int houseValueIn(String city) =>
+      (houseValue * Cities.typeOf(city).rent).round();
+
   static int rentFor(String city) =>
       (Assets.defaultRent * Cities.typeOf(city).rent).round();
 
@@ -136,10 +140,14 @@ abstract final class Economy {
   /// En az bir kez taşınmış (taşınma sayacından türetilir).
   static const String movedFlag = 'tasindi';
 
+  /// Bu yıl ya da geçen yıl başka şehre taşındı (hoş geldin olayları).
+  static const String newlyMovedFlag = 'yeni_tasindi';
+
   static const Set<String> derivedFlags = {
     homeOwnerFlag,
     renterFlag,
     movedFlag,
+    newlyMovedFlag,
     carOwnerFlag,
     goldOwnerFlag,
     Careers.retiredFlag,
@@ -150,7 +158,7 @@ abstract final class Economy {
     final a = c.assets;
     return c.stats.money +
         a.goldGrams * market.goldPrice +
-        a.houses * houseValue +
+        a.houseValue +
         a.carValue -
         a.remainingLoan;
   }
@@ -170,6 +178,12 @@ abstract final class Economy {
     a = a.copyWith(
       goldGrams: max(0, a.goldGrams + effect.gold),
       houses: max(0, a.houses + effect.house),
+      houseValue: effect.house > 0
+          ? a.houseValue + effect.house * houseValueIn(c.city)
+          : a.houses == 0
+          ? 0
+          : a.houseValue -
+                min(-effect.house, a.houses) * (a.houseValue ~/ a.houses),
       rent: ((effect.rentReset ? rentFor(c.city) : a.rent) + effect.rentChange)
           .clamp(0, maxRentFor(c.city)),
     );
@@ -210,6 +224,8 @@ abstract final class Economy {
     set(Careers.retiredFlag, c.isRetired);
     set(renterFlag, c.home.paysRent);
     set(movedFlag, c.counters.moves > 0);
+    final moved = c.counters.lastMoveAt;
+    set(newlyMovedFlag, moved != null && c.age - moved <= 1);
     if (flags.length == c.flags.length && flags.containsAll(c.flags)) return c;
     return c.copyWith(flags: flags);
   }

@@ -73,6 +73,7 @@ String describeMoney(
   EventDeck deck,
 ) => switch (e.source) {
   MoneySource.maas => l10n.money_maas,
+  MoneySource.tazminat => l10n.money_tazminat,
   MoneySource.emekliAyligi => l10n.money_emekliAyligi,
   MoneySource.yasliAyligi => l10n.money_yasliAyligi,
   MoneySource.harclik => l10n.money_harclik,

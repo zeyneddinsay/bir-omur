@@ -229,6 +229,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get actionBlocked_isYok => 'Bu yaşta başvurabileceğin bir iş kalmadı';
 
   @override
+  String get actionBlocked_kredi =>
+      'Kredi çıkmıyor: taksit gelirinin yarısını geçer';
+
+  @override
   String get ageUpButton => 'Yaşlan';
 
   @override
@@ -693,6 +697,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get money_maas => 'Maaş';
 
   @override
+  String get money_tazminat => 'Kıdem tazminatı';
+
+  @override
   String get money_emekliAyligi => 'Emekli aylığı';
 
   @override
@@ -932,6 +939,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get tercihHome => 'Memleketinde: ailenin yanında okursun';
 
   @override
+  String get tercihHomeOwn => 'Bu şehirde: kendi evinden okursun';
+
+  @override
   String get tercihDorm => 'Yurtta kalırsın (yılda 60.000 TL)';
 
   @override
@@ -1032,7 +1042,46 @@ class AppLocalizationsTr extends AppLocalizations {
   String get jobRetire => 'Emekli ol';
 
   @override
-  String get jobAskedThisYear => 'Bu yıl sordun ya da vaktin yok';
+  String jobPromotionBlocked(String reason) {
+    return 'Terfi: $reason';
+  }
+
+  @override
+  String jobRaiseBlocked(String reason) {
+    return 'Zam: $reason';
+  }
+
+  @override
+  String get request_sonKademe => 'en üst kademedesin';
+
+  @override
+  String request_erken(int years) {
+    String _temp0 = intl.Intl.pluralLogic(
+      years,
+      locale: localeName,
+      other: '$years yıl daha beklemelisin',
+      one: '1 yıl daha beklemelisin',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get request_sart => 'diploma ya da belge şartı eksik';
+
+  @override
+  String get request_performans => 'performansın yetmiyor';
+
+  @override
+  String get request_para => 'terfinin bedeline paran yetmiyor';
+
+  @override
+  String get request_tavan => 'bu kademede zam tavanı doldu';
+
+  @override
+  String get request_buYil => 'bu yıl sordun';
+
+  @override
+  String get request_vakit => 'vaktin yok';
 
   @override
   String get jobQuitConfirm =>
@@ -1475,6 +1524,12 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get role_patron => 'Patronun';
+
+  @override
+  String get role_amir => 'Amirin';
+
+  @override
+  String get role_usta => 'Ustan';
 
   @override
   String get role_mudur => 'Müdürün';

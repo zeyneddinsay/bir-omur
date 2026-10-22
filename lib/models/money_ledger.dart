@@ -3,6 +3,9 @@
 enum MoneySource {
   /// Maaş.
   maas,
+
+  /// Kovulunca kıdem tazminatı.
+  tazminat,
   emekliAyligi,
 
   /// Çalışmamış ya da yeterince çalışmamış yaşlıya devletin 65 yaş aylığı.

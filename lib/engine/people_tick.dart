@@ -154,12 +154,16 @@ class PeopleTick {
   static const _retiringRoles = {
     RoleKind.bakkal,
     RoleKind.patron,
+    RoleKind.amir,
+    RoleKind.usta,
     RoleKind.isArkadasi,
   };
 
   /// Yere bağlı roller: bu rolü süren kişi başka şehre taşınmaz.
   static const _placeRoles = {
     RoleKind.patron,
+    RoleKind.amir,
+    RoleKind.usta,
     RoleKind.mudur,
     RoleKind.isArkadasi,
     RoleKind.calisan,

@@ -286,6 +286,14 @@ class LifeEngine {
     for (final (action, blocked) in actionOptions()) (action, blocked == null),
   ];
 
+  /// Ev ve arabada kredi şartı.
+  static bool _financed(LifeAction action, Character c) =>
+      switch (action.special) {
+        ActionSpecial.evAl => Housing.canFinance(c, house: true),
+        ActionSpecial.arabaAl => Housing.canFinance(c, house: false),
+        _ => true,
+      };
+
   /// Bu yıl görünen aksiyonlar; kapalıysa sebebi (arayüz gösterir).
   List<(LifeAction action, ActionBlocked? blocked)> actionOptions() {
     final c = _state.character;
@@ -296,6 +304,7 @@ class LifeEngine {
         return ActionBlocked.vakit;
       }
       if (!action.canAfford(c, _market)) return ActionBlocked.para;
+      if (!_financed(action, c)) return ActionBlocked.kredi;
       return null;
     }
 
@@ -325,6 +334,9 @@ class LifeEngine {
     }
     if (_state.actionsUsed.contains(actionId)) {
       throw StateError('$actionId bu yıl zaten yapıldı');
+    }
+    if (!_financed(action, c)) {
+      throw StateError('$actionId için kredi çıkmıyor');
     }
 
     var character = switch (action.special) {
@@ -475,8 +487,17 @@ class LifeEngine {
       ),
       MoneyEntry(
         age: age,
+        source: MoneySource.tazminat,
+        amount: careerReport.severance,
+      ),
+      MoneyEntry(
+        age: age,
         source: MoneySource.terfi,
-        amount: paid.stats.money - aged.stats.money - careerReport.income,
+        amount:
+            paid.stats.money -
+            aged.stats.money -
+            careerReport.income -
+            careerReport.severance,
       ),
     ]);
     final (afterBusiness, businessNotes) = _businessYear(
@@ -679,12 +700,22 @@ class LifeEngine {
   static const int requestTimeCost = 1;
 
   /// Terfi ya da zam istenebilir mi (iş var, vakit var, bu yıl istenmedi).
-  bool canRequest({required bool promotion}) {
-    final job = _state.character.job;
-    if (job == null || _state.phase != YearPhase.actions) return false;
-    if (_state.timeLeft < requestTimeCost) return false;
+  bool canRequest({required bool promotion}) =>
+      requestBlocked(promotion: promotion) == null;
+
+  /// Terfi ya da zam neden istenemez; null ise istenebilir.
+  RequestBlocked? requestBlocked({required bool promotion}) {
+    final c = _state.character;
+    final job = c.job;
+    if (job == null) return RequestBlocked.isYok;
+    final reason = promotion
+        ? JobMarket.promotionBlocked(c, careers)
+        : JobMarket.raiseBlocked(c);
+    if (reason != null) return reason;
     final asked = promotion ? job.promotionAskedAt : job.raiseAskedAt;
-    return asked != _state.character.age;
+    if (asked == c.age) return RequestBlocked.buYil;
+    if (_state.timeLeft < requestTimeCost) return RequestBlocked.vakit;
+    return null;
   }
 
   /// Terfi ister (1 vakit, yılda bir).

@@ -35,6 +35,7 @@ class CareerReport {
   const CareerReport({
     required this.income,
     this.source = MoneySource.maas,
+    this.severance = 0,
     this.promoted = false,
     this.retired = false,
     this.fired = false,
@@ -44,6 +45,9 @@ class CareerReport {
 
   /// Gelirin kaynağı: maaş, emekli aylığı, harçlık, ara işler.
   final MoneySource source;
+
+  /// Kovulunca ödenen kıdem tazminatı.
+  final int severance;
   final bool promoted;
   final bool retired;
 
@@ -117,12 +121,12 @@ abstract final class Careers {
   static bool canRetire(Character c) =>
       c.counters.yearsWorked >= pensionMinYears;
 
-  /// Emekli eder: işi varsa son maaşın %60'ı, yoksa en az aylık. Hakkı
-  /// yoksa yalnızca işi bırakır.
+  /// Emekli eder: son işin (bırakılmış olsa da) maaşının %60'ı, en az taban
+  /// aylık. Hakkı yoksa yalnızca işi bırakır.
   static Character retire(Character c, CareerBook book) {
     if (c.isRetired) return c;
     if (!canRetire(c)) return leaveJob(c);
-    final job = c.job;
+    final job = c.careerJob;
     final lastSalary = job == null ? 0 : book.salaryOf(job);
     final pension = max(minPension, (lastSalary * pensionShare).round());
     return leaveJob(c).copyWith(pension: pension);
@@ -164,14 +168,20 @@ abstract final class Careers {
       (career.tier(job.tier).salary *
               (1 + job.raise) *
               factor *
-              Cities.typeOf(c.city).salary)
+              (career.isPublic ? 1 : Cities.typeOf(c.city).salary))
           .round();
 
   /// İşten ayrılır (istifa, kovulma, emeklilik): patron ve iş arkadaşı
   /// rolleri biter, kişiler "eski iş arkadaşı" olur.
   static Character leaveJob(Character c) {
     if (c.job == null) return c;
-    const work = {RoleKind.patron, RoleKind.mudur, RoleKind.isArkadasi};
+    const work = {
+      RoleKind.patron,
+      RoleKind.amir,
+      RoleKind.usta,
+      RoleKind.mudur,
+      RoleKind.isArkadasi,
+    };
     // İşletmenin müdürü ve çalışanları işten ayrılınca kalır.
     final ownStaff = {
       for (final b in c.businesses) ...[...b.staff, ?b.managerId],
@@ -246,6 +256,7 @@ class CareerTick {
     var income = 0;
     var source = MoneySource.maas;
     var worked = false;
+    var severance = 0;
     if (c.isRetired) {
       income = c.pension;
       source = MoneySource.emekliAyligi;
@@ -254,12 +265,17 @@ class CareerTick {
     } else if (c.job case final job?) {
       final career = book.require(job.careerId);
       final performance = Careers.nextPerformance(c, job, random);
-      if (performance < Careers.firingPerformance && job.yearsInTier >= 1) {
-        // Performansı dibe vuran kovulur; bu yıl maaş yok.
+      if (!career.isPublic &&
+          performance < Careers.firingPerformance &&
+          job.yearsInTier >= 1) {
+        // Performansı dibe vuran yıl ortasında kovulur: yarım yılın maaşı ve
+        // kademedeki her yıl için bir aylık kıdem tazminatı.
+        final yearly = Careers.salaryFor(c, job, career);
+        income = yearly ~/ 2;
+        severance = yearly ~/ 12 * job.yearsInTier;
+        worked = true;
         c = Careers.leaveJob(c);
         fired = true;
-        income = Careers.baseIncome(c);
-        source = Careers.baseIncomeSource(c);
       } else {
         final variance = career.incomeVariance;
         final factor = variance == 0
@@ -285,7 +301,7 @@ class CareerTick {
     final earned = worked || c.isRetired ? income : 0;
     final counters = c.counters;
     c = c.copyWith(
-      stats: c.stats.withMoneyDelta(income),
+      stats: c.stats.withMoneyDelta(income + severance),
       counters: counters.copyWith(
         yearsWorked: counters.yearsWorked + (worked ? 1 : 0),
         lifetimeIncome: counters.lifetimeIncome + earned,
@@ -296,6 +312,7 @@ class CareerTick {
       CareerReport(
         income: income,
         source: source,
+        severance: severance,
         retired: retired,
         fired: fired,
       ),

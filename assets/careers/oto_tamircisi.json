@@ -2,6 +2,7 @@
   "id": "oto_tamircisi",
   "name": "Oto tamircisi",
   "occupations": ["oto_tamircisi"],
+  "boss": "usta",
   "entry": {
     "vocational": true,
     "minAge": 16,

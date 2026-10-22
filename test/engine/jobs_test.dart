@@ -329,7 +329,13 @@ void main() {
         career,
       );
       expect(konya, (600000 * 1.1).round());
-      expect(istanbul, (600000 * 1.1 * 1.15).round());
+      expect(istanbul, konya, reason: 'memur maaşı her şehirde aynı');
+      final plaza = book.require('plaza');
+      final plazaJob = Job(careerId: 'plaza', tier: 1, raise: 0.1);
+      expect(
+        Careers.salaryFor(worker().copyWith(city: 'İstanbul'), plazaJob, plaza),
+        (plaza.tier(1).salary * 1.1 * 1.15).round(),
+      );
     });
   });
 

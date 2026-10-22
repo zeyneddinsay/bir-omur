@@ -106,7 +106,7 @@ class AssetsSummary extends StatelessWidget {
         l10n.assetHouse,
         a.houses == 0
             ? l10n.assetNone
-            : l10n.assetHouseValue(a.houses, tl(a.houses * Economy.houseValue)),
+            : l10n.assetHouseValue(a.houses, tl(a.houseValue)),
       ),
       (
         l10n.assetCar,

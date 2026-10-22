@@ -9,6 +9,7 @@ class LifeCounters {
     this.yearsWorked = 0,
     this.lifetimeIncome = 0,
     this.debtSpells = 0,
+    this.lastMoveAt,
   });
 
   static const LifeCounters zero = LifeCounters();
@@ -35,6 +36,9 @@ class LifeCounters {
   /// Kaç kez borca düştü.
   final int debtSpells;
 
+  /// Son taşınma yaşı (yoksa null).
+  final int? lastMoveAt;
+
   LifeCounters copyWith({
     int? moves,
     int? rentPaid,
@@ -43,6 +47,7 @@ class LifeCounters {
     int? yearsWorked,
     int? lifetimeIncome,
     int? debtSpells,
+    int? lastMoveAt,
   }) {
     return LifeCounters(
       moves: moves ?? this.moves,
@@ -52,6 +57,7 @@ class LifeCounters {
       yearsWorked: yearsWorked ?? this.yearsWorked,
       lifetimeIncome: lifetimeIncome ?? this.lifetimeIncome,
       debtSpells: debtSpells ?? this.debtSpells,
+      lastMoveAt: lastMoveAt ?? this.lastMoveAt,
     );
   }
 
@@ -63,6 +69,7 @@ class LifeCounters {
     'yearsWorked': yearsWorked,
     'lifetimeIncome': lifetimeIncome,
     'debtSpells': debtSpells,
+    'lastMoveAt': ?lastMoveAt,
   };
 
   /// Eksik alanlar 0 sayılır; eski kayıtlar da açılır.
@@ -77,6 +84,7 @@ class LifeCounters {
       yearsWorked: read('yearsWorked'),
       lifetimeIncome: read('lifetimeIncome'),
       debtSpells: read('debtSpells'),
+      lastMoveAt: json['lastMoveAt'] as int?,
     );
   }
 
@@ -89,7 +97,8 @@ class LifeCounters {
       other.promotions == promotions &&
       other.yearsWorked == yearsWorked &&
       other.lifetimeIncome == lifetimeIncome &&
-      other.debtSpells == debtSpells;
+      other.debtSpells == debtSpells &&
+      other.lastMoveAt == lastMoveAt;
 
   @override
   int get hashCode => Object.hash(
@@ -100,5 +109,6 @@ class LifeCounters {
     yearsWorked,
     lifetimeIncome,
     debtSpells,
+    lastMoveAt,
   );
 }

@@ -262,7 +262,7 @@
       "effects": { "money": -3000, "happiness": 4, "health": 2 }
     },
     "right": {
-      "label": "Kampım yurt odası",
+      "label": "Hafta sonu ders var",
       "effects": { "knowledge": 1 }
     }
   },
@@ -297,7 +297,8 @@
     "repeat": "once",
     "conditions": {
       "flags": ["universite_ogrencisi"],
-      "familyProfile": ["memur", "esnaf", "ciftci"]
+      "background": "orta",
+      "familyProfile": ["memur", "esnaf"]
     },
     "roles": {
       "veli": { "kin": ["anne", "baba"], "offstage": false }
@@ -321,7 +322,7 @@
       }
     },
     "right": {
-      "label": "Benim de kiram var",
+      "label": "Zaten zor geçiniyorum",
       "effects": {
         "people": {
           "veli": {

@@ -8,10 +8,17 @@ class Assets {
     this.houses = 0,
     this.cars = 0,
     this.carValue = 0,
+    this.houseValue = 0,
     this.rent = defaultRent,
     this.loanPayment = 0,
     this.loanYearsLeft = 0,
-  }) : assert(goldGrams >= 0 && houses >= 0 && cars >= 0 && carValue >= 0),
+  }) : assert(
+         goldGrams >= 0 &&
+             houses >= 0 &&
+             cars >= 0 &&
+             carValue >= 0 &&
+             houseValue >= 0,
+       ),
        assert(loanYearsLeft >= 0);
 
   static const Assets none = Assets();
@@ -25,6 +32,9 @@ class Assets {
 
   /// Arabaların bugünkü toplam değeri; her yıl biraz düşer.
   final int carValue;
+
+  /// Evlerin toplam değeri: alındığı şehrin fiyatıyla.
+  final int houseValue;
 
   /// Yıllık kira. Yalnızca `kiraci` bayrağı varken ödenir.
   final int rent;
@@ -42,6 +52,7 @@ class Assets {
     int? houses,
     int? cars,
     int? carValue,
+    int? houseValue,
     int? rent,
     int? loanPayment,
     int? loanYearsLeft,
@@ -51,6 +62,7 @@ class Assets {
       houses: houses ?? this.houses,
       cars: cars ?? this.cars,
       carValue: carValue ?? this.carValue,
+      houseValue: houseValue ?? this.houseValue,
       rent: rent ?? this.rent,
       loanPayment: loanPayment ?? this.loanPayment,
       loanYearsLeft: loanYearsLeft ?? this.loanYearsLeft,
@@ -62,6 +74,7 @@ class Assets {
     'houses': houses,
     'cars': cars,
     'carValue': carValue,
+    'houseValue': houseValue,
     'rent': rent,
     'loanPayment': loanPayment,
     'loanYears': loanYearsLeft,
@@ -72,6 +85,8 @@ class Assets {
     houses: json['houses'] as int,
     cars: json['cars'] as int,
     carValue: json['carValue'] as int,
+    // Eski kayıtta ev başına 5 milyon.
+    houseValue: json['houseValue'] as int? ?? (json['houses'] as int) * 5000000,
     rent: json['rent'] as int,
     loanPayment: json['loanPayment'] as int,
     loanYearsLeft: json['loanYears'] as int,
@@ -84,6 +99,7 @@ class Assets {
       other.houses == houses &&
       other.cars == cars &&
       other.carValue == carValue &&
+      other.houseValue == houseValue &&
       other.rent == rent &&
       other.loanPayment == loanPayment &&
       other.loanYearsLeft == loanYearsLeft;
@@ -94,6 +110,7 @@ class Assets {
     houses,
     cars,
     carValue,
+    houseValue,
     rent,
     loanPayment,
     loanYearsLeft,

@@ -142,8 +142,24 @@ class JobCard extends ConsumerWidget {
                   ),
               ],
             ),
-            if (!canPromote || !canRaise)
-              Text(l10n.jobAskedThisYear, style: theme.textTheme.bodySmall),
+            if (engine.requestBlocked(promotion: true) case final r?
+                when r != RequestBlocked.isYok)
+              Text(
+                l10n.jobPromotionBlocked(
+                  requestBlockedText(
+                    l10n,
+                    r,
+                    JobMarket.yearsToPromotion(c, engine.careers),
+                  ),
+                ),
+                style: theme.textTheme.bodySmall,
+              ),
+            if (engine.requestBlocked(promotion: false) case final r?
+                when r != RequestBlocked.isYok)
+              Text(
+                l10n.jobRaiseBlocked(requestBlockedText(l10n, r, 0)),
+                style: theme.textTheme.bodySmall,
+              ),
           ],
         ),
       ),
@@ -340,3 +356,19 @@ class InterviewSheet extends ConsumerWidget {
     );
   }
 }
+
+String requestBlockedText(
+  AppLocalizations l10n,
+  RequestBlocked reason,
+  int years,
+) => switch (reason) {
+  RequestBlocked.isYok => '',
+  RequestBlocked.sonKademe => l10n.request_sonKademe,
+  RequestBlocked.erken => l10n.request_erken(years),
+  RequestBlocked.sart => l10n.request_sart,
+  RequestBlocked.performans => l10n.request_performans,
+  RequestBlocked.para => l10n.request_para,
+  RequestBlocked.tavan => l10n.request_tavan,
+  RequestBlocked.buYil => l10n.request_buYil,
+  RequestBlocked.vakit => l10n.request_vakit,
+};

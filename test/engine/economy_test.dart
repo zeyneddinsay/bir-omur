@@ -59,7 +59,7 @@ void main() {
       expect(c.home, HomeKind.kendiEvi);
       expect(c.hasFlag(Economy.homeOwnerFlag), isTrue);
       expect(c.hasFlag(Economy.renterFlag), isFalse);
-      expect(c.stats.money, 2000000 - Housing.houseDownPayment());
+      expect(c.stats.money, 2000000 - Housing.housePayment(renter));
       expect(c.assets.hasLoan, isTrue);
     });
 
@@ -177,6 +177,7 @@ void main() {
       assets: const Assets(
         goldGrams: 10,
         houses: 1,
+        houseValue: 3000000,
         carValue: 400000,
         loanPayment: 50000,
         loanYearsLeft: 4,
@@ -184,7 +185,7 @@ void main() {
     );
     expect(
       Economy.netWorth(c, const Market(goldPrice: 3000)),
-      100000 + 30000 + Economy.houseValue + 400000 - 200000,
+      100000 + 30000 + 3000000 + 400000 - 200000,
     );
   });
 

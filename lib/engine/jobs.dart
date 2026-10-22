@@ -90,6 +90,33 @@ enum ListingBlocked {
 /// Mülakatın sonucu.
 enum InterviewResult { alindi, torpilleAlindi, olmadi }
 
+/// Terfi ya da zam neden istenemez.
+enum RequestBlocked {
+  isYok,
+
+  /// Son kademede.
+  sonKademe,
+
+  /// Kademede yeterince durmadı.
+  erken,
+
+  /// Diploma ya da belge şartı.
+  sart,
+  performans,
+
+  /// Terfinin bedeli (dükkân, ortaklık payı) için para yok.
+  para,
+
+  /// Bu kademede zam tavanı doldu.
+  tavan,
+
+  /// Bu yıl soruldu.
+  buYil,
+
+  /// Vakit yok ya da yıl kartları sürüyor.
+  vakit,
+}
+
 /// Terfi ya da zam isteğinin sonucu.
 enum RequestResult { evet, hayir, zamaniDegil }
 
@@ -223,7 +250,10 @@ abstract final class JobMarket {
     CareerBook book,
   ) {
     final career = book.byId(listing.careerId);
-    if (career == null || career.occupations.isEmpty) return const [];
+    // Kamuda torpil yok: girişi KPSS belirler.
+    if (career == null || career.isPublic || career.occupations.isEmpty) {
+      return const [];
+    }
     return [
       for (final p in c.people.active(c.age))
         if (career.occupations.contains(p.occupation) &&
@@ -234,8 +264,8 @@ abstract final class JobMarket {
   }
 
   /// Mülakat: cevabın baktığı değer ve zar; üst pozisyon daha zor. Torpil
-  /// yakın biri (60+) aracılık ederse doğrudan alınır, daha uzak biri
-  /// eşiği düşürür.
+  /// eşiği düşürür (yakın biri, 60+, daha çok); kimse doğrudan alınmaz.
+  /// Torpille geçen "torpilli" sayılır.
   static InterviewResult interview(
     Character c,
     JobListing listing,
@@ -245,22 +275,27 @@ abstract final class JobMarket {
     Person? reference,
   }) {
     final career = book.require(listing.careerId);
-    if (reference != null && Relationships.closeness(reference, c.age) >= 60) {
-      return InterviewResult.torpilleAlindi;
-    }
+    final referenceBonus = reference == null
+        ? 0
+        : Relationships.closeness(reference, c.age) >= 60
+        ? 20
+        : 10;
     final threshold =
         career.entry.interviewThreshold +
         (listing.tier - 1) * 10 -
-        (reference == null ? 0 : 10);
+        referenceBonus;
     final kind = answer.stat.statKind;
     final value = kind == null ? c.luck : c.stats[kind];
     final luckBonus = kind == null ? 0 : (c.luck - 50) / 10;
     final reputation = (c.stats.reputation - 50) / 10;
     final internship = c.hasFlag(internshipFlag) ? 8 : 0;
     final dice = random.nextInt(101);
-    return (value + dice) / 2 + luckBonus + reputation + internship >= threshold
+    if ((value + dice) / 2 + luckBonus + reputation + internship < threshold) {
+      return InterviewResult.olmadi;
+    }
+    return reference == null
         ? InterviewResult.alindi
-        : InterviewResult.olmadi;
+        : InterviewResult.torpilleAlindi;
   }
 
   /// İşe girer: eski işten ayrılır, patron ve üç iş arkadaşı kişi olarak
@@ -287,7 +322,9 @@ abstract final class JobMarket {
       city: c.city,
       origin: Origin.isYeri,
       base: 15,
-      roles: const [PersonRole(RoleKind.patron)],
+      roles: [
+        PersonRole(RoleKind.values.byName(book.require(listing.careerId).boss)),
+      ],
       wealth: WealthLevel.rahat,
       occupation: _occupationFor(book, listing.careerId),
     );
@@ -334,6 +371,40 @@ abstract final class JobMarket {
     return occupations.isEmpty ? null : occupations.first;
   }
 
+  /// Terfi ya da zam neden istenemez (arayüz gösterir); null ise
+  /// istenebilir.
+  static RequestBlocked? promotionBlocked(Character c, CareerBook book) {
+    final job = c.job;
+    if (job == null) return RequestBlocked.isYok;
+    final promotion = book.require(job.careerId).tier(job.tier).promotion;
+    if (promotion == null) return RequestBlocked.sonKademe;
+    if (job.yearsInTier < promotion.minYears) return RequestBlocked.erken;
+    if (!promotion.requires.isMetBy(c)) return RequestBlocked.sart;
+    if (job.performance < promotion.minPerformance) {
+      return RequestBlocked.performans;
+    }
+    if (c.stats.money < promotion.cost) return RequestBlocked.para;
+    return null;
+  }
+
+  /// Terfiye kalan yıl (kademede beklenecek).
+  static int yearsToPromotion(Character c, CareerBook book) {
+    final job = c.job!;
+    final promotion = book.require(job.careerId).tier(job.tier).promotion;
+    return promotion == null ? 0 : max(0, promotion.minYears - job.yearsInTier);
+  }
+
+  static RequestBlocked? raiseBlocked(Character c) {
+    final job = c.job;
+    if (job == null) return RequestBlocked.isYok;
+    if (job.raise >= maxRaise) return RequestBlocked.tavan;
+    if (job.performance < raiseMinPerformance) return RequestBlocked.performans;
+    return null;
+  }
+
+  /// Terfi şansı en fazla bu kadar: performans ne olursa olsun garanti yok.
+  static const double maxPromotionChance = 0.85;
+
   /// Terfi iste: kademede yeterince durduysa, şartlar ve performans
   /// tutuyorsa zar. Yılda bir kez.
   static (Character, RequestResult) requestPromotion(
@@ -345,16 +416,15 @@ abstract final class JobMarket {
     final career = book.require(job.careerId);
     final promotion = career.tier(job.tier).promotion;
     final asked = c.copyWith(job: job.copyWith(promotionAskedAt: c.age));
-    if (promotion == null ||
-        job.yearsInTier < promotion.minYears ||
-        !promotion.requires.isMetBy(c) ||
-        job.performance < promotion.minPerformance) {
+    if (promotion == null || promotionBlocked(c, book) != null) {
       return (asked, RequestResult.zamaniDegil);
     }
-    final chance =
-        promotion.chance +
-        (job.performance - promotion.minPerformance) / 100 +
-        (c.luck - 50) / 500;
+    final chance = min(
+      maxPromotionChance,
+      promotion.chance +
+          (job.performance - promotion.minPerformance) / 100 +
+          (c.luck - 50) / 500,
+    );
     if (random.nextDouble() >= chance) {
       return (
         asked.copyWith(
@@ -382,9 +452,7 @@ abstract final class JobMarket {
   static (Character, RequestResult) requestRaise(Character c, Random random) {
     final job = c.job!;
     final asked = c.copyWith(job: job.copyWith(raiseAskedAt: c.age));
-    if (job.performance < raiseMinPerformance || job.raise >= maxRaise) {
-      return (asked, RequestResult.zamaniDegil);
-    }
+    if (raiseBlocked(c) != null) return (asked, RequestResult.zamaniDegil);
     final chance = 0.4 + (job.performance - raiseMinPerformance) / 100;
     if (random.nextDouble() >= chance) {
       return (

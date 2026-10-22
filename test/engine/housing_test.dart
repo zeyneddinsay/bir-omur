@@ -47,14 +47,17 @@ void main() {
     final owner = Housing.buyHouse(buyer);
     expect(owner.home, HomeKind.kendiEvi);
     expect(owner.assets.houses, 1);
-    expect(owner.stats.money, 2000000 - Housing.houseDownPayment());
+    expect(owner.stats.money, 2000000 - Housing.housePayment(buyer));
     final loan = owner.assets.remainingLoan;
     expect(loan, greaterThan(0));
 
     final sold = Housing.sellHouse(owner, factory);
     expect(sold.assets.houses, 0);
     expect(sold.assets.hasLoan, isFalse);
-    expect(sold.stats.money, owner.stats.money + Economy.houseValue - loan);
+    expect(
+      sold.stats.money,
+      owner.stats.money + Economy.houseValueIn(buyer.city) - loan,
+    );
     expect(sold.home, HomeKind.kira, reason: 'oturduğu evi satan kiraya çıkar');
   });
 
@@ -69,10 +72,14 @@ void main() {
     expect(action.isAvailableFor(licensed), isTrue);
     final c = Housing.buyCar(licensed);
     expect(c.assets.cars, 1);
-    expect(c.stats.money, 1000000 - Housing.carDownPayment());
+    expect(c.stats.money, 1000000 - Housing.carPayment(licensed));
     final sold = Housing.sellCar(c);
     expect(sold.assets.cars, 0);
-    expect(sold.stats.money, c.stats.money + Economy.newCarValue);
+    expect(
+      sold.stats.money,
+      c.stats.money + Economy.newCarValue - c.assets.remainingLoan,
+    );
+    expect(sold.assets.hasLoan, isFalse, reason: 'satış krediyi kapatır');
   });
 
   test('aile evine dönüş yalnızca anne ya da baba o şehirdeyse', () {

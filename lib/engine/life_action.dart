@@ -14,6 +14,9 @@ enum ActionBlocked {
 
   /// Bu yaşta ve durumda başvurulabilecek bir iş yok.
   isYok,
+
+  /// Peşin alınamıyor ve taksit düzenli gelirin yarısını aşıyor.
+  kredi,
 }
 
 /// Aksiyon menüsünün kategorileri.
@@ -128,9 +131,9 @@ class LifeAction {
     ActionSpecial.evdenCik => -Housing.moveInCost(c.city),
     ActionSpecial.evArkadasi => -Housing.shareMoveInCost(c.city),
     ActionSpecial.aileyeDon => 0,
-    ActionSpecial.evAl => -Housing.houseDownPayment(),
+    ActionSpecial.evAl => -Housing.housePayment(c),
     ActionSpecial.evSat => Housing.houseSaleProceeds(c),
-    ActionSpecial.arabaAl => -Housing.carDownPayment(),
+    ActionSpecial.arabaAl => -Housing.carPayment(c),
     ActionSpecial.arabaSat => Housing.carSaleValue(c),
     ActionSpecial.kpss => 0,
     ActionSpecial.yazilimKursu => -JobMarket.codingCourseCost,

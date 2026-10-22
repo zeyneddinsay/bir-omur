@@ -2,6 +2,8 @@
   "id": "memur",
   "name": "Memur",
   "occupations": ["memur", "ogretmen", "polis"],
+  "public": true,
+  "boss": "amir",
   "entry": {
     "flags": ["kpss_gecti"],
     "minAge": 20,

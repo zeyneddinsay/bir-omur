@@ -2,6 +2,7 @@
   "id": "hemsire",
   "name": "Hemşire",
   "occupations": ["hemsire", "doktor"],
+  "boss": "amir",
   "entry": {
     "departments": ["hemsirelik"],
     "maxAge": 50,

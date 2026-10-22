@@ -9,7 +9,8 @@ import 'person_factory.dart';
 ///
 /// - Evden çıkınca kiraya geçilir, ev sahibi kişi olarak eklenir.
 /// - Ev arkadaşıyla kira yarıya iner, ev arkadaşı kişi olarak eklenir.
-/// - Ev ve araba peşinatla (%20) alınır, kalanı krediyle ödenir.
+/// - Ev ve araba parası yetiyorsa peşin, yetmiyorsa peşinatla (%20) alınır;
+///   taksit düzenli gelirin yarısını geçemez. Satış önce krediyi kapatır.
 /// - Başka şehre taşınınca mahalle değişir: eski komşu ve bakkal "eski"
 ///   olur, yeni şehirde yenileri (ya da o şehirdeki eskiler) gelir.
 abstract final class Housing {
@@ -21,11 +22,56 @@ abstract final class Housing {
   static const int houseLoanYears = 10;
   static const int carLoanYears = 5;
 
-  static int houseDownPayment() =>
-      (Economy.houseValue * downPaymentShare).round();
+  /// Taksit (eski krediyle birlikte) düzenli gelirin bu oranını geçemez.
+  static const double maxPaymentShare = 0.5;
 
-  static int carDownPayment() =>
-      (Economy.newCarValue * downPaymentShare).round();
+  /// Ev ya da araba için peşin ödenecek tutar: para yetiyorsa tamamı,
+  /// yetmiyorsa %20 peşinat.
+  static int housePayment(Character c) => _payment(c, housePrice(c));
+
+  static int carPayment(Character c) => _payment(c, Economy.newCarValue);
+
+  static int housePrice(Character c) => Economy.houseValueIn(c.city);
+
+  static int _payment(Character c, int price) =>
+      c.stats.money >= price ? price : (price * downPaymentShare).round();
+
+  /// Bu yılın düzenli geliri: maaş, emekli ya da yaşlılık aylığı ve
+  /// işletme kârı (deftere bu yaşta yazılanlar).
+  static int regularIncome(Character c) {
+    var income = 0;
+    for (final e in c.ledger) {
+      if (e.age != c.age) continue;
+      final regular = switch (e.source) {
+        MoneySource.maas ||
+        MoneySource.emekliAyligi ||
+        MoneySource.yasliAyligi => true,
+        MoneySource.isletme => (e.ref ?? '').endsWith(':kar'),
+        _ => false,
+      };
+      if (regular) income += e.amount;
+    }
+    return max(0, income);
+  }
+
+  /// Ev ya da araba alınabilir mi: peşin ödenebiliyorsa evet; yoksa
+  /// peşinat nakitten, taksit (eski krediyle birlikte) gelirin yarısını
+  /// geçmemeli.
+  static bool canFinance(Character c, {required bool house}) {
+    final price = house ? housePrice(c) : Economy.newCarValue;
+    if (c.stats.money >= price) return true;
+    final loan = _loanFor(c, price, house: house);
+    final a = c.assets;
+    final years = max(loan.years, a.loanYearsLeft);
+    final payment = (a.remainingLoan + loan.yearlyPayment * loan.years) / years;
+    return payment <= regularIncome(c) * maxPaymentShare;
+  }
+
+  static LoanTerms _loanFor(Character c, int price, {required bool house}) =>
+      LoanTerms(
+        amount: price - _payment(c, price),
+        years: house ? houseLoanYears : carLoanYears,
+      );
 
   /// Kiraya girerken depozito ve nakliye: yıllık kiranın dörtte biri.
   static int moveInCost(String city) => Economy.rentFor(city) ~/ 4;
@@ -77,11 +123,9 @@ abstract final class Housing {
 
   /// Ev alır ve içine taşınır; peşinat nakitten, kalanı kredi.
   static Character buyHouse(Character c) {
-    final down = houseDownPayment();
-    final loan = LoanTerms(
-      amount: Economy.houseValue - down,
-      years: houseLoanYears,
-    );
+    final price = housePrice(c);
+    final down = housePayment(c);
+    final loan = down < price ? _loanFor(c, price, house: true) : null;
     var next = Economy.applyAssetEffect(
       _leaveCurrentHome(c),
       Effect(house: 1, loan: loan),
@@ -96,14 +140,10 @@ abstract final class Housing {
   /// Evi satar; kredinin kalanı satıştan ödenir. Evde oturuyorsa kiraya
   /// geçer.
   static Character sellHouse(Character c, PersonFactory f) {
-    final a = c.assets;
-    final proceeds = Economy.houseValue - a.remainingLoan;
-    var next = c.copyWith(
-      assets: a.copyWith(
-        houses: a.houses - 1,
-        loanPayment: 0,
-        loanYearsLeft: 0,
-      ),
+    final proceeds = houseSaleProceeds(c);
+    final sold = Economy.applyAssetEffect(c, const Effect(house: -1));
+    var next = sold.copyWith(
+      assets: sold.assets.copyWith(loanPayment: 0, loanYearsLeft: 0),
       stats: c.stats.withMoneyDelta(proceeds),
     );
     if (c.home == HomeKind.kendiEvi && next.assets.houses == 0) {
@@ -113,32 +153,37 @@ abstract final class Housing {
   }
 
   /// Satılan evin nakde etkisi (kredi kalanı düşülmüş).
-  static int houseSaleProceeds(Character c) =>
-      Economy.houseValue - c.assets.remainingLoan;
+  static int houseSaleProceeds(Character c) => c.assets.houses == 0
+      ? 0
+      : c.assets.houseValue ~/ c.assets.houses - c.assets.remainingLoan;
 
   static Character buyCar(Character c) {
-    final down = carDownPayment();
-    final loan = LoanTerms(
-      amount: Economy.newCarValue - down,
-      years: carLoanYears,
-    );
+    final down = carPayment(c);
+    final loan = down < Economy.newCarValue
+        ? _loanFor(c, Economy.newCarValue, house: false)
+        : null;
     final next = Economy.applyAssetEffect(c, Effect(car: 1, loan: loan));
     return Economy.syncDerivedFlags(
       next.copyWith(stats: next.stats.withMoneyDelta(-down)),
     );
   }
 
+  /// Arabayı satar; kredinin kalanı önce satıştan ödenir.
   static Character sellCar(Character c) {
-    final value = c.assets.cars == 0 ? 0 : c.assets.carValue ~/ c.assets.cars;
+    final proceeds = carSaleValue(c);
     final next = Economy.applyAssetEffect(c, const Effect(car: -1));
     return Economy.syncDerivedFlags(
-      next.copyWith(stats: next.stats.withMoneyDelta(value)),
+      next.copyWith(
+        assets: next.assets.copyWith(loanPayment: 0, loanYearsLeft: 0),
+        stats: next.stats.withMoneyDelta(proceeds),
+      ),
     );
   }
 
-  /// Bir arabanın bugünkü satış değeri.
+  /// Arabanın satışından nakde geçen: bugünkü değeri eksi kalan kredi.
   static int carSaleValue(Character c) =>
-      c.assets.cars == 0 ? 0 : c.assets.carValue ~/ c.assets.cars;
+      (c.assets.cars == 0 ? 0 : c.assets.carValue ~/ c.assets.cars) -
+      c.assets.remainingLoan;
 
   /// Başka şehre taşınır: kiraya geçer (ailesi o şehirdeyse ve isterse
   /// aileyle yaşar), mahalle değişir.
@@ -152,7 +197,10 @@ abstract final class Housing {
     next = next.copyWith(
       city: city,
       stats: next.stats.withMoneyDelta(-relocationCost(city)),
-      counters: next.counters.copyWith(moves: next.counters.moves + 1),
+      counters: next.counters.copyWith(
+        moves: next.counters.moves + 1,
+        lastMoveAt: c.age,
+      ),
     );
     next = changeNeighbourhood(next, f);
     if (withFamily && hasParentInCity(next)) {

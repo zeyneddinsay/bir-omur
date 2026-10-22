@@ -15,7 +15,12 @@ class Career {
     this.listing,
     this.interviews = const [],
     this.occupations = const {},
+    this.isPublic = false,
+    this.boss = 'patron',
   });
+
+  /// Amir rolleri: `patron`, `amir` (kamu, hastane), `usta` (sanayi).
+  static const Set<String> bossRoles = {'patron', 'amir', 'usta'};
 
   final String id;
 
@@ -41,6 +46,12 @@ class Career {
   /// `assets/families.json` → occupations).
   final Set<String> occupations;
 
+  /// Kamu işi: kovulma yok, maaş her şehirde aynı.
+  final bool isPublic;
+
+  /// İşe girince gelen amirin rolü ([bossRoles]).
+  final String boss;
+
   int get maxTier => tiers.length;
 
   /// [tier] 1'den başlar.
@@ -57,7 +68,13 @@ class Career {
       'listing',
       'interviews',
       'occupations',
+      'public',
+      'boss',
     });
+    final boss = r.optionalString('boss') ?? 'patron';
+    if (!bossRoles.contains(boss)) {
+      throw CardFormatException('$file.boss', 'bilinmeyen amir rolü "$boss"');
+    }
     final rawTiers = json['tiers'];
     if (rawTiers is! List || rawTiers.isEmpty) {
       throw CardFormatException('$file.tiers', 'en az bir kademe olmalı');
@@ -107,6 +124,8 @@ class Career {
           ),
       ]),
       occupations: {...r.optionalStringList('occupations')},
+      isPublic: r.optionalBool('public'),
+      boss: boss,
     );
   }
 }

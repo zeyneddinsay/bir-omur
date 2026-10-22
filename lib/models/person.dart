@@ -324,6 +324,12 @@ enum RoleKind {
   evArkadasi,
   bolukArkadasi,
   patron,
+
+  /// Kamuda ya da hastanede amir.
+  amir,
+
+  /// Sanayide çırağın ustası.
+  usta,
   mudur,
   isArkadasi,
   calisan,

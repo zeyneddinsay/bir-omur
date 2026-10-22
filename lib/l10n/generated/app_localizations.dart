@@ -436,6 +436,12 @@ abstract class AppLocalizations {
   /// **'Bu yaşta başvurabileceğin bir iş kalmadı'**
   String get actionBlocked_isYok;
 
+  /// No description provided for @actionBlocked_kredi.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kredi çıkmıyor: taksit gelirinin yarısını geçer'**
+  String get actionBlocked_kredi;
+
   /// No description provided for @ageUpButton.
   ///
   /// In tr, this message translates to:
@@ -1192,6 +1198,12 @@ abstract class AppLocalizations {
   /// **'Maaş'**
   String get money_maas;
 
+  /// No description provided for @money_tazminat.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kıdem tazminatı'**
+  String get money_tazminat;
+
   /// No description provided for @money_emekliAyligi.
   ///
   /// In tr, this message translates to:
@@ -1594,6 +1606,12 @@ abstract class AppLocalizations {
   /// **'Memleketinde: ailenin yanında okursun'**
   String get tercihHome;
 
+  /// No description provided for @tercihHomeOwn.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu şehirde: kendi evinden okursun'**
+  String get tercihHomeOwn;
+
   /// No description provided for @tercihDorm.
   ///
   /// In tr, this message translates to:
@@ -1762,11 +1780,65 @@ abstract class AppLocalizations {
   /// **'Emekli ol'**
   String get jobRetire;
 
-  /// No description provided for @jobAskedThisYear.
+  /// No description provided for @jobPromotionBlocked.
   ///
   /// In tr, this message translates to:
-  /// **'Bu yıl sordun ya da vaktin yok'**
-  String get jobAskedThisYear;
+  /// **'Terfi: {reason}'**
+  String jobPromotionBlocked(String reason);
+
+  /// No description provided for @jobRaiseBlocked.
+  ///
+  /// In tr, this message translates to:
+  /// **'Zam: {reason}'**
+  String jobRaiseBlocked(String reason);
+
+  /// No description provided for @request_sonKademe.
+  ///
+  /// In tr, this message translates to:
+  /// **'en üst kademedesin'**
+  String get request_sonKademe;
+
+  /// No description provided for @request_erken.
+  ///
+  /// In tr, this message translates to:
+  /// **'{years, plural, =1{1 yıl daha beklemelisin} other{{years} yıl daha beklemelisin}}'**
+  String request_erken(int years);
+
+  /// No description provided for @request_sart.
+  ///
+  /// In tr, this message translates to:
+  /// **'diploma ya da belge şartı eksik'**
+  String get request_sart;
+
+  /// No description provided for @request_performans.
+  ///
+  /// In tr, this message translates to:
+  /// **'performansın yetmiyor'**
+  String get request_performans;
+
+  /// No description provided for @request_para.
+  ///
+  /// In tr, this message translates to:
+  /// **'terfinin bedeline paran yetmiyor'**
+  String get request_para;
+
+  /// No description provided for @request_tavan.
+  ///
+  /// In tr, this message translates to:
+  /// **'bu kademede zam tavanı doldu'**
+  String get request_tavan;
+
+  /// No description provided for @request_buYil.
+  ///
+  /// In tr, this message translates to:
+  /// **'bu yıl sordun'**
+  String get request_buYil;
+
+  /// No description provided for @request_vakit.
+  ///
+  /// In tr, this message translates to:
+  /// **'vaktin yok'**
+  String get request_vakit;
 
   /// No description provided for @jobQuitConfirm.
   ///
@@ -2475,6 +2547,18 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Patronun'**
   String get role_patron;
+
+  /// No description provided for @role_amir.
+  ///
+  /// In tr, this message translates to:
+  /// **'Amirin'**
+  String get role_amir;
+
+  /// No description provided for @role_usta.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ustan'**
+  String get role_usta;
 
   /// No description provided for @role_mudur.
   ///
