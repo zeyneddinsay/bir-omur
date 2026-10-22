@@ -25,8 +25,9 @@ class CareerBook {
   Career require(String id) =>
       _byId[id] ?? (throw StateError('Meslek bulunamadı: $id'));
 
-  /// İşin bu yılki taban maaşı.
-  int salaryOf(Job job) => require(job.careerId).tier(job.tier).salary;
+  /// İşin kademe maaşı ve zammı (şehir çarpanı hariç; emekli aylığı için).
+  int salaryOf(Job job) =>
+      (require(job.careerId).tier(job.tier).salary * (1 + job.raise)).round();
 }
 
 /// Bir yılın iş dökümü; arayüz terfiyi ve emekliliği bildirir.
@@ -36,6 +37,7 @@ class CareerReport {
     this.source = MoneySource.maas,
     this.promoted = false,
     this.retired = false,
+    this.fired = false,
   });
 
   final int income;
@@ -44,6 +46,9 @@ class CareerReport {
   final MoneySource source;
   final bool promoted;
   final bool retired;
+
+  /// Performansı dibe vurduğu için kovuldu.
+  final bool fired;
 }
 
 /// Gelir, meslek ve emeklilik kuralları. Tutarlar bugünün TL'siyle.
@@ -102,7 +107,7 @@ abstract final class Careers {
               : null,
         );
       case QuitCareer():
-        return c.copyWith(clearJob: true);
+        return leaveJob(c);
       case RetireCareer():
         return retire(c, book);
     }
@@ -116,11 +121,69 @@ abstract final class Careers {
   /// yoksa yalnızca işi bırakır.
   static Character retire(Character c, CareerBook book) {
     if (c.isRetired) return c;
-    if (!canRetire(c)) return c.copyWith(clearJob: true);
+    if (!canRetire(c)) return leaveJob(c);
     final job = c.job;
     final lastSalary = job == null ? 0 : book.salaryOf(job);
     final pension = max(minPension, (lastSalary * pensionShare).round());
-    return c.copyWith(clearJob: true, pension: pension);
+    return leaveJob(c).copyWith(pension: pension);
+  }
+
+  /// Performansın altında kalan yılın sonunda kovulur.
+  static const int firingPerformance = 20;
+
+  /// Tempoya göre performansın yıllık değişimi.
+  static int tempoPerformance(Tempo tempo) => switch (tempo) {
+    Tempo.rahat => -8,
+    Tempo.normal => 2,
+    Tempo.yukle => 10,
+  };
+
+  /// Yılın performansı: tempo, bilgi ve biraz şans.
+  static int nextPerformance(Character c, Job job, Random random) {
+    final knowledge = ((c.stats.knowledge - 50) / 10).round();
+    final noise = random.nextInt(11) - 5;
+    return (job.performance + tempoPerformance(job.tempo) + knowledge + noise)
+        .clamp(0, 100);
+  }
+
+  /// Tempo bedeni ve keyfi etkiler: yüklemek sağlığı, rahat çalışmak
+  /// keyfi.
+  static Character tempoEffect(Character c, Tempo tempo) => switch (tempo) {
+    Tempo.yukle => c.copyWith(stats: c.stats.withDelta(StatKind.health, -2)),
+    Tempo.rahat => c.copyWith(stats: c.stats.withDelta(StatKind.happiness, 1)),
+    Tempo.normal => c,
+  };
+
+  /// Yılın maaşı: kademe, zam, şehir ve (oynak meslekte) çarpan.
+  static int salaryFor(
+    Character c,
+    Job job,
+    Career career, {
+    double factor = 1,
+  }) =>
+      (career.tier(job.tier).salary *
+              (1 + job.raise) *
+              factor *
+              Cities.typeOf(c.city).salary)
+          .round();
+
+  /// İşten ayrılır (istifa, kovulma, emeklilik): patron ve iş arkadaşı
+  /// rolleri biter, kişiler "eski iş arkadaşı" olur.
+  static Character leaveJob(Character c) {
+    if (c.job == null) return c;
+    const work = {RoleKind.patron, RoleKind.mudur, RoleKind.isArkadasi};
+    var book = c.people;
+    for (final p in book.all.toList()) {
+      if (!p.roles.any((r) => r.active && work.contains(r.kind))) continue;
+      book = book.update(
+        p.copyWith(
+          roles: [
+            for (final r in p.roles) work.contains(r.kind) ? r.ended() : r,
+          ],
+        ),
+      );
+    }
+    return c.copyWith(clearJob: true, people: book);
   }
 
   /// [baseIncome] gelirinin kaynağı.
@@ -157,7 +220,8 @@ abstract final class Careers {
   }
 }
 
-/// Yılın işi: maaş (ya da aylık), terfi denemesi ve yaş gelince emeklilik.
+/// Yılın işi: maaş (ya da aylık), performans, tempo, kovulma ve yaş
+/// gelince emeklilik. Terfi ve zam oyuncunun isteğiyledir ([JobMarket]).
 /// Yaşlanmadan (YearTick) sonra, yeni yaş için çalışır.
 class CareerTick {
   const CareerTick(this.random, this.book);
@@ -166,15 +230,15 @@ class CareerTick {
   final CareerBook book;
 
   (Character, CareerReport) apply(Character c) {
-    var promoted = false;
     var retired = false;
+    var fired = false;
 
     if (!c.isRetired && c.age >= Careers.retireAge) {
       c = Careers.retire(c, book);
       retired = c.isRetired;
     }
 
-    final int income;
+    var income = 0;
     var source = MoneySource.maas;
     var worked = false;
     if (c.isRetired) {
@@ -182,15 +246,29 @@ class CareerTick {
       source = MoneySource.emekliAyligi;
     } else if (c.job case final job?) {
       final career = book.require(job.careerId);
-      final variance = career.incomeVariance;
-      final factor = variance == 0
-          ? 1.0
-          : 1 + variance * (2 * random.nextDouble() - 1);
-      income =
-          (career.tier(job.tier).salary * factor * Cities.typeOf(c.city).salary)
-              .round();
-      worked = true;
-      (c, promoted) = _tryPromotion(c, career, job);
+      final performance = Careers.nextPerformance(c, job, random);
+      if (performance < Careers.firingPerformance && job.yearsInTier >= 1) {
+        // Performansı dibe vuran kovulur; bu yıl maaş yok.
+        c = Careers.leaveJob(c);
+        fired = true;
+        income = Careers.baseIncome(c);
+        source = Careers.baseIncomeSource(c);
+      } else {
+        final variance = career.incomeVariance;
+        final factor = variance == 0
+            ? 1.0
+            : 1 +
+                  variance * (2 * random.nextDouble() - 1) +
+                  (performance - 50) / 200;
+        final next = job.copyWith(
+          performance: performance,
+          yearsInTier: job.yearsInTier + 1,
+        );
+        income = Careers.salaryFor(c, next, career, factor: factor);
+        worked = true;
+        c = c.copyWith(job: next);
+        c = Careers.tempoEffect(c, next.tempo);
+      }
     } else {
       income = Careers.baseIncome(c);
       source = Careers.baseIncomeSource(c);
@@ -204,7 +282,6 @@ class CareerTick {
       counters: counters.copyWith(
         yearsWorked: counters.yearsWorked + (worked ? 1 : 0),
         lifetimeIncome: counters.lifetimeIncome + earned,
-        promotions: counters.promotions + (promoted ? 1 : 0),
       ),
     );
     return (
@@ -212,63 +289,9 @@ class CareerTick {
       CareerReport(
         income: income,
         source: source,
-        promoted: promoted,
         retired: retired,
+        fired: fired,
       ),
     );
   }
-
-  (Character, bool) _tryPromotion(Character c, Career career, Job job) {
-    final years = job.yearsInTier + 1;
-    final promotion = career.tier(job.tier).promotion;
-    if (promotion != null &&
-        years >= promotion.minYears &&
-        promotion.requires.isMetBy(c) &&
-        random.nextDouble() < promotion.chance) {
-      return (
-        c.copyWith(
-          job: job.copyWith(tier: job.tier + 1, yearsInTier: 0),
-          stats: c.stats.withMoneyDelta(-promotion.cost),
-        ),
-        true,
-      );
-    }
-    return (c.copyWith(job: job.copyWith(yearsInTier: years)), false);
-  }
-}
-
-/// "İş ara" aksiyonunun sonucu; arayüz bildirir. Kaydedilmez.
-class JobSearchResult {
-  const JobSearchResult(this.careerId);
-
-  /// Girilen meslek; bu yıl iş çıkmadıysa null.
-  final String? careerId;
-
-  bool get found => careerId != null;
-}
-
-/// Bu karaktere başvurusu açık en az bir meslek var mı (yaş ve şartlar).
-bool hasOpenCareer(Character c, CareerBook book) =>
-    book.all.any((career) => career.jobSearch?.isOpenTo(c) ?? false);
-
-/// İş arama: başvurusu açık meslekler en yüksek giriş maaşından başlayarak
-/// denenir; ilk tutan zarda o mesleğin 1. kademesine girilir.
-(Character, JobSearchResult) searchJob(
-  Character c,
-  CareerBook book,
-  bool Function(Roll roll) rollSucceeds,
-) {
-  final open = [
-    for (final career in book.all)
-      if (career.jobSearch case final js? when js.isOpenTo(c)) (career, js),
-  ]..sort((a, b) => b.$1.tier(1).salary.compareTo(a.$1.tier(1).salary));
-  for (final (career, js) in open) {
-    if (rollSucceeds(js.roll)) {
-      return (
-        Careers.applyChange(c, JoinCareer(career.id), book),
-        JobSearchResult(career.id),
-      );
-    }
-  }
-  return (c, const JobSearchResult(null));
 }

@@ -1,0 +1,63 @@
+{
+  "id": "yazilimci",
+  "name": "Yazılımcı",
+  "occupations": ["yazilimci"],
+  "entry": {
+    "departments": ["bilgisayar"],
+    "flags": ["yazilim_kursu"],
+    "maxAge": 45,
+    "interview": { "stat": "knowledge", "threshold": 50 }
+  },
+  "listing": {
+    "cities": ["buyuk", "orta"],
+    "weight": 2,
+    "companies": [
+      "Bulutkuşu Yazılım",
+      "Kodsepeti Teknoloji",
+      "Pikselhan Dijital",
+      "Ağbağ Bilişim",
+      "Mavikutu Yazılım Evi"
+    ],
+    "ads": [
+      "Genç, dinamik, en az 10 yıl deneyimli, beş dil bilen arkadaş aranıyor. Maaş: görüşmede konuşulur.",
+      "Masa tenisi masamız var. Masa tenisi oynayacak vaktimiz yok.",
+      "Uzaktan çalışma mümkün; uzaktan toplantı zorunlu.",
+      "Cuma 17.58'de canlıya çıkmaktan korkmayan cesur ruhlar aranıyor."
+    ]
+  },
+  "interviews": [
+    {
+      "question": "Tahtaya bir problem yazdılar; ilk kez görüyorsunuz.",
+      "left": { "label": "Sesli düşünürüm", "stat": "reputation" },
+      "right": { "label": "Doğrudan çözerim", "stat": "knowledge" }
+    },
+    {
+      "question": "'Kendinizi 5 yıl sonra nerede görüyorsunuz?'",
+      "left": { "label": "Sizin yerinizde", "stat": "luck" },
+      "right": { "label": "Burada, sizinle", "stat": "reputation" }
+    }
+  ],
+  "tiers": [
+    {
+      "name": "Stajyer yazılımcı",
+      "salary": 480000,
+      "promotion": { "minYears": 2, "chance": 0.6, "requires": { "min": { "knowledge": 45 } } }
+    },
+    {
+      "name": "Yazılımcı",
+      "salary": 900000,
+      "promotion": { "minYears": 3, "chance": 0.5, "requires": { "min": { "knowledge": 55 } } }
+    },
+    {
+      "name": "Kıdemli yazılımcı",
+      "salary": 1400000,
+      "promotion": { "minYears": 4, "chance": 0.4, "requires": { "min": { "knowledge": 65, "reputation": 50 } } }
+    },
+    {
+      "name": "Takım lideri",
+      "salary": 2000000,
+      "promotion": { "minYears": 5, "chance": 0.25, "minPerformance": 70, "requires": { "min": { "knowledge": 70, "reputation": 55 } } }
+    },
+    { "name": "Teknoloji direktörü", "salary": 3200000 }
+  ]
+}

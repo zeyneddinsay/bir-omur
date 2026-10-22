@@ -189,15 +189,14 @@ void main() {
       expect(report.promoted, isFalse);
     });
 
-    test('şartlar ve süre dolunca terfi eder, ücretini öder', () {
+    test('yıl kendiliğinden terfi getirmez; terfi istenir', () {
       final (c, report) = CareerTick(SeededRandom(1), _book()).apply(
-        testCharacter(age: 30, money: 0, knowledge: 60, job: _job(1, years: 1)),
+        testCharacter(age: 30, money: 0, knowledge: 60, job: _job(1, years: 5)),
       );
-      expect(report.promoted, isTrue);
-      expect(c.job!.tier, 2);
-      expect(c.job!.yearsInTier, 0);
-      // Bu yılın maaşı eski kademeden; terfi ücreti düşülür.
-      expect(c.stats.money, 100000 - 50000);
+      expect(report.promoted, isFalse);
+      expect(c.job!.tier, 1);
+      expect(c.job!.yearsInTier, 6);
+      expect(c.stats.money, 100000);
     });
 
     test('şart tutmazsa terfi olmaz', () {
@@ -351,108 +350,6 @@ void main() {
       final result = CardValidator(registry)
           .check(const {}, careerFiles: {'bozuk.json': jsonEncode(bad)});
       expect(result.errors.single.path, contains('bozuk.json.name'));
-    });
-  });
-
-  group('İş ara', () {
-    Career career(String id, int salary, Map<String, dynamic> jobSearch) =>
-        Career.fromJson({
-          'id': id,
-          'name': id,
-          'jobSearch': jobSearch,
-          'tiers': [
-            {'name': 'Tek', 'salary': salary},
-          ],
-        }, file: '$id.json');
-
-    final book = CareerBook([
-      career('kolay', 100000, {
-        'roll': {'stat': 'luck', 'threshold': 0},
-        'maxAge': 35,
-      }),
-      career('iyi', 300000, {
-        'roll': {'stat': 'knowledge', 'threshold': 60},
-        'requires': {
-          'flags': ['universite_mezunu'],
-        },
-      }),
-    ]);
-    bool always(Roll _) => true;
-    bool never(Roll _) => false;
-
-    test('en yüksek maaşlı açık meslek önce denenir', () {
-      final grad = testCharacter(age: 25, flags: {'universite_mezunu'});
-      final (hired, result) = searchJob(grad, book, always);
-      expect(result.careerId, 'iyi');
-      expect(hired.job!.careerId, 'iyi');
-      expect(hired.job!.tier, 1);
-    });
-
-    test('şartı tutmayan meslek atlanır', () {
-      final (hired, result) = searchJob(testCharacter(age: 25), book, always);
-      expect(result.careerId, 'kolay');
-      expect(hired.job!.careerId, 'kolay');
-    });
-
-    test('yaş sınırı ve başarısız zar', () {
-      final (_, old) = searchJob(testCharacter(age: 40), book, always);
-      expect(old.found, isFalse);
-      final (same, none) = searchJob(testCharacter(age: 25), book, never);
-      expect(none.found, isFalse);
-      expect(same.job, isNull);
-    });
-
-    test(
-      'aksiyon yalnızca işsiz, emekli ve öğrenci olmayan yetişkine açık',
-      () {
-        final action = ActionCatalog.byId(ActionCatalog.jobSearchId)!;
-        expect(action.isAvailableFor(testCharacter(age: 25)), isTrue);
-        expect(action.isAvailableFor(testCharacter(age: 17)), isFalse);
-        expect(
-          action.isAvailableFor(testCharacter(age: 25, job: _job(1))),
-          isFalse,
-        );
-        expect(
-          action.isAvailableFor(testCharacter(age: 50, pension: 140000)),
-          isFalse,
-        );
-        expect(
-          action.isAvailableFor(
-            testCharacter(age: 20, flags: {ActionCatalog.studentFlag}),
-          ),
-          isFalse,
-        );
-      },
-    );
-
-    test('motorda iş ara mesleğe sokar, sonuç yıl sonunda silinir', () {
-      final engine = LifeEngine(deck: EventDeck([]), seed: 3, careers: book);
-      engine.startLife();
-      while (engine.state.character.age < 20) {
-        engine.advanceYear();
-      }
-      final state = engine.doAction(ActionCatalog.jobSearchId);
-      expect(engine.lastJobSearch!.careerId, 'kolay');
-      expect(state.character.job!.careerId, 'kolay');
-      engine.advanceYear();
-      expect(engine.lastJobSearch, isNull);
-      expect(
-        engine.availableActions().any(
-          (a) => a.$1.id == ActionCatalog.jobSearchId,
-        ),
-        isFalse,
-        reason: 'işi olan iş aramaz',
-      );
-    });
-
-    test('iş arama bölümü JSON şemasıyla doğrulanır', () {
-      expect(
-        () => career('x', 1, {
-          'roll': {'stat': 'luck', 'threshold': 50},
-          'yas': 30,
-        }),
-        throwsA(isA<CardFormatException>()),
-      );
     });
   });
 }

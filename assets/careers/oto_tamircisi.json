@@ -1,0 +1,56 @@
+{
+  "id": "oto_tamircisi",
+  "name": "Oto tamircisi",
+  "occupations": ["oto_tamircisi"],
+  "entry": {
+    "vocational": true,
+    "minAge": 16,
+    "maxAge": 40,
+    "interview": { "stat": "luck", "threshold": 35 }
+  },
+  "listing": {
+    "cities": ["buyuk", "orta", "kucuk"],
+    "weight": 2,
+    "companies": [
+      "Usta Rıza Oto Sanayi",
+      "Çelik Kardeşler Oto Servis",
+      "Yıldız Motor Tamir",
+      "Sanayi Sitesi 12. Blok Oto Elektrik"
+    ],
+    "ads": [
+      "Çay usta tarafından demlenir; çırak ise çayı herkese dağıtır.",
+      "Eli yatkın, sabahın yedisinde sanayide olabilecek genç aranıyor.",
+      "'Abi şu ses ne?' sorusuna sabırla cevap verebilecek eleman."
+    ]
+  },
+  "interviews": [
+    {
+      "question": "Usta bir motoru gösterdi: 'Söyle bakalım, derdi ne?'",
+      "left": { "label": "Dinleyip tahmin ederim", "stat": "luck" },
+      "right": { "label": "Sökmeden söylemem", "stat": "knowledge" }
+    },
+    {
+      "question": "Müşteri pazarlıkta 'Aşağıda daha ucuz' diyor.",
+      "left": { "label": "Gülüp ikna ederim", "stat": "reputation" },
+      "right": { "label": "Ustaya sorarım", "stat": "luck" }
+    }
+  ],
+  "tiers": [
+    {
+      "name": "Çırak",
+      "salary": 260000,
+      "promotion": { "minYears": 2, "chance": 0.7 }
+    },
+    {
+      "name": "Kalfa",
+      "salary": 420000,
+      "promotion": { "minYears": 3, "chance": 0.55 }
+    },
+    {
+      "name": "Usta",
+      "salary": 650000,
+      "promotion": { "minYears": 5, "chance": 0.35, "requires": { "min": { "reputation": 50 } } }
+    },
+    { "name": "Ustabaşı", "salary": 850000 }
+  ]
+}

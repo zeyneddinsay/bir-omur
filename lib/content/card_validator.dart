@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import '../engine/achievements.dart';
+import '../engine/education.dart';
 import '../models/models.dart';
 import 'content_registry.dart';
 import 'sensitive_terms.dart';
@@ -224,9 +225,33 @@ class CardValidator {
   /// kayıtta olmalı.
   void _checkCareerFlags(Career career, String file, List<CardIssue> issues) {
     final conditions = [
-      ?career.jobSearch?.requires,
+      career.entry.requires,
       for (final tier in career.tiers) ?tier.promotion?.requires,
     ];
+    for (final flag in career.entry.flags) {
+      if (!registry.knownFlags.contains(flag)) {
+        issues.add(
+          CardIssue(
+            IssueLevel.error,
+            file,
+            career.id,
+            'giriş bayrağı "$flag" kayıtta yok (registry.json)',
+          ),
+        );
+      }
+    }
+    for (final department in career.entry.departments) {
+      if (EducationRules.department(department) == null) {
+        issues.add(
+          CardIssue(
+            IssueLevel.error,
+            file,
+            career.id,
+            'bilinmeyen bölüm "$department"',
+          ),
+        );
+      }
+    }
     for (final c in conditions) {
       for (final flag in [...c.flags, ...c.notFlags]) {
         if (!registry.knownFlags.contains(flag)) {

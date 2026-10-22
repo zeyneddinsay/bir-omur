@@ -62,13 +62,6 @@
     "requires": { "lastCareer": "memur", "minLastTier": 5 }
   },
   {
-    "id": "zincirin_sahibi",
-    "name": "Çıraklıktan Zincire",
-    "description": "Esnaflığı zincir sahibine kadar götürdü.",
-    "rarity": "nadir",
-    "requires": { "lastCareer": "esnaf", "minLastTier": 5 }
-  },
-  {
     "id": "plazanin_tepesi",
     "name": "Plazanın En Üst Katı",
     "description": "Stajyer başladı, direktör oldu.",

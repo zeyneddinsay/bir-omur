@@ -6,6 +6,7 @@ import '../../l10n/generated/app_localizations.dart';
 import '../../models/models.dart';
 import '../providers.dart';
 import 'home_card.dart';
+import 'life_status.dart';
 
 String departmentName(AppLocalizations l10n, String? id) => switch (id) {
   'bilgisayar' => l10n.dept_bilgisayar,
@@ -26,8 +27,16 @@ String schoolName(AppLocalizations l10n, HighSchool school) => switch (school) {
 };
 
 /// Yıl günlüğünde oyuncunun kendi notu.
-String noteLine(AppLocalizations l10n, LifeNote note) {
+String noteLine(AppLocalizations l10n, LifeNote note, CareerBook careers) {
   final d = note.detail ?? '';
+  final parts = d.split('|');
+  String title(String careerId, String tier) {
+    final career = careers.byId(careerId);
+    final t = int.tryParse(tier) ?? 1;
+    if (career == null || t < 1 || t > career.maxTier) return careerId;
+    return careerLine(l10n, career, t);
+  }
+
   return switch (note.kind) {
     NoteKind.lise => l10n.note_lise(
       schoolName(l10n, HighSchool.fromId(d) ?? HighSchool.duz),
@@ -47,6 +56,27 @@ String noteLine(AppLocalizations l10n, LifeNote note) {
     NoteKind.mezunOldu => l10n.note_mezunOldu(departmentName(l10n, d)),
     NoteKind.eveDondu => l10n.note_eveDondu(d),
     NoteKind.askerlik => l10n.note_askerlik,
+    NoteKind.isBuldun when parts.length == 3 => l10n.note_isBuldun(
+      parts[0],
+      title(parts[1], parts[2]),
+    ),
+    NoteKind.isBuldun => d,
+    NoteKind.mulakatOlmadi => l10n.note_mulakatOlmadi(d),
+    NoteKind.terfi when parts.length == 2 => l10n.note_terfi(
+      title(parts[0], parts[1]),
+    ),
+    NoteKind.terfi => d,
+    NoteKind.terfiReddi => l10n.note_terfiReddi,
+    NoteKind.terfiZamaniDegil => l10n.note_terfiZamaniDegil,
+    NoteKind.zam => l10n.note_zam,
+    NoteKind.zamReddi => l10n.note_zamReddi,
+    NoteKind.zamZamaniDegil => l10n.note_zamZamaniDegil,
+    NoteKind.kovuldun => l10n.note_kovuldun,
+    NoteKind.istifa => l10n.note_istifa,
+    NoteKind.emekliOldun => l10n.note_emekliOldun,
+    NoteKind.kpssGecti => l10n.note_kpssGecti,
+    NoteKind.kpssKaldi => l10n.note_kpssKaldi,
+    NoteKind.yazilimKursu => l10n.note_yazilimKursu,
   };
 }
 

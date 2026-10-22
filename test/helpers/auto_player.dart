@@ -51,6 +51,42 @@ class AutoPlayer {
             );
           }
         }
+        // İşi yoksa ya da bazen işi varken ilanlara başvurur.
+        final open = [
+          for (final (l, blocked) in engine.listingOptions())
+            if (blocked == null) l,
+        ];
+        final c = state.character;
+        if (open.isNotEmpty &&
+            (c.job == null
+                ? _random.nextInt(3) > 0
+                : _random.nextInt(12) == 0)) {
+          // Çoğunlukla en yüksek maaşlı ilana başvurur.
+          final listing = _random.nextInt(4) > 0
+              ? bestListing(engine, open)
+              : open[_random.nextInt(open.length)];
+          final refs = engine.listingReferences(listing);
+          return engine.applyFor(
+            listing,
+            _random.nextBool() ? ChoiceSide.left : ChoiceSide.right,
+            referenceId: refs.isNotEmpty && _random.nextBool()
+                ? refs.first.id
+                : null,
+          );
+        }
+        if (c.job != null) {
+          if (_random.nextInt(10) == 0) {
+            return engine.setTempo(
+              Tempo.values[_random.nextInt(Tempo.values.length)],
+            );
+          }
+          if (engine.canRequest(promotion: true) && _random.nextInt(3) == 0) {
+            return engine.requestPromotion();
+          }
+          if (engine.canRequest(promotion: false) && _random.nextInt(4) == 0) {
+            return engine.requestRaise();
+          }
+        }
         // Yılların yarısında önce biriyle etkileşir (Ara dahil).
         final people = engine.possibleInteractions();
         if (people.isNotEmpty && _random.nextBool()) {
@@ -72,6 +108,13 @@ class AutoPlayer {
     }
     const others = [TercihKind.mezunaKal, TercihKind.calis, TercihKind.cirak];
     return engine.declineTercih(others[_random.nextInt(others.length)]);
+  }
+
+  /// En yüksek giriş maaşlı ilan.
+  static JobListing bestListing(LifeEngine engine, List<JobListing> open) {
+    int salary(JobListing l) =>
+        engine.careers.require(l.careerId).tier(l.tier).salary;
+    return open.reduce((a, b) => salary(b) > salary(a) ? b : a);
   }
 
   ChoiceSide pickSide(EventCard card) {

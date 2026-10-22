@@ -201,6 +201,22 @@ void main(List<String> args) {
   people.write(lives);
 }
 
+/// Açık ilanlardan biri şu anki işten daha iyi mi.
+bool _betterThanCurrent(LifeEngine engine, List<JobListing> open) {
+  final job = engine.state.character.job!;
+  final current = engine.careers.require(job.careerId).tier(job.tier).salary;
+  return open.any(
+    (l) => engine.careers.require(l.careerId).tier(l.tier).salary > current,
+  );
+}
+
+/// En yüksek giriş maaşlı ilan.
+JobListing bestListing(LifeEngine engine, List<JobListing> open) {
+  int salary(JobListing l) =>
+      engine.careers.require(l.careerId).tier(l.tier).salary;
+  return open.reduce((a, b) => salary(b) > salary(a) ? b : a);
+}
+
 /// Her kartta rastgele bir yön seçen, yılların çoğunda rastgele aksiyon
 /// yapan oyuncu.
 class _RandomPlayer {
@@ -237,7 +253,7 @@ class _RandomPlayer {
           }
           return;
         }
-        if (_random.nextInt(25) == 0) {
+        if (_random.nextInt(200) == 0) {
           final cities = [
             for (final (city, blocked, _) in engine.moveOptions())
               if (blocked == null) city,
@@ -250,17 +266,66 @@ class _RandomPlayer {
             return;
           }
         }
+        final open = [
+          for (final (l, blocked) in engine.listingOptions())
+            if (blocked == null) l,
+        ];
+        final me = engine.state.character;
+        if (open.isNotEmpty &&
+            (me.job == null
+                ? _random.nextInt(3) > 0
+                : _betterThanCurrent(engine, open) &&
+                      _random.nextInt(3) == 0)) {
+          // Çoğunlukla en yüksek maaşlı ilana başvurur.
+          final listing = _random.nextInt(4) > 0
+              ? bestListing(engine, open)
+              : open[_random.nextInt(open.length)];
+          final refs = engine.listingReferences(listing);
+          engine.applyFor(
+            listing,
+            _random.nextBool() ? ChoiceSide.left : ChoiceSide.right,
+            referenceId: refs.isNotEmpty && _random.nextBool()
+                ? refs.first.id
+                : null,
+          );
+          return;
+        }
+        if (me.job != null) {
+          if (_random.nextInt(10) == 0) {
+            engine.setTempo(Tempo.values[_random.nextInt(Tempo.values.length)]);
+            return;
+          }
+          if (engine.canRequest(promotion: true) && _random.nextInt(3) == 0) {
+            engine.requestPromotion();
+            return;
+          }
+          if (engine.canRequest(promotion: false) && _random.nextInt(4) == 0) {
+            engine.requestRaise();
+            return;
+          }
+        }
         final requests = engine.possibleInteractions();
         if (requests.isNotEmpty && _random.nextBool()) {
           engine.interact(requests[_random.nextInt(requests.length)]);
           interactions++;
           return;
         }
+        // Akıllıca: mezunsa KPSS'ye girer; parası yetmeden evden çıkmaz,
+        // ev ve araba almaz.
+        final money = engine.state.character.stats.money;
         final enabled = [
           for (final (action, ok) in engine.availableActions())
-            if (ok) action,
+            if (ok &&
+                (action.special == null ||
+                    action.special == ActionSpecial.kpss ||
+                    action.special == ActionSpecial.yazilimKursu ||
+                    money > 3000000))
+              action,
         ];
-        if (enabled.isNotEmpty && _random.nextInt(4) > 0) {
+        final kpss = enabled.where((a) => a.id == 'kpss').firstOrNull;
+        if (kpss != null) {
+          engine.doAction(kpss.id);
+        } else if (enabled.isNotEmpty && _random.nextInt(4) > 0) {
           engine.doAction(enabled[_random.nextInt(enabled.length)].id);
         } else {
           engine.advanceYear();

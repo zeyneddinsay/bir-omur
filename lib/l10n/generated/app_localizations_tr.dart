@@ -262,6 +262,12 @@ class AppLocalizationsTr extends AppLocalizations {
   String get action_altin_sat => '10 gram altın sat';
 
   @override
+  String get action_kpss => 'KPSS\'ye gir';
+
+  @override
+  String get action_yazilim_kursu => 'Yazılım kursuna yazıl';
+
+  @override
   String get action_ara_is => 'Ara işlere git';
 
   @override
@@ -287,17 +293,6 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get action_araba_sat => 'Arabayı sat';
-
-  @override
-  String get action_is_ara => 'İş ara';
-
-  @override
-  String jobFound(String career) {
-    return 'İş buldun: $career';
-  }
-
-  @override
-  String get jobNotFound => 'Bu yıl iş çıkmadı. Belki seneye.';
 
   @override
   String deathTitle(String name) {
@@ -984,6 +979,174 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get note_askerlik =>
       'Askerlik bitti. Bölük arkadaşların artık İnsanlar sekmesinde.';
+
+  @override
+  String get jobCardTitle => 'İşin';
+
+  @override
+  String jobTitleLine(String title, String company) {
+    return '$title · $company';
+  }
+
+  @override
+  String jobSalary(String money) {
+    return 'Yıllık maaş: $money';
+  }
+
+  @override
+  String get jobPerformance => 'Performans';
+
+  @override
+  String get jobTempo => 'Çalışma temposu';
+
+  @override
+  String get tempo_rahat => 'Rahat';
+
+  @override
+  String get tempo_normal => 'Normal';
+
+  @override
+  String get tempo_yukle => 'Yüklen';
+
+  @override
+  String get tempoHint =>
+      'Yüklenmek performansı hızla artırır; vakti 1 azaltır, sağlığı yorar. Rahat çalışan keyiflidir ama performansı düşer.';
+
+  @override
+  String get jobPromotion => 'Terfi iste (1 vakit)';
+
+  @override
+  String get jobRaise => 'Zam iste (1 vakit)';
+
+  @override
+  String get jobQuit => 'İstifa et';
+
+  @override
+  String get jobRetire => 'Emekli ol';
+
+  @override
+  String get jobAskedThisYear => 'Bu yıl sordun ya da vaktin yok';
+
+  @override
+  String get jobQuitConfirm =>
+      'İstifa edersen maaşın kesilir; iş arkadaşların eski iş arkadaşın olur.';
+
+  @override
+  String get jobQuitYes => 'İstifa ediyorum';
+
+  @override
+  String get cancel => 'Vazgeç';
+
+  @override
+  String get jobFiredRisk =>
+      'Performansın çok düşük; böyle giderse kovulabilirsin.';
+
+  @override
+  String get listingsTitle => 'İş ilanları';
+
+  @override
+  String get listingsEmpty => 'Bu yıl şehrinde ilan yok.';
+
+  @override
+  String listingSalary(String money) {
+    return 'Yaklaşık $money / yıl';
+  }
+
+  @override
+  String get listingSenior => 'Üst pozisyon';
+
+  @override
+  String get listingBlocked_sart => 'Bölümün, belgen ya da okulun tutmuyor';
+
+  @override
+  String get listingBlocked_yas => 'Yaş şartı tutmuyor';
+
+  @override
+  String get listingBlocked_ogrenci => 'Okul bitmeden tam zamanlı çalışamazsın';
+
+  @override
+  String get listingBlocked_ayniSirket => 'Zaten burada çalışıyorsun';
+
+  @override
+  String get listingBlocked_basvuruldu => 'Bu yıl başvurdun';
+
+  @override
+  String get listingBlocked_vakit => 'Bu yılın vakti bitti';
+
+  @override
+  String get listingBlocked_deneyim => 'Bu meslekte deneyimin yok';
+
+  @override
+  String get listingBlocked_emekli => 'Emeklisin';
+
+  @override
+  String get listingBlocked_askerde => 'Askerdesin';
+
+  @override
+  String interviewTitle(String company) {
+    return 'Mülakat: $company';
+  }
+
+  @override
+  String interviewReference(String name) {
+    return '$name aracı olsun';
+  }
+
+  @override
+  String get interviewReferenceHint =>
+      'Tanıdığın biri bu işte çalışıyor. Torpille girersen itibarın biraz düşer.';
+
+  @override
+  String note_isBuldun(String company, String title) {
+    return '$company işe aldı: $title.';
+  }
+
+  @override
+  String note_mulakatOlmadi(String company) {
+    return '$company mülakatından olumsuz döndün.';
+  }
+
+  @override
+  String note_terfi(String title) {
+    return 'Terfi aldın: $title.';
+  }
+
+  @override
+  String get note_terfiReddi => 'Terfi istedin; \'Şimdilik değil\' dediler.';
+
+  @override
+  String get note_terfiZamaniDegil =>
+      'Terfi için erken: kademede biraz daha durmalı, performansını ve bilgini artırmalısın.';
+
+  @override
+  String get note_zam => 'Zam aldın; maaşın yüzde 10 arttı.';
+
+  @override
+  String get note_zamReddi => 'Zam istedin; \'Bütçe yok\' dediler.';
+
+  @override
+  String get note_zamZamaniDegil => 'Zam için performansın yetmedi.';
+
+  @override
+  String get note_kovuldun =>
+      'İşten çıkarıldın. Performansın uzun süredir düşüktü.';
+
+  @override
+  String get note_istifa => 'İstifa ettin.';
+
+  @override
+  String get note_emekliOldun => 'Emekli oldun.';
+
+  @override
+  String get note_kpssGecti =>
+      'KPSS\'yi geçtin; memur ilanlarına başvurabilirsin.';
+
+  @override
+  String get note_kpssKaldi => 'KPSS bu yıl olmadı.';
+
+  @override
+  String get note_yazilimKursu =>
+      'Yazılım kursunu bitirdin; yazılımcı ilanlarına başvurabilirsin.';
 
   @override
   String get journalTitle => 'Bu yılın günlüğü';

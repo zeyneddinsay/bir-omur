@@ -1,6 +1,7 @@
 import '../models/models.dart';
 import 'economy.dart';
 import 'housing.dart';
+import 'jobs.dart';
 
 /// Bir aksiyonun neden yapılamadığı; arayüz sebebi gösterir.
 enum ActionBlocked {
@@ -28,6 +29,12 @@ enum ActionSpecial {
   evSat,
   arabaAl,
   arabaSat,
+
+  /// KPSS'ye girer: geçerse memur ilanları açılır.
+  kpss,
+
+  /// Yazılım kursu: yazılımcı ilanlarını açar.
+  yazilimKursu,
 }
 
 /// Aksiyon menüsündeki bir seçenek. Adı ve açıklaması arayüzde [id] ile
@@ -39,7 +46,6 @@ class LifeAction {
     this.effect = Effect.none,
     this.cost = 0,
     this.goldGrams = 0,
-    this.searchesJob = false,
     this.requiresJob = false,
     this.studentsOnly = false,
     this.idleOnly = false,
@@ -59,9 +65,6 @@ class LifeAction {
   /// Altın alım (artı) ya da satımı (eksi), gram. Tutarı o yılın altın
   /// fiyatından hesaplanır.
   final int goldGrams;
-
-  /// "İş ara": işsiz, emekli ya da öğrenci olmayan yetişkine açık.
-  final bool searchesJob;
 
   /// Yalnızca bir işi olana açık (fazla mesai).
   final bool requiresJob;
@@ -88,10 +91,7 @@ class LifeAction {
     if (studentsOnly && !ActionCatalog.isStudent(c)) return false;
     if (idleOnly && !ActionCatalog.isIdleAdult(c)) return false;
     if (special case final s?) return _specialAvailable(s, c);
-    if (!searchesJob) return true;
-    return c.job == null &&
-        !c.isRetired &&
-        !c.hasFlag(ActionCatalog.studentFlag);
+    return true;
   }
 
   static bool _specialAvailable(ActionSpecial s, Character c) {
@@ -106,6 +106,8 @@ class LifeAction {
       ActionSpecial.arabaAl =>
         a.cars == 0 && c.hasFlag(ActionCatalog.licenseFlag),
       ActionSpecial.arabaSat => a.cars > 0,
+      ActionSpecial.kpss => JobMarket.canSitKpss(c),
+      ActionSpecial.yazilimKursu => JobMarket.canTakeCodingCourse(c),
     };
   }
 
@@ -123,6 +125,8 @@ class LifeAction {
     ActionSpecial.evSat => Housing.houseSaleProceeds(c),
     ActionSpecial.arabaAl => -Housing.carDownPayment(),
     ActionSpecial.arabaSat => Housing.carSaleValue(c),
+    ActionSpecial.kpss => 0,
+    ActionSpecial.yazilimKursu => -JobMarket.codingCourseCost,
     null => moneyChange(market),
   };
 
@@ -155,8 +159,6 @@ abstract final class ActionCatalog {
 
   /// Altın aksiyonlarında bir seferde alınıp satılan gram.
   static const int goldLot = 10;
-
-  static const String jobSearchId = 'is_ara';
 
   /// Okul çağında (7–18) ya da üniversitede.
   static bool isStudent(Character c) =>
@@ -258,11 +260,19 @@ abstract final class ActionCatalog {
       effect: Effect(stats: {StatKind.happiness: 10, StatKind.health: 2}),
     ),
     LifeAction(
-      id: ActionCatalog.jobSearchId,
+      id: 'kpss',
       category: ActionCategory.okulIs,
-      minAge: 19,
-      maxAge: 60,
-      searchesJob: true,
+      minAge: 21,
+      maxAge: 40,
+      timeCost: 2,
+      special: ActionSpecial.kpss,
+    ),
+    LifeAction(
+      id: 'yazilim_kursu',
+      category: ActionCategory.okulIs,
+      minAge: 18,
+      timeCost: 2,
+      special: ActionSpecial.yazilimKursu,
     ),
     LifeAction(
       id: 'altin_al',
@@ -355,7 +365,7 @@ abstract final class ActionCatalog {
     if (c.isRetired || c.age >= 65) return 6;
     if (c.age <= 10) return 2;
     if (c.age <= 18 || c.hasFlag(studentFlag)) return 5;
-    if (c.job != null) return 3;
+    if (c.job != null) return 3 - JobMarket.timePenalty(c);
     return 5;
   }
 }

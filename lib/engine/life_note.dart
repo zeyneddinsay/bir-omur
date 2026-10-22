@@ -30,6 +30,26 @@ enum NoteKind {
 
   /// Askere gitti ya da askerden döndü.
   askerlik,
+
+  /// İşe girdi; detay `şirket|meslek|kademe`.
+  isBuldun,
+
+  /// Mülakattan olumsuz döndü; detay şirket.
+  mulakatOlmadi,
+
+  /// Terfi aldı; detay `meslek|kademe`.
+  terfi,
+  terfiReddi,
+  terfiZamaniDegil,
+  zam,
+  zamReddi,
+  zamZamaniDegil,
+  kovuldun,
+  istifa,
+  emekliOldun,
+  kpssGecti,
+  kpssKaldi,
+  yazilimKursu,
 }
 
 class LifeNote {

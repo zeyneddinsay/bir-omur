@@ -1,0 +1,50 @@
+{
+  "id": "garson",
+  "name": "Garson",
+  "occupations": ["garson", "lokantaci"],
+  "entry": {
+    "minAge": 18,
+    "maxAge": 50,
+    "interview": { "stat": "reputation", "threshold": 30 }
+  },
+  "listing": {
+    "cities": ["buyuk", "orta", "kucuk"],
+    "weight": 3,
+    "companies": [
+      "Lezzet Durağı Lokantası",
+      "Köşebaşı Kahvaltı Salonu",
+      "Deniz Feneri Balık Restoran",
+      "Taşfırın Pide Salonu"
+    ],
+    "ads": [
+      "Aynı anda dört tabak, iki sipariş ve bir 'Hesap alabilir miyiz?' taşıyabilen eleman.",
+      "Bahşiş paylaşılır; tabak kırılırsa o da paylaşılır.",
+      "Hafta sonu yoğun; hafta içi de yoğun, haberiniz olsun."
+    ]
+  },
+  "interviews": [
+    {
+      "question": "Masa 'Çay soğuk' dedi; üçüncü kez.",
+      "left": { "label": "Gülümseyip tazelerim", "stat": "reputation" },
+      "right": { "label": "Ocağı kontrol ederim", "stat": "knowledge" }
+    },
+    {
+      "question": "Akşam yemeği saati, salon dolu, bir arkadaş gelmedi.",
+      "left": { "label": "İki masayı da alırım", "stat": "health" },
+      "right": { "label": "Müdürle plan yaparım", "stat": "reputation" }
+    }
+  ],
+  "tiers": [
+    {
+      "name": "Garson",
+      "salary": 340000,
+      "promotion": { "minYears": 2, "chance": 0.55, "requires": { "min": { "reputation": 45 } } }
+    },
+    {
+      "name": "Vardiya sorumlusu",
+      "salary": 420000,
+      "promotion": { "minYears": 4, "chance": 0.35, "requires": { "min": { "reputation": 50 } } }
+    },
+    { "name": "Restoran müdürü", "salary": 620000 }
+  ]
+}

@@ -41,11 +41,17 @@ void main() {
     expect(content.warnings, isEmpty, reason: content.warnings.join('\n'));
   });
 
-  test('MVP meslekleri var', () {
-    for (final id in ['memur', 'esnaf', 'plaza']) {
-      final career = content.careers.byId(id);
-      expect(career, isNotNull, reason: id);
-      expect(career!.maxTier, 5, reason: id);
+  test('ilk sürümün meslekleri var', () {
+    for (final id in [
+      'memur',
+      'hemsire',
+      'yazilimci',
+      'plaza',
+      'oto_tamircisi',
+      'garson',
+      'emlakci',
+    ]) {
+      expect(content.careers.byId(id), isNotNull, reason: id);
     }
   });
 

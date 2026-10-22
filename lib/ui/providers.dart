@@ -222,6 +222,20 @@ class LifeController extends Notifier<LifeState?> {
   /// YKS tercihi: yerleşmeden başka bir yol.
   void declineTercih(TercihKind kind) => _update(engine.declineTercih(kind));
 
+  /// İlana başvurur ve mülakata girer.
+  void applyFor(JobListing listing, ChoiceSide side, {String? referenceId}) =>
+      _update(engine.applyFor(listing, side, referenceId: referenceId));
+
+  void requestPromotion() => _update(engine.requestPromotion());
+
+  void requestRaise() => _update(engine.requestRaise());
+
+  void quitJob() => _update(engine.quitJob());
+
+  void retireEarly() => _update(engine.retireEarly());
+
+  void setTempo(Tempo tempo) => _update(engine.setTempo(tempo));
+
   /// Başka şehre taşınır (Varlıklar sekmesi).
   void moveTo(String city, {bool withFamily = false}) =>
       _update(engine.moveTo(city, withFamily: withFamily));

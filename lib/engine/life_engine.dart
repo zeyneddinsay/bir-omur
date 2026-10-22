@@ -10,6 +10,7 @@ import 'education.dart';
 import 'effect_resolver.dart';
 import 'event_deck.dart';
 import 'housing.dart';
+import 'jobs.dart';
 import 'interactions.dart';
 import 'life_action.dart';
 import 'life_note.dart';
@@ -49,6 +50,8 @@ class LifeState {
     this.interactionsUsed = const {},
     this.lastInteraction,
     this.notes = const [],
+    this.listings = const [],
+    this.applied = const {},
   });
 
   final Character character;
@@ -79,6 +82,12 @@ class LifeState {
   /// Bu yılın oyuncunun kendi hayatından notları (yıl günlüğü).
   final List<LifeNote> notes;
 
+  /// Bu yılın iş ilanları (oyuncunun şehrinde).
+  final List<JobListing> listings;
+
+  /// Bu yıl başvurulan ilanlar (`meslek|şirket`).
+  final Set<String> applied;
+
   LifeState copyWith({
     Character? character,
     int? timeLeft,
@@ -87,6 +96,8 @@ class LifeState {
     Set<String>? interactionsUsed,
     InteractionResult? lastInteraction,
     List<LifeNote>? notes,
+    List<JobListing>? listings,
+    Set<String>? applied,
   }) => LifeState(
     character: character ?? this.character,
     phase: phase,
@@ -100,6 +111,8 @@ class LifeState {
     interactionsUsed: interactionsUsed ?? this.interactionsUsed,
     lastInteraction: lastInteraction ?? this.lastInteraction,
     notes: notes == null ? this.notes : List.unmodifiable(notes),
+    listings: listings == null ? this.listings : List.unmodifiable(listings),
+    applied: applied ?? this.applied,
   );
 
   LifeState withNews(List<PersonNews> news) => copyWith(news: news);
@@ -184,11 +197,6 @@ class LifeEngine {
   /// Son yaşlanmadaki iş dökümü (gelir, terfi, emeklilik). Kaydedilmez.
   CareerReport? get lastCareer => _lastCareer;
 
-  JobSearchResult? _lastJobSearch;
-
-  /// Bu yılki "İş ara" aksiyonunun sonucu; yapılmadıysa null. Kaydedilmez.
-  JobSearchResult? get lastJobSearch => _lastJobSearch;
-
   /// Yeni bir hayat başlatır ve 0 yaşının kartlarını çeker.
   LifeState startLife({String? name, Gender? gender}) {
     final character = BirthGenerator(
@@ -247,6 +255,7 @@ class LifeEngine {
         lastOutcome: storedOutcome,
         news: _state.news,
         notes: _state.notes,
+        listings: _state.listings,
       );
     }
     return _state = _actionsPhase(
@@ -254,7 +263,7 @@ class LifeEngine {
       queue,
       lastOutcome: storedOutcome,
       notes: _state.notes,
-    ).withNews(_state.news);
+    ).withNews(_state.news).copyWith(listings: _state.listings);
   }
 
   /// Bu yıl yapılabilecek aksiyonlar ve yapılıp yapılamayacakları.
@@ -272,9 +281,6 @@ class LifeEngine {
         return ActionBlocked.vakit;
       }
       if (!action.canAfford(c, _market)) return ActionBlocked.para;
-      if (action.searchesJob && !hasOpenCareer(c, careers)) {
-        return ActionBlocked.isYok;
-      }
       return null;
     }
 
@@ -314,22 +320,23 @@ class LifeEngine {
         careers: careers,
       ),
     };
-    if (action.searchesJob) {
-      final (hired, result) = searchJob(
-        character,
-        careers,
-        (roll) => _resolver.rollSucceeds(character, roll),
-      );
-      character = hired;
-      _lastJobSearch = result;
-    }
     character = YearTick.updateHardshipFlags(
       _booked(c, character, MoneySource.aksiyon, ref: actionId),
     );
+    final note = switch (action.special) {
+      ActionSpecial.kpss => LifeNote(
+        character.hasFlag(JobMarket.kpssFlag)
+            ? NoteKind.kpssGecti
+            : NoteKind.kpssKaldi,
+      ),
+      ActionSpecial.yazilimKursu => const LifeNote(NoteKind.yazilimKursu),
+      _ => null,
+    };
     return _state = _state.copyWith(
       character: character,
       timeLeft: _state.timeLeft - action.timeCost,
       actionsUsed: {..._state.actionsUsed, actionId},
+      notes: note == null ? null : [..._state.notes, note],
     );
   }
 
@@ -457,23 +464,26 @@ class LifeEngine {
         amount: paid.stats.money - aged.stats.money - careerReport.income,
       ),
     ]);
-    _lastJobSearch = null;
     final (studied, notes, queue) = _schoolYear(afterCareer, _state.queue);
     final soldier = Military.inService(studied);
     final served = Military.returnHome(studied, _factory);
     if (soldier) notes.add(const LifeNote(NoteKind.askerlik));
+    if (careerReport.fired) notes.add(const LifeNote(NoteKind.kovuldun));
+    if (careerReport.retired) notes.add(const LifeNote(NoteKind.emekliOldun));
     final (character, news) = PeopleTick(
       _random,
       families,
       cities: BirthGenerator.hometowns,
     ).apply(Economy.syncDerivedFlags(YearTick.updateHardshipFlags(served)));
+    final settled = Relationships.syncFamilyBond(
+      Housing.ensureNeighbours(character, _factory),
+    );
+    final listings = JobMarket.listingsFor(settled, careers, _random);
     return _state = _beginYear(
-      Relationships.syncFamilyBond(
-        Housing.ensureNeighbours(character, _factory),
-      ),
+      settled,
       queue,
       notes: notes,
-    ).withNews(news);
+    ).withNews(news).copyWith(listings: listings);
   }
 
   /// Yaşlanınca okulun yılı: lise bitince (19) sınıf rolleri biter;
@@ -513,6 +523,178 @@ class LifeEngine {
   /// Mezuniyet yılında gelen olay (iplik).
   static const String graduationEvent = 'mezuniyet';
 
+  /// Bu yılın ilanları ve başvurulamıyorsa sebebi.
+  List<(JobListing listing, ListingBlocked? blocked)> listingOptions() {
+    final c = _state.character;
+    final canAct = _state.phase == YearPhase.actions;
+    return [
+      for (final l in _state.listings)
+        (
+          l,
+          JobMarket.blocked(
+            c,
+            l,
+            careers,
+            timeLeft: canAct ? _state.timeLeft : 0,
+            applied: _state.applied,
+          ),
+        ),
+    ];
+  }
+
+  /// Bu ilan için aracı olabilecek tanıdıklar ("Kerem'e sor").
+  List<Person> listingReferences(JobListing listing) =>
+      JobMarket.references(_state.character, listing, careers);
+
+  /// İlana başvurur ve mülakata girer (1 vakit). [side] mülakat sorusunun
+  /// cevabı; [referenceId] aracı olan tanıdık.
+  LifeState applyFor(
+    JobListing listing,
+    ChoiceSide side, {
+    String? referenceId,
+  }) {
+    final option = listingOptions().where((o) => o.$1 == listing).firstOrNull;
+    if (option == null || option.$2 != null) {
+      throw StateError('Bu ilana başvurulamaz: ${option?.$2}');
+    }
+    final c = _state.character;
+    final career = careers.require(listing.careerId);
+    final reference = referenceId == null ? null : c.people[referenceId];
+    if (reference != null && !listingReferences(listing).contains(reference)) {
+      throw StateError('$referenceId bu ilan için aracı olamaz');
+    }
+    final question = career.interviews.isEmpty
+        ? null
+        : career.interviews[listing.interview % career.interviews.length];
+    final answer = switch (side) {
+      ChoiceSide.right => question?.right,
+      _ => question?.left,
+    };
+    final result = JobMarket.interview(
+      c,
+      listing,
+      careers,
+      answer ?? const InterviewAnswer(label: '', stat: RollStat.knowledge),
+      _random,
+      reference: reference,
+    );
+    var next = c;
+    final LifeNote note;
+    if (result == InterviewResult.olmadi) {
+      note = LifeNote(NoteKind.mulakatOlmadi, listing.company);
+    } else {
+      next = JobMarket.hire(
+        c,
+        listing,
+        careers,
+        _factory,
+        reference: result == InterviewResult.torpilleAlindi ? reference : null,
+      );
+      note = LifeNote(
+        NoteKind.isBuldun,
+        '${listing.company}|${listing.careerId}|${listing.tier}',
+      );
+    }
+    _lastInterview = result;
+    return _state = _state.copyWith(
+      character: Relationships.syncFamilyBond(next),
+      timeLeft: _state.timeLeft - 1,
+      applied: {..._state.applied, JobMarket.key(listing)},
+      notes: [..._state.notes, note],
+    );
+  }
+
+  InterviewResult? _lastInterview;
+
+  /// Son mülakatın sonucu (arayüz için). Kaydedilmez.
+  InterviewResult? get lastInterview => _lastInterview;
+
+  /// İşteyken patronla konuşmak 1 vakit.
+  static const int requestTimeCost = 1;
+
+  /// Terfi ya da zam istenebilir mi (iş var, vakit var, bu yıl istenmedi).
+  bool canRequest({required bool promotion}) {
+    final job = _state.character.job;
+    if (job == null || _state.phase != YearPhase.actions) return false;
+    if (_state.timeLeft < requestTimeCost) return false;
+    final asked = promotion ? job.promotionAskedAt : job.raiseAskedAt;
+    return asked != _state.character.age;
+  }
+
+  /// Terfi ister (1 vakit, yılda bir).
+  LifeState requestPromotion() {
+    if (!canRequest(promotion: true)) {
+      throw StateError('Şu an terfi istenemez');
+    }
+    final before = _state.character;
+    final (c, result) = JobMarket.requestPromotion(before, careers, _random);
+    final note = switch (result) {
+      RequestResult.evet => LifeNote(
+        NoteKind.terfi,
+        '${c.job!.careerId}|${c.job!.tier}',
+      ),
+      RequestResult.hayir => const LifeNote(NoteKind.terfiReddi),
+      RequestResult.zamaniDegil => const LifeNote(NoteKind.terfiZamaniDegil),
+    };
+    return _state = _state.copyWith(
+      character: _booked(before, c, MoneySource.terfi),
+      timeLeft: _state.timeLeft - requestTimeCost,
+      notes: [..._state.notes, note],
+    );
+  }
+
+  /// Zam ister (1 vakit, yılda bir).
+  LifeState requestRaise() {
+    if (!canRequest(promotion: false)) {
+      throw StateError('Şu an zam istenemez');
+    }
+    final (c, result) = JobMarket.requestRaise(_state.character, _random);
+    final note = switch (result) {
+      RequestResult.evet => const LifeNote(NoteKind.zam),
+      RequestResult.hayir => const LifeNote(NoteKind.zamReddi),
+      RequestResult.zamaniDegil => const LifeNote(NoteKind.zamZamaniDegil),
+    };
+    return _state = _state.copyWith(
+      character: c,
+      timeLeft: _state.timeLeft - requestTimeCost,
+      notes: [..._state.notes, note],
+    );
+  }
+
+  /// İşten ayrılır.
+  LifeState quitJob() {
+    final c = _state.character;
+    if (c.job == null) throw StateError('İş yok');
+    return _state = _state.copyWith(
+      character: Careers.leaveJob(c),
+      notes: [..._state.notes, const LifeNote(NoteKind.istifa)],
+    );
+  }
+
+  /// 25 yıl çalışıp 55 yaşına gelen erken emekli olabilir.
+  LifeState retireEarly() {
+    final c = _state.character;
+    if (!JobMarket.canRetireEarly(c)) throw StateError('Erken emeklilik yok');
+    return _state = _state.copyWith(
+      character: Economy.syncDerivedFlags(Careers.retire(c, careers)),
+      notes: [..._state.notes, const LifeNote(NoteKind.emekliOldun)],
+    );
+  }
+
+  /// Çalışma temposunu değiştirir (vakti hemen etkiler).
+  LifeState setTempo(Tempo tempo) {
+    final c = _state.character;
+    final job = c.job;
+    if (job == null || job.tempo == tempo) return _state;
+    final next = c.copyWith(job: job.copyWith(tempo: tempo));
+    final before = ActionCatalog.timeFor(c);
+    final after = ActionCatalog.timeFor(next);
+    final timeLeft = _state.phase == YearPhase.actions
+        ? (_state.timeLeft + after - before).clamp(0, after)
+        : _state.timeLeft;
+    return _state = _state.copyWith(character: next, timeLeft: timeLeft);
+  }
+
   PersonFactory get _factory => PersonFactory(_random, families);
 
   /// YKS tercihinde puanın yettiği bölüm ve şehirler; tercih beklemiyorsa
@@ -547,7 +729,24 @@ class LifeEngine {
     if (!c.hasFlag(EducationRules.pendingFlag) || kind == TercihKind.bolum) {
       throw StateError('Şu an tercih yok ya da bölüm seçilmeli');
     }
-    final next = EducationRules.decline(c, kind);
+    var next = EducationRules.decline(c, kind);
+    // Çırak giren hemen bir ustanın yanında işe başlar.
+    final apprentice = careers.byId(apprenticeCareer);
+    if (kind == TercihKind.cirak && apprentice?.listing != null) {
+      final info = apprentice!.listing!;
+      next = JobMarket.hire(
+        next,
+        JobListing(
+          careerId: apprentice.id,
+          tier: 1,
+          company: info.companies[_random.nextInt(info.companies.length)],
+          ad: info.ads.first,
+          interview: 0,
+        ),
+        careers,
+        _factory,
+      );
+    }
     final note = switch (kind) {
       TercihKind.mezunaKal => NoteKind.mezunaKaldi,
       TercihKind.cirak => NoteKind.cirakOldu,
@@ -558,6 +757,9 @@ class LifeEngine {
       notes: [..._state.notes, LifeNote(note)],
     );
   }
+
+  /// Çırak girenin mesleği.
+  static const String apprenticeCareer = 'oto_tamircisi';
 
   /// Taşınma 2 vakit sürer.
   static const int moveTimeCost = 2;
@@ -602,6 +804,8 @@ class LifeEngine {
         _booked(c, moved, MoneySource.tasinma, ref: city),
       ),
       timeLeft: _state.timeLeft - moveTimeCost,
+      listings: JobMarket.listingsFor(moved, careers, _random),
+      applied: const {},
     );
   }
 
@@ -624,6 +828,18 @@ class LifeEngine {
         ActionSpecial.evSat => Housing.sellHouse(c, _factory),
         ActionSpecial.arabaAl => Housing.buyCar(c),
         ActionSpecial.arabaSat => Housing.sellCar(c),
+        ActionSpecial.kpss =>
+          JobMarket.sitKpss(c, _random)
+              ? JobMarket.withFlag(c, JobMarket.kpssFlag)
+              : c,
+        ActionSpecial.yazilimKursu => JobMarket.withFlag(
+          c.copyWith(
+            stats: c.stats
+                .withMoneyDelta(-JobMarket.codingCourseCost)
+                .withDelta(StatKind.knowledge, 3),
+          ),
+          JobMarket.codingFlag,
+        ),
       };
 
   /// [before] ile [after] arasındaki para farkını tek bir kaynakla deftere
@@ -657,6 +873,8 @@ class LifeEngine {
     'cause': _state.summary?.cause.name,
     'news': [for (final n in _state.news) n.toJson()],
     'notes': [for (final n in _state.notes) n.toJson()],
+    'listings': [for (final l in _state.listings) l.toJson()],
+    'applied': _state.applied.toList(),
     'interactionsUsed': _state.interactionsUsed.toList(),
   };
 
@@ -739,6 +957,11 @@ class LifeEngine {
         for (final n in snapshot['notes'] as List? ?? const [])
           LifeNote.fromJson(n as Map<String, dynamic>),
       ],
+      listings: [
+        for (final l in snapshot['listings'] as List? ?? const [])
+          JobListing.fromJson(l as Map<String, dynamic>),
+      ],
+      applied: {...?(snapshot['applied'] as List?)?.cast<String>()},
     );
     return engine;
   }

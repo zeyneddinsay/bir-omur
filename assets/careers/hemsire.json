@@ -1,0 +1,55 @@
+{
+  "id": "hemsire",
+  "name": "Hemşire",
+  "occupations": ["hemsire", "doktor"],
+  "entry": {
+    "departments": ["hemsirelik"],
+    "maxAge": 50,
+    "interview": { "stat": "knowledge", "threshold": 40 }
+  },
+  "listing": {
+    "cities": ["buyuk", "orta", "kucuk"],
+    "weight": 2,
+    "companies": [
+      "Şifa Devlet Hastanesi",
+      "Yeşilvadi Özel Hastanesi",
+      "Merkez Aile Sağlığı Merkezi",
+      "Umut Tıp Merkezi"
+    ],
+    "ads": [
+      "Nöbetli çalışma. Kahve makinesi var, kahve konusunda söz verilmiyor.",
+      "Acil serviste deneyim artıdır; 'Acil' kelimesinin anlamını bilmek şarttır.",
+      "Hasta yakınlarıyla iletişimi güçlü, sabrı sınırsız arkadaş aranıyor."
+    ]
+  },
+  "interviews": [
+    {
+      "question": "Hasta yakını gece üçte 'Doktoru şimdi istiyorum' diyor.",
+      "left": { "label": "Sakinleştiririm", "stat": "reputation" },
+      "right": { "label": "Protokolü anlatırım", "stat": "knowledge" }
+    },
+    {
+      "question": "Arka arkaya ikinci nöbet; meslektaşınız hasta.",
+      "left": { "label": "Ben kalırım", "stat": "health" },
+      "right": { "label": "Yedek listeye bakarım", "stat": "knowledge" }
+    }
+  ],
+  "tiers": [
+    {
+      "name": "Hemşire",
+      "salary": 650000,
+      "promotion": { "minYears": 4, "chance": 0.5, "requires": { "min": { "knowledge": 45 } } }
+    },
+    {
+      "name": "Sorumlu hemşire",
+      "salary": 820000,
+      "promotion": { "minYears": 5, "chance": 0.4, "requires": { "min": { "knowledge": 55, "reputation": 50 } } }
+    },
+    {
+      "name": "Başhemşire",
+      "salary": 1050000,
+      "promotion": { "minYears": 6, "chance": 0.3, "minPerformance": 65, "requires": { "min": { "knowledge": 60, "reputation": 55 } } }
+    },
+    { "name": "Sağlık müdürü", "salary": 1400000 }
+  ]
+}

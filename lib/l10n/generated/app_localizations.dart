@@ -502,6 +502,18 @@ abstract class AppLocalizations {
   /// **'10 gram altın sat'**
   String get action_altin_sat;
 
+  /// No description provided for @action_kpss.
+  ///
+  /// In tr, this message translates to:
+  /// **'KPSS\'ye gir'**
+  String get action_kpss;
+
+  /// No description provided for @action_yazilim_kursu.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yazılım kursuna yazıl'**
+  String get action_yazilim_kursu;
+
   /// No description provided for @action_ara_is.
   ///
   /// In tr, this message translates to:
@@ -555,24 +567,6 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Arabayı sat'**
   String get action_araba_sat;
-
-  /// No description provided for @action_is_ara.
-  ///
-  /// In tr, this message translates to:
-  /// **'İş ara'**
-  String get action_is_ara;
-
-  /// No description provided for @jobFound.
-  ///
-  /// In tr, this message translates to:
-  /// **'İş buldun: {career}'**
-  String jobFound(String career);
-
-  /// No description provided for @jobNotFound.
-  ///
-  /// In tr, this message translates to:
-  /// **'Bu yıl iş çıkmadı. Belki seneye.'**
-  String get jobNotFound;
 
   /// No description provided for @deathTitle.
   ///
@@ -1677,6 +1671,294 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Askerlik bitti. Bölük arkadaşların artık İnsanlar sekmesinde.'**
   String get note_askerlik;
+
+  /// No description provided for @jobCardTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'İşin'**
+  String get jobCardTitle;
+
+  /// No description provided for @jobTitleLine.
+  ///
+  /// In tr, this message translates to:
+  /// **'{title} · {company}'**
+  String jobTitleLine(String title, String company);
+
+  /// No description provided for @jobSalary.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yıllık maaş: {money}'**
+  String jobSalary(String money);
+
+  /// No description provided for @jobPerformance.
+  ///
+  /// In tr, this message translates to:
+  /// **'Performans'**
+  String get jobPerformance;
+
+  /// No description provided for @jobTempo.
+  ///
+  /// In tr, this message translates to:
+  /// **'Çalışma temposu'**
+  String get jobTempo;
+
+  /// No description provided for @tempo_rahat.
+  ///
+  /// In tr, this message translates to:
+  /// **'Rahat'**
+  String get tempo_rahat;
+
+  /// No description provided for @tempo_normal.
+  ///
+  /// In tr, this message translates to:
+  /// **'Normal'**
+  String get tempo_normal;
+
+  /// No description provided for @tempo_yukle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yüklen'**
+  String get tempo_yukle;
+
+  /// No description provided for @tempoHint.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yüklenmek performansı hızla artırır; vakti 1 azaltır, sağlığı yorar. Rahat çalışan keyiflidir ama performansı düşer.'**
+  String get tempoHint;
+
+  /// No description provided for @jobPromotion.
+  ///
+  /// In tr, this message translates to:
+  /// **'Terfi iste (1 vakit)'**
+  String get jobPromotion;
+
+  /// No description provided for @jobRaise.
+  ///
+  /// In tr, this message translates to:
+  /// **'Zam iste (1 vakit)'**
+  String get jobRaise;
+
+  /// No description provided for @jobQuit.
+  ///
+  /// In tr, this message translates to:
+  /// **'İstifa et'**
+  String get jobQuit;
+
+  /// No description provided for @jobRetire.
+  ///
+  /// In tr, this message translates to:
+  /// **'Emekli ol'**
+  String get jobRetire;
+
+  /// No description provided for @jobAskedThisYear.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu yıl sordun ya da vaktin yok'**
+  String get jobAskedThisYear;
+
+  /// No description provided for @jobQuitConfirm.
+  ///
+  /// In tr, this message translates to:
+  /// **'İstifa edersen maaşın kesilir; iş arkadaşların eski iş arkadaşın olur.'**
+  String get jobQuitConfirm;
+
+  /// No description provided for @jobQuitYes.
+  ///
+  /// In tr, this message translates to:
+  /// **'İstifa ediyorum'**
+  String get jobQuitYes;
+
+  /// No description provided for @cancel.
+  ///
+  /// In tr, this message translates to:
+  /// **'Vazgeç'**
+  String get cancel;
+
+  /// No description provided for @jobFiredRisk.
+  ///
+  /// In tr, this message translates to:
+  /// **'Performansın çok düşük; böyle giderse kovulabilirsin.'**
+  String get jobFiredRisk;
+
+  /// No description provided for @listingsTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'İş ilanları'**
+  String get listingsTitle;
+
+  /// No description provided for @listingsEmpty.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu yıl şehrinde ilan yok.'**
+  String get listingsEmpty;
+
+  /// No description provided for @listingSalary.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yaklaşık {money} / yıl'**
+  String listingSalary(String money);
+
+  /// No description provided for @listingSenior.
+  ///
+  /// In tr, this message translates to:
+  /// **'Üst pozisyon'**
+  String get listingSenior;
+
+  /// No description provided for @listingBlocked_sart.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bölümün, belgen ya da okulun tutmuyor'**
+  String get listingBlocked_sart;
+
+  /// No description provided for @listingBlocked_yas.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yaş şartı tutmuyor'**
+  String get listingBlocked_yas;
+
+  /// No description provided for @listingBlocked_ogrenci.
+  ///
+  /// In tr, this message translates to:
+  /// **'Okul bitmeden tam zamanlı çalışamazsın'**
+  String get listingBlocked_ogrenci;
+
+  /// No description provided for @listingBlocked_ayniSirket.
+  ///
+  /// In tr, this message translates to:
+  /// **'Zaten burada çalışıyorsun'**
+  String get listingBlocked_ayniSirket;
+
+  /// No description provided for @listingBlocked_basvuruldu.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu yıl başvurdun'**
+  String get listingBlocked_basvuruldu;
+
+  /// No description provided for @listingBlocked_vakit.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu yılın vakti bitti'**
+  String get listingBlocked_vakit;
+
+  /// No description provided for @listingBlocked_deneyim.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu meslekte deneyimin yok'**
+  String get listingBlocked_deneyim;
+
+  /// No description provided for @listingBlocked_emekli.
+  ///
+  /// In tr, this message translates to:
+  /// **'Emeklisin'**
+  String get listingBlocked_emekli;
+
+  /// No description provided for @listingBlocked_askerde.
+  ///
+  /// In tr, this message translates to:
+  /// **'Askerdesin'**
+  String get listingBlocked_askerde;
+
+  /// No description provided for @interviewTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Mülakat: {company}'**
+  String interviewTitle(String company);
+
+  /// No description provided for @interviewReference.
+  ///
+  /// In tr, this message translates to:
+  /// **'{name} aracı olsun'**
+  String interviewReference(String name);
+
+  /// No description provided for @interviewReferenceHint.
+  ///
+  /// In tr, this message translates to:
+  /// **'Tanıdığın biri bu işte çalışıyor. Torpille girersen itibarın biraz düşer.'**
+  String get interviewReferenceHint;
+
+  /// No description provided for @note_isBuldun.
+  ///
+  /// In tr, this message translates to:
+  /// **'{company} işe aldı: {title}.'**
+  String note_isBuldun(String company, String title);
+
+  /// No description provided for @note_mulakatOlmadi.
+  ///
+  /// In tr, this message translates to:
+  /// **'{company} mülakatından olumsuz döndün.'**
+  String note_mulakatOlmadi(String company);
+
+  /// No description provided for @note_terfi.
+  ///
+  /// In tr, this message translates to:
+  /// **'Terfi aldın: {title}.'**
+  String note_terfi(String title);
+
+  /// No description provided for @note_terfiReddi.
+  ///
+  /// In tr, this message translates to:
+  /// **'Terfi istedin; \'Şimdilik değil\' dediler.'**
+  String get note_terfiReddi;
+
+  /// No description provided for @note_terfiZamaniDegil.
+  ///
+  /// In tr, this message translates to:
+  /// **'Terfi için erken: kademede biraz daha durmalı, performansını ve bilgini artırmalısın.'**
+  String get note_terfiZamaniDegil;
+
+  /// No description provided for @note_zam.
+  ///
+  /// In tr, this message translates to:
+  /// **'Zam aldın; maaşın yüzde 10 arttı.'**
+  String get note_zam;
+
+  /// No description provided for @note_zamReddi.
+  ///
+  /// In tr, this message translates to:
+  /// **'Zam istedin; \'Bütçe yok\' dediler.'**
+  String get note_zamReddi;
+
+  /// No description provided for @note_zamZamaniDegil.
+  ///
+  /// In tr, this message translates to:
+  /// **'Zam için performansın yetmedi.'**
+  String get note_zamZamaniDegil;
+
+  /// No description provided for @note_kovuldun.
+  ///
+  /// In tr, this message translates to:
+  /// **'İşten çıkarıldın. Performansın uzun süredir düşüktü.'**
+  String get note_kovuldun;
+
+  /// No description provided for @note_istifa.
+  ///
+  /// In tr, this message translates to:
+  /// **'İstifa ettin.'**
+  String get note_istifa;
+
+  /// No description provided for @note_emekliOldun.
+  ///
+  /// In tr, this message translates to:
+  /// **'Emekli oldun.'**
+  String get note_emekliOldun;
+
+  /// No description provided for @note_kpssGecti.
+  ///
+  /// In tr, this message translates to:
+  /// **'KPSS\'yi geçtin; memur ilanlarına başvurabilirsin.'**
+  String get note_kpssGecti;
+
+  /// No description provided for @note_kpssKaldi.
+  ///
+  /// In tr, this message translates to:
+  /// **'KPSS bu yıl olmadı.'**
+  String get note_kpssKaldi;
+
+  /// No description provided for @note_yazilimKursu.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yazılım kursunu bitirdin; yazılımcı ilanlarına başvurabilirsin.'**
+  String get note_yazilimKursu;
 
   /// No description provided for @journalTitle.
   ///

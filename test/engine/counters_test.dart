@@ -65,14 +65,13 @@ void main() {
       }, file: 'is.json'),
     ]);
 
-    test('çalışılan yıl, kazanç ve yıllık terfi', () {
+    test('çalışılan yıl ve kazanç sayılır', () {
       final tick = CareerTick(SeededRandom(1), book);
       var c = testCharacter(age: 30, job: const Job(careerId: 'is', tier: 1));
       (c, _) = tick.apply(c);
       (c, _) = tick.apply(c);
       expect(c.counters.yearsWorked, 2);
-      expect(c.counters.lifetimeIncome, 100000 + 200000);
-      expect(c.counters.promotions, 1);
+      expect(c.counters.lifetimeIncome, 100000 + 100000);
     });
 
     test('kartla terfi sayılır, kademe düşmesi sayılmaz', () {

@@ -11,6 +11,7 @@ import '../people/people_view.dart';
 import '../providers.dart';
 import '../widgets/education_card.dart';
 import '../widgets/home_card.dart';
+import '../widgets/job_card.dart';
 import '../widgets/ledger_view.dart';
 import '../widgets/life_status.dart';
 
@@ -38,7 +39,9 @@ class HomeTabs extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             _WorkHeader(engine: engine),
+            JobCard(state: state),
             EducationCard(state: state),
+            ListingsCard(state: state),
           ],
         ),
       ),
@@ -117,7 +120,7 @@ class _MeTab extends ConsumerWidget {
     final occupations =
         ref.watch(contentProvider).value?.families.occupations ?? const {};
     final news = [
-      for (final n in state.notes) noteLine(l10n, n),
+      for (final n in state.notes) noteLine(l10n, n, engine.careers),
       for (final n in state.news) l10n.newsLine(n, c, occupations: occupations),
     ].where((line) => line.isNotEmpty).toList();
     final choices = [
@@ -194,24 +197,6 @@ class _WorkHeader extends StatelessWidget {
             style: theme.textTheme.titleMedium,
           ),
           Text(l10n.stageName(c.stage), style: theme.textTheme.bodySmall),
-          if (engine.lastJobSearch case final search?)
-            Padding(
-              padding: const EdgeInsets.only(top: 8),
-              child: Text(
-                switch (search.careerId) {
-                  final id? => l10n.jobFound(
-                    engine.careers.byId(id)?.name ?? id,
-                  ),
-                  null => l10n.jobNotFound,
-                },
-                key: const Key('job_search_result'),
-                style: theme.textTheme.titleSmall?.copyWith(
-                  color: search.found
-                      ? theme.colorScheme.primary
-                      : theme.colorScheme.error,
-                ),
-              ),
-            ),
         ],
       ),
     );

@@ -163,7 +163,8 @@ void main() {
     test('gerçek rozet dosyası temiz ve her rozet ulaşılabilir türde', () {
       final content = loadRealContent();
       final book = content.achievements!;
-      expect(book.all.length, greaterThanOrEqualTo(15));
+      // "Zincirin Sahibi" D3 işletmeleriyle dönecek.
+      expect(book.all.length, greaterThanOrEqualTo(14));
       expect(book.all.map((a) => a.id).toSet(), hasLength(book.all.length));
     });
   });
