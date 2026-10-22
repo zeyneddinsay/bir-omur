@@ -398,7 +398,7 @@
       "kayin": { "kin": ["kayinvalide"] }
     },
     "speaker": "kayin",
-    "text": "{kayin.ad} {kayin.hitap.amca} habersiz geldi, eldiveniyle rafın tozuna baktı: 'Yorgunsunuz herhalde.'",
+    "text": "{kayin.akraba} habersiz geldi, eldiveniyle rafın tozuna baktı: 'Yorgunsunuz herhalde.'",
     "left": {
       "label": "Çay koyarım",
       "effects": {

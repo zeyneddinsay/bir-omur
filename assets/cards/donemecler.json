@@ -118,7 +118,7 @@
     "minAge": 19,
     "maxAge": 30,
     "repeat": { "cooldown": 1 },
-    "conditions": { "flags": ["mezuna_kaldi"] },
+    "conditions": { "flags": ["mezuna_kaldi"], "notFlags": ["askerde"] },
     "text": "Bir yıl daha hazırlandın. Bu sefer salonda tanıdık yüzler de var: geçen yılın mezunları.",
     "left": {
       "label": "Bu sefer olacak",
@@ -241,8 +241,9 @@
     "repeat": { "cooldown": 1 },
     "roles": {
       "merhum": {
-        "kin": ["dede", "nine", "amca", "hala", "dayi", "teyze", "kardes"],
-        "deceased": true
+        "kin": ["dede", "nine", "amca", "hala", "dayi", "teyze"],
+        "deceased": true,
+        "minCloseness": 40
       }
     },
     "text": "{merhum.akraba} vefat etti. Taziye evinin kapısı hiç kapanmıyor; gelen herkes onu bir hatırayla anıyor.",
@@ -253,6 +254,26 @@
     "right": {
       "label": "Bir köşede onu an",
       "effects": { "happiness": -6 }
+    }
+  },
+  {
+    "id": "cenaze_kardes",
+    "type": "donemec",
+    "theme": "aile",
+    "minAge": 12,
+    "maxAge": 110,
+    "repeat": { "cooldown": 1 },
+    "roles": {
+      "merhum": { "kin": ["kardes"], "deceased": true }
+    },
+    "text": "{merhum.akraba} vefat etti. Çocukluğunuzun bütün fotoğraflarında o da var; şimdi onlara bakmak zor.",
+    "left": {
+      "label": "Cenazeyi ben kaldırırım",
+      "effects": { "reputation": 2, "happiness": -8 }
+    },
+    "right": {
+      "label": "Fotoğraflara bakarım",
+      "effects": { "happiness": -9 }
     }
   },
   {

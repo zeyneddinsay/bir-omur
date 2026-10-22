@@ -90,6 +90,7 @@ String moveBlockedReason(AppLocalizations l10n, MoveBlocked blocked) =>
       MoveBlocked.ogrenci => l10n.moveBlocked_ogrenci,
       MoveBlocked.evSahibi => l10n.moveBlocked_evSahibi,
       MoveBlocked.ayniSehir => l10n.moveBlocked_ayniSehir,
+      MoveBlocked.gelir => l10n.moveBlocked_gelir,
     };
 
 /// Şehir seçimi. Ailenin yaşadığı şehirde "ailemin yanına" da seçilebilir.

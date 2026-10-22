@@ -449,7 +449,7 @@ abstract final class BusinessRules {
     final stats = c.stats.copyWith(money: money);
     return (
       c.copyWith(
-        stats: known ? stats.withDelta(StatKind.reputation, 1) : stats,
+        stats: known ? stats.withDelta(StatKind.reputation, 2) : stats,
         businesses: kept,
         people: people,
         bankruptcies: bankruptcies,

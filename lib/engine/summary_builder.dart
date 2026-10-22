@@ -2,6 +2,7 @@ import '../models/models.dart';
 import 'death_check.dart';
 import 'economy.dart';
 import 'event_deck.dart';
+import 'hard_day.dart';
 import 'life_story.dart';
 
 /// Mahallenin karakteri nasıl hatırladığı. Metni arayüzde ARB'den gelir.
@@ -103,7 +104,7 @@ class SummaryBuilder {
     final s = c.stats;
     final story = LifeStory(c);
     final worth = Economy.netWorth(c, market);
-    if (c.age >= 95) return Nickname.asirlikCinar;
+    if (c.age >= 100) return Nickname.asirlikCinar;
     if (worth >= richThreshold) return Nickname.mahalleninZengini;
     if (worth < 0) return Nickname.borcYigidinKamcisi;
 
@@ -132,28 +133,56 @@ class SummaryBuilder {
     return best;
   }
 
-  /// En nadir kart; eşitlikte ilk görülen.
-  /// Hayatın en büyük anı: en nadir kart; nadir kart yoksa hayatın son
-  /// dönemeci ya da ipliği (sınav, mezuniyet, askerlik). Cenaze gibi
-  /// vefat yuvalı olaylar "en büyük an" sayılmaz.
+  /// Hayatın en büyük anı: dönüm noktalarının puanı ([momentScores]) artı
+  /// nadirlik; eşitlikte sonraki. Cenazeler ve zor gün araması sayılmaz.
   CardRecord? _biggestMoment(Character c) {
     CardRecord? best;
-    var bestWeight = Rarity.siradan.weight;
-    CardRecord? milestone;
+    var bestScore = 0;
+    final seen = <String>{};
     for (final record in c.history) {
       final card = deck.byId(record.cardId);
       if (card == null) continue;
-      final weight = card.rarity.weight;
-      if (weight < bestWeight) {
-        best = record;
-        bestWeight = weight;
-      }
+      final first = seen.add(card.id);
       final mourning = card.roles.any((slot) => slot.deceased);
-      if (!mourning &&
-          (card.type == EventType.donemec || card.type == EventType.iplik)) {
-        milestone = record;
+      if (mourning || card.id == HardDay.callCard) continue;
+      var score = momentScores[card.id] ?? 0;
+      // Bebek ve benzeri tekrar eden anlarda ilki sayılır.
+      if (!first) score ~/= 2;
+      score += switch (card.rarity) {
+        Rarity.efsane => 8,
+        Rarity.nadir => 3,
+        Rarity.siradan => 0,
+      };
+      if (card.type == EventType.donemec || card.type == EventType.iplik) {
+        score += 1;
+      }
+      if (score >= bestScore && score > 0) {
+        best = record;
+        bestScore = score;
       }
     }
-    return best ?? milestone;
+    return best;
   }
+
+  /// Hayatın dönüm noktaları: en büyük an seçilirken öne çıkar.
+  static const Map<String, int> momentScores = {
+    'dugun': 12,
+    'bebek_dogdu': 10,
+    'girisim_sonucu': 9,
+    'fabrikanin_kapisi': 8,
+    'teneffus_yillar_sonra': 8,
+    'kiz_isteme_damat': 7,
+    'kiz_isteme_gelin': 7,
+    'aile_tanisma_yemegi': 7,
+    'mezuniyet': 6,
+    'komsu_genci_doner': 6,
+    'kopya_tesekkuru': 6,
+    'el_yapimi_kutu': 6,
+    'cam_hikayesi': 5,
+    'askerlik_celbi': 5,
+    'anneye_kim_bakacak': 5,
+    'yks': 4,
+    'lgs': 3,
+    'ilkokul_ilk_gun': 2,
+  };
 }

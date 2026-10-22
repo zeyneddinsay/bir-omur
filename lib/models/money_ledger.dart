@@ -12,6 +12,9 @@ enum MoneySource {
 
   /// Evdeki çocukların gideri.
   cocuk,
+
+  /// Eksi bakiyenin faizi.
+  faiz,
   emekliAyligi,
 
   /// Çalışmamış ya da yeterince çalışmamış yaşlıya devletin 65 yaş aylığı.

@@ -25,8 +25,8 @@
   },
   {
     "id": "dogdugu_evde",
-    "name": "Hiç Taşınmadı",
-    "description": "70 yaşını geçti ve bir kez bile taşınmadı.",
+    "name": "Bir Şehrin Çocuğu",
+    "description": "70 yaşını geçti; hayatını tek bir şehirde geçirdi.",
     "requires": { "minDeathAge": 70, "counters": { "max": { "moves": 1 } } }
   },
   {

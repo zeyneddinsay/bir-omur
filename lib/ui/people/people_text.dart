@@ -161,7 +161,15 @@ extension PeopleNames on AppLocalizations {
     };
     final fullName = '${p.name} ${p.surname}'.trim();
     return switch (news.kind) {
-      NewsKind.kardesDogdu => news_kardesDogdu(p.name),
+      NewsKind.kardesDogdu =>
+        c.people.all.any(
+              (x) =>
+                  x.kin == Kinship.kardes &&
+                  x.id != p.id &&
+                  x.bornAt < p.bornAt,
+            )
+            ? news_kardesDogduYine(p.name)
+            : news_kardesDogdu(p.name),
       NewsKind.yeniSinif => switch (news.detail) {
         'ilkokul' => news_yeniSinif_ilkokul(fullName),
         'ortaokul' => news_yeniSinif_ortaokul(fullName),

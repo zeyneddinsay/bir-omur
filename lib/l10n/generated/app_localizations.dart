@@ -442,6 +442,18 @@ abstract class AppLocalizations {
   /// **'Kredi çıkmıyor: taksit gelirinin yarısını geçer'**
   String get actionBlocked_kredi;
 
+  /// No description provided for @actionBlocked_gelir.
+  ///
+  /// In tr, this message translates to:
+  /// **'Gelirin kirayı ve geçimi karşılamıyor (önce iş ya da birikim)'**
+  String get actionBlocked_gelir;
+
+  /// No description provided for @moveBlocked_gelir.
+  ///
+  /// In tr, this message translates to:
+  /// **'Orada ailen yok; gelirin kirayı ve geçimi karşılamıyor'**
+  String get moveBlocked_gelir;
+
   /// No description provided for @ageUpButton.
   ///
   /// In tr, this message translates to:
@@ -1227,6 +1239,12 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Çocukların gideri'**
   String get money_cocuk;
+
+  /// No description provided for @money_faiz.
+  ///
+  /// In tr, this message translates to:
+  /// **'Borcun faizi'**
+  String get money_faiz;
 
   /// No description provided for @money_emekliAyligi.
   ///
@@ -2697,6 +2715,12 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'{name} doğdu. Artık bir kardeşin var.'**
   String news_kardesDogdu(String name);
+
+  /// No description provided for @news_kardesDogduYine.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bir kardeşin daha oldu: {name}.'**
+  String news_kardesDogduYine(String name);
 
   /// No description provided for @news_yeniSinif_ilkokul.
   ///

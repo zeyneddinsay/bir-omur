@@ -233,6 +233,14 @@ class AppLocalizationsTr extends AppLocalizations {
       'Kredi çıkmıyor: taksit gelirinin yarısını geçer';
 
   @override
+  String get actionBlocked_gelir =>
+      'Gelirin kirayı ve geçimi karşılamıyor (önce iş ya da birikim)';
+
+  @override
+  String get moveBlocked_gelir =>
+      'Orada ailen yok; gelirin kirayı ve geçimi karşılamıyor';
+
+  @override
   String get ageUpButton => 'Yaşlan';
 
   @override
@@ -710,6 +718,9 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get money_cocuk => 'Çocukların gideri';
+
+  @override
+  String get money_faiz => 'Borcun faizi';
 
   @override
   String get money_emekliAyligi => 'Emekli aylığı';
@@ -1632,6 +1643,11 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String news_kardesDogdu(String name) {
     return '$name doğdu. Artık bir kardeşin var.';
+  }
+
+  @override
+  String news_kardesDogduYine(String name) {
+    return 'Bir kardeşin daha oldu: $name.';
   }
 
   @override

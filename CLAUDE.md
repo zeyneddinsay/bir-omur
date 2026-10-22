@@ -242,6 +242,14 @@ D4b adımları (aşk, evlilik, çocuklar; `lib/engine/romance.dart`):
   - Bayram kimde olayı kayın aile ve anne yaşıyorsa gelir. "Evlen" baskısı sevgilisi olana ve evlenmiş olana gelmez (`iliskide`, `evlenmis` bayrakları).
 - D5 notları: test oyuncusunda evlenen %93, boşanan %6, hayat başına 2,7 çocuk, medyan evlilik yaşı 34. "Patron" lakabı %51 (test oyuncusu neredeyse her hayatta işletme açıyor). Zor gün hayat başına 4,1 yıl.
 
+D5 adımları (denge, mantık taraması, hikâye akışı, cila):
+
+- [x] Denge: yakınlık 70 üstü yarı hızla (Aile Bağı ölümde ortalama 65–76), aile tabanları düştü, itibar üst kademe ve itibarlı işletmeyle beslenir, Sözü Dinlenen eşiği 70, berber cirosu 1,1 milyon.
+- [x] Bağımsız tam oyun taraması: arşivdekiler de yaşlanır ve vefat eder (en geç 105); eksi bakiyeye %15 faiz; gelir kirayı karşılamıyorsa evden çıkılamaz ve ailesiz şehre taşınılamaz; kirada borca batana "kira borcu" olayı; emeklinin yaşam gideri 100 bin; en büyük an dönüm noktalarından seçilir; uzak akrabanın vefatı yalnızca günlükte, kardeşin ayrı cenaze kartı; istifa ve satışla vakit kazanılmaz; askerde YKS yok; yılbaşı durumu kayda girer.
+- [x] Hikâye akışı (`life_report hikaye TOHUM` ile yıl yıl döküm): cümle başında büyük harf; geri dönüş olayları (çocukluk ve okul anıları yıllar sonra döner) ve yeni iplikler (girişim, komşu gencine borç, eski sevgilinin düğünü); yaşlılık, torun, yeğen, çocukluk ve yetişkinlik olayları; eş ve akraba yanlış rolde çıkmaz; eş vefatından sonra 2 yıl yas; oyuncunun adı başkasına verilmez; tekrar eden esprilere ömür sınırı; günlükte seçimler olayın kısa hâliyle.
+- [x] Cila: kendi işindeki oyuncu "Kendi işinde", Varlıklar'da işletme satırları, işletme açılamama sebebi (kredi), ölüm ekranında tekrar eden satır yok, rozet adı "Bir Şehrin Çocuğu".
+- [ ] Telefonda deneme (kullanıcı)
+
 ## Bekleyen aşama: F3a — Dağıtıma hazırlık
 
 Sıra kararı (15 Ekim 2026): GDD'deki F3 → F4 sırası yerine F3a (dağıtıma hazırlık) → F4 (reklam ve satın alma) → F3b (kapalı beta: Google Play kapalı testi ve TestFlight). Kullanıcı dış dağıtımı uygulama bitince yapmak istiyor. 22 Ekim 2026'da D aşaması öne alındı; kalan iki adım D5'ten sonra yapılır.

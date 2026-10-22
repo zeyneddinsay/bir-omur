@@ -263,9 +263,9 @@ class CareerTick {
       // Emekli de eski makamıyla anılır.
       final tier = c.careerJob?.tier ?? 0;
       final standing = tier >= 4
-          ? 2
+          ? 3
           : tier >= 3
-          ? 1
+          ? 2
           : 0;
       if (standing > 0) {
         c = c.copyWith(stats: c.stats.withDelta(StatKind.reputation, standing));
@@ -303,9 +303,9 @@ class CareerTick {
         c = Careers.tempoEffect(c, next.tempo);
         // Üst kademe mahallede söz sahibi yapar.
         final standing = next.tier >= 4
-            ? 2
+            ? 3
             : next.tier >= 3
-            ? 1
+            ? 2
             : 0;
         if (standing > 0) {
           c = c.copyWith(

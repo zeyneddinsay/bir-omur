@@ -152,6 +152,8 @@ abstract final class EducationRules {
     final e = c.education;
     if (e.isStudent || e.isGraduate || e.apprentice) return false;
     if (c.age == yksAge && e.yksAttempts == 0) return true;
+    // Askerdeki yıl sınava girilmez; tekrar ertesi yıla kalır.
+    if (c.hasFlag('askerde')) return false;
     return c.hasFlag(retakeFlag) && c.age > yksAge;
   }
 

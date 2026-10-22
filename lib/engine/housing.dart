@@ -266,6 +266,13 @@ abstract final class Housing {
     return identical(book, c.people) ? c : c.copyWith(people: book);
   }
 
+  /// Kira ve yaşam giderini karşılayabilir mi: düzenli geliri yetiyor ya da
+  /// üç yıllık gideri cebinde.
+  static bool canAffordHome(Character c, int rent) {
+    final yearly = rent + Economy.livingCost;
+    return regularIncome(c) >= yearly || c.stats.money >= 3 * yearly;
+  }
+
   /// Eş ve 18 yaşından küçük çocuklar oyuncunun şehrine taşınır.
   static Character moveHousehold(Character c) {
     var book = c.people;
@@ -383,4 +390,7 @@ enum MoveBlocked {
 
   /// Zaten bu şehirde.
   ayniSehir,
+
+  /// Orada ailesi yok ve geliri kirayı karşılamıyor.
+  gelir,
 }

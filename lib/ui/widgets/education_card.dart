@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../content/event_text.dart';
+import '../../content/person_text.dart';
 import '../../engine/engine.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../models/models.dart';
@@ -127,7 +128,7 @@ String noteLine(
       'kovuldun' => l10n.note_zorGun_kovuldun,
       'iflas' => l10n.note_zorGun_iflas,
       'vefat' => l10n.note_zorGun_vefat(
-        character?.people[parts.length > 1 ? parts[1] : '']?.name ?? '',
+        _personWord(character, parts.length > 1 ? parts[1] : ''),
       ),
       _ => l10n.note_zorGun_bunalim,
     },
@@ -337,4 +338,12 @@ String _worldSmallLine(
       : l10n.roleName(kind);
   final lower = role.isEmpty ? role : role[0].toLowerCase() + role.substring(1);
   return l10n.note_dunyaKucuk(p.name, lower, l10n.originSince(p.origin));
+}
+
+/// Akrabaysa akrabalık sözcüğü ("Annen"), değilse adı.
+String _personWord(Character? c, String id) {
+  final p = c?.people[id];
+  if (p == null) return '';
+  final kin = PersonText.kinWord(p);
+  return kin == null ? p.name : PersonText.capitalizeFirst(kin);
 }

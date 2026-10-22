@@ -28,8 +28,8 @@ const Map<String, Set<Kinship>> _funerals = {
     Kinship.hala,
     Kinship.dayi,
     Kinship.teyze,
-    Kinship.kardes,
   },
+  'cenaze_kardes': {Kinship.kardes},
   'cenaze_ebeveyn': {Kinship.anne, Kinship.baba},
 };
 
@@ -260,6 +260,12 @@ void main() {
               if (kins.contains(p.kin)) id,
           ];
           if (cards.isEmpty) continue;
+          // Uzak akrabanın vefatı yalnızca günlüğe düşer (cenaze_akraba 40+).
+          if (p.kin != Kinship.kardes &&
+              cards.contains('cenaze_akraba') &&
+              Relationships.closeness(p, died) < 40) {
+            continue;
+          }
           deaths++;
           final mourned = c.history.any(
             (r) => cards.contains(r.cardId) && r.people.containsValue(p.id),

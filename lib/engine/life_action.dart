@@ -19,6 +19,9 @@ enum ActionBlocked {
 
   /// Peşin alınamıyor ve taksit düzenli gelirin yarısını aşıyor.
   kredi,
+
+  /// Gelir kira ve yaşam giderini karşılamıyor.
+  gelir,
 }
 
 /// Aksiyon menüsünün kategorileri.

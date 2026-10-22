@@ -264,8 +264,22 @@ class LifeEngine {
     // Seçim koşulları değiştirdiyse (celp, istifa) artık uymayan olaylar düşer.
     final remaining = [
       for (final e in _state.pendingCards.skip(1))
-        if (e.card.conditions.isMetBy(character)) e,
+        if (e.card.conditions.isMetBy(character) &&
+            !_callerBecameFamily(e, character))
+          e,
     ];
+    // Bu yıla uymayan iplik (celpten sonra mezuna kalma) ertesi yıla kalır.
+    for (final e in _state.pendingCards.skip(1)) {
+      if (!remaining.contains(e) &&
+          e.card.chainOnly &&
+          e.card.id != HardDay.callCard) {
+        queue = queue.add(
+          e.card.id,
+          atAge: character.age + 1,
+          people: e.people,
+        );
+      }
+    }
     final storedOutcome = ChoiceOutcome(
       character: character,
       choice: outcome.choice,
@@ -291,6 +305,11 @@ class LifeEngine {
       notes: notes,
     ).withNews(_state.news).copyWith(listings: _state.listings);
   }
+
+  /// Zor gün araması, arayan bu arada aile olduysa (düğün) düşer.
+  static bool _callerBecameFamily(PendingEvent e, Character c) =>
+      e.card.id == HardDay.callCard &&
+      c.people[e.people[HardDay.callerSlot] ?? '']?.kin != null;
 
   /// Hayatın büyük olayları: düğünde evlilik kurulur (aile evinde yaşayan
   /// kiraya çıkar), doğumda çocuk seçilen adla gelir.
@@ -334,6 +353,18 @@ class LifeEngine {
     for (final (action, blocked) in actionOptions()) (action, blocked == null),
   ];
 
+  /// Evden çıkmak için gelir şartı: kira ve yaşam gideri karşılanmalı.
+  static bool _rentAffordable(LifeAction action, Character c) =>
+      switch (action.special) {
+        ActionSpecial.evdenCik => Housing.canAffordHome(
+          c,
+          Economy.rentFor(c.city),
+        ),
+        ActionSpecial.evArkadasi when c.home == HomeKind.aile =>
+          Housing.canAffordHome(c, Economy.rentFor(c.city) ~/ 2),
+        _ => true,
+      };
+
   /// Ev ve arabada kredi şartı.
   static bool _financed(LifeAction action, Character c) =>
       switch (action.special) {
@@ -353,6 +384,7 @@ class LifeEngine {
       }
       if (!action.canAfford(c, _market)) return ActionBlocked.para;
       if (!_financed(action, c)) return ActionBlocked.kredi;
+      if (!_rentAffordable(action, c)) return ActionBlocked.gelir;
       return null;
     }
 
@@ -385,6 +417,9 @@ class LifeEngine {
     }
     if (!_financed(action, c)) {
       throw StateError('$actionId için kredi çıkmıyor');
+    }
+    if (!_rentAffordable(action, c)) {
+      throw StateError('$actionId için gelir yetmiyor');
     }
 
     var character = switch (action.special) {
@@ -572,6 +607,11 @@ class LifeEngine {
         age: age,
         source: MoneySource.cocuk,
         amount: -report.childCost,
+      ),
+      MoneyEntry(
+        age: age,
+        source: MoneySource.faiz,
+        amount: -report.debtInterest,
       ),
       MoneyEntry(
         age: age,
@@ -913,8 +953,10 @@ class LifeEngine {
   LifeState quitJob() {
     final c = _state.character;
     if (c.job == null) throw StateError('İş yok');
+    final next = Careers.leaveJob(c);
     return _state = _state.copyWith(
-      character: Careers.leaveJob(c),
+      character: next,
+      timeSpent: _state.timeSpent + _timeGain(c, next),
       notes: [..._state.notes, const LifeNote(NoteKind.istifa)],
     );
   }
@@ -923,8 +965,10 @@ class LifeEngine {
   LifeState retireEarly() {
     final c = _state.character;
     if (!JobMarket.canRetireEarly(c)) throw StateError('Erken emeklilik yok');
+    final retired = Economy.syncDerivedFlags(Careers.retire(c, careers));
     return _state = _state.copyWith(
-      character: Economy.syncDerivedFlags(Careers.retire(c, careers)),
+      character: retired,
+      timeSpent: _state.timeSpent + _timeGain(c, retired),
       notes: [..._state.notes, const LifeNote(NoteKind.emekliOldun)],
     );
   }
@@ -947,6 +991,11 @@ class LifeEngine {
       _state.character.copyWith(job: job.copyWith(tempo: tempo)),
     );
   }
+
+  /// Yıl ortasında iş ya da işletme bırakılınca hak artar ama o yılın vakti
+  /// artmaz: fark harcanmış sayılır.
+  static int _timeGain(Character before, Character after) =>
+      max(0, ActionCatalog.timeFor(after) - ActionCatalog.timeFor(before));
 
   /// Değişiklikten sonra harcanan vakit yeni hakkı aşmıyor mu.
   bool _timeFits(Character next) =>
@@ -1157,6 +1206,7 @@ class LifeEngine {
           ref: '${b.type}:${sell ? 'satis' : 'kapanis'}',
         ),
       ),
+      timeSpent: _state.timeSpent + _timeGain(before, next),
       notes: [
         ..._state.notes,
         LifeNote(
@@ -1256,6 +1306,17 @@ class LifeEngine {
         return MoveBlocked.vakit;
       }
       if (c.stats.money < Housing.relocationCost(city)) return MoveBlocked.para;
+      final family = c.people
+          .bornBy(c.age)
+          .any(
+            (p) =>
+                p.isAlive &&
+                (p.kin == Kinship.anne || p.kin == Kinship.baba) &&
+                p.city == city,
+          );
+      if (!family && !Housing.canAffordHome(c, Economy.rentFor(city))) {
+        return MoveBlocked.gelir;
+      }
       return null;
     }
 
@@ -1385,6 +1446,7 @@ class LifeEngine {
     'queue': _state.queue.toJson(),
     'pending': [for (final e in _state.pendingCards) e.toJson()],
     'timeSpent': _state.timeSpent,
+    'yearStart': ?_yearStart?.toJson(),
     'actionsUsed': _state.actionsUsed.toList(),
     'cause': _state.summary?.cause.name,
     'news': [for (final n in _state.news) n.toJson()],
@@ -1481,6 +1543,9 @@ class LifeEngine {
       ],
       applied: {...?(snapshot['applied'] as List?)?.cast<String>()},
     );
+    if (snapshot['yearStart'] case final Map<String, dynamic> start) {
+      engine._yearStart = Character.fromJson(start);
+    }
     return engine;
   }
 

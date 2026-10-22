@@ -2,6 +2,7 @@ import 'package:bir_omur/engine/engine.dart';
 import 'package:bir_omur/models/models.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../helpers/families.dart';
 import '../helpers/test_character.dart';
 
 Character _apply(Character c, Effect e) => EffectResolver.applyEffect(c, e);
@@ -88,11 +89,12 @@ void main() {
       }
     });
 
-    test('borç erimez', () {
+    test('borç erimez ama faiz işler', () {
       final (c, _, report) = EconomyTick(SeededRandom(1))
           .apply(testCharacter(money: -50000), Market.initial);
       expect(report.cashEroded, 0);
-      expect(c.stats.money, -50000);
+      expect(report.debtInterest, 7500);
+      expect(c.stats.money, -57500);
     });
 
     test('kira ve yaşam gideri yalnızca evden çıkmış olandan alınır', () {
@@ -131,11 +133,13 @@ void main() {
       expect(c.stats.money, -50000);
       expect(c.assets.loanYearsLeft, 1);
       (c, market, _) = tick.apply(c, market);
-      expect(c.stats.money, -100000);
+      // İkinci yıl: taksit ve geçen yılın eksisinin faizi (%15).
+      expect(c.stats.money, -107500);
       expect(c.assets.hasLoan, isFalse);
       expect(c.assets.loanPayment, 0);
       (c, market, _) = tick.apply(c, market);
-      expect(c.stats.money, -100000);
+      // Kredi bitti; eksiye yalnızca faiz işler.
+      expect(c.stats.money, -123625);
     });
 
     test('araba masraf çıkarır, eskir ve keyif verir', () {
@@ -223,18 +227,30 @@ void main() {
   });
 
   test('yaşlanma ekonomiyi işletir ve piyasayı ilerletir', () {
-    final engine = LifeEngine(deck: EventDeck(const []), seed: 4);
-    engine.startLife();
-    expect(engine.lastEconomy, isNull);
-    while (engine.state.character.age < 18) {
-      engine.advanceYear();
+    // 18 yaş desteği kirayı karşılayan bir hayat: ev arkadaşıyla kiraya
+    // çıkar (gelir şartı).
+    late LifeEngine engine;
+    for (var seed = 0; ; seed++) {
+      expect(seed, lessThan(300), reason: 'kira gücü olan hayat bulunamadı');
+      engine = LifeEngine(
+        deck: EventDeck(const []),
+        seed: seed,
+        families: realFamilies(),
+      )..startLife();
+      expect(engine.lastEconomy, isNull);
+      while (engine.state.character.age < 18) {
+        engine.advanceYear();
+      }
+      final ok = engine.availableActions().any(
+        (a) => a.$1.id == 'ev_arkadasi' && a.$2,
+      );
+      if (ok) break;
     }
-    // 18 yaşında aileden 330 bin destek; evden çıkıp kiraya geçer.
-    final c = engine.doAction('evden_cik').character;
-    expect(c.home, HomeKind.kira);
+    final c = engine.doAction('ev_arkadasi').character;
+    expect(c.home, HomeKind.evArkadasi);
     engine.advanceYear();
     final report = engine.lastEconomy!;
-    expect(report.rentPaid, Economy.rentFor(c.city));
+    expect(report.rentPaid, Economy.rentFor(c.city) ~/ 2);
     expect(report.livingCost, Economy.livingCost);
     expect(engine.market.inflation, report.inflation);
     expect(engine.market.goldPrice, isNot(Economy.initialGoldPrice));

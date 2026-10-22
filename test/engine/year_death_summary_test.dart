@@ -166,7 +166,7 @@ void main() {
     Nickname nick(Character c) => SummaryBuilder.nicknameFor(c, Market.initial);
 
     test('özel durumlar önce gelir: asırlık, zengin, borçlu', () {
-      expect(nick(testCharacter(age: 97, money: -10)), Nickname.asirlikCinar);
+      expect(nick(testCharacter(age: 100, money: -10)), Nickname.asirlikCinar);
       expect(
         nick(
           testCharacter(money: SummaryBuilder.richThreshold, reputation: 99),

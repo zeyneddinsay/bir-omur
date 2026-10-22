@@ -132,7 +132,7 @@ void main() {
   });
 
   test('motor: taşınma şartları ve sebepleri', () {
-    // 18 yaş desteği alan (dar olmayan) bir aile seç.
+    // 18 yaş desteği büyük olan (varlıklı) bir aile seç: kira gücü yeter.
     late LifeEngine engine;
     for (var seed = 0; ; seed++) {
       engine = LifeEngine(
@@ -140,12 +140,15 @@ void main() {
         seed: seed,
         families: realFamilies(),
       )..startLife();
-      if (engine.state.character.background != FamilyBackground.dar) break;
+      if (engine.state.character.background == FamilyBackground.varlikli) break;
     }
     MoveBlocked? reason(String city) =>
         engine.moveOptions().firstWhere((o) => o.$1 == city).$2;
+    // Küçük bir şehir: kirası ucuz.
     final other = Cities.all.firstWhere(
-      (city) => city != engine.state.character.city,
+      (city) =>
+          city != engine.state.character.city &&
+          Cities.typeOf(city) == CityType.kucuk,
     );
     expect(reason(other), MoveBlocked.yas);
     while (engine.state.character.age < 18) {

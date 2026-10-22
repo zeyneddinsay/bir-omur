@@ -37,6 +37,7 @@ class EconomyReport {
     this.livingCost = 0,
     this.childCost = 0,
     this.spouseIncome = 0,
+    this.debtInterest = 0,
     this.goldPriceChange = 0,
   });
 
@@ -52,6 +53,9 @@ class EconomyReport {
   /// Evdeki çocukların gideri ve çalışan eşin hanenin bütçesine kattığı.
   final int childCost;
   final int spouseIncome;
+
+  /// Eksi bakiyenin yıllık faizi.
+  final int debtInterest;
   final double goldPriceChange;
 }
 
@@ -96,6 +100,12 @@ abstract final class Economy {
   static const int dormCost = 60000;
 
   /// Nerede yaşandığına göre yıllık yaşam gideri.
+  /// Eksi bakiyenin yıllık faizi.
+  static const double debtInterestRate = 0.15;
+
+  /// Emeklinin yaşam gideri daha düşüktür.
+  static const int retiredLivingCost = 100000;
+
   /// Evdeki (18 yaşından küçük) çocuk başına yıllık gider.
   static const int childYearlyCost = 100000;
 
@@ -131,10 +141,12 @@ abstract final class Economy {
 
   /// Oyuncunun bu yılki yaşam gideri: aile evinde anne ya da baba yoksa
   /// (vefat, taşınma) gider kendisine kalır, kira yoktur.
-  static int livingCostOf(Character c) =>
-      c.home == HomeKind.aile && c.age > 18 && _parentsGone(c)
-      ? livingCost
-      : livingCostFor(c.home);
+  static int livingCostOf(Character c) {
+    final base = c.home == HomeKind.aile && c.age > 18 && _parentsGone(c)
+        ? livingCost
+        : livingCostFor(c.home);
+    return c.isRetired && base > retiredLivingCost ? retiredLivingCost : base;
+  }
 
   /// Anne ve baba biliniyor ama hiçbiri oyuncunun şehrinde yaşamıyor.
   static bool _parentsGone(Character c) =>
@@ -302,6 +314,11 @@ class EconomyTick {
         ? (money * inflation * Economy.cashErosionShare).round()
         : 0;
     money -= eroded;
+    // Borç bedava değil: eksi bakiyeye faiz işler.
+    final debtInterest = money < 0
+        ? (-money * Economy.debtInterestRate).round()
+        : 0;
+    money -= debtInterest;
 
     var a = c.assets;
     final rentPaid = Economy.rentDue(c);
@@ -354,6 +371,7 @@ class EconomyTick {
         livingCost: livingCost,
         childCost: childCost,
         spouseIncome: spouseIncome,
+        debtInterest: debtInterest,
         goldPriceChange: goldChange,
       ),
     );

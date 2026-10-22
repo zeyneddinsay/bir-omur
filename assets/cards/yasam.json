@@ -576,5 +576,24 @@
       "fail": { "health": -3 }
     }
   }
+,
+  {
+    "id": "kira_borcu",
+    "type": "genel",
+    "theme": "para",
+    "minAge": 19,
+    "maxAge": 100,
+    "repeat": { "cooldown": 3, "max": 3 },
+    "conditions": { "flags": ["kiraci", "borclu"] },
+    "text": "Kira yine gecikti, kart borcu büyüyor. Ev sahibi kibar ama mesajları kısaldı. Bir şeyin değişmesi lazım.",
+    "left": {
+      "label": "Daha küçük eve geçerim",
+      "effects": { "rentChange": -110000, "money": -20000, "happiness": -2 }
+    },
+    "right": {
+      "label": "Bir yolunu bulurum",
+      "effects": { "happiness": -3 }
+    }
+  }
 
 ]

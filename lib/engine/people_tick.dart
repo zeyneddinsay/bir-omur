@@ -80,6 +80,9 @@ class PeopleTick {
   /// Bu yaştan genç kişiler vefat etmez.
   static const int deathMinAge = 50;
 
+  /// Bu yaşa gelen kişi o yıl vefat eder.
+  static const int maxPersonAge = 105;
+
   /// Okul kademelerinin başladığı yaşlar ve evre kimlikleri.
   static const Map<int, String> schoolStarts = {
     7: 'ilkokul',
@@ -125,6 +128,11 @@ class PeopleTick {
     _household(c);
     for (final p in _book.active(_now).toList()) {
       _ownYear(p, c);
+    }
+    // Arşivdekiler de yaşlanır ve vefat eder; haberleri yalnızca akrabaysa
+    // gelir.
+    for (final p in _book.all.toList()) {
+      if (p.archived && p.isAlive && p.bornAt <= _now) _archivedYear(p);
     }
     final stage = schoolStarts[_now];
     if (stage != null) _newClass(c, stage);
@@ -329,8 +337,23 @@ class PeopleTick {
     _book = _book.update(p);
   }
 
+  void _archivedYear(Person p) {
+    final age = p.ageAt(_now);
+    var next = p;
+    if (age >= 60) {
+      final loss = _between(1, 3) + (age >= 75 ? _between(1, 3) : 0);
+      next = next.copyWith(health: max(0, next.health - loss));
+    }
+    if (_dies(next, age)) {
+      next = next.copyWith(diedAt: _now);
+      if (next.kin != null) _news.add(PersonNews(NewsKind.vefat, next.id));
+    }
+    _book = _book.update(next);
+  }
+
   bool _dies(Person p, int age) {
     if (age < deathMinAge) return false;
+    if (age >= maxPersonAge) return true;
     if ((p.kin == Kinship.anne || p.kin == Kinship.baba) &&
         _now < parentsSafeUntil) {
       return false;

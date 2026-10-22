@@ -64,6 +64,7 @@ extension L10nNames on AppLocalizations {
     ActionBlocked.buYil => actionBlocked_buYil,
     ActionBlocked.isYok => actionBlocked_isYok,
     ActionBlocked.kredi => actionBlocked_kredi,
+    ActionBlocked.gelir => actionBlocked_gelir,
   };
 
   String backgroundName(FamilyBackground background) => switch (background) {
