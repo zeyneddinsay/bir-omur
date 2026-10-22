@@ -1396,6 +1396,18 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
+  String note_iseAldin(String person, String name) {
+    return '$person, $name işinde çalışmaya başladı.';
+  }
+
+  @override
+  String get businessHire => 'Tanıdığını işe al (1 vakit)';
+
+  @override
+  String get businessHireHint =>
+      'Tanıdık güvenilir ama kovması zor: bir çalışanın yerine geçer.';
+
+  @override
   String money_isletme(String name, String what) {
     return '$name: $what';
   }

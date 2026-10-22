@@ -36,8 +36,9 @@ void main() {
       JobMarket.blocked(c, l, book, timeLeft: 3, applied: const {});
 
   group('meslekler', () {
-    test('ilk sürümün yedi mesleği var; esnaf yok', () {
+    test('ilk sürümün yedi ilanlı mesleği ve aile fabrikası var; esnaf yok', () {
       expect(book.all.map((c) => c.id).toSet(), {
+        'aile_fabrikasi',
         'memur',
         'hemsire',
         'yazilimci',
@@ -47,6 +48,11 @@ void main() {
         'emlakci',
       });
       for (final career in book.all) {
+        // Aile fabrikasına ilanla değil, babanın teklifiyle girilir.
+        if (career.id == 'aile_fabrikasi') {
+          expect(career.listing, isNull);
+          continue;
+        }
         expect(career.listing, isNotNull, reason: career.id);
         expect(career.interviews, isNotEmpty, reason: career.id);
         for (final occupation in career.occupations) {

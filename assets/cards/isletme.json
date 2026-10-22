@@ -473,5 +473,51 @@
       "label": "Mahkemede görüşürüz",
       "effects": { "money": -50000, "happiness": -3, "business": -1 }
     }
+  },
+  {
+    "id": "akraba_calisan_gec",
+    "type": "kisi",
+    "theme": "is",
+    "minAge": 18,
+    "maxAge": 90,
+    "repeat": { "cooldown": 4, "max": 2 },
+    "conditions": { "business": "any" },
+    "roles": {
+      "akraba": { "kin": ["kuzen", "yegen", "kardes"], "roles": ["calisan"] }
+    },
+    "speaker": "akraba",
+    "text": "{akraba.akraba} {akraba.ad} üç aydır dükkâna öğlen geliyor. 'Trafik vardı' diyor; evi iki sokak ötede.",
+    "left": {
+      "label": "Bir uyarayım",
+      "effects": {
+        "business": 2,
+        "people": {
+          "akraba": {
+            "memory": {
+              "kind": "akraba_uyardi",
+              "label": "Akrabayım diye bile göz yummadı",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Ses etmem",
+      "effects": {
+        "business": -3,
+        "people": {
+          "akraba": {
+            "memory": {
+              "kind": "akraba_kolladi",
+              "label": "Geç kaldığımda beni kolladı",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
   }
 ]

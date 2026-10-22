@@ -105,6 +105,11 @@ String noteLine(AppLocalizations l10n, LifeNote note, CareerBook careers) {
       businessTypeName(l10n, parts[0]),
     ),
     NoteKind.ortakAlindi => d,
+    NoteKind.iseAldin when parts.length == 2 => l10n.note_iseAldin(
+      parts[1],
+      businessTypeName(l10n, parts[0]),
+    ),
+    NoteKind.iseAldin => d,
   };
 }
 

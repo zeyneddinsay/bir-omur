@@ -251,6 +251,9 @@ class LifeController extends Notifier<LifeState?> {
   void takePartner(String id, String personId) =>
       _update(engine.takePartner(id, personId));
 
+  void hireKnown(String id, String personId) =>
+      _update(engine.hireKnown(id, personId));
+
   void disposeBusiness(String id, {required bool sell}) =>
       _update(engine.disposeBusiness(id, sell: sell));
 

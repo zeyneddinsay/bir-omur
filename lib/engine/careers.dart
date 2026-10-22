@@ -95,7 +95,7 @@ abstract final class Careers {
     switch (change) {
       case JoinCareer(:final careerId, :final tier):
         final career = book.require(careerId);
-        return c.copyWith(
+        return leaveJob(c).copyWith(
           job: Job(careerId: careerId, tier: min(tier, career.maxTier)),
         );
       case PromoteCareer(:final steps):

@@ -83,6 +83,19 @@
     "requires": { "nickname": "mahalleninZengini" }
   },
   {
+    "id": "zincirin_sahibi",
+    "name": "Zincirin Sahibi",
+    "description": "Mahalledeki dükkânı üç şubeli bir zincire dönüştü.",
+    "rarity": "nadir",
+    "requires": { "conditions": { "flags": ["zincir_sahibi"] } }
+  },
+  {
+    "id": "akraba_ortakligi",
+    "name": "Akrabayla İş Olur mu?",
+    "description": "Bir akrabasını işine ortak etti; bayramlarda hesap da konuşuldu.",
+    "requires": { "conditions": { "flags": ["akraba_ortak"] } }
+  },
+  {
     "id": "asirlik_cinar",
     "name": "Asırlık Çınar",
     "description": "Yüzüncü yaş gününü kutladı.",

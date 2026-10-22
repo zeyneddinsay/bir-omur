@@ -66,6 +66,9 @@ enum NoteKind {
 
   /// Ortak alındı; detay `tür|kişi adı`.
   ortakAlindi,
+
+  /// Tanıdığını işe aldı: `tür|ad`.
+  iseAldin,
 }
 
 class LifeNote {

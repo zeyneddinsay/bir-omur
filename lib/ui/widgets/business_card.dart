@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../engine/engine.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../models/models.dart';
+import '../people/people_text.dart';
 import '../providers.dart';
 
 String businessTypeName(AppLocalizations l10n, String type) => switch (type) {
@@ -227,6 +228,21 @@ class _BusinessCard extends ConsumerWidget {
                 ),
               ],
             ),
+            if (canAct && engine.canHireKnown(b.id)) ...[
+              const SizedBox(height: 4),
+              Text(l10n.businessHire, style: theme.textTheme.titleSmall),
+              Text(l10n.businessHireHint, style: theme.textTheme.bodySmall),
+              for (final p in engine.hireCandidates(b.id).take(3))
+                ListTile(
+                  key: Key('business_hire_${p.id}'),
+                  contentPadding: EdgeInsets.zero,
+                  dense: true,
+                  leading: const Icon(Icons.person_add_alt_outlined),
+                  title: Text(p.name),
+                  subtitle: Text(l10n.relationOf(p)),
+                  onTap: () => controller.hireKnown(b.id, p.id),
+                ),
+            ],
             if (partner != null)
               Padding(
                 padding: const EdgeInsets.only(top: 4),

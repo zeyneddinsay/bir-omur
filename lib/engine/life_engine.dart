@@ -912,6 +912,33 @@ class LifeEngine {
     );
   }
 
+  /// İşe alınabilecek tanıdıklar.
+  List<Person> hireCandidates(String id) =>
+      BusinessRules.hireCandidates(_state.character, _business(id));
+
+  bool canHireKnown(String id) =>
+      _state.timeLeft >= BusinessRules.adTimeCost &&
+      hireCandidates(id).isNotEmpty;
+
+  /// Tanıdığını işe alır (1 vakit).
+  LifeState hireKnown(String id, String personId) {
+    if (!canHireKnown(id) || !hireCandidates(id).any((p) => p.id == personId)) {
+      throw StateError('$personId işe alınamaz');
+    }
+    final c = _state.character;
+    return _state = _state.copyWith(
+      character: BusinessRules.hireKnown(c, id, personId),
+      timeSpent: _state.timeSpent + BusinessRules.adTimeCost,
+      notes: [
+        ..._state.notes,
+        LifeNote(
+          NoteKind.iseAldin,
+          '${_business(id).type}|${c.people[personId]!.name}',
+        ),
+      ],
+    );
+  }
+
   /// Ortak olabilecek tanıdıklar.
   List<Person> partnerCandidates(String id) =>
       BusinessRules.partnerCandidates(_state.character, _business(id));

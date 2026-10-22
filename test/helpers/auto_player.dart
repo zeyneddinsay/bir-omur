@@ -134,6 +134,12 @@ class AutoPlayer {
           }
         case 7 when (b.lastProfit ?? 0) < 0:
           return engine.disposeBusiness(b.id, sell: _random.nextBool());
+        case 8 || 9 || 10 when engine.canHireKnown(b.id):
+          // Çoğunlukla akrabayı alır.
+          final candidates = engine.hireCandidates(b.id);
+          final kin = candidates.where((p) => p.kin != null).toList();
+          final pick = kin.isNotEmpty ? kin.first : candidates.first;
+          return engine.hireKnown(b.id, pick.id);
       }
     }
     return null;

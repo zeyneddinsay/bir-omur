@@ -30,6 +30,7 @@ class ContentRegistry {
     ...EducationRules.derivedFlags,
     JobMarket.kpssFlag,
     JobMarket.codingFlag,
+    ...BusinessRules.ownedFlags,
   };
 
   /// Motorun koddan baktığı, kartların açtığı bayraklar; kayıtta

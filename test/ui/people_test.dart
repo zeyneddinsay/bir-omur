@@ -175,4 +175,30 @@ void main() {
     }
     expect(find.byKey(const Key('age_up')), findsOneWidget);
   });
+
+  testWidgets('Okul / İş sekmesinden işletme açılır ve yönetilir', (tester) async {
+    final container = await _bornAndGrown(tester, 19);
+    final before = container.read(lifeProvider)!;
+    expect(before.character.stats.money, greaterThanOrEqualTo(130000));
+    await tester.tap(find.byKey(const Key('tab_work')));
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.byKey(const Key('business_open')));
+    await tester.tap(find.byKey(const Key('business_open')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('open_yazilim')), findsOneWidget);
+    await tester.tap(find.byKey(const Key('open_simit')));
+    await tester.pumpAndSettle();
+    final after = container.read(lifeProvider)!;
+    final b = after.character.businesses.single;
+    expect(b.type, 'simit');
+    expect(after.timeSpent, before.timeSpent + BusinessRules.openTimeCost);
+    await tester.ensureVisible(find.byKey(Key('business_price_${b.id}')));
+    await tester.tap(find.text('Ucuz'));
+    await tester.pumpAndSettle();
+    expect(
+      container.read(lifeProvider)!.character.businesses.single.price,
+      PriceLevel.ucuz,
+    );
+    expect(tester.takeException(), isNull);
+  });
 }

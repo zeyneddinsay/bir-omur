@@ -56,6 +56,13 @@ class BusinessYear {
 
 /// İşletme kuralları (canlı doküman, "Kendi işin").
 abstract final class BusinessRules {
+  /// Motorun bayrakları: bir işletmesi üç şubeye ulaştı; bir akrabasını
+  /// ortak etti; en az bir işletme açtı.
+  static const String chainFlag = 'zincir_sahibi';
+  static const String kinPartnerFlag = 'akraba_ortak';
+  static const String ownerFlag = 'isletme_acti';
+  static const Set<String> ownedFlags = {chainFlag, kinPartnerFlag, ownerFlag};
+
   /// Aynı anda en fazla iki işletme.
   static const int maxBusinesses = 2;
 
@@ -201,6 +208,7 @@ abstract final class BusinessRules {
       stats: c.stats.withMoneyDelta(-down),
       people: people,
       businesses: [...c.businesses, business],
+      flags: {...c.flags, ownerFlag},
     );
   }
 
@@ -518,8 +526,80 @@ abstract final class BusinessRules {
             loanYearsLeft: b.loanYearsLeft,
           );
     return _replace(
-      c.copyWith(stats: c.stats.withMoneyDelta(-cost), people: people),
+      c.copyWith(
+        stats: c.stats.withMoneyDelta(-cost),
+        people: people,
+        flags: {...c.flags, if (next.branches >= 3) chainFlag},
+      ),
       next,
+    );
+  }
+
+  /// İşe alınabilecek tanıdıklar: aynı şehirde, 18–60 yaşında, işi olmayan
+  /// ya da sıradan işte çalışan, kırgın olmayan ve henüz bu işletmede
+  /// olmayan. Yalnızca çalışanı olan işletmede.
+  static List<Person> hireCandidates(Character c, Business b) {
+    if (b.staff.isEmpty) return const [];
+    const busy = {'memur', 'ogretmen', 'polis', 'doktor', 'emekli'};
+    return [
+      for (final p in c.people.active(c.age))
+        if (p.isAlive &&
+            p.city == b.city &&
+            p.ageAt(c.age) >= 18 &&
+            p.ageAt(c.age) <= 60 &&
+            !busy.contains(p.occupation) &&
+            !b.staff.contains(p.id) &&
+            p.id != b.managerId &&
+            p.id != b.partnerId &&
+            Relationships.closeness(p, c.age) >= 30 &&
+            Relationships.hostility(p, c.age) < 40)
+          p,
+    ];
+  }
+
+  /// Tanıdığını işe alır: yabancı bir çalışanın yerine geçer (o "eski
+  /// çalışan" olur). Tanıdık güvenilirdir: itibar +3; ona olumlu anı
+  /// yazılır.
+  static Character hireKnown(Character c, String id, String personId) {
+    final b = _find(c, id)!;
+    final p = c.people[personId]!;
+    final replaced = b.staff.firstWhere(
+      (s) => c.people[s]?.kin == null,
+      orElse: () => b.staff.first,
+    );
+    var book = c.people;
+    if (book[replaced] case final old?) {
+      book = book.update(
+        old.copyWith(
+          roles: [
+            for (final r in old.roles)
+              r.kind == RoleKind.calisan ? r.ended() : r,
+          ],
+        ),
+      );
+    }
+    book = book.update(
+      Relationships.addMemory(
+        p.copyWith(roles: [...p.roles, const PersonRole(RoleKind.calisan)]),
+        Memory(
+          kind: 'ise_aldi',
+          label: 'Beni dükkânına işe aldı',
+          age: c.age,
+          tone: MemoryTone.olumlu,
+          severity: 2,
+        ),
+        now: c.age,
+      ),
+    );
+    return _replace(
+      c.copyWith(people: book),
+      b.copyWith(
+        staff: [
+          for (final s in b.staff)
+            if (s == replaced) personId else s,
+        ],
+        reputation: (b.reputation + 3).clamp(0, 100),
+      ),
     );
   }
 
@@ -562,6 +642,7 @@ abstract final class BusinessRules {
       c.copyWith(
         people: people,
         stats: c.stats.withMoneyDelta(partnerCapital(b)),
+        flags: {...c.flags, if (p.kin != null) kinPartnerFlag},
       ),
       b.copyWith(partnerId: personId, partnerShare: partnerShare),
     );

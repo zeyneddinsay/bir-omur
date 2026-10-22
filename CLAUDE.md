@@ -164,7 +164,37 @@ D2 adımları (eğitim, meslekler, ekonomi; telefon denemesi ve denetim bulgular
 - [x] D2.6 Meslekler: memur (KPSS ile), hemşire (hemşirelik), yazılımcı (bilgisayar ya da yazılım kursu), plaza çalışanı (her mezun), oto tamircisi (meslek lisesi ya da çıraklık), garson, emlakçı (oynak gelir); Esnaf ve "Zincirin Sahibi" rozeti kalktı (D3'te işletmeyle döner). Meslek dosyaları giriş şartı, ilan şirketleri, ilan cümleleri ve mülakat sorularını taşır. İşte performans (tempo: rahat / normal / yüklen; yüklenmek vakti 1 azaltır), terfi ve zam oyuncunun isteğiyle (yılda bir, 1 vakit), performans 20'nin altına inerse kovulma, 25 yıl çalışıp 55 yaşında erken emeklilik, maaş şehir çarpanıyla
 - [x] D2.7 İlanlar, mülakat, torpil, İş sekmesi: her yıl şehir türüne göre 3–6 ilan (%25 üst pozisyon, deneyim ister), mülakatta iki cevaplı soru (cevap hangi değere zar atacağını belirler), o meslekte çalışan yakın tanıdık aracı olabilir (60+ yakınlıkta doğrudan alınır, itibar −3). İşe girince patron ve üç iş arkadaşı gelir; ayrılınca "eski" olurlar (`lib/engine/jobs.dart`). "İş ara" aksiyonu kalktı; KPSS ve yazılım kursu aksiyon
 - [x] D2.8 D2 olayları: 25 yeni olay (`genclik.json`, `is_yeri.json`): meslek lisesi stajı, deneme sınavı, yurt ve ev arkadaşı, vize gecesi, proje grubu, kulüp, staj (`staj_yapti` mülakata +8), harçlık, bölükten arama, işsiz mezun; iş yerinde cuma e-postası, çay ocağı, yılbaşı çekilişi, rapor, "biz bir aileyiz", fikir hırsızlığı, ulaşım, akraba torpili; kira zammı, kombi, yeni komşunun keki, kredi kartı, altın günü, bakkalın önünde maç. Kart şemasına `performance` etkisi (yalnız iş koşullu olaylarda)
-- [ ] D2.9 300 hayat testi, `life_report`, bağımsız mantık denetimi
+- [x] D2.9 Bağımsız mantık denetimi (17 bulgu) ve düzeltmeler:
+  - Vakit artık harcanandan hesaplanır (`LifeState.timeSpent`). Tempo ve başında durma düğmesiyle vakit kazanılmaz.
+  - İş okuldan önce gelir: çalışan açıköğretimli 3 vakit alır, yarı zamanlı iş yapamaz.
+  - Lisede (YKS yılı dahil) ilan yok. Örgün öğrenciliğe yerleşen işinden ayrılır.
+  - Askerdeki yıl maaş, kıdem, yaşam gideri ve yaşa bağlı ölüm yok. Celpten sonra o yılın uymayan olayları düşer.
+  - Taşınan ya da işinden ayrılan oyuncunun patronu ve iş arkadaşları "eski" olur. Yere bağlı rolü olan kişi taşınmaz, emekli patronun rolü biter, patron en fazla 62 yaşında.
+  - Yurtta komşu yok; okul yüzünden şehir değişince mahalle de değişir.
+  - Anne ve baba yoksa aile evinde yaşam gideri ödenir ("Aile evinde yaşıyorsun").
+  - Kamu işi (`public`): kovulma yok, maaş her şehirde aynı, torpil yok. Amir rolleri: patron, amir, usta (meslek dosyasında `boss`).
+  - Kovulan yarım yılın maaşını ve kıdem tazminatını alır.
+  - Ev ve araba: para yetiyorsa peşin alınır. Taksit düzenli gelirin yarısını geçemez. Satış önce krediyi kapatır. Ev fiyatı şehre göre değişir ve evin değeri saklanır.
+  - Torpil eşiği düşürür (yakın biri −20, uzak biri −10), kimseyi doğrudan işe aldırmaz.
+  - Terfi şansı en fazla %85. Terfi ve zam düğmesinin altında neden kapalı olduğu yazar.
+  - Kart koşullarına meslek listesi (`careers`) ve aynı evde yaşama (`livesTogether`) eklendi; ofis kartları ve aynı evdeki aileyle çelişen kartlar düzeltildi.
+  - Hoş geldin kartları yalnızca taşınma yılında gelir (`yeni_tasindi`).
+  - Emekli aylığı son işin maaşına göre hesaplanır.
+
+D3 adımları (kendi işin):
+
+- [x] İşletmeler: simit, berber, oto yıkama, yazılım (büyüyünce ekipli). Kurallar `lib/engine/business.dart`, türler `lib/engine/business_types.dart`.
+  - Kuruluş için para yetmezse %30 peşinat, kalanı 5 yıllık kredi.
+  - Başında durmak ya da müdüre bırakmak; ek şubeyi müdür yönetir. Fiyat, reklam, şube (en fazla 3), ortak, tanıdığını işe alma, satma ve kapatma.
+  - Nakit eksiye düşüp zarar eden işletme batar; aynı türü 2 yıl açamaz.
+  - İtibar her yıl ortaya kayar. Kâr dokümandaki aralıklara ayarlandı (`life_report`).
+  - Çalışanlar, müdür, ortak ve rakipler kişi olarak gelir.
+- [x] İş sekmesinde "Kendi işin" kartı ve "İşletme aç" ekranı (`lib/ui/widgets/business_card.dart`). Deftere `isletme` kalemi, günlüğe işletme notları.
+- [x] İşletme olayları (`assets/cards/isletme.json`, 17 olay): zabıta, yağmur, müşteri, rakip, çalışan, nazarlık, veresiye, dükkân kirası, akraba çalışan. Kart şemasına `business` koşulu ve etkisi eklendi.
+- [x] Aile fabrikası: fabrikatör ailenin çocuğuna 22–30 yaş arasında babasından teklif gelir (`aile_fabrikasi` mesleği, ilansız).
+- [x] Rozetler: Zincirin Sahibi (üç şube) ve Akrabayla İş Olur mu? (akraba ortak); motor bayrakları `zincir_sahibi`, `akraba_ortak`, `isletme_acti`.
+- [ ] D3 bağımsız mantık denetimi
+- D5 denge notları: test oyuncusu neredeyse her hayatta işletme açıyor, bu yüzden medyan servet yaklaşık 10 milyon. Varlıklı ailenin medyan serveti ortadan düşük çıkıyor (örneklem küçük, %5).
 
 ## Bekleyen aşama: F3a — Dağıtıma hazırlık
 

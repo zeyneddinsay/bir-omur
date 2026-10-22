@@ -2332,6 +2332,24 @@ abstract class AppLocalizations {
   /// **'{person} işine ortak oldu: {name}.'**
   String note_ortakAlindi(String person, String name);
 
+  /// No description provided for @note_iseAldin.
+  ///
+  /// In tr, this message translates to:
+  /// **'{person}, {name} işinde çalışmaya başladı.'**
+  String note_iseAldin(String person, String name);
+
+  /// No description provided for @businessHire.
+  ///
+  /// In tr, this message translates to:
+  /// **'Tanıdığını işe al (1 vakit)'**
+  String get businessHire;
+
+  /// No description provided for @businessHireHint.
+  ///
+  /// In tr, this message translates to:
+  /// **'Tanıdık güvenilir ama kovması zor: bir çalışanın yerine geçer.'**
+  String get businessHireHint;
+
   /// No description provided for @money_isletme.
   ///
   /// In tr, this message translates to:

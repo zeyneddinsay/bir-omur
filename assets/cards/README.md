@@ -52,7 +52,7 @@ motoru" bölümündedir.
 | `minAge`, `maxAge` | evet | Oyuncunun yaşı, dahil |
 | `repeat` | evet | `"once"` ya da `{"cooldown": 3}`; isteğe bağlı `"max": 4` hayat boyu en fazla kaç kez geleceğini sınırlar. Daha önce gelmiş olay çekilişte her gelişinde daha az ağırlık alır |
 | `rarity` | hayır | `siradan` (varsayılan), `nadir`, `efsane`; yukarı seçeneği (`up`) yalnızca nadir ve efsanede |
-| `conditions` | hayır | Oyuncunun koşulları: `flags`, `notFlags`, `gender`, `temperament`, `background`, `familyProfile`, `career`, `minTier`, `min`, `max` |
+| `conditions` | hayır | Oyuncunun koşulları: `flags`, `notFlags`, `gender`, `temperament`, `background`, `familyProfile`, `career`, `careers` (meslek listesi; biri yeter), `business` (işletme türü, `any` ya da `none`; `yazilim` ekipli şirketi de kapsar), `minTier`, `min`, `max` |
 | `roles` | hayır | Rol yuvaları (aşağıda); uygun kişi yoksa olay gelmez |
 | `speaker` | hayır | Konuşan rol yuvası; kartta onun portresi görünür |
 | `text` | evet | En fazla 140 karakter (en uzun adla) |
@@ -63,7 +63,7 @@ motoru" bölümündedir.
 `kin` (akrabalık listesi), `roles` (süren rol), `formerRoles` (bitmiş rol), `bond`, `gender`,
 `side`, `minAge`/`maxAge` (kişinin yaşı), `minGap`/`maxGap` (oyuncudan yaş farkı),
 `minCloseness`/`maxCloseness`, `minHostility`/`maxHostility`, `traits`, `notTraits`,
-`memory`/`noMemory` (anı türü), `sameCity`, `offstage` (kişi sahnede değil, görüşme sayılmaz),
+`memory`/`noMemory` (anı türü), `sameCity`, `livesTogether` (oyuncuyla aynı evde; `false` ayrı evde), `offstage` (kişi sahnede değil, görüşme sayılmaz),
 `deceased` (son bir yıl içinde vefat etmiş kişi; aşağıda).
 Sınırlar dahildir.
 
@@ -87,7 +87,8 @@ Uygun kişi seçilirken yakınlığı ya da husumeti yüksek kişiler iki kat a�
 
 - **Göstergeler ve diğerleri:** Göstergeler (`health`, `happiness`, `knowledge`, `reputation`), `money`,
   varlıklar, `career`, `addFlags`, `removeFlags`. İşteki performans için `performance` (artı ya da eksi); yalnızca
-  `conditions.career` ile (işi olana) gelen olaylarda kullanılır.
+  `conditions.career` ya da `careers` ile (işi olana) gelen olaylarda kullanılır. İşletme itibarı için `business`;
+  yalnızca `conditions.business` olan olaylarda, o türdeki işletmeye uygulanır.
 - **Aile Bağı:** Değiştirilemez; ailenin yakınlığından hesaplanır.
 - **Kişilere etki (`people`):** yuva adı → `memory` (`kind`, `label` kişinin gözünden, `tone`:
   `olumlu`/`olumsuz`, `severity` 1–3, isteğe bağlı `owner`: `kisi`/`oyuncu`/`ikisi`), `heal` (anı türü

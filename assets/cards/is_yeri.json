@@ -575,5 +575,55 @@
       "label": "Evde izlerim",
       "effects": { "happiness": 1 }
     }
+  },
+  {
+    "id": "fabrikanin_kapisi",
+    "type": "donemec",
+    "theme": "is",
+    "minAge": 22,
+    "maxAge": 30,
+    "repeat": "once",
+    "conditions": {
+      "familyProfile": ["fabrikator"],
+      "career": "none",
+      "notFlags": ["universite_ogrencisi", "askerde"]
+    },
+    "roles": {
+      "baba": { "kin": ["baba"] }
+    },
+    "speaker": "baba",
+    "text": "{baba.akraba}: 'Fabrikanın kapısı sana açık {oyuncu.hitap.evlat}. Ama sabah yedide oradasın; patronun çocuğu diye ayrıcalık yok.'",
+    "left": {
+      "label": "Yarın yedide oradayım",
+      "effects": {
+        "career": { "join": "aile_fabrikasi" },
+        "people": {
+          "baba": {
+            "memory": {
+              "kind": "fabrikaya_geldi",
+              "label": "Fabrikaya, yanıma geldi",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Kendi yolumu çizeceğim",
+      "effects": {
+        "happiness": 3,
+        "people": {
+          "baba": {
+            "memory": {
+              "kind": "fabrikayi_istemedi",
+              "label": "Fabrikayı istemedi, kendi yoluna gitti",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      }
+    }
   }
 ]
