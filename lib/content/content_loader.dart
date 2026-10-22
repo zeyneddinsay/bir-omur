@@ -1,3 +1,4 @@
+import '../models/models.dart';
 import '../engine/engine.dart';
 import 'card_validator.dart';
 import 'content_registry.dart';
@@ -8,6 +9,7 @@ class GameContent {
     required this.deck,
     required this.careers,
     this.achievements,
+    required this.families,
     required this.registry,
     required this.warnings,
   });
@@ -17,6 +19,9 @@ class GameContent {
 
   /// Rozetler; içerikte yoksa boş.
   final AchievementBook? achievements;
+
+  /// Aile profilleri, meslek adları, ad ve soyad listeleri.
+  final FamilyBook families;
   final ContentRegistry registry;
   final List<CardIssue> warnings;
 }
@@ -39,6 +44,8 @@ GameContent loadContent({
   required Map<String, String> cardFiles,
   Map<String, String> careerFiles = const {},
   String? achievementsSource,
+  required String familiesSource,
+  required String namesSource,
 }) {
   final registry = ContentRegistry.parse(registrySource);
   final result = CardValidator(registry).check(
@@ -51,7 +58,21 @@ GameContent loadContent({
     deck: EventDeck(result.cards.map((c) => c.card)),
     careers: CareerBook(result.careers),
     achievements: AchievementBook(result.achievements),
+    families: _parseFamilies(familiesSource, namesSource),
     registry: registry,
     warnings: result.warnings.toList(),
   );
+}
+
+FamilyBook _parseFamilies(String familiesSource, String namesSource) {
+  try {
+    return FamilyBook.parse(
+      familiesSource: familiesSource,
+      namesSource: namesSource,
+    );
+  } on CardFormatException catch (e) {
+    throw ContentException([
+      CardIssue(IssueLevel.error, 'families.json', e.path, e.message),
+    ]);
+  }
 }

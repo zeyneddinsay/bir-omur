@@ -80,7 +80,12 @@ void main() {
     setUpAll(
       () => lives = [
         for (var seed = 0; seed < 100; seed++)
-          simulateLife(deck, seed, careers: content.careers),
+          simulateLife(
+            deck,
+            seed,
+            careers: content.careers,
+            families: content.families,
+          ),
       ],
     );
 

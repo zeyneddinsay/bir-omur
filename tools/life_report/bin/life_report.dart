@@ -42,7 +42,12 @@ void main(List<String> args) {
 
   for (var i = 0; i < lives; i++) {
     final seed = firstSeed + i;
-    final engine = LifeEngine(deck: deck, seed: seed, careers: content.careers);
+    final engine = LifeEngine(
+      deck: deck,
+      seed: seed,
+      careers: content.careers,
+      families: content.families,
+    );
     final player = _RandomPlayer(seed);
     var inDebt = false;
     var depressed = false;

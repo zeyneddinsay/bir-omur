@@ -5,6 +5,7 @@ export 'death_check.dart';
 export 'economy.dart';
 export 'effect_resolver.dart';
 export 'event_deck.dart';
+export 'family_generator.dart';
 export 'life_action.dart';
 export 'life_engine.dart';
 export 'relationships.dart';

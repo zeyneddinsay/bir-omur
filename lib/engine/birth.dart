@@ -1,51 +1,19 @@
 import 'dart:math';
 
 import '../models/models.dart';
+import 'family_generator.dart';
 
-/// Yeni doğan karakteri tohumlu rastgelelikle üretir.
+/// Yeni doğan karakteri ve ailesini tohumlu rastgelelikle üretir.
 ///
-/// İsim, şehir ve takım listeleri F0 için koddadır; F1'de içerik dosyasına
-/// taşınabilir. Takımlar kurgusaldır.
+/// Ad ve aile verisi [FamilyBook]'tan (assets/names.json,
+/// assets/families.json) gelir. Şehir ve takım listeleri koddadır; takımlar
+/// kurgusaldır.
 class BirthGenerator {
-  const BirthGenerator(this.random);
+  BirthGenerator(this.random, {FamilyBook? families})
+    : families = families ?? FamilyBook.minimal;
 
   final Random random;
-
-  static const List<String> maleNames = [
-    'Ahmet',
-    'Mehmet',
-    'Mustafa',
-    'Ali',
-    'Hüseyin',
-    'Hasan',
-    'İbrahim',
-    'Murat',
-    'Emre',
-    'Burak',
-    'Yusuf',
-    'Eymen',
-    'Kerem',
-    'Ömer',
-    'Can',
-  ];
-
-  static const List<String> femaleNames = [
-    'Ayşe',
-    'Fatma',
-    'Zeynep',
-    'Elif',
-    'Emine',
-    'Hatice',
-    'Merve',
-    'Esra',
-    'Selin',
-    'Defne',
-    'Asya',
-    'Zehra',
-    'Büşra',
-    'Ece',
-    'Nur',
-  ];
+  final FamilyBook families;
 
   static const List<String> hometowns = [
     'İstanbul',
@@ -80,7 +48,13 @@ class BirthGenerator {
   Character generate({String? name, Gender? gender}) {
     final Gender g = gender ?? _pick(Gender.values);
     final trimmed = name?.trim();
-    final background = _pickBackground();
+    final hometown = _pick(hometowns);
+    final family = FamilyGenerator(
+      random,
+      families,
+      cities: hometowns,
+    ).generate(hometown: hometown);
+    final background = family.background;
     var stats = Stats(
       health: _between(70, 95),
       happiness: _between(60, 85),
@@ -93,16 +67,19 @@ class BirthGenerator {
         .forEach((kind, delta) => stats = stats.withDelta(kind, delta));
     return Character(
       name: (trimmed == null || trimmed.isEmpty)
-          ? _pick(g == Gender.erkek ? maleNames : femaleNames)
+          ? _pick(families.namesFor(g, NameEra.yeni))
           : trimmed,
       gender: g,
       age: 0,
       stats: stats,
       temperament: _pick(Temperament.values),
       luck: _between(0, 100),
-      hometown: _pick(hometowns),
+      hometown: hometown,
       team: _pick(teams),
       background: background,
+      surname: family.surname,
+      familyProfile: family.profile.id,
+      people: family.people,
     );
   }
 
@@ -113,16 +90,6 @@ class BirthGenerator {
     FamilyBackground.orta => const {},
     FamilyBackground.dar => {StatKind.family: 5, StatKind.happiness: -5},
   };
-
-  FamilyBackground _pickBackground() {
-    final total = FamilyBackground.values.fold(0, (s, b) => s + b.weight);
-    var roll = random.nextInt(total);
-    for (final b in FamilyBackground.values) {
-      roll -= b.weight;
-      if (roll < 0) return b;
-    }
-    return FamilyBackground.orta;
-  }
 
   T _pick<T>(List<T> items) => items[random.nextInt(items.length)];
 

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:bir_omur/content/card_validator.dart';
 import 'package:bir_omur/content/content_loader.dart';
@@ -296,6 +297,8 @@ void main() {
   });
 
   test('loadContent hatada durur, temizse desteyi kurar', () {
+    final families = File('assets/families.json').readAsStringSync();
+    final names = File('assets/names.json').readAsStringSync();
     const registry =
         '{"flags": {"universite_ogrencisi": "", "ev_sahibi": "", "asker_anilari": "", "tasindi": ""}, "speakers": {}}';
     expect(
@@ -304,6 +307,8 @@ void main() {
         cardFiles: {
           'x.json': jsonEncode([_card('a')..remove('text')]),
         },
+        familiesSource: families,
+        namesSource: names,
       ),
       throwsA(isA<ContentException>()),
     );
@@ -312,6 +317,8 @@ void main() {
       cardFiles: {
         'x.json': jsonEncode([_card('a'), _card('b')]),
       },
+      familiesSource: families,
+      namesSource: names,
     );
     expect(content.deck.cards.map((c) => c.id), ['a', 'b']);
   });

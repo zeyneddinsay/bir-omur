@@ -58,6 +58,36 @@ class JsonReader {
     return List.unmodifiable(value.cast<String>());
   }
 
+  List<String> requireStringList(String key) {
+    final value = json[key];
+    if (value is! List || value.isEmpty || value.any((e) => e is! String)) {
+      throw _typeError(key, 'boş olmayan metin listesi', value);
+    }
+    return List.unmodifiable(value.cast<String>());
+  }
+
+  List<int> requireIntList(String key) {
+    final value = json[key];
+    if (value is! List || value.isEmpty || value.any((e) => e is! int)) {
+      throw _typeError(key, 'boş olmayan tam sayı listesi', value);
+    }
+    return List.unmodifiable(value.cast<int>());
+  }
+
+  /// Nesne listesi; her eleman kendi yoluyla (`alan[2]`) okunur.
+  List<JsonReader> requireObjectList(String key) {
+    final value = json[key];
+    if (value is! List ||
+        value.isEmpty ||
+        value.any((e) => e is! Map<String, dynamic>)) {
+      throw _typeError(key, 'boş olmayan nesne listesi', value);
+    }
+    return [
+      for (var i = 0; i < value.length; i++)
+        JsonReader(value[i] as Map<String, dynamic>, '$path.$key[$i]'),
+    ];
+  }
+
   JsonReader requireObject(String key) {
     final value = json[key];
     if (value is! Map<String, dynamic>) throw _typeError(key, 'nesne', value);

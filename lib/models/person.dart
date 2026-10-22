@@ -16,6 +16,7 @@ class Person {
     required this.base,
     required this.portraitSeed,
     this.kin,
+    this.side,
     this.bond,
     List<PersonRole> roles = const [],
     Set<Trait> traits = const {},
@@ -56,6 +57,10 @@ class Person {
 
   /// Akrabalık; akraba değilse null.
   final Kinship? kin;
+
+  /// Akrabanın hangi taraftan olduğu: babaanne mi anneanne mi. Anne, baba
+  /// ve kardeşte null.
+  final Side? side;
 
   /// Akraba olmayanlarla bağın basamağı; akrabalarda null.
   final Bond? bond;
@@ -137,6 +142,7 @@ class Person {
     base: base,
     portraitSeed: portraitSeed,
     kin: kin,
+    side: side,
     bond: clearBond ? null : (bond ?? this.bond),
     roles: roles ?? this.roles,
     traits: traits,
@@ -163,6 +169,7 @@ class Person {
     'base': base,
     'seed': portraitSeed,
     'kin': ?kin?.name,
+    'side': ?side?.name,
     'bond': ?bond?.name,
     'roles': [for (final r in roles) r.toJson()],
     'traits': [
@@ -196,6 +203,9 @@ class Person {
     kin: json['kin'] == null
         ? null
         : Kinship.values.byName(json['kin'] as String),
+    side: json['side'] == null
+        ? null
+        : Side.values.byName(json['side'] as String),
     bond: json['bond'] == null
         ? null
         : Bond.values.byName(json['bond'] as String),
@@ -260,6 +270,9 @@ enum Kinship {
   bacanak,
   elti,
 }
+
+/// Akrabanın tarafı.
+enum Side { anne, baba }
 
 /// Akraba olmayanla bağın basamağı. Husumet ayrı bir basamak değil,
 /// çubuklardan okunan bir etikettir.

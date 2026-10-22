@@ -170,6 +170,7 @@ class LifeController extends Notifier<LifeState?> {
     final engine = LifeEngine(
       deck: content.deck,
       careers: content.careers,
+      families: content.families,
       seed: seed ?? ref.read(seedGeneratorProvider)(),
     );
     _engine = engine;

@@ -10,6 +10,8 @@ GameContent loadContentFromDisk([String assetsDir = 'assets']) {
     cardFiles: readJsonFiles('$assetsDir/cards'),
     careerFiles: readJsonFiles('$assetsDir/careers'),
     achievementsSource: _readOptional('$assetsDir/achievements.json'),
+    familiesSource: File('$assetsDir/families.json').readAsStringSync(),
+    namesSource: File('$assetsDir/names.json').readAsStringSync(),
   );
 }
 

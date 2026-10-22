@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:bir_omur/engine/engine.dart';
 import 'package:bir_omur/models/models.dart';
@@ -13,15 +14,24 @@ Character _withBackground(FamilyBackground b, {int age = 17, int money = 0}) =>
     );
 
 void main() {
-  test('doğumda aile durumu %20 / %55 / %25 dağılır', () {
+  test('doğumda aile durumu aile profillerinden gelir: %5 / %60 / %35', () {
+    // Fabrikatör 5 → varlıklı; esnaf 20, memur 25, işçinin yarısı 15 → orta;
+    // işçinin yarısı 15, çiftçi 10, yalnız ebeveyn 10 → dar.
+    final families = FamilyBook.parse(
+      familiesSource: File('assets/families.json').readAsStringSync(),
+      namesSource: File('assets/names.json').readAsStringSync(),
+    );
     final counts = <FamilyBackground, int>{};
     for (var seed = 0; seed < 4000; seed++) {
-      final b = BirthGenerator(SeededRandom(seed)).generate().background;
+      final b = BirthGenerator(
+        SeededRandom(seed),
+        families: families,
+      ).generate().background;
       counts.update(b, (n) => n + 1, ifAbsent: () => 1);
     }
-    expect(counts[FamilyBackground.varlikli]!, inInclusiveRange(700, 900));
-    expect(counts[FamilyBackground.orta]!, inInclusiveRange(2050, 2350));
-    expect(counts[FamilyBackground.dar]!, inInclusiveRange(900, 1100));
+    expect(counts[FamilyBackground.varlikli]!, inInclusiveRange(140, 260));
+    expect(counts[FamilyBackground.orta]!, inInclusiveRange(2300, 2500));
+    expect(counts[FamilyBackground.dar]!, inInclusiveRange(1300, 1500));
   });
 
   test('aile durumu başlangıç göstergelerini etkiler', () {

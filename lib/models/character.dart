@@ -2,6 +2,7 @@ import 'assets.dart';
 import 'career.dart';
 import 'life_counters.dart';
 import 'life_stage.dart';
+import 'people_book.dart';
 import 'stats.dart';
 
 enum Gender {
@@ -41,20 +42,13 @@ enum Temperament {
 
 /// Doğulan ailenin maddi durumu. Gizli değildir; ekranda görünür.
 enum FamilyBackground {
-  varlikli('varlikli', weight: 20, adulthoodSupport: 400000),
-  orta('orta', weight: 55, adulthoodSupport: 100000),
-  dar('dar', weight: 25, adulthoodSupport: 0);
+  varlikli('varlikli', adulthoodSupport: 400000),
+  orta('orta', adulthoodSupport: 100000),
+  dar('dar', adulthoodSupport: 0);
 
-  const FamilyBackground(
-    this.id, {
-    required this.weight,
-    required this.adulthoodSupport,
-  });
+  const FamilyBackground(this.id, {required this.adulthoodSupport});
 
   final String id;
-
-  /// Doğumda seçilme ağırlığı (toplam 100).
-  final int weight;
 
   /// 18 yaşına girerken ailenin verdiği destek (TL).
   final int adulthoodSupport;
@@ -115,6 +109,9 @@ class Character {
     required this.hometown,
     required this.team,
     this.background = FamilyBackground.orta,
+    this.surname = '',
+    this.familyProfile,
+    PeopleBook? people,
     Set<String> flags = const {},
     List<CardRecord> history = const [],
     this.assets = Assets.none,
@@ -126,7 +123,8 @@ class Character {
   }) : assert(age >= 0),
        assert(luck >= 0 && luck <= 100),
        flags = Set.unmodifiable(flags),
-       history = List.unmodifiable(history);
+       history = List.unmodifiable(history),
+       people = people ?? PeopleBook.empty();
 
   final String name;
   final Gender gender;
@@ -141,6 +139,15 @@ class Character {
   final String hometown;
   final String team;
   final FamilyBackground background;
+
+  /// Ailenin soyadı; eski kayıtlarda boş.
+  final String surname;
+
+  /// Doğulan aile profilinin kimliği (`fabrikator`); eski kayıtlarda null.
+  final String? familyProfile;
+
+  /// Hayattaki bütün kişiler.
+  final PeopleBook people;
 
   /// Kalıcı izler: `kiraci`, `askerligini_yapti` gibi.
   final Set<String> flags;
@@ -193,6 +200,7 @@ class Character {
     bool clearJob = false,
     Job? lastJob,
     int? pension,
+    PeopleBook? people,
     LifeCounters? counters,
     bool? isAlive,
   }) {
@@ -206,6 +214,9 @@ class Character {
       hometown: hometown,
       team: team,
       background: background,
+      surname: surname,
+      familyProfile: familyProfile,
+      people: people ?? this.people,
       flags: flags ?? this.flags,
       history: history ?? this.history,
       assets: assets ?? this.assets,
@@ -230,6 +241,9 @@ class Character {
     'hometown': hometown,
     'team': team,
     'background': background.id,
+    'surname': surname,
+    'family': ?familyProfile,
+    'people': people.toJson(),
     'flags': (flags.toList()..sort()),
     'history': [for (final r in history) r.toJson()],
     'assets': assets.toJson(),
@@ -256,6 +270,11 @@ class Character {
       hometown: json['hometown'] as String,
       team: json['team'] as String,
       background: byId(FamilyBackground.fromId, 'background'),
+      surname: json['surname'] as String? ?? '',
+      familyProfile: json['family'] as String?,
+      people: json['people'] == null
+          ? null
+          : PeopleBook.fromJson(json['people'] as Map<String, dynamic>),
       flags: {...(json['flags'] as List).cast<String>()},
       history: [
         for (final r in json['history'] as List)

@@ -65,14 +65,23 @@ class LifeState {
 /// aynı seçimler aynı hayatı üretir. Durum [toSnapshot] ile kaydedilir,
 /// [LifeEngine.restore] ile kaldığı yerden sürer.
 class LifeEngine {
-  LifeEngine({required this.deck, required this.seed, CareerBook? careers})
-    : careers = careers ?? CareerBook.empty,
-      _random = SeededRandom(seed);
+  LifeEngine({
+    required this.deck,
+    required this.seed,
+    CareerBook? careers,
+    FamilyBook? families,
+  }) : careers = careers ?? CareerBook.empty,
+       families = families ?? FamilyBook.minimal,
+       _random = SeededRandom(seed);
 
-  LifeEngine._restored(this.deck, this.careers, this.seed, this._random);
+  LifeEngine._restored(this.deck, this.careers, this.seed, this._random)
+    : families = FamilyBook.minimal;
 
   final EventDeck deck;
   final CareerBook careers;
+
+  /// Doğumda aile üretimi için; yalnızca [startLife] kullanır.
+  final FamilyBook families;
   final int seed;
   final SeededRandom _random;
 
@@ -114,8 +123,10 @@ class LifeEngine {
 
   /// Yeni bir hayat başlatır ve 0 yaşının kartlarını çeker.
   LifeState startLife({String? name, Gender? gender}) {
-    final character = BirthGenerator(_random)
-        .generate(name: name, gender: gender);
+    final character = BirthGenerator(
+      _random,
+      families: families,
+    ).generate(name: name, gender: gender);
     return _state = _beginYear(character, const ScheduleQueue());
   }
 

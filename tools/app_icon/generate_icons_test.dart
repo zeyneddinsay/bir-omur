@@ -39,7 +39,12 @@ void main() {
     final foreground = appIconSvg(parts, spec: iconFace, foregroundOnly: true);
 
     await tester.runAsync(() async {
-      Future<void> write(String svg, int size, String path, {required bool opaque}) async {
+      Future<void> write(
+        String svg,
+        int size,
+        String path, {
+        required bool opaque,
+      }) async {
         final info = await vg.loadPicture(SvgStringLoader(svg), null);
         final recorder = ui.PictureRecorder();
         final canvas = ui.Canvas(recorder)..scale(size / 1024);
@@ -54,8 +59,14 @@ void main() {
       }
 
       const res = 'android/app/src/main/res';
-      for (final MapEntry(key: name, value: scale) in _androidDensities.entries) {
-        await write(full, (48 * scale).round(), '$res/mipmap-$name/ic_launcher.png', opaque: true);
+      for (final MapEntry(key: name, value: scale)
+          in _androidDensities.entries) {
+        await write(
+          full,
+          (48 * scale).round(),
+          '$res/mipmap-$name/ic_launcher.png',
+          opaque: true,
+        );
         await write(
           foreground,
           (108 * scale).round(),
@@ -71,7 +82,8 @@ void main() {
           .where((f) => f.path.endsWith('.png'));
       for (final file in iconFiles) {
         // Icon-App-83.5x83.5@2x.png → 83.5 × 2
-        final m = RegExp(r'Icon-App-([\d.]+)x[\d.]+@(\d)x\.png').firstMatch(file.path)!;
+        final m = RegExp(r'Icon-App-([\d.]+)x[\d.]+@(\d)x\.png')
+            .firstMatch(file.path)!;
         final size = (double.parse(m[1]!) * int.parse(m[2]!)).round();
         await write(full, size, file.path, opaque: true);
       }

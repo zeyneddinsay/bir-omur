@@ -5,8 +5,18 @@ import 'package:flutter_test/flutter_test.dart';
 import 'auto_player.dart';
 
 /// Bir hayatı oynatır ve her adımda değişmezleri denetler.
-LifeState simulateLife(EventDeck deck, int seed, {CareerBook? careers}) {
-  final engine = LifeEngine(deck: deck, seed: seed, careers: careers);
+LifeState simulateLife(
+  EventDeck deck,
+  int seed, {
+  CareerBook? careers,
+  FamilyBook? families,
+}) {
+  final engine = LifeEngine(
+    deck: deck,
+    seed: seed,
+    careers: careers,
+    families: families,
+  );
   var lastAge = 0;
   return AutoPlayer(seed).play(
     engine,
