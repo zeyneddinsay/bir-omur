@@ -37,6 +37,7 @@ String businessBlockedReason(AppLocalizations l10n, BusinessBlocked b) =>
       BusinessBlocked.zatenVar => l10n.businessBlocked_zatenVar,
       BusinessBlocked.cokFazla => l10n.businessBlocked_cokFazla,
       BusinessBlocked.iflas => l10n.businessBlocked_iflas,
+      BusinessBlocked.yeniKapandi => l10n.businessBlocked_yeniKapandi,
       BusinessBlocked.vakit => l10n.businessBlocked_vakit,
       BusinessBlocked.askerde => l10n.businessBlocked_askerde,
     };
@@ -272,14 +273,16 @@ class _BusinessCard extends ConsumerWidget {
               children: [
                 TextButton(
                   key: Key('business_sell_${b.id}'),
-                  onPressed: canAct
+                  onPressed: canAct && BusinessRules.canSell(b)
                       ? () => _confirm(
                           context,
                           () => controller.disposeBusiness(b.id, sell: true),
                         )
                       : null,
                   child: Text(
-                    l10n.businessSell(tl(BusinessRules.saleValue(b))),
+                    l10n.businessSell(
+                      tl(BusinessRules.exitValue(b, sell: true)),
+                    ),
                   ),
                 ),
                 TextButton(
@@ -291,7 +294,9 @@ class _BusinessCard extends ConsumerWidget {
                         )
                       : null,
                   child: Text(
-                    l10n.businessClose(tl(BusinessRules.closingValue(b))),
+                    l10n.businessClose(
+                      tl(BusinessRules.exitValue(b, sell: false)),
+                    ),
                   ),
                 ),
               ],

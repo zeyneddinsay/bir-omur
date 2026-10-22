@@ -133,7 +133,10 @@ class AutoPlayer {
             return engine.takePartner(b.id, partners.first.id);
           }
         case 7 when (b.lastProfit ?? 0) < 0:
-          return engine.disposeBusiness(b.id, sell: _random.nextBool());
+          return engine.disposeBusiness(
+            b.id,
+            sell: BusinessRules.canSell(b) && _random.nextBool(),
+          );
         case 8 || 9 || 10 when engine.canHireKnown(b.id):
           // Çoğunlukla akrabayı alır.
           final candidates = engine.hireCandidates(b.id);

@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import '../models/models.dart';
+import 'business.dart';
 import 'careers.dart';
 import 'cities.dart';
 
@@ -153,14 +154,20 @@ abstract final class Economy {
     Careers.retiredFlag,
   };
 
-  /// Nakit, altın, ev ve arabanın toplamından kalan kredi borcu düşülür.
+  /// Nakit, altın, ev, araba ve işletmelerin (satış ya da kapanış değeri,
+  /// ortağın payı düşülmüş) toplamından kalan kredi borcu düşülür.
   static int netWorth(Character c, Market market) {
     final a = c.assets;
     return c.stats.money +
         a.goldGrams * market.goldPrice +
         a.houseValue +
         a.carValue -
-        a.remainingLoan;
+        a.remainingLoan +
+        c.businesses.fold(
+          0,
+          (sum, b) =>
+              sum + BusinessRules.exitValue(b, sell: BusinessRules.canSell(b)),
+        );
   }
 
   /// Bir etkinin varlık kısmını uygular: altın, ev, araba, kira, kredi.

@@ -153,6 +153,8 @@ class PeopleTick {
   /// Emeklilikle biten roller: dükkân ve iş yeri.
   static const _retiringRoles = {
     RoleKind.bakkal,
+    RoleKind.calisan,
+    RoleKind.mudur,
     RoleKind.patron,
     RoleKind.amir,
     RoleKind.usta,

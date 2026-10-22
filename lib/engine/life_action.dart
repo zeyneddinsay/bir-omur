@@ -1,4 +1,5 @@
 import '../models/models.dart';
+import 'business.dart';
 import 'economy.dart';
 import 'housing.dart';
 import 'jobs.dart';
@@ -374,7 +375,9 @@ abstract final class ActionCatalog {
     // Askerdeki yıl: vakit yok.
     if (c.hasFlag('askerde')) return 0;
     // Kendi işinin başında: 2; iş ve işletme birlikte: 1 (yaşa bakmaz).
-    if (c.businesses.any((b) => b.present)) return c.job != null ? 1 : 2;
+    if (c.businesses.any((b) => BusinessRules.isPresent(c, b))) {
+      return c.job != null ? 1 : 2;
+    }
     if (c.isRetired || c.age >= 65) return 6;
     if (c.age <= 10) return 2;
     // İş okuldan önce gelir: çalışan açıköğretimli ve çırak 3 alır.

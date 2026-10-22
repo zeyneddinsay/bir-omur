@@ -387,14 +387,24 @@ class CardValidator {
         BusinessTypes.byId(business) == null) {
       error('.conditions.business', 'bilinmeyen işletme "$business"');
     }
+    for (final id in card.conditions.businessTypes) {
+      if (BusinessTypes.byId(id) == null) {
+        error('.conditions.businessTypes', 'bilinmeyen işletme "$id"');
+      }
+    }
+    final hasBusiness =
+        card.conditions.businessTypes.isNotEmpty ||
+        (business != null && business != Conditions.noCareer);
+    if (card.conditions.atBusiness != null && !hasBusiness) {
+      error('.conditions.atBusiness', 'işletme koşulu ister');
+    }
     final hasJob =
         card.conditions.careers.isNotEmpty ||
         (conditionCareer != null && conditionCareer != Conditions.noCareer);
     final sides = {'left': card.left, 'right': card.right, 'up': ?card.up};
     for (final MapEntry(key: side, value: choice) in sides.entries) {
       for (final effect in choice.allEffects) {
-        if (effect.business != 0 &&
-            (business == null || business == Conditions.noCareer)) {
+        if (effect.business != 0 && !hasBusiness) {
           error(
             '.$side',
             'işletme etkisi bir işletmeyi ister (conditions.business)',

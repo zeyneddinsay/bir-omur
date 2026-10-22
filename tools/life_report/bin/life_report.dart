@@ -248,11 +248,23 @@ class _RandomPlayer {
           b.profits.length >= 2 &&
           b.profits.reversed.take(2).every((p) => p < 0);
       if (losing) {
-        engine.disposeBusiness(b.id, sell: true);
+        engine.disposeBusiness(b.id, sell: BusinessRules.canSell(b));
+        return true;
+      }
+      if (engine.canHireKnown(b.id) && _random.nextInt(4) == 0) {
+        final candidates = engine.hireCandidates(b.id);
+        final kin = candidates.where((p) => p.kin != null).toList();
+        engine.hireKnown(b.id, (kin.isNotEmpty ? kin : candidates).first.id);
+        return true;
+      }
+      final partners = engine.partnerCandidates(b.id);
+      if (partners.isNotEmpty && _random.nextInt(8) == 0) {
+        engine.takePartner(b.id, partners.first.id);
         return true;
       }
       if (!b.present &&
           BusinessTypes.require(b.type).laborBound &&
+          !c.businesses.any((x) => x.present) &&
           engine.canSetBusinessPresent(b.id, true)) {
         engine.setBusinessPresent(b.id, true);
         return true;
@@ -452,7 +464,9 @@ class _PeopleStats {
 
     if (now > 19) {
       _reached19++;
-      if (c.hasFlag('yks_kazandi')) _universityStarted++;
+      if (c.education.uniStartAge != null && !c.education.openEducation) {
+        _universityStarted++;
+      }
       if (c.hasFlag('universite_mezunu')) _graduated++;
     }
     if (c.gender == Gender.erkek && now > 41) {

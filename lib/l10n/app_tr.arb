@@ -436,6 +436,7 @@
   "businessBlocked_zatenVar": "Bu işletmen zaten var",
   "businessBlocked_cokFazla": "En fazla iki işletme",
   "businessBlocked_iflas": "Bu işte batalı iki yıl olmadı",
+  "businessBlocked_yeniKapandi": "Bu işi bırakalı iki yıl olmadı",
   "businessBlocked_vakit": "Bu yılın vakti yetmiyor (2 vakit)",
   "businessBlocked_askerde": "Askerdesin",
   "businessLastProfit": "Geçen yıl: {money}",

@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import '../models/models.dart';
+import 'business.dart';
 import 'economy.dart';
 import 'person_factory.dart';
 
@@ -46,7 +47,9 @@ abstract final class Housing {
         MoneySource.maas ||
         MoneySource.emekliAyligi ||
         MoneySource.yasliAyligi => true,
-        MoneySource.isletme => (e.ref ?? '').endsWith(':kar'),
+        // İşletmenin kârı ve kredi taksidi.
+        MoneySource.isletme =>
+          (e.ref ?? '').endsWith(':kar') || (e.ref ?? '').endsWith(':kredi'),
         _ => false,
       };
       if (regular) income += e.amount;
@@ -259,6 +262,12 @@ abstract final class Housing {
   /// mahalle değişir; kiraya çıkana şehrin kirası ve ev sahibi gelir.
   static Character settle(Character c, PersonFactory f) {
     var next = changeNeighbourhood(c, f);
+    // Başka şehirdeki işletme müdüre kalır.
+    for (final b in next.businesses) {
+      if (b.present && b.city != next.city) {
+        next = BusinessRules.setPresent(next, b.id, false, f);
+      }
+    }
     final hasLandlord = next.people
         .active(next.age)
         .any((p) => p.hasRole(RoleKind.evSahibi));

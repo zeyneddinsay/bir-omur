@@ -1,3 +1,4 @@
+import 'business.dart';
 import 'character.dart';
 import 'effect.dart';
 import 'event_role.dart';
@@ -34,6 +35,8 @@ class Conditions {
     this.career,
     this.careers = const [],
     this.business,
+    this.businessTypes = const [],
+    this.atBusiness,
     this.minTier,
     this.min = const {},
     this.max = const {},
@@ -84,6 +87,26 @@ class Conditions {
   /// `yazilim`, büyütülmüş `yazilim_ekip` işletmesini de kapsar.
   final String? business;
 
+  /// Boş değilse bu türlerden (ya da kollarından) bir işletmesi olmalı.
+  final List<String> businessTypes;
+
+  /// true: uyan bir işletmenin başında (aynı şehirde, askerde değil);
+  /// false: uyan işletmelerin hiçbirinin başında değil.
+  final bool? atBusiness;
+
+  /// Koşuldaki türe ve tür listesine uyan işletmeler.
+  Iterable<Business> matchingBusinesses(Character c) => c.businesses.where(
+    (b) =>
+        (business == null ||
+            business == anyCareer ||
+            matchesBusiness(b.type, business!)) &&
+        (businessTypes.isEmpty ||
+            businessTypes.any((t) => matchesBusiness(b.type, t))),
+  );
+
+  static bool presentAt(Character c, Business b) =>
+      b.present && b.city == c.city && !c.hasFlag('askerde');
+
   bool hasBusiness(Character c) => switch (business) {
     null => true,
     noCareer => c.businesses.isEmpty,
@@ -118,6 +141,10 @@ class Conditions {
     if (!_careerMatches(c)) return false;
     if (careers.isNotEmpty && !careers.contains(c.job?.careerId)) return false;
     if (!hasBusiness(c)) return false;
+    if (businessTypes.isNotEmpty && matchingBusinesses(c).isEmpty) return false;
+    if (atBusiness case final at?) {
+      if (matchingBusinesses(c).any((b) => presentAt(c, b)) != at) return false;
+    }
     for (final entry in min.entries) {
       if (_valueOf(c, entry.key) < entry.value) return false;
     }
@@ -166,6 +193,8 @@ class Conditions {
       'career',
       'careers',
       'business',
+      'businessTypes',
+      'atBusiness',
       'minTier',
       'min',
       'max',
@@ -216,6 +245,8 @@ class Conditions {
       career: r.optionalString('career'),
       careers: r.optionalStringList('careers'),
       business: r.optionalString('business'),
+      businessTypes: r.optionalStringList('businessTypes'),
+      atBusiness: r.has('atBusiness') ? r.optionalBool('atBusiness') : null,
       minTier: r.optionalInt('minTier'),
       min: _thresholds(r.optionalObject('min')),
       max: _thresholds(r.optionalObject('max')),

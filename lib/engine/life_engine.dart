@@ -517,7 +517,10 @@ class LifeEngine {
       cities: BirthGenerator.hometowns,
     ).apply(Economy.syncDerivedFlags(YearTick.updateHardshipFlags(served)));
     final settled = Relationships.syncFamilyBond(
-      Housing.ensureNeighbours(character, _factory),
+      BusinessRules.refreshStaff(
+        Housing.ensureNeighbours(character, _factory),
+        _factory,
+      ),
     );
     final listings = JobMarket.listingsFor(settled, careers, _random);
     return _state = _beginYear(
@@ -534,7 +537,6 @@ class LifeEngine {
     final (next, years) = BusinessRules.yearOf(c, inflation, _random);
     final entries = <MoneyEntry>[];
     final notes = <LifeNote>[];
-    var booked = 0;
     for (final y in years) {
       entries.add(
         MoneyEntry(
@@ -552,21 +554,17 @@ class LifeEngine {
           ref: '${y.type}:kredi',
         ),
       );
-      booked += y.ownerShare - y.loanPaid;
-      notes.add(LifeNote(NoteKind.isletmeYili, '${y.type}|${y.profit}'));
-      if (y.bankrupt) notes.add(LifeNote(NoteKind.isletmeBatti, y.type));
-    }
-    // Batışta ekipman satışı ve kalan kredi.
-    final rest = next.stats.money - c.stats.money - booked;
-    if (rest != 0) {
+      // Batışta ekipman satışı ve kalan kredi.
       entries.add(
         MoneyEntry(
           age: c.age,
           source: MoneySource.isletme,
-          amount: rest,
-          ref: '${years.firstWhere((y) => y.bankrupt).type}:iflas',
+          amount: y.liquidation,
+          ref: '${y.type}:iflas',
         ),
       );
+      notes.add(LifeNote(NoteKind.isletmeYili, '${y.type}|${y.profit}'));
+      if (y.bankrupt) notes.add(LifeNote(NoteKind.isletmeBatti, y.type));
     }
     return (next.withLedger(entries), notes);
   }
@@ -869,8 +867,18 @@ class LifeEngine {
     return _timeFits(next);
   }
 
-  LifeState setBusinessPrice(String id, PriceLevel price) => _state = _state
-      .copyWith(character: BusinessRules.setPrice(_state.character, id, price));
+  LifeState setBusinessPrice(String id, PriceLevel price) {
+    _requireActions();
+    return _state = _state.copyWith(
+      character: BusinessRules.setPrice(_state.character, id, price),
+    );
+  }
+
+  void _requireActions() {
+    if (_state.phase != YearPhase.actions) {
+      throw StateError('Bu yalnızca kartlardan sonra yapılır');
+    }
+  }
 
   bool canAdvertise(String id) =>
       _state.phase == YearPhase.actions &&
@@ -931,6 +939,7 @@ class LifeEngine {
 
   /// Tanıdığını işe alır (1 vakit).
   LifeState hireKnown(String id, String personId) {
+    _requireActions();
     if (!canHireKnown(id) || !hireCandidates(id).any((p) => p.id == personId)) {
       throw StateError('$personId işe alınamaz');
     }
@@ -954,6 +963,7 @@ class LifeEngine {
 
   /// Ortak alır: sermaye gelir, kârın %30'u ortağın.
   LifeState takePartner(String id, String personId) {
+    _requireActions();
     final candidates = partnerCandidates(id);
     if (!candidates.any((p) => p.id == personId)) {
       throw StateError('$personId ortak olamaz');
@@ -980,6 +990,10 @@ class LifeEngine {
 
   /// İşletmeyi satar ya da kapatır.
   LifeState disposeBusiness(String id, {required bool sell}) {
+    _requireActions();
+    if (sell && !BusinessRules.canSell(_business(id))) {
+      throw StateError('Zarardaki işletmeye alıcı çıkmaz');
+    }
     final before = _state.character;
     final b = _business(id);
     final next = BusinessRules.dispose(before, id, sell: sell);

@@ -76,7 +76,7 @@ abstract final class BusinessTypes {
       id: 'oto_yikama',
       setupCost: 1500000,
       fixedCost: 500000,
-      revenue: 1800000,
+      revenue: 1400000,
       volatility: 0.45,
       staffPerBranch: 1,
     ),

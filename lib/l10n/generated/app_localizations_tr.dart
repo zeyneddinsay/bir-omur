@@ -1259,6 +1259,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get businessBlocked_iflas => 'Bu işte batalı iki yıl olmadı';
 
   @override
+  String get businessBlocked_yeniKapandi => 'Bu işi bırakalı iki yıl olmadı';
+
+  @override
   String get businessBlocked_vakit => 'Bu yılın vakti yetmiyor (2 vakit)';
 
   @override

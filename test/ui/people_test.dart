@@ -176,7 +176,9 @@ void main() {
     expect(find.byKey(const Key('age_up')), findsOneWidget);
   });
 
-  testWidgets('Okul / İş sekmesinden işletme açılır ve yönetilir', (tester) async {
+  testWidgets('Okul / İş sekmesinden işletme açılır ve yönetilir', (
+    tester,
+  ) async {
     final container = await _bornAndGrown(tester, 19);
     final before = container.read(lifeProvider)!;
     expect(before.character.stats.money, greaterThanOrEqualTo(130000));

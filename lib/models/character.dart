@@ -138,9 +138,11 @@ class Character {
     this.education = Education.none,
     List<Business> businesses = const [],
     Map<String, int> bankruptcies = const {},
+    Map<String, int> businessExits = const {},
   }) : assert(age >= 0),
        businesses = List.unmodifiable(businesses),
        bankruptcies = Map.unmodifiable(bankruptcies),
+       businessExits = Map.unmodifiable(businessExits),
        city = city ?? hometown,
        ledger = List.unmodifiable(ledger),
        assert(luck >= 0 && luck <= 100),
@@ -167,6 +169,9 @@ class Character {
 
   /// Batan işletme türü → batış yaşı (aynı türü 2 yıl açamaz).
   final Map<String, int> bankruptcies;
+
+  /// Satılan ya da kapatılan işletme türü → yaş (aynı türü 2 yıl açamaz).
+  final Map<String, int> businessExits;
 
   /// Bu yılın ve geçen yılın para hareketleri, kaynaklarıyla (Varlıklar
   /// sekmesi). Daha eskileri tutulmaz.
@@ -250,6 +255,7 @@ class Character {
     Education? education,
     List<Business>? businesses,
     Map<String, int>? bankruptcies,
+    Map<String, int>? businessExits,
   }) {
     return Character(
       name: name ?? this.name,
@@ -278,6 +284,7 @@ class Character {
       education: education ?? this.education,
       businesses: businesses ?? this.businesses,
       bankruptcies: bankruptcies ?? this.bankruptcies,
+      businessExits: businessExits ?? this.businessExits,
     );
   }
 
@@ -320,6 +327,7 @@ class Character {
     if (businesses.isNotEmpty)
       'businesses': [for (final b in businesses) b.toJson()],
     if (bankruptcies.isNotEmpty) 'bankruptcies': bankruptcies,
+    if (businessExits.isNotEmpty) 'businessExits': businessExits,
     if (ledger.isNotEmpty) 'ledger': [for (final e in ledger) e.toJson()],
   };
 
@@ -370,6 +378,10 @@ class Character {
       ],
       bankruptcies: {
         ...?(json['bankruptcies'] as Map<String, dynamic>?)
+            ?.cast<String, int>(),
+      },
+      businessExits: {
+        ...?(json['businessExits'] as Map<String, dynamic>?)
             ?.cast<String, int>(),
       },
       ledger: [

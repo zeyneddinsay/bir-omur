@@ -193,7 +193,16 @@ D3 adımları (kendi işin):
 - [x] İşletme olayları (`assets/cards/isletme.json`, 17 olay): zabıta, yağmur, müşteri, rakip, çalışan, nazarlık, veresiye, dükkân kirası, akraba çalışan. Kart şemasına `business` koşulu ve etkisi eklendi.
 - [x] Aile fabrikası: fabrikatör ailenin çocuğuna 22–30 yaş arasında babasından teklif gelir (`aile_fabrikasi` mesleği, ilansız).
 - [x] Rozetler: Zincirin Sahibi (üç şube) ve Akrabayla İş Olur mu? (akraba ortak); motor bayrakları `zincir_sahibi`, `akraba_ortak`, `isletme_acti`.
-- [ ] D3 bağımsız mantık denetimi
+- [x] D3 bağımsız mantık denetimi (19 bulgu) ve düzeltmeler:
+  - Reklam yalnızca o yılın cirosuna %10 ekler; itibara katkısı +3. Pahalı fiyatta itibar duyarlılığı ×1,5.
+  - Satış değeri kâr geçmişine bağlı (1 yıl 0, 2 yıl 1, 3 yıl 2 kat). Zarardaki işletme satılamaz, yalnızca kapatılır. Satılan ya da kapatılan tür 2 yıl açılamaz.
+  - Ortak çıkışta en az sermayesini alır; eski ortak yeniden ortak olamaz. Net servet işletmeleri sayar.
+  - Yalnızca bir işletmenin başında durulur. Başka şehirde ya da askerdeyken işletme müdürde sayılır. İşi olan, işletmeyi müdürle açar.
+  - Ölen ya da emekli olan çalışanın ve müdürün yerine yenisi gelir; ölen ortağın ortaklığı biter. Kapanışta rakipler rakip olmaktan çıkar.
+  - Tanıdık yalnızca yabancı bir çalışanın yerine alınır.
+  - Kredi 18 yaştan itibaren. Ekipli ve tek kişilik yazılım aynı koldur.
+  - Kart koşullarına `businessTypes` ve `atBusiness` eklendi.
+  - Emek işinde ek şubeyi usta yönetir (müdür maaşı yok). Müdür maaşı 340 bin; oto yıkama cirosu 1,4 milyon.
 - D5 denge notları: test oyuncusu neredeyse her hayatta işletme açıyor, bu yüzden medyan servet yaklaşık 10 milyon. Varlıklı ailenin medyan serveti ortadan düşük çıkıyor (örneklem küçük, %5).
 
 ## Bekleyen aşama: F3a — Dağıtıma hazırlık

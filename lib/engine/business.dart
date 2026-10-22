@@ -24,6 +24,9 @@ enum BusinessBlocked {
   /// Bu türde işletmesi batalı iki yıl olmadı.
   iflas,
 
+  /// Bu türdeki işletmesini satalı ya da kapatalı iki yıl olmadı.
+  yeniKapandi,
+
   /// Bu yılın vakti yetmiyor.
   vakit,
   askerde,
@@ -38,6 +41,7 @@ class BusinessYear {
     required this.ownerShare,
     this.loanPaid = 0,
     this.bankrupt = false,
+    this.liquidation = 0,
   });
 
   final String businessId;
@@ -52,6 +56,9 @@ class BusinessYear {
 
   /// Nakit eksiye düşüp zarar edince zorunlu kapandı.
   final bool bankrupt;
+
+  /// Batışta ekipman satışı eksi kalan kredi.
+  final int liquidation;
 }
 
 /// İşletme kuralları (canlı doküman, "Kendi işin").
@@ -66,26 +73,30 @@ abstract final class BusinessRules {
   /// Aynı anda en fazla iki işletme.
   static const int maxBusinesses = 2;
 
-  /// Açmak ve büyütmek 2 vakit; reklam 1.
+  /// Açmak ve büyütmek 2 vakit; reklam ve tanıdık işe almak 1.
   static const int openTimeCost = 2;
   static const int adTimeCost = 1;
 
-  /// Kredi: kuruluşun en fazla %70'i, 5 yıl.
+  /// Kredi: kuruluşun en fazla %70'i, 5 yıl, 18 yaşından itibaren.
   static const double maxLoanShare = 0.7;
   static const int loanYears = 5;
+  static const int minLoanAge = 18;
 
-  /// Batan türü yeniden açmak için beklenecek yıl.
+  /// Batan, satılan ya da kapatılan türü yeniden açmak için beklenecek yıl.
   static const int bankruptcyWait = 2;
+  static const int exitWait = 2;
 
-  /// Müdürün yıllık maaşı (başında durulmazken).
-  static const int managerWage = 450000;
+  /// Müdürün yıllık maaşı (başında durulmazken ve ek şubelerde).
+  static const int managerWage = 340000;
 
   /// Ortak, kuruluşun bu oranı kadar sermaye koyar ve kârın bu oranını alır.
   static const double partnerShare = 0.3;
 
-  /// Reklamın bedeli (kuruluşun oranı) ve itibara etkisi.
+  /// Reklam: bedeli kuruluşun oranı; o yılın cirosunu artırır, itibara
+  /// kalıcı küçük bir katkısı olur.
   static const double adCostShare = 0.05;
-  static const int adReputation = 10;
+  static const double adBoost = 0.1;
+  static const int adReputation = 3;
 
   /// Kapatırken dükkân kirası cezası (yıllık sabit giderin dörtte biri).
   static int closingPenalty(Business b) {
@@ -99,29 +110,50 @@ abstract final class BusinessRules {
     return (t.setupCost * 0.4).round() * b.branches;
   }
 
-  /// Satış değeri: ekipman + son yılların ortalama kârının iki katı (kâr
-  /// ediyorsa).
+  /// Satış değeri: ekipman + ortalama kârın kâr geçmişine göre katı (1 yıl
+  /// 0, 2 yıl 1, 3 yıl 2 kat); zarardaysa yalnızca ekipman. Kalan kredi
+  /// düşülür.
   static int saleValue(Business b) {
     final avg = b.profits.isEmpty
         ? 0
         : b.profits.reduce((a, c) => a + c) ~/ b.profits.length;
-    return equipmentValue(b) + (avg > 0 ? avg * 2 : 0) - remainingLoan(b);
+    final multiple = max(0, b.profits.length - 1);
+    return equipmentValue(b) +
+        (avg > 0 ? avg * multiple : 0) -
+        remainingLoan(b);
   }
+
+  /// Alıcı yalnızca son yılı kârlı işletmeye çıkar; zarardaki kapatılır.
+  static bool canSell(Business b) => (b.lastProfit ?? 0) > 0;
 
   static int remainingLoan(Business b) => b.loanPayment * b.loanYearsLeft;
 
-  /// Kendi isteğiyle kapatınca eline geçen: ekipmanın yarısı, eksi kira
-  /// cezası ve kalan kredi.
+  /// Kendi isteğiyle kapatınca: ekipmanın yarısı, eksi kira cezası ve kalan
+  /// kredi.
   static int closingValue(Business b) =>
       equipmentValue(b) ~/ 2 - closingPenalty(b) - remainingLoan(b);
+
+  /// Ortağın çıkışta alacağı: sermayesi ya da değerden payı, hangisi
+  /// büyükse; değer yetmezse değer kadar.
+  static int partnerPayout(Business b, int value) {
+    if (b.partnerId == null || value <= 0) return 0;
+    return min(value, max(b.partnerCapital, (value * b.partnerShare).round()));
+  }
+
+  /// Satışta ya da kapanışta oyuncunun eline geçen (ortağın payı düşülmüş).
+  static int exitValue(Business b, {required bool sell}) {
+    final value = sell ? saleValue(b) : closingValue(b);
+    return value - partnerPayout(b, value);
+  }
 
   /// Bu işletmeyi açmak için gereken peşin para (krediyle %30).
   static int downPayment(BusinessType t, {required bool loan}) =>
       loan ? (t.setupCost * (1 - maxLoanShare)).round() : t.setupCost;
 
-  /// Kredi verilir mi: işi varsa ya da itibarı 50 ve üstüyse.
+  /// Kredi verilir mi: 18 yaşında ve üstünde; işi varsa ya da itibarı 50
+  /// ve üstüyse.
   static bool loanAllowed(Character c) =>
-      c.job != null || c.stats.reputation >= 50;
+      c.age >= minLoanAge && (c.job != null || c.stats.reputation >= 50);
 
   static String ownerOccupation(String type) => switch (type) {
     'simit' => 'simitci',
@@ -129,6 +161,10 @@ abstract final class BusinessRules {
     'oto_yikama' => 'oto_yikamaci',
     _ => 'yazilimci',
   };
+
+  /// Aynı iş kolu mu: tek kişilik yazılım ile ekipli yazılım aynı koldur.
+  static bool sameLine(String a, String b) =>
+      a == b || a.startsWith('${b}_') || b.startsWith('${a}_');
 
   static BusinessBlocked? openBlocked(
     Character c,
@@ -138,14 +174,15 @@ abstract final class BusinessRules {
     if (c.hasFlag('askerde')) return BusinessBlocked.askerde;
     if (c.age < t.minAge) return BusinessBlocked.yas;
     if (!BusinessTypes.qualifies(c, t)) return BusinessBlocked.sart;
-    if (c.businesses.any((b) => b.type == t.id)) {
+    if (c.businesses.any((b) => sameLine(b.type, t.id))) {
       return BusinessBlocked.zatenVar;
     }
     if (c.businesses.length >= maxBusinesses) return BusinessBlocked.cokFazla;
-    final failed = c.bankruptcies[t.id];
-    if (failed != null && c.age - failed < bankruptcyWait) {
-      return BusinessBlocked.iflas;
-    }
+    bool recent(Map<String, int> ages, int wait) => ages.entries.any(
+      (e) => sameLine(e.key, t.id) && c.age - e.value < wait,
+    );
+    if (recent(c.bankruptcies, bankruptcyWait)) return BusinessBlocked.iflas;
+    if (recent(c.businessExits, exitWait)) return BusinessBlocked.yeniKapandi;
     final canLoan = loanAllowed(c);
     if (c.stats.money < downPayment(t, loan: canLoan)) {
       return BusinessBlocked.para;
@@ -154,8 +191,32 @@ abstract final class BusinessRules {
     return null;
   }
 
+  /// Oyuncu işletmenin başında sayılır mı: başında durmayı seçmiş, aynı
+  /// şehirde ve askerde değil.
+  static bool isPresent(Character c, Business b) =>
+      b.present && b.city == c.city && !c.hasFlag('askerde');
+
+  /// Yeni bir yabancı çalışan.
+  static (PeopleBook, Person) _hireStranger(
+    PeopleBook people,
+    Character c,
+    String city,
+    String type,
+    PersonFactory f,
+  ) => f.add(
+    people,
+    now: c.age,
+    age: f.between(19, 45),
+    city: city,
+    origin: Origin.isYeri,
+    base: 15,
+    roles: const [PersonRole(RoleKind.calisan)],
+    occupation: ownerOccupation(type),
+  );
+
   /// İşletme açar. Para yetmezse (ve kredi verilirse) kalanı kredi.
-  /// Çalışanlar ve mahalledeki rakipler kişi olarak gelir.
+  /// Çalışanlar ve mahalledeki rakipler kişi olarak gelir. İşi yoksa
+  /// başında durur (öteki işletmesi müdüre kalır); işi varsa müdürle açar.
   static Character open(Character c, BusinessType t, PersonFactory f) {
     final useLoan = c.stats.money < t.setupCost;
     final down = downPayment(t, loan: useLoan);
@@ -167,18 +228,10 @@ abstract final class BusinessRules {
     final staff = <String>[];
     for (var i = 0; i < t.staffPerBranch; i++) {
       final Person p;
-      (people, p) = f.add(
-        people,
-        now: c.age,
-        age: f.between(19, 45),
-        city: c.city,
-        origin: Origin.isYeri,
-        base: 15,
-        roles: const [PersonRole(RoleKind.calisan)],
-      );
+      (people, p) = _hireStranger(people, c, c.city, t.id, f);
       staff.add(p.id);
     }
-    // Mahallede aynı işi yapan 0–2 rakip.
+    // Mahallede aynı işi yapan 0–2 rakip; dünya küçük: tanıdık çıkabilir.
     final rivals = f.random.nextInt(3);
     for (var i = 0; i < rivals; i++) {
       (people, _) = f.addOrReuse(
@@ -195,22 +248,28 @@ abstract final class BusinessRules {
     }
     // Aynı türden aynı anda bir işletme olduğu için tür ve yaş benzersiz.
     final id = '${t.id}_${c.age}';
-    final business = Business(
-      id: id,
-      type: t.id,
-      name: c.surname,
-      city: c.city,
-      openedAt: c.age,
-      staff: staff,
-      loanPayment: loan?.yearlyPayment ?? 0,
-      loanYearsLeft: loan?.years ?? 0,
-    );
-    return c.copyWith(
+    final present = c.job == null;
+    final next = c.copyWith(
       stats: c.stats.withMoneyDelta(-down),
       people: people,
-      businesses: [...c.businesses, business],
+      businesses: [
+        ...c.businesses,
+        Business(
+          id: id,
+          type: t.id,
+          name: c.surname,
+          city: c.city,
+          openedAt: c.age,
+          staff: staff,
+          // Başında durma seçimi müdürü ve öteki işletmeleri düzenler.
+          present: !present,
+          loanPayment: loan?.yearlyPayment ?? 0,
+          loanYearsLeft: loan?.years ?? 0,
+        ),
+      ],
       flags: {...c.flags, ownerFlag},
     );
+    return setPresent(next, id, present, f);
   }
 
   /// Rakip sayısı: aynı şehirde, aynı işi yapan, rakip rolü süren kişiler.
@@ -235,7 +294,7 @@ abstract final class BusinessRules {
   static double reputationFactor(Business b) {
     var f = 0.7 + b.reputation / 100 * 0.6;
     // Pahalıda müşteri itibara daha duyarlı.
-    if (b.price == PriceLevel.pahali) f = 1 + (f - 1) * 2;
+    if (b.price == PriceLevel.pahali) f = 1 + (f - 1) * 1.5;
     return f;
   }
 
@@ -245,19 +304,28 @@ abstract final class BusinessRules {
     PriceLevel.pahali => 1.1,
   };
 
-  static double managementFactor(Business b, BusinessType t) {
-    if (b.present) return 1.1;
+  static double managementFactor(Character c, Business b, BusinessType t) {
+    if (isPresent(c, b)) return 1.1;
     return t.laborBound ? 0.6 : 0.95;
   }
 
-  /// Müdür sayısı: başında durulmazsa ana dükkân için bir, her ek şube
-  /// için bir.
-  static int managers(Business b) => b.branches - 1 + (b.present ? 0 : 1);
+  /// Müdür maaşı ödenen kişi sayısı: başında durulmazsa ana dükkân için
+  /// bir; emek işi olmayanlarda her ek şube için bir (emek işinde ek
+  /// şubeyi oradaki usta yönetir).
+  static int managers(Character c, Business b, BusinessType t) =>
+      (t.laborBound ? 0 : b.branches - 1) + (isPresent(c, b) ? 0 : 1);
 
-  /// Bir yılın beklenen (şanssız) kârı; arayüz tahmin olarak gösterir.
+  /// Bu yılın beklenen (şanssız) kârı; arayüz tahmin olarak gösterir.
   static int expectedProfit(Character c, Business b, {double inflation = 0.3}) {
     final t = BusinessTypes.require(b.type);
-    return _profit(c, b, t, economyFactor(inflation), 1.0);
+    return _profit(
+      c,
+      b,
+      t,
+      economyFactor(inflation),
+      1.0,
+      advertised: b.advertisedAt == c.age,
+    );
   }
 
   static int _profit(
@@ -265,12 +333,12 @@ abstract final class BusinessRules {
     Business b,
     BusinessType t,
     double economy,
-    double luck,
-  ) {
+    double luck, {
+    required bool advertised,
+  }) {
     final rivals = max(0.5, 1 - 0.1 * rivalCount(c, b));
-    // Ek şubeleri müdür yönetir (kendi ustası olduğu için emek işinde de
-    // 0,95).
-    final management = managementFactor(b, t) + (b.branches - 1) * 0.95;
+    // Ek şubeleri müdür ya da usta yönetir.
+    final management = managementFactor(c, b, t) + (b.branches - 1) * 0.95;
     final revenue =
         t.revenue *
         management *
@@ -278,31 +346,38 @@ abstract final class BusinessRules {
         economy *
         priceFactor(b.price) *
         rivals *
-        luck;
+        luck *
+        (advertised ? 1 + adBoost : 1);
     final costs =
-        (t.fixedCost + t.wages) * b.branches + managers(b) * managerWage;
+        (t.fixedCost + t.wages) * b.branches + managers(c, b, t) * managerWage;
     return (revenue - costs).round();
   }
 
   /// Yaşlanınca işletmelerin yılı: kâr ya da zarar, kredi taksidi, ortak
-  /// payı, itibar kayması; nakit eksiye düşüp zarar edeni batırır.
+  /// payı, itibar kayması. Yılın sonunda nakit eksideyse zarar eden
+  /// işletmeler batar. [c] yaşlanmış karakterdir; reklam geçen yılın
+  /// (bir önceki yaşın) aksiyonudur.
   static (Character, List<BusinessYear>) yearOf(
     Character c,
     double inflation,
     Random random,
   ) {
     if (c.businesses.isEmpty) return (c, const []);
-    final reports = <BusinessYear>[];
-    final kept = <Business>[];
+    final drafts = <(Business next, int profit, int share, int loanPaid)>[];
     var money = c.stats.money;
-    var people = c.people;
-    var bankruptcies = {...c.bankruptcies};
     for (final b in c.businesses) {
       final t = BusinessTypes.require(b.type);
       // Yılın şansı: ortalaması 1, oynama payı türüne göre.
       final luck =
           1 + t.volatility * ((random.nextDouble() + random.nextDouble()) - 1);
-      final profit = _profit(c, b, t, economyFactor(inflation), luck);
+      final profit = _profit(
+        c,
+        b,
+        t,
+        economyFactor(inflation),
+        luck,
+        advertised: b.advertisedAt == c.age - 1,
+      );
       final share = profit > 0
           ? (profit * (1 - b.partnerShare)).round()
           : profit;
@@ -328,22 +403,36 @@ abstract final class BusinessRules {
         loanYearsLeft: max(0, b.loanYearsLeft - 1),
         loanPayment: b.loanYearsLeft > 1 ? b.loanPayment : 0,
       );
-      final bankrupt = money < 0 && profit < 0;
+      drafts.add((next, profit, share, loanPaid));
+    }
+    final broke = money < 0;
+    final reports = <BusinessYear>[];
+    final kept = <Business>[];
+    var people = c.people;
+    final bankruptcies = {...c.bankruptcies};
+    for (final (next, profit, share, loanPaid) in drafts) {
+      final bankrupt = broke && profit < 0;
+      // Batışta ekipman yarı fiyatına satılır; kalan kredi borca kalır;
+      // ortak sermayesini kaybeder.
+      final liquidation = bankrupt
+          ? equipmentValue(next) ~/ 2 - remainingLoan(next)
+          : 0;
+      money += liquidation;
       reports.add(
         BusinessYear(
-          businessId: b.id,
-          type: b.type,
+          businessId: next.id,
+          type: next.type,
           profit: profit,
           ownerShare: share,
           loanPaid: loanPaid,
           bankrupt: bankrupt,
+          liquidation: liquidation,
         ),
       );
       if (bankrupt) {
-        // Ekipman yarı fiyatına satılır; kalan kredi borca kalır.
-        money += equipmentValue(next) ~/ 2 - remainingLoan(next);
         people = _releaseStaff(people, next, c.age, bitter: true);
-        bankruptcies[b.type] = c.age;
+        people = _endRivals(people, c, next);
+        bankruptcies[next.type] = c.age;
       } else {
         kept.add(next);
       }
@@ -409,6 +498,31 @@ abstract final class BusinessRules {
     return book;
   }
 
+  /// İşletme kapanınca o şehirde aynı işi yapan rakipler artık rakip
+  /// değildir (aynı kolda başka işletmesi yoksa).
+  static PeopleBook _endRivals(PeopleBook people, Character c, Business b) {
+    final stillThere = c.businesses.any(
+      (x) => x.id != b.id && x.city == b.city && sameLine(x.type, b.type),
+    );
+    if (stillThere) return people;
+    var book = people;
+    for (final p in book.all.toList()) {
+      if (p.city != b.city ||
+          !p.hasRole(RoleKind.rakip) ||
+          p.occupation != ownerOccupation(b.type)) {
+        continue;
+      }
+      book = book.update(
+        p.copyWith(
+          roles: [
+            for (final r in p.roles) r.kind == RoleKind.rakip ? r.ended() : r,
+          ],
+        ),
+      );
+    }
+    return book;
+  }
+
   static Business? _find(Character c, String id) =>
       c.businesses.where((b) => b.id == id).firstOrNull;
 
@@ -416,8 +530,9 @@ abstract final class BusinessRules {
     businesses: [for (final x in c.businesses) x.id == b.id ? b : x],
   );
 
-  /// Başında durur ya da müdüre bırakır. Müdür ilk bırakışta kişi olarak
-  /// gelir.
+  /// Başında durur ya da müdüre bırakır. Başında durulan işletme tektir:
+  /// öteki müdüre kalır. Müdür kişi olarak gelir (dünya küçük: tanıdık
+  /// çıkabilir); başına dönülünce müdürün rolü biter.
   static Character setPresent(
     Character c,
     String id,
@@ -426,11 +541,33 @@ abstract final class BusinessRules {
   ) {
     final b = _find(c, id)!;
     if (b.present == present) return c;
-    if (present || b.managerId != null) {
-      return _replace(c, b.copyWith(present: present));
+    var next = c;
+    if (present) {
+      for (final other in c.businesses) {
+        if (other.id != id && other.present) {
+          next = setPresent(next, other.id, false, f);
+        }
+      }
+      var people = next.people;
+      if (b.managerId case final m?) {
+        if (people[m] case final manager?) {
+          people = people.update(
+            manager.copyWith(
+              roles: [
+                for (final r in manager.roles)
+                  r.kind == RoleKind.mudur ? r.ended() : r,
+              ],
+            ),
+          );
+        }
+      }
+      return _replace(
+        next.copyWith(people: people),
+        b.copyWith(present: true, clearManager: true),
+      );
     }
     final (people, manager) = f.addOrReuse(
-      c.people,
+      next.people,
       now: c.age,
       minAge: 30,
       maxAge: 55,
@@ -440,7 +577,7 @@ abstract final class BusinessRules {
       roles: const [PersonRole(RoleKind.mudur)],
     );
     return _replace(
-      c.copyWith(people: people),
+      next.copyWith(people: people),
       b.copyWith(present: false, managerId: manager.id),
     );
   }
@@ -496,15 +633,7 @@ abstract final class BusinessRules {
     final staff = [...b.staff];
     for (var i = 0; i < target.staffPerBranch; i++) {
       final Person p;
-      (people, p) = f.add(
-        people,
-        now: c.age,
-        age: f.between(22, 40),
-        city: b.city,
-        origin: Origin.isYeri,
-        base: 15,
-        roles: const [PersonRole(RoleKind.calisan)],
-      );
+      (people, p) = _hireStranger(people, c, b.city, target.id, f);
       staff.add(p.id);
     }
     final next = t.upgradeTo == null
@@ -522,6 +651,7 @@ abstract final class BusinessRules {
             managerId: b.managerId,
             partnerId: b.partnerId,
             partnerShare: b.partnerShare,
+            partnerCapital: b.partnerCapital,
             profits: b.profits,
             advertisedAt: b.advertisedAt,
             loanPayment: b.loanPayment,
@@ -537,11 +667,26 @@ abstract final class BusinessRules {
     );
   }
 
-  /// İşe alınabilecek tanıdıklar: aynı şehirde, 18–60 yaşında, işi olmayan
-  /// ya da sıradan işte çalışan, kırgın olmayan ve henüz bu işletmede
-  /// olmayan. Yalnızca çalışanı olan işletmede.
+  /// Yerine tanıdık alınabilecek yabancı çalışan (ilk gelenlerden, işe
+  /// alınmış tanıdık değil).
+  static String? _strangerOf(Character c, Business b) {
+    for (final id in b.staff) {
+      final p = c.people[id];
+      if (p != null &&
+          p.kin == null &&
+          p.origin == Origin.isYeri &&
+          !p.memories.any((m) => m.kind == 'ise_aldi')) {
+        return id;
+      }
+    }
+    return null;
+  }
+
+  /// İşe alınabilecek tanıdıklar: aynı şehirde, 18–60 yaşında, kamuda ya da
+  /// emekli olmayan, yere bağlı bir rolü (patron, rakip, çalışan, ortak…)
+  /// olmayan, kırgın olmayan. Yerine geçilecek yabancı çalışan yoksa boş.
   static List<Person> hireCandidates(Character c, Business b) {
-    if (b.staff.isEmpty) return const [];
+    if (_strangerOf(c, b) == null) return const [];
     const busy = {'memur', 'ogretmen', 'polis', 'doktor', 'emekli'};
     return [
       for (final p in c.people.active(c.age))
@@ -550,9 +695,9 @@ abstract final class BusinessRules {
             p.ageAt(c.age) >= 18 &&
             p.ageAt(c.age) <= 60 &&
             !busy.contains(p.occupation) &&
-            !b.staff.contains(p.id) &&
-            p.id != b.managerId &&
-            p.id != b.partnerId &&
+            !p.roles.any(
+              (r) => r.active && PersonFactory.placeRoles.contains(r.kind),
+            ) &&
             Relationships.closeness(p, c.age) >= 30 &&
             Relationships.hostility(p, c.age) < 40)
           p,
@@ -565,10 +710,7 @@ abstract final class BusinessRules {
   static Character hireKnown(Character c, String id, String personId) {
     final b = _find(c, id)!;
     final p = c.people[personId]!;
-    final replaced = b.staff.firstWhere(
-      (s) => c.people[s]?.kin == null,
-      orElse: () => b.staff.first,
-    );
+    final replaced = _strangerOf(c, b)!;
     var book = c.people;
     if (book[replaced] case final old?) {
       book = book.update(
@@ -582,7 +724,10 @@ abstract final class BusinessRules {
     }
     book = book.update(
       Relationships.addMemory(
-        p.copyWith(roles: [...p.roles, const PersonRole(RoleKind.calisan)]),
+        p.copyWith(
+          roles: [...p.roles, const PersonRole(RoleKind.calisan)],
+          occupation: ownerOccupation(b.type),
+        ),
         Memory(
           kind: 'ise_aldi',
           label: 'Beni dükkânına işe aldı',
@@ -606,12 +751,14 @@ abstract final class BusinessRules {
   }
 
   /// Ortak olabilecek tanıdıklar: yakın (50+), varlıklı ya da rahat,
-  /// husumeti düşük, yetişkin.
+  /// husumeti düşük, yetişkin; daha önce ortağı olmamış.
   static List<Person> partnerCandidates(Character c, Business b) {
     if (b.partnerId != null) return const [];
     return [
       for (final p in c.people.active(c.age))
-        if (p.ageAt(c.age) >= 25 &&
+        if (p.isAlive &&
+            p.ageAt(c.age) >= 25 &&
+            !p.hasRole(RoleKind.ortak, activeOnly: false) &&
             (p.wealth == WealthLevel.rahat || p.wealth == WealthLevel.zengin) &&
             Relationships.closeness(p, c.age) >= 50 &&
             Relationships.hostility(p, c.age) < 40)
@@ -623,10 +770,12 @@ abstract final class BusinessRules {
       (BusinessTypes.require(b.type).setupCost * partnerShare).round() *
       b.branches;
 
-  /// Ortak alır: ortak sermaye koyar, kârın payını alır.
+  /// Ortak alır: ortak sermaye koyar, kârın payını alır; çıkışta en az
+  /// sermayesini geri alır.
   static Character takePartner(Character c, String id, String personId) {
     final b = _find(c, id)!;
     final p = c.people[personId]!;
+    final capital = partnerCapital(b);
     final people = c.people.update(
       Relationships.addMemory(
         p.copyWith(roles: [...p.roles, const PersonRole(RoleKind.ortak)]),
@@ -643,24 +792,85 @@ abstract final class BusinessRules {
     return _replace(
       c.copyWith(
         people: people,
-        stats: c.stats.withMoneyDelta(partnerCapital(b)),
+        stats: c.stats.withMoneyDelta(capital),
         flags: {...c.flags, if (p.kin != null) kinPartnerFlag},
       ),
-      b.copyWith(partnerId: personId, partnerShare: partnerShare),
+      b.copyWith(
+        partnerId: personId,
+        partnerShare: partnerShare,
+        partnerCapital: capital,
+      ),
     );
   }
 
-  /// İşletmeyi satar ya da kapatır; çalışanlar "eski" olur.
+  /// İşletmeyi satar ya da kapatır: ortak payını alır, çalışanlar "eski"
+  /// olur, rakipler rakip olmaktan çıkar; aynı tür 2 yıl açılamaz.
   static Character dispose(Character c, String id, {required bool sell}) {
     final b = _find(c, id)!;
-    final value = sell ? saleValue(b) : closingValue(b);
+    var people = _releaseStaff(c.people, b, c.age, bitter: false);
+    people = _endRivals(people, c, b);
     return c.copyWith(
-      stats: c.stats.withMoneyDelta(value),
-      people: _releaseStaff(c.people, b, c.age, bitter: false),
+      stats: c.stats.withMoneyDelta(exitValue(b, sell: sell)),
+      people: people,
       businesses: [
         for (final x in c.businesses)
           if (x.id != id) x,
       ],
+      businessExits: {...c.businessExits, b.type: c.age},
     );
+  }
+
+  /// Yılın sonunda: vefat eden ya da emekli olan (rolü biten) çalışan ve
+  /// müdürün yerine yenisi gelir; vefat eden ortağın ortaklığı biter.
+  static Character refreshStaff(Character c, PersonFactory f) {
+    if (c.businesses.isEmpty) return c;
+    var next = c;
+    for (final b in c.businesses) {
+      var people = next.people;
+      bool gone(String id, RoleKind role) {
+        final p = people[id];
+        return p == null || !p.isAlive || !p.hasRole(role);
+      }
+
+      final staff = <String>[];
+      for (final id in b.staff) {
+        if (!gone(id, RoleKind.calisan)) {
+          staff.add(id);
+          continue;
+        }
+        if (people[id] case final p? when p.hasRole(RoleKind.calisan)) {
+          people = people.update(
+            p.copyWith(
+              roles: [
+                for (final r in p.roles)
+                  r.kind == RoleKind.calisan ? r.ended() : r,
+              ],
+            ),
+          );
+        }
+        final Person fresh;
+        (people, fresh) = _hireStranger(people, next, b.city, b.type, f);
+        staff.add(fresh.id);
+      }
+      var updated = b.copyWith(staff: staff);
+      if (b.managerId case final m? when gone(m, RoleKind.mudur)) {
+        final Person manager;
+        (people, manager) = f.add(
+          people,
+          now: next.age,
+          age: f.between(30, 55),
+          city: b.city,
+          origin: Origin.isYeri,
+          base: 15,
+          roles: const [PersonRole(RoleKind.mudur)],
+        );
+        updated = updated.copyWith(managerId: manager.id);
+      }
+      if (b.partnerId case final p? when !(people[p]?.isAlive ?? false)) {
+        updated = updated.copyWith(clearPartner: true);
+      }
+      next = _replace(next.copyWith(people: people), updated);
+    }
+    return next;
   }
 }

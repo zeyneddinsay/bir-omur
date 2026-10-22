@@ -6,7 +6,7 @@
     "minAge": 16,
     "maxAge": 90,
     "repeat": { "cooldown": 6, "max": 3 },
-    "conditions": { "business": "any" },
+    "conditions": { "businessTypes": ["simit", "berber", "oto_yikama"] },
     "text": "Zabıta kapıda: 'Tabelanız yönetmeliğe uymuyor, yarım metre taşmış.' Yan dükkânın tabelası iki metre.",
     "left": {
       "label": "Hemen düzeltirim",
@@ -26,7 +26,7 @@
     "minAge": 16,
     "maxAge": 90,
     "repeat": { "cooldown": 3, "max": 4 },
-    "conditions": { "business": "simit" },
+    "conditions": { "business": "simit", "atBusiness": true },
     "text": "Sabahtan beri sağanak. Tezgâhta altmış simit soğuyor, sokakta bir tek sen varsın.",
     "left": {
       "label": "Kapı kapı dolaşırım",
@@ -44,7 +44,7 @@
     "minAge": 16,
     "maxAge": 90,
     "repeat": { "cooldown": 4, "max": 3 },
-    "conditions": { "business": "simit" },
+    "conditions": { "business": "simit", "atBusiness": true },
     "text": "Her sabah gelen beyefendi bugün de geldi: 'Dünkünden olmasın ama, çıtır olsun.'",
     "left": {
       "label": "Fırından yeni çıktı",
@@ -62,7 +62,7 @@
     "minAge": 18,
     "maxAge": 90,
     "repeat": { "cooldown": 4, "max": 3 },
-    "conditions": { "business": "berber" },
+    "conditions": { "business": "berber", "atBusiness": true },
     "text": "Müşteri telefonu uzattı: 'Aynısından.' Fotoğraftakinin saçı başka, kafası başka, yaşı başka.",
     "left": {
       "label": "Elimden geleni yaparım",
@@ -82,7 +82,7 @@
     "minAge": 18,
     "maxAge": 90,
     "repeat": { "cooldown": 5, "max": 3 },
-    "conditions": { "business": "berber" },
+    "conditions": { "business": "berber", "atBusiness": true },
     "text": "Koltuktaki müşteri yarım saattir ekonomiyi anlatıyor. Arkada sırada dört kişi var.",
     "left": {
       "label": "Haklısın, valla",
@@ -163,7 +163,7 @@
     "minAge": 20,
     "maxAge": 90,
     "repeat": { "cooldown": 5, "max": 2 },
-    "conditions": { "business": "yazilim" },
+    "conditions": { "business": "yazilim", "atBusiness": true },
     "text": "Gece üçte telefon: sistem çökmüş, müşterinin kampanyası sabah dokuzda başlıyor.",
     "left": {
       "label": "Kalkıp düzeltirim",
@@ -181,7 +181,7 @@
     "minAge": 18,
     "maxAge": 90,
     "repeat": { "cooldown": 3, "max": 4 },
-    "conditions": { "business": "any" },
+    "conditions": { "business": "any", "atBusiness": true },
     "roles": {
       "calisan": { "roles": ["calisan"] }
     },
@@ -227,7 +227,7 @@
     "minAge": 18,
     "maxAge": 90,
     "repeat": { "cooldown": 4, "max": 3 },
-    "conditions": { "business": "any" },
+    "conditions": { "business": "any", "atBusiness": true },
     "roles": {
       "calisan": { "roles": ["calisan"] }
     },
@@ -356,7 +356,7 @@
     "minAge": 16,
     "maxAge": 90,
     "repeat": { "cooldown": 8, "max": 2 },
-    "conditions": { "business": "any" },
+    "conditions": { "businessTypes": ["simit", "berber", "oto_yikama"] },
     "roles": {
       "teyze": { "roles": ["komsu"], "gender": "kadin", "minAge": 50, "sameCity": true }
     },
@@ -402,7 +402,7 @@
     "minAge": 16,
     "maxAge": 90,
     "repeat": { "cooldown": 5, "max": 3 },
-    "conditions": { "business": "any" },
+    "conditions": { "businessTypes": ["simit", "berber"], "atBusiness": true },
     "roles": {
       "komsu": { "roles": ["komsu"], "sameCity": true }
     },
@@ -461,7 +461,7 @@
     "minAge": 16,
     "maxAge": 90,
     "repeat": { "cooldown": 5, "max": 3 },
-    "conditions": { "business": "any" },
+    "conditions": { "businessTypes": ["simit", "berber", "oto_yikama"] },
     "text": "Dükkânın sahibi aradı: 'Bu bölge çok değerlendi. Kirayı ikiye katlıyorum, ya da çıkarsın.'",
     "left": {
       "label": "Pazarlık ederim",
@@ -481,7 +481,7 @@
     "minAge": 18,
     "maxAge": 90,
     "repeat": { "cooldown": 4, "max": 2 },
-    "conditions": { "business": "any" },
+    "conditions": { "business": "any", "atBusiness": true },
     "roles": {
       "akraba": { "kin": ["kuzen", "yegen", "kardes"], "roles": ["calisan"] }
     },

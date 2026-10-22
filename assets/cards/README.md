@@ -52,7 +52,7 @@ motoru" bölümündedir.
 | `minAge`, `maxAge` | evet | Oyuncunun yaşı, dahil |
 | `repeat` | evet | `"once"` ya da `{"cooldown": 3}`; isteğe bağlı `"max": 4` hayat boyu en fazla kaç kez geleceğini sınırlar. Daha önce gelmiş olay çekilişte her gelişinde daha az ağırlık alır |
 | `rarity` | hayır | `siradan` (varsayılan), `nadir`, `efsane`; yukarı seçeneği (`up`) yalnızca nadir ve efsanede |
-| `conditions` | hayır | Oyuncunun koşulları: `flags`, `notFlags`, `gender`, `temperament`, `background`, `familyProfile`, `career`, `careers` (meslek listesi; biri yeter), `business` (işletme türü, `any` ya da `none`; `yazilim` ekipli şirketi de kapsar), `minTier`, `min`, `max` |
+| `conditions` | hayır | Oyuncunun koşulları: `flags`, `notFlags`, `gender`, `temperament`, `background`, `familyProfile`, `career`, `careers` (meslek listesi; biri yeter), `business` (işletme türü, `any` ya da `none`; `yazilim` ekipli şirketi de kapsar), `businessTypes` (tür listesi; biri yeter), `atBusiness` (`true`: uyan işletmenin başında; müşteriyle, çalışanla yüz yüze olaylar için), `minTier`, `min`, `max` |
 | `roles` | hayır | Rol yuvaları (aşağıda); uygun kişi yoksa olay gelmez |
 | `speaker` | hayır | Konuşan rol yuvası; kartta onun portresi görünür |
 | `text` | evet | En fazla 140 karakter (en uzun adla) |

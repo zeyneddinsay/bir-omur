@@ -22,6 +22,7 @@ class Business {
     this.loanPayment = 0,
     this.loanYearsLeft = 0,
     this.managerId,
+    this.partnerCapital = 0,
   });
 
   /// Oyuncunun işletmeleri arasında benzersiz (`b1`, `b2`…).
@@ -55,6 +56,9 @@ class Business {
   final String? partnerId;
   final double partnerShare;
 
+  /// Ortağın koyduğu sermaye; çıkışta en az bunu geri alır.
+  final int partnerCapital;
+
   /// Son yılların kârları (en yenisi sonda; en fazla 3).
   final List<int> profits;
 
@@ -80,6 +84,7 @@ class Business {
     String? partnerId,
     bool clearPartner = false,
     double? partnerShare,
+    int? partnerCapital,
     List<int>? profits,
     int? advertisedAt,
     int? loanPayment,
@@ -98,6 +103,7 @@ class Business {
     managerId: clearManager ? null : (managerId ?? this.managerId),
     partnerId: clearPartner ? null : (partnerId ?? this.partnerId),
     partnerShare: clearPartner ? 0 : (partnerShare ?? this.partnerShare),
+    partnerCapital: clearPartner ? 0 : (partnerCapital ?? this.partnerCapital),
     profits: profits ?? this.profits,
     advertisedAt: advertisedAt ?? this.advertisedAt,
     loanPayment: loanPayment ?? this.loanPayment,
@@ -118,6 +124,7 @@ class Business {
     'manager': ?managerId,
     'partner': ?partnerId,
     if (partnerShare > 0) 'partnerShare': partnerShare,
+    if (partnerCapital > 0) 'partnerCapital': partnerCapital,
     if (profits.isNotEmpty) 'profits': profits,
     'advertisedAt': ?advertisedAt,
     if (loanYearsLeft > 0) 'loanPayment': loanPayment,
@@ -138,6 +145,7 @@ class Business {
     managerId: json['manager'] as String?,
     partnerId: json['partner'] as String?,
     partnerShare: (json['partnerShare'] as num? ?? 0).toDouble(),
+    partnerCapital: json['partnerCapital'] as int? ?? 0,
     profits: [...?(json['profits'] as List?)?.cast<int>()],
     advertisedAt: json['advertisedAt'] as int?,
     loanPayment: json['loanPayment'] as int? ?? 0,

@@ -65,7 +65,7 @@ class EffectResolver {
         character,
         choice.effects,
         careers: careers,
-        business: card.conditions.business,
+        conditions: card.conditions,
       ),
       choice.effects,
     );
@@ -81,7 +81,7 @@ class EffectResolver {
           next,
           branch,
           careers: careers,
-          business: card.conditions.business,
+          conditions: card.conditions,
         ),
         branch,
       );
@@ -154,13 +154,13 @@ class EffectResolver {
   /// Gösterge, para, varlık, iş ve bayrak değişikliklerini uygular. Zincir
   /// kartını uygulamaz; o sıra (ScheduleQueue) motorun işidir.
   ///
-  /// İş değişikliği olan bir etki [careers] ister. İşletme etkisi
-  /// [business] koşuluna uyan işletmelere uygulanır.
+  /// İş değişikliği olan bir etki [careers] ister. İşletme etkisi kartın
+  /// [conditions] koşuluna uyan işletmelere uygulanır.
   static Character applyEffect(
     Character character,
     Effect effect, {
     CareerBook? careers,
-    String? business,
+    Conditions? conditions,
   }) {
     if (effect.isEmpty) return character;
     var stats = character.stats.withMoneyDelta(effect.money);
@@ -176,12 +176,14 @@ class EffectResolver {
       next = Careers.applyChange(next, change, careers ?? CareerBook.empty);
     }
     if (effect.business != 0) {
+      final targets = {
+        for (final b in conditions?.matchingBusinesses(next) ?? next.businesses)
+          b.id,
+      };
       next = next.copyWith(
         businesses: [
           for (final b in next.businesses)
-            business == null ||
-                    business == Conditions.anyCareer ||
-                    Conditions.matchesBusiness(b.type, business)
+            targets.contains(b.id)
                 ? b.copyWith(
                     reputation: (b.reputation + effect.business).clamp(0, 100),
                   )

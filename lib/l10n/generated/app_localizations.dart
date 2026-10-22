@@ -2140,6 +2140,12 @@ abstract class AppLocalizations {
   /// **'Bu işte batalı iki yıl olmadı'**
   String get businessBlocked_iflas;
 
+  /// No description provided for @businessBlocked_yeniKapandi.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu işi bırakalı iki yıl olmadı'**
+  String get businessBlocked_yeniKapandi;
+
   /// No description provided for @businessBlocked_vakit.
   ///
   /// In tr, this message translates to:
