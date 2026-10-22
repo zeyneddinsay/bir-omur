@@ -28,6 +28,25 @@ void main() {
 
   int ageOf(Person p) => -p.bornAt;
 
+  test('"Rastgele" cinsiyette ad listedeki cinsiyeti belirler', () {
+    expect(book.genderOfName('Ali'), Gender.erkek);
+    expect(book.genderOfName('  elif '), Gender.kadin);
+    expect(book.genderOfName('İPEK'), Gender.kadin);
+    expect(book.genderOfName('Deniz'), isNull, reason: 'listede yok');
+    for (var seed = 0; seed < 40; seed++) {
+      final ali = BirthGenerator(
+        SeededRandom(seed),
+        families: book,
+      ).generate(name: 'Ali');
+      expect(ali.gender, Gender.erkek, reason: 'tohum $seed');
+      final chosen = BirthGenerator(
+        SeededRandom(seed),
+        families: book,
+      ).generate(name: 'Ali', gender: Gender.kadin);
+      expect(chosen.gender, Gender.kadin, reason: 'seçim ada üstündür');
+    }
+  });
+
   test('aynı tohum aynı aileyi üretir', () {
     expect(
       jsonEncode(family(42).people.toJson()),

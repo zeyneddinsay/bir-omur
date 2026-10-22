@@ -173,6 +173,24 @@ class AppLocalizationsTr extends AppLocalizations {
   String get rollFail => 'Bu sefer olmadı.';
 
   @override
+  String get rollLuck => 'Şans';
+
+  @override
+  String rollBadge(String stat) {
+    return 'Zar: $stat';
+  }
+
+  @override
+  String rollBadgeTooltip(String stat) {
+    return 'Bu seçeneğin sonucu zara ve $stat değerine bağlı; tutmayabilir.';
+  }
+
+  @override
+  String rollResultLine(String stat, String result) {
+    return '$stat zarı: $result';
+  }
+
+  @override
   String get actionsTitle => 'Bu yıl ne yapacaksın?';
 
   @override

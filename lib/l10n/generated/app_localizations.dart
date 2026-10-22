@@ -364,6 +364,30 @@ abstract class AppLocalizations {
   /// **'Bu sefer olmadı.'**
   String get rollFail;
 
+  /// No description provided for @rollLuck.
+  ///
+  /// In tr, this message translates to:
+  /// **'Şans'**
+  String get rollLuck;
+
+  /// No description provided for @rollBadge.
+  ///
+  /// In tr, this message translates to:
+  /// **'Zar: {stat}'**
+  String rollBadge(String stat);
+
+  /// No description provided for @rollBadgeTooltip.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu seçeneğin sonucu zara ve {stat} değerine bağlı; tutmayabilir.'**
+  String rollBadgeTooltip(String stat);
+
+  /// No description provided for @rollResultLine.
+  ///
+  /// In tr, this message translates to:
+  /// **'{stat} zarı: {result}'**
+  String rollResultLine(String stat, String result);
+
   /// No description provided for @actionsTitle.
   ///
   /// In tr, this message translates to:

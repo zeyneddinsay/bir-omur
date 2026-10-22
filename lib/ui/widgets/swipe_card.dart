@@ -6,6 +6,7 @@ import '../../l10n/generated/app_localizations.dart';
 import '../../models/models.dart';
 import '../portrait/portrait.dart';
 import '../portrait/portrait_spec.dart';
+import '../l10n_names.dart';
 
 /// Sola, sağa ya da (varsa) yukarı kaydırılan olay kartı. Kaydırmak
 /// istemeyenler için altında seçenek düğmeleri de vardır.
@@ -163,16 +164,24 @@ class _SwipeCardState extends State<SwipeCard>
                   key: const Key('choose_left'),
                   onPressed: () => _commit(ChoiceSide.left),
                   icon: const Icon(Icons.arrow_back),
-                  label: Text(card.left.label, textAlign: TextAlign.center),
+                  label: ChoiceLabel(choice: card.left),
                 ),
               ),
               if (card.up != null) ...[
                 const SizedBox(width: 8),
                 IconButton.outlined(
                   key: const Key('choose_up'),
-                  tooltip: card.up!.label,
+                  tooltip: switch (card.up!.roll) {
+                    final roll? =>
+                      '${card.up!.label} · ${l10n.rollBadge(l10n.rollStatName(roll.stat))}',
+                    null => card.up!.label,
+                  },
                   onPressed: () => _commit(ChoiceSide.up),
-                  icon: const Icon(Icons.arrow_upward),
+                  icon: Icon(
+                    card.up!.roll == null
+                        ? Icons.arrow_upward
+                        : Icons.casino_outlined,
+                  ),
                 ),
               ],
               const SizedBox(width: 8),
@@ -182,7 +191,7 @@ class _SwipeCardState extends State<SwipeCard>
                   onPressed: () => _commit(ChoiceSide.right),
                   icon: const Icon(Icons.arrow_forward),
                   iconAlignment: IconAlignment.end,
-                  label: Text(card.right.label, textAlign: TextAlign.center),
+                  label: ChoiceLabel(choice: card.right),
                 ),
               ),
             ],
@@ -224,6 +233,12 @@ class _CardFace extends StatelessWidget {
       Rarity.nadir => scheme.tertiary,
       Rarity.efsane => const Color(0xFFD4A017),
     };
+    final leanChoice = switch (lean) {
+      final side? when side != ChoiceSide.up || card.up != null => card.choice(
+        side,
+      ),
+      _ => null,
+    };
     final leanLabel = switch (lean) {
       ChoiceSide.left => card.left.label,
       ChoiceSide.right => card.right.label,
@@ -234,12 +249,23 @@ class _CardFace extends StatelessWidget {
     final leanText = AnimatedOpacity(
       opacity: leanLabel == null ? 0 : 1,
       duration: const Duration(milliseconds: 120),
-      child: Text(
-        leanLabel ?? '',
-        style: theme.textTheme.titleMedium?.copyWith(
-          color: scheme.primary,
-          fontWeight: FontWeight.bold,
-        ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (leanChoice?.roll != null) ...[
+            Icon(Icons.casino_outlined, size: 18, color: scheme.primary),
+            const SizedBox(width: 4),
+          ],
+          Flexible(
+            child: Text(
+              leanLabel ?? '',
+              style: theme.textTheme.titleMedium?.copyWith(
+                color: scheme.primary,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ],
       ),
     );
     final speaker = speakerName == null
@@ -296,6 +322,49 @@ class _CardFace extends StatelessWidget {
                   ],
                 ),
         ),
+      ),
+    );
+  }
+}
+
+/// Seçenek düğmesinin yazısı. Zarlı seçenekte altında bir zar işareti ve
+/// zarın baktığı değer durur ("Zar: Bilgi"); sonucu tutmayabilir.
+class ChoiceLabel extends StatelessWidget {
+  const ChoiceLabel({super.key, required this.choice});
+
+  final Choice choice;
+
+  @override
+  Widget build(BuildContext context) {
+    final label = Text(choice.label, textAlign: TextAlign.center);
+    final roll = choice.roll;
+    if (roll == null) return label;
+    final l10n = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    final stat = l10n.rollStatName(roll.stat);
+    return Tooltip(
+      message: l10n.rollBadgeTooltip(stat),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          label,
+          Row(
+            key: const Key('roll_badge'),
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.casino_outlined, size: 14),
+              const SizedBox(width: 4),
+              Flexible(
+                child: Text(
+                  l10n.rollBadge(stat),
+                  style: theme.textTheme.labelSmall,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

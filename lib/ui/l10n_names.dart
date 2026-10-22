@@ -41,6 +41,12 @@ extension L10nNames on AppLocalizations {
     _ => null,
   };
 
+  /// Zarın baktığı değerin adı: "Bilgi", "Şans"…
+  String rollStatName(RollStat stat) => switch (stat.statKind) {
+    final kind? => statName(kind),
+    null => rollLuck,
+  };
+
   String backgroundName(FamilyBackground background) => switch (background) {
     FamilyBackground.varlikli => background_varlikli,
     FamilyBackground.orta => background_orta,

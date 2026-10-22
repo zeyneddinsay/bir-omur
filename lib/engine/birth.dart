@@ -45,9 +45,18 @@ class BirthGenerator {
     'Ege Yıldızları',
   ];
 
+  /// "Rastgele" seçildiğinde: ad, ad listesinde tek bir cinsiyete aitse o
+  /// cinsiyet ("Ali" kız doğmaz). Zar yine de atılır ki tohumun akışı
+  /// değişmesin.
+  Gender _randomGender(String? name) {
+    final rolled = _pick(Gender.values);
+    if (name == null) return rolled;
+    return families.genderOfName(name) ?? rolled;
+  }
+
   Character generate({String? name, Gender? gender}) {
-    final Gender g = gender ?? _pick(Gender.values);
     final trimmed = name?.trim();
+    final Gender g = gender ?? _randomGender(trimmed);
     final hometown = _pick(hometowns);
     final family = FamilyGenerator(
       random,

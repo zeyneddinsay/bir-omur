@@ -141,9 +141,21 @@ class _YearScreenState extends ConsumerState<YearScreen> {
                 color: rolled
                     ? Theme.of(context).colorScheme.primaryContainer
                     : Theme.of(context).colorScheme.errorContainer,
-                child: Text(
-                  rolled ? l10n.rollSuccess : l10n.rollFail,
-                  textAlign: TextAlign.center,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.casino_outlined, size: 18),
+                    const SizedBox(width: 6),
+                    Flexible(
+                      child: Text(switch (state.lastOutcome?.choice.roll) {
+                        final roll? => l10n.rollResultLine(
+                          l10n.rollStatName(roll.stat),
+                          rolled ? l10n.rollSuccess : l10n.rollFail,
+                        ),
+                        null => rolled ? l10n.rollSuccess : l10n.rollFail,
+                      }, textAlign: TextAlign.center),
+                    ),
+                  ],
                 ),
               ),
             Expanded(

@@ -206,6 +206,24 @@ class FamilyBook {
     return null;
   }
 
+  /// Ad listede yalnızca bir cinsiyette geçiyorsa o cinsiyet; iki listede
+  /// de yoksa ya da ikisinde de varsa null. Doğumda "Rastgele" seçilmişken
+  /// "Ali" adlı birinin kız doğmaması için.
+  Gender? genderOfName(String name) {
+    final key = _lower(name.trim());
+    if (key.isEmpty) return null;
+    bool inList(List<NameEntry> list) => list.any((n) => _lower(n.name) == key);
+    return switch ((inList(maleNames), inList(femaleNames))) {
+      (true, false) => Gender.erkek,
+      (false, true) => Gender.kadin,
+      _ => null,
+    };
+  }
+
+  /// Türkçe küçük harf: "I" → "ı", "İ" → "i".
+  static String _lower(String s) =>
+      s.replaceAll('I', 'ı').replaceAll('İ', 'i').toLowerCase();
+
   /// [gender] ve [era] için uygun adlar ("her" kuşaktakiler dahil).
   List<String> namesFor(Gender gender, NameEra era) => [
     for (final n in gender == Gender.erkek ? maleNames : femaleNames)
