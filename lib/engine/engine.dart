@@ -7,6 +7,7 @@ export 'effect_resolver.dart';
 export 'event_deck.dart';
 export 'life_action.dart';
 export 'life_engine.dart';
+export 'relationships.dart';
 export 'schedule_queue.dart';
 export 'seeded_random.dart';
 export 'summary_builder.dart';

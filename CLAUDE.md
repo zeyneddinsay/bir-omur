@@ -137,7 +137,7 @@ Bu aşamada alınan kararlar (22 Ekim 2026):
 D1 adımları (kişiler ve İnsanlar sekmesi):
 
 - [x] Türkçe ek motoru: `lib/content/turkish.dart` (`{ad|e}` gibi ekler, hitaplar, şablon denetimi)
-- [ ] Kişi ve hafıza modeli
+- [x] Kişi ve hafıza modeli: `lib/models/person.dart`, `lib/engine/relationships.dart` (yakınlık ve husumet anılardan hesaplanır)
 - [ ] Aile profilleri ve doğum
 - [ ] Kişilerin yılı (yaşlanma, solma, sınıflar, arşiv)
 - [ ] Vakit puanı
