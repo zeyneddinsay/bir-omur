@@ -1,0 +1,333 @@
+[
+  {
+    "id": "bisiklet",
+    "type": "genel",
+    "theme": "genel",
+    "minAge": 6,
+    "maxAge": 9,
+    "repeat": "once",
+    "text": "Bisikletin arkasını tutan el bir ara bırakmış. Sen fark etmeden yirmi metre gitmişsin!",
+    "left": {
+      "label": "Dönüp el salla",
+      "roll": { "stat": "luck", "threshold": 50 },
+      "success": { "happiness": 5 },
+      "fail": { "health": -2, "happiness": 2 }
+    },
+    "right": {
+      "label": "Durmadan devam",
+      "effects": { "happiness": 4 }
+    }
+  },
+  {
+    "id": "saklambac",
+    "type": "genel",
+    "theme": "mahalle",
+    "minAge": 7,
+    "maxAge": 11,
+    "repeat": { "cooldown": 3, "max": 2 },
+    "text": "Saklambaç oynuyorsunuz; ebe sensin. Sayarken herkesin nereye saklandığını duydun.",
+    "left": {
+      "label": "Hile yapmam",
+      "effects": { "reputation": 1, "happiness": 2 }
+    },
+    "right": {
+      "label": "Hepsini bul!",
+      "effects": { "happiness": 3, "reputation": -1 }
+    }
+  },
+  {
+    "id": "yeni_kardes",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 2,
+    "maxAge": 10,
+    "repeat": "once",
+    "roles": {
+      "kardes": { "kin": ["kardes"], "maxAge": 0 }
+    },
+    "text": "Eve bir bebek geldi: {kardes.ad}. Herkes ona bakıyor, kimse senin yaptığın resme bakmıyor.",
+    "left": {
+      "label": "Resmimi ona veririm",
+      "effects": {
+        "happiness": 2,
+        "people": {
+          "kardes": {
+            "memory": {
+              "kind": "ilk_hediye",
+              "label": "Ben doğunca bana ilk resmini verdi",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Odamda küserim",
+      "effects": { "happiness": -2 }
+    }
+  },
+  {
+    "id": "torun_seker",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 50,
+    "maxAge": 100,
+    "repeat": { "cooldown": 3, "max": 3 },
+    "roles": {
+      "torun": { "kin": ["torun"], "minAge": 3, "maxAge": 10 }
+    },
+    "speaker": "torun",
+    "text": "{torun.ad} kapıdan koşarak girdi, ayakkabılarını bile çıkarmadı: 'Cebinde şeker var mı?'",
+    "left": {
+      "label": "Cebimde hep var",
+      "effects": {
+        "happiness": 5,
+        "people": {
+          "torun": {
+            "memory": {
+              "kind": "cepteki_seker",
+              "label": "Cebinde benim için hep şeker vardı",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Önce yemek",
+      "effects": { "happiness": 2, "health": 1 }
+    }
+  },
+  {
+    "id": "torun_odev",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 55,
+    "maxAge": 100,
+    "repeat": { "cooldown": 4, "max": 2 },
+    "roles": {
+      "torun": { "kin": ["torun"], "minAge": 8, "maxAge": 14 }
+    },
+    "speaker": "torun",
+    "text": "{torun.ad} ödevini getirdi: 'Siz küçükken internet yokken nasıl ödev yapıyordunuz?'",
+    "left": {
+      "label": "Ansiklopedi diye bir şey",
+      "effects": {
+        "happiness": 4,
+        "people": {
+          "torun": {
+            "memory": {
+              "kind": "eski_zaman_anlatti",
+              "label": "Eski zamanları anlattı, ödevimi birlikte yaptık",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Kendin çöz bakalım",
+      "effects": { "happiness": 1 }
+    }
+  },
+  {
+    "id": "torun_telefon",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 60,
+    "maxAge": 100,
+    "repeat": { "cooldown": 4, "max": 2 },
+    "roles": {
+      "torun": { "kin": ["torun"], "minAge": 14, "maxAge": 30 }
+    },
+    "speaker": "torun",
+    "text": "{torun.ad} yeni telefonunu kuruyor. Üçüncü kez aynı şeyi soruyorsun; sabrı tükeniyor ama gülümsüyor.",
+    "left": {
+      "label": "Bir kâğıda yaz",
+      "effects": { "knowledge": 2, "happiness": 2 }
+    },
+    "right": {
+      "label": "Eskisi iyiydi",
+      "effects": { "happiness": -1 }
+    }
+  },
+  {
+    "id": "bayramda_dolan_ev",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 50,
+    "maxAge": 100,
+    "repeat": { "cooldown": 4, "max": 3 },
+    "roles": {
+      "evlat": { "kin": ["cocuk"], "minAge": 22, "livesTogether": false }
+    },
+    "speaker": "evlat",
+    "text": "Bayram sabahı {evlat.akraba} kalabalıkla geldi. Ev bir anda doldu; çaydanlık üçüncü kez kaynıyor.",
+    "left": {
+      "label": "Herkese harçlık",
+      "effects": {
+        "money": -5000,
+        "happiness": 6,
+        "people": {
+          "evlat": {
+            "memory": {
+              "kind": "bayram_sofrasi",
+              "label": "Bayramda kapısı herkese açıktı",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Biraz yoruldum",
+      "effects": { "happiness": 2, "health": -1 }
+    }
+  },
+  {
+    "id": "kahvehane_tavla",
+    "type": "genel",
+    "theme": "mahalle",
+    "minAge": 62,
+    "maxAge": 95,
+    "repeat": { "cooldown": 3, "max": 3 },
+    "text": "Kahvehanede tavla masası boşaldı. Yan masadaki emekli öğretmen pulları diziyor: 'Bir el atalım mı?'",
+    "left": {
+      "label": "Mars ederim",
+      "roll": { "stat": "luck", "threshold": 50 },
+      "success": { "happiness": 5, "reputation": 1 },
+      "fail": { "happiness": 1 }
+    },
+    "right": {
+      "label": "Seyretmek yeter",
+      "effects": { "happiness": 2 }
+    }
+  },
+  {
+    "id": "aksam_sessizligi",
+    "type": "genel",
+    "theme": "genel",
+    "minAge": 65,
+    "maxAge": 100,
+    "repeat": { "cooldown": 5, "max": 3 },
+    "conditions": { "notFlags": ["evli"] },
+    "text": "Akşam ev çok sessiz. Telefon rehberinde uzun zamandır aramadığın isimler var.",
+    "left": {
+      "label": "Birini ararım",
+      "effects": { "happiness": 4 }
+    },
+    "right": {
+      "label": "Radyoyu açarım",
+      "effects": { "happiness": 1 }
+    }
+  },
+  {
+    "id": "baston",
+    "type": "genel",
+    "theme": "saglik",
+    "minAge": 70,
+    "maxAge": 100,
+    "repeat": "once",
+    "text": "Doktor: 'Artık bir baston iyi olur.' Baston köşede duruyor, gururun da onun önünde.",
+    "left": {
+      "label": "Bastonu alırım",
+      "effects": { "health": 3 }
+    },
+    "right": {
+      "label": "Daha gencim",
+      "roll": { "stat": "luck", "threshold": 55 },
+      "success": { "happiness": 3 },
+      "fail": { "health": -5 }
+    }
+  },
+  {
+    "id": "eski_fotograflar",
+    "type": "genel",
+    "theme": "genel",
+    "minAge": 60,
+    "maxAge": 100,
+    "repeat": "once",
+    "text": "Çekmecede eski fotoğraflar buldun: okul önlüğü, askerlik, bir düğün. Kenarları sararmış.",
+    "left": {
+      "label": "Birine anlatırım",
+      "effects": { "happiness": 4 }
+    },
+    "right": {
+      "label": "Tek tek bakarım",
+      "effects": { "happiness": 3 }
+    }
+  },
+  {
+    "id": "balkon_bahcesi",
+    "type": "genel",
+    "theme": "genel",
+    "minAge": 55,
+    "maxAge": 95,
+    "repeat": "once",
+    "text": "Balkonda domates yetiştirmeye başladın. İlk domates kızardı; kimseye göstermeden duramıyorsun.",
+    "left": {
+      "label": "Herkese fotoğraf",
+      "effects": { "happiness": 4 }
+    },
+    "right": {
+      "label": "Sessizce yerim",
+      "effects": { "happiness": 3, "health": 1 }
+    }
+  },
+  {
+    "id": "ilk_tanistigimiz_yer",
+    "type": "kisi",
+    "theme": "ask",
+    "minAge": 50,
+    "maxAge": 100,
+    "repeat": "once",
+    "roles": {
+      "es": { "kin": ["es"] }
+    },
+    "speaker": "es",
+    "text": "{es.ad} bir sabah çantayı hazırlamış: 'Hadi, ilk tanıştığımız yere gidiyoruz. Hâlâ orada mı bakalım.'",
+    "left": {
+      "label": "Hemen çıkalım",
+      "effects": {
+        "happiness": 6,
+        "money": -5000,
+        "people": {
+          "es": {
+            "memory": {
+              "kind": "ilk_yer",
+              "label": "Yıllar sonra ilk tanıştığımız yere gittik",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Dizlerim ağrıyor",
+      "effects": { "happiness": -1 }
+    }
+  },
+  {
+    "id": "emekli_kuyrugu",
+    "type": "genel",
+    "theme": "para",
+    "minAge": 62,
+    "maxAge": 100,
+    "repeat": { "cooldown": 6, "max": 2 },
+    "conditions": { "flags": ["emekli"] },
+    "text": "Aylık yatmış. Banka kuyruğunda herkes fiyatları konuşuyor; önündeki teyze sana da bir tane anlatacak.",
+    "left": {
+      "label": "Dinlerim",
+      "effects": { "happiness": 2, "reputation": 1 }
+    },
+    "right": {
+      "label": "Mobil bankacılık",
+      "effects": { "knowledge": 1 }
+    }
+  }
+]
