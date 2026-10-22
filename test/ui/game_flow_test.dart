@@ -8,10 +8,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../content/real_cards_test.dart' show loadRealContent;
+import '../helpers/content.dart';
 import '../helpers/stores.dart';
 
-final _content = loadRealContent();
+final _content = uiTestContent();
 
 Widget _app({int seed = 7, SaveStore? store}) => ProviderScope(
   // Her uygulama açılışı ayrı bir kapsam; aynı [store] verilirse kayıt
@@ -46,13 +46,21 @@ Future<void> _bornAs(
   await tester.pumpAndSettle();
 }
 
+/// Yılın kalan kartlarını sola kaydırarak bitirir.
+Future<void> _finishCards(WidgetTester tester) async {
+  while (find.byKey(const Key('choose_left')).evaluate().isNotEmpty) {
+    await tester.tap(find.byKey(const Key('choose_left')));
+    await tester.pumpAndSettle();
+  }
+}
+
 void main() {
   testWidgets('doğum ekranından ilk karta', (tester) async {
     await _bornAs(tester, 'Zeynep');
     expect(find.text('Zeynep'), findsOneWidget);
     expect(find.textContaining('0 yaş'), findsOneWidget);
     // 0 yaşın zorunlu kartı.
-    expect(find.textContaining('göbek adında anlaşamıyorlar'), findsOneWidget);
+    expect(find.textContaining(firstEventText), findsOneWidget);
   });
 
   testWidgets('cinsiyet etiketleri dar ekranda ve büyük yazıda tek satır', (
@@ -86,8 +94,7 @@ void main() {
     await tester.enterText(find.byKey(const Key('birth_name')), 'Defne');
     await tester.tap(find.byKey(const Key('birth_button')));
     await tester.pumpAndSettle();
-    await tester.tap(find.byKey(const Key('choose_left')));
-    await tester.pumpAndSettle();
+    await _finishCards(tester);
     await tester.tap(find.byKey(const Key('age_up')));
     await tester.pumpAndSettle();
     expect(find.textContaining('1 yaş'), findsOneWidget);
@@ -109,7 +116,8 @@ void main() {
       const Offset(-300, 0),
     );
     await tester.pumpAndSettle();
-    expect(find.textContaining('göbek adında anlaşamıyorlar'), findsNothing);
+    expect(find.textContaining(firstEventText), findsNothing);
+    await _finishCards(tester);
     expect(find.byKey(const Key('age_up')), findsOneWidget);
   });
 
@@ -117,13 +125,14 @@ void main() {
     await _bornAs(tester, 'Ali');
     await tester.drag(find.byKey(const Key('card_text')), const Offset(-40, 0));
     await tester.pumpAndSettle();
-    expect(find.textContaining('göbek adında anlaşamıyorlar'), findsOneWidget);
+    expect(find.textContaining(firstEventText), findsOneWidget);
   });
 
   testWidgets('vakit düşer, Yaşlan yaşı artırır', (tester) async {
     await _bornAs(tester, 'Ali');
     await tester.tap(find.byKey(const Key('choose_right')));
     await tester.pumpAndSettle();
+    await _finishCards(tester);
     expect(find.text('Bu yılın vakti bitti'), findsOneWidget);
     // 6 yaşına kadar yıllar yalnızca olaylarla geçer.
     var steps = 0;

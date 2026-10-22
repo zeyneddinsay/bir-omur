@@ -10,6 +10,7 @@ import 'event_deck.dart';
 import 'interactions.dart';
 import 'life_action.dart';
 import 'people_tick.dart';
+import 'relationships.dart';
 import 'schedule_queue.dart';
 import 'seeded_random.dart';
 import 'summary_builder.dart';
@@ -47,8 +48,8 @@ class LifeState {
   final YearPhase phase;
   final ScheduleQueue queue;
 
-  /// Bu yıl henüz kaydırılmamış kartlar; ilki ekrandaki karttır.
-  final List<EventCard> pendingCards;
+  /// Bu yıl henüz kaydırılmamış olaylar; ilki ekrandaki olaydır.
+  final List<PendingEvent> pendingCards;
   final int timeLeft;
 
   /// Bu yıl yapılmış aksiyonlar; aynı aksiyon yılda bir kez yapılır.
@@ -91,7 +92,7 @@ class LifeState {
 
   LifeState withNews(List<PersonNews> news) => copyWith(news: news);
 
-  EventCard? get currentCard =>
+  PendingEvent? get currentEvent =>
       pendingCards.isEmpty ? null : pendingCards.first;
 
   bool get isOver => phase == YearPhase.dead;
@@ -176,26 +177,32 @@ class LifeEngine {
       _random,
       families: families,
     ).generate(name: name, gender: gender);
-    return _state = _beginYear(character, const ScheduleQueue());
+    return _state = _beginYear(
+      Relationships.syncFamilyBond(character),
+      const ScheduleQueue(),
+    );
   }
 
   /// Ekrandaki kartı [side] yönüne kaydırır.
   LifeState choose(ChoiceSide side) {
-    final card = _state.currentCard;
-    if (_state.phase != YearPhase.cards || card == null) {
+    final event = _state.currentEvent;
+    if (_state.phase != YearPhase.cards || event == null) {
       throw StateError('Şu an seçilecek kart yok (${_state.phase})');
     }
-    if (side == ChoiceSide.up && card.up == null) {
-      throw StateError('${card.id} kartında yukarı seçeneği yok');
+    if (side == ChoiceSide.up && event.card.up == null) {
+      throw StateError('${event.card.id} kartında yukarı seçeneği yok');
     }
 
-    final outcome = _resolver.resolve(_state.character, card, side);
-    final character = YearTick.updateHardshipFlags(outcome.character);
+    final outcome = _resolver.resolve(_state.character, event, side);
+    final character = Relationships.syncFamilyBond(
+      YearTick.updateHardshipFlags(outcome.character),
+    );
     var queue = _state.queue;
-    for (final scheduled in outcome.scheduled) {
+    for (final thread in outcome.scheduled) {
       queue = queue.add(
-        scheduled.cardId,
-        atAge: character.age + scheduled.inYears,
+        thread.event.cardId,
+        atAge: character.age + thread.event.inYears,
+        people: thread.people,
       );
     }
 
@@ -316,7 +323,9 @@ class LifeEngine {
       memoryLabels: interactions.memoryLabels,
     );
     return _state = _state.copyWith(
-      character: YearTick.updateHardshipFlags(character),
+      character: Relationships.syncFamilyBond(
+        YearTick.updateHardshipFlags(character),
+      ),
       timeLeft: _state.timeLeft - option.timeCost,
       interactionsUsed: {
         ..._state.interactionsUsed,
@@ -360,7 +369,10 @@ class LifeEngine {
     ) = PeopleTick(_random, families, cities: BirthGenerator.hometowns).apply(
       Economy.syncDerivedFlags(YearTick.updateHardshipFlags(afterCareer)),
     );
-    return _state = _beginYear(character, _state.queue).withNews(news);
+    return _state = _beginYear(
+      Relationships.syncFamilyBond(character),
+      _state.queue,
+    ).withNews(news);
   }
 
   /// Hayatın tam durumu; JSON'a çevrilip kaydedilebilir. Son kartın zar
@@ -372,10 +384,8 @@ class LifeEngine {
     'market': _market.toJson(),
     'phase': _state.phase.name,
     'character': _state.character.toJson(),
-    'queue': [
-      for (final e in _state.queue.entries) {'card': e.cardId, 'age': e.atAge},
-    ],
-    'pending': [for (final c in _state.pendingCards) c.id],
+    'queue': _state.queue.toJson(),
+    'pending': [for (final e in _state.pendingCards) e.toJson()],
     'timeLeft': _state.timeLeft,
     'actionsUsed': _state.actionsUsed.toList(),
     'cause': _state.summary?.cause.name,
@@ -409,15 +419,16 @@ class LifeEngine {
     final character = Character.fromJson(
       snapshot['character'] as Map<String, dynamic>,
     );
-    var queue = const ScheduleQueue();
-    for (final e in snapshot['queue'] as List) {
-      final entry = e as Map<String, dynamic>;
-      queue = queue.add(entry['card'] as String, atAge: entry['age'] as int);
-    }
+    final queue = ScheduleQueue.fromJson(snapshot['queue'] as List);
     final phase = YearPhase.values.byName(snapshot['phase'] as String);
     final pending = [
-      for (final id in (snapshot['pending'] as List).cast<String>())
-        ?deck.byId(id),
+      for (final raw in snapshot['pending'] as List)
+        if (deck.byId((raw as Map<String, dynamic>)['id'] as String)
+            case final card?)
+          PendingEvent(card, {
+            ...?(raw['people'] as Map<String, dynamic>?)
+                ?.cast<String, String>(),
+          }),
     ];
 
     engine._state = switch (phase) {
@@ -461,34 +472,55 @@ class LifeEngine {
     return engine;
   }
 
+  /// Yılın olayları: önce dönemeçler, sonra zamanı gelen iplikler (aynı
+  /// kişilerle), sonra rastgele olaylar. Dönemeçler dahil yılda en fazla
+  /// [EventDeck.maxPerYear] olay; sığmayan iplik sonraki yıla kalır.
+  /// İpliğin kişisi artık uygun değilse (vefat, arşiv, rolü bitti) iplik
+  /// düşer. (Kapanış metinleri D4a'da gelir.)
   LifeState _beginYear(Character character, ScheduleQueue queue) {
-    final (dueIds, rest) = queue.takeDue(character.age);
-    final chained = [
-      for (final id in dueIds)
-        if (_chainCard(id) case final card?
-            when card.conditions.isMetBy(character))
-          card,
-    ];
+    final age = character.age;
+    var (due, rest) = queue.takeDue(age);
+    final milestones = deck.milestones(character, _random);
+    final busy = {for (final e in milestones) ...e.people.values};
+    final chained = <PendingEvent>[];
+    for (final entry in due) {
+      // Kayıttan sonra içerikten kaldırılmış iplik sessizce düşer.
+      final card = deck.byId(entry.cardId);
+      if (card == null || !card.conditions.isMetBy(character)) continue;
+      if (milestones.length + chained.length >= EventDeck.maxPerYear) {
+        rest = rest.add(entry.cardId, atAge: age + 1, people: entry.people);
+        continue;
+      }
+      final people = EventDeck.bind(
+        card,
+        character,
+        _random,
+        fixed: entry.people,
+        busy: busy,
+      );
+      if (people == null) continue;
+      busy.addAll(people.values);
+      chained.add(PendingEvent(card, Map.unmodifiable(people)));
+    }
+    final room = EventDeck.maxPerYear - milestones.length - chained.length;
     final drawn = deck.draw(
       character,
       _random,
-      count: max(0, _cardCountFor(character.age) - chained.length),
-      exclude: {for (final card in chained) card.id},
+      count: min(room, _eventCountFor(age) - chained.length),
+      exclude: {
+        for (final e in [...milestones, ...chained]) e.card.id,
+      },
+      themes: {for (final e in chained) e.card.theme},
+      busy: busy,
     );
-    final cards = [...chained, ...drawn];
-    if (cards.isEmpty) return _actionsPhase(character, rest);
+    final events = [...milestones, ...chained, ...drawn];
+    if (events.isEmpty) return _actionsPhase(character, rest);
     return LifeState(
       character: character,
       phase: YearPhase.cards,
       queue: rest,
-      pendingCards: List.unmodifiable(cards),
+      pendingCards: List.unmodifiable(events),
     );
-  }
-
-  EventCard? _chainCard(String id) {
-    final card = deck.byId(id);
-    if (card == null) throw StateError('Zincir kartı bulunamadı: $id');
-    return card;
   }
 
   LifeState _actionsPhase(
@@ -505,12 +537,9 @@ class LifeEngine {
     );
   }
 
-  /// Yılda 1–3 kart; ilk yaşlarda tek kart.
-  int _cardCountFor(int age) {
+  /// Dönemeç ve iplik dışında yılda 1–2 olay; ilk yaşlarda bir olay.
+  int _eventCountFor(int age) {
     if (age < 3) return 1;
-    final roll = _random.nextInt(100);
-    if (roll < 35) return 1;
-    if (roll < 80) return 2;
-    return 3;
+    return _random.nextInt(100) < 55 ? 1 : 2;
   }
 }

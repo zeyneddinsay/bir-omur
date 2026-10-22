@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../content/event_text.dart';
 import '../../content/content_loader.dart';
 import '../../engine/engine.dart';
 import '../../l10n/generated/app_localizations.dart';
@@ -158,7 +159,8 @@ class LifeShareCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 6),
                   Text(
-                    '${l10n.biggestMomentAge(moment.age)}: ${momentCard.text}',
+                    '${l10n.biggestMomentAge(moment.age)}: '
+                    '${EventText.render(momentCard.text, moment.people, summary.character)}',
                     style: base.copyWith(
                       fontSize: 13,
                       fontStyle: FontStyle.italic,

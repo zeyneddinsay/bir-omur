@@ -16,7 +16,7 @@ void main() {
       expect(state.character.name, 'Elif');
       expect(state.character.gender, Gender.kadin);
       expect(state.phase, YearPhase.cards);
-      expect(state.currentCard!.id, 'a');
+      expect(state.currentEvent!.card.id, 'a');
     });
 
     test('isim boşsa rastgele isim verilir', () {
@@ -122,7 +122,7 @@ void main() {
 
       state = engine.advanceYear();
       expect(state.character.age, 2);
-      expect(state.currentCard!.id, 'borc_geri');
+      expect(state.currentEvent!.card.id, 'borc_geri');
       expect(state.queue.isEmpty, isTrue);
     });
 

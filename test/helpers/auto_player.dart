@@ -33,7 +33,7 @@ class AutoPlayer {
     final state = engine.state;
     switch (state.phase) {
       case YearPhase.cards:
-        return engine.choose(pickSide(state.currentCard!));
+        return engine.choose(pickSide(state.currentEvent!.card));
       case YearPhase.actions:
         final action = pickAction(engine);
         return action == null ? engine.advanceYear() : engine.doAction(action);

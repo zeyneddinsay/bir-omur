@@ -5,6 +5,8 @@ import 'package:bir_omur/content/content_registry.dart';
 import 'package:bir_omur/content/sensitive_terms.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../helpers/test_cards.dart';
+
 List<String> _found(String text) =>
     findSensitiveTerms(text).map((t) => t.term).toList();
 
@@ -37,15 +39,8 @@ void main() {
   });
 
   group('card_lint', () {
-    Map<String, dynamic> card(String id, String text) => {
-      'id': id,
-      'stage': 'genc',
-      'minAge': 20,
-      'maxAge': 30,
-      'text': text,
-      'left': {'label': 'Sol'},
-      'right': {'label': 'Sağ'},
-    };
+    Map<String, dynamic> card(String id, String text) =>
+        testCardJson(id, minAge: 20, maxAge: 30, text: text);
 
     CardCheckResult check(
       Map<String, Set<String>> reviewed,
@@ -57,7 +52,7 @@ void main() {
           'asker_anilari': '',
           'tasindi': '',
         },
-        speakers: const {},
+
         reviewedTerms: reviewed,
       ),
     ).check({'x.json': jsonEncode(cards)});

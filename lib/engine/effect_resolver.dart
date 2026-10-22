@@ -3,8 +3,20 @@ import 'dart:math';
 import '../models/models.dart';
 import 'careers.dart';
 import 'economy.dart';
+import 'event_deck.dart';
+import 'relationships.dart';
 
-/// Bir seçimin sonucu: yeni karakter, zar sonucu ve planlanan zincir kartları.
+/// Planlanmış bir iplik: hangi olay, kaç yıl sonra, hangi kişilerle.
+class PlannedThread {
+  const PlannedThread(this.event, this.people);
+
+  final ScheduledEvent event;
+
+  /// Yuva adı → kişi kimliği (yalnızca `with` ile taşınan yuvalar).
+  final Map<String, String> people;
+}
+
+/// Bir seçimin sonucu: yeni karakter, zar sonucu ve planlanan iplikler.
 class ChoiceOutcome {
   const ChoiceOutcome({
     required this.character,
@@ -18,7 +30,7 @@ class ChoiceOutcome {
 
   /// Seçenekte zar yoksa null.
   final bool? rollSucceeded;
-  final List<ScheduledEvent> scheduled;
+  final List<PlannedThread> scheduled;
 }
 
 /// Seçilen seçeneğin etkilerini karaktere uygular.
@@ -29,15 +41,31 @@ class EffectResolver {
   final Random random;
   final CareerBook careers;
 
-  ChoiceOutcome resolve(Character character, EventCard card, ChoiceSide side) {
+  ChoiceOutcome resolve(
+    Character character,
+    PendingEvent event,
+    ChoiceSide side,
+  ) {
+    final card = event.card;
     final choice = card.choice(side);
-    final scheduled = <ScheduledEvent>[];
+    final scheduled = <PlannedThread>[];
+
+    void plan(Effect effect) {
+      final s = effect.schedule;
+      if (s == null) return;
+      scheduled.add(
+        PlannedThread(s, {
+          for (final slot in s.withRoles) slot: ?event.people[slot],
+        }),
+      );
+    }
 
     var next = _countCardEffect(
       applyEffect(character, choice.effects, careers: careers),
       choice.effects,
     );
-    if (choice.effects.schedule case final s?) scheduled.add(s);
+    next = applyPeopleEffect(next, choice.effects, event.people);
+    plan(choice.effects);
 
     bool? succeeded;
     if (choice.roll case final roll?) {
@@ -47,15 +75,18 @@ class EffectResolver {
         applyEffect(next, branch, careers: careers),
         branch,
       );
-      if (branch.schedule case final s?) scheduled.add(s);
+      next = applyPeopleEffect(next, branch, event.people);
+      plan(branch);
     }
 
+    next = _meet(next, event);
     next = next.withRecord(
       CardRecord(
         age: character.age,
         cardId: card.id,
         side: side,
         rollSucceeded: succeeded,
+        people: event.people,
       ),
     );
     return ChoiceOutcome(
@@ -64,6 +95,50 @@ class EffectResolver {
       rollSucceeded: succeeded,
       scheduled: scheduled,
     );
+  }
+
+  /// Olaydaki kişiler: sahnede olanlarla görüşülmüş sayılır; hepsi bu
+  /// yıl olaya çıkmış sayılır (dinlenme kuralı).
+  static Character _meet(Character c, PendingEvent event) {
+    var people = c.people;
+    for (final slot in event.card.roles) {
+      final id = event.people[slot.name];
+      final p = id == null ? null : people[id];
+      if (p == null) continue;
+      var updated = p.copyWith(lastEventAt: c.age);
+      if (!slot.offstage) updated = Relationships.touch(updated, c.age);
+      people = people.update(updated);
+    }
+    return c.copyWith(people: people);
+  }
+
+  /// Rol yuvalarındaki kişilere etkiler: anı, yumuşama, bağ, arşiv.
+  static Character applyPeopleEffect(
+    Character c,
+    Effect effect,
+    Map<String, String> bindings,
+  ) {
+    if (effect.people.isEmpty) return c;
+    var people = c.people;
+    for (final MapEntry(key: slot, value: change) in effect.people.entries) {
+      final id = bindings[slot];
+      var p = id == null ? null : people[id];
+      if (p == null) continue;
+      if (change.heal case final heal?) {
+        p = Relationships.heal(
+          p,
+          kind: heal == PersonEffect.healHeaviest ? null : heal,
+          now: c.age,
+        );
+      }
+      if (change.memory case final memory?) {
+        p = Relationships.addMemory(p, memory.at(c.age), now: c.age);
+      }
+      if (change.bond case final bond?) p = p.copyWith(bond: bond);
+      if (change.archive) p = p.copyWith(archived: true);
+      people = people.update(p);
+    }
+    return c.copyWith(people: people);
   }
 
   /// Gösterge, para, varlık, iş ve bayrak değişikliklerini uygular. Zincir

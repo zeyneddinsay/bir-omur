@@ -6,272 +6,412 @@ import 'package:bir_omur/content/content_loader.dart';
 import 'package:bir_omur/content/content_registry.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../helpers/test_cards.dart';
+
 final _registry = ContentRegistry(
   flags: {
     'kiraci': '',
-    'ev_sahibi': '',
     'universite_ogrencisi': '',
     'asker_anilari': '',
     'tasindi': '',
   },
-  speakers: {'anne': ''},
 );
 
 Map<String, dynamic> _card(
   String id, {
   Map<String, dynamic> extra = const {},
 }) => {
-  'id': id,
-  'stage': 'genc',
-  'minAge': 20,
-  'maxAge': 30,
+  ...testCardJson(id, minAge: 20, maxAge: 30, theme: 'genel'),
   'text': 'Kısa bir metin.',
-  'left': {'label': 'Sol'},
-  'right': {'label': 'Sağ'},
   ...extra,
 };
 
 CardCheckResult _check(List<Object?> cards, {String file = 'genc.json'}) =>
-    CardValidator(_registry).check({file: jsonEncode(cards)});
+    CardValidator(
+      _registry,
+      familyProfiles: const {'isci', 'memur'},
+    ).check({file: jsonEncode(cards)});
 
 /// Tek bir hata bekler ve yolunun [pathContains] içerdiğini doğrular.
 void _expectSingleError(
   CardCheckResult result,
-  String pathContains,
-  String messageContains,
-) {
+  String pathContains, {
+  String? messageContains,
+}) {
   expect(result.errors, hasLength(1), reason: result.issues.join('\n'));
   final error = result.errors.single;
   expect(error.path, contains(pathContains));
-  expect(error.message, contains(messageContains));
+  if (messageContains != null) {
+    expect(error.message, contains(messageContains));
+  }
 }
 
+Map<String, dynamic> _memory({String label = 'Bana yardım etti'}) => {
+  'kind': 'yardim',
+  'label': label,
+  'tone': 'olumlu',
+  'severity': 1,
+};
+
 void main() {
-  test('temiz kart sorunsuz geçer', () {
+  test('temiz olay sorunsuz geçer', () {
     final result = _check([_card('a')]);
-    expect(result.issues, isEmpty);
+    expect(result.issues, isEmpty, reason: result.issues.join('\n'));
     expect(result.cards.single.card.id, 'a');
-    expect(result.cards.single.file, 'genc.json');
   });
 
-  group('eksik ve bozuk alanlar', () {
+  group('biçim', () {
     test('eksik alan', () {
-      _expectSingleError(
-        _check([_card('a')..remove('left')]),
-        'a.left',
-        'nesne bekleniyordu',
-      );
+      _expectSingleError(_check([_card('a')..remove('theme')]), 'a.theme');
     });
 
-    test('bozuk JSON', () {
-      final result = CardValidator(_registry).check({'x.json': '[{"id": '});
-      _expectSingleError(result, '-', 'JSON okunamadı');
+    test('bozuk JSON ve dizi olmayan dosya', () {
+      final broken = CardValidator(_registry).check({'x.json': '[{'});
+      expect(broken.errors.single.message, contains('JSON'));
+      final notList = CardValidator(_registry).check({'x.json': '{}'});
+      expect(notList.errors.single.message, contains('dizisi'));
     });
 
-    test('dosya dizi değilse', () {
-      final result = CardValidator(_registry).check({'x.json': '{}'});
-      _expectSingleError(result, '-', 'kart dizisi');
-    });
-
-    test('bozuk kart diğerlerini engellemez', () {
+    test('bozuk olay diğerlerini engellemez', () {
       final result = _check([_card('a')..remove('text'), _card('b')]);
       expect(result.errors, hasLength(1));
-      expect(result.cards.map((c) => c.card.id), ['b']);
+      expect(result.cards.single.card.id, 'b');
+    });
+
+    test('dosyalar arasında tekrar eden kimlik', () {
+      final result = CardValidator(_registry).check({
+        'a.json': jsonEncode([_card('x')]),
+        'b.json': jsonEncode([_card('x')]),
+      });
+      _expectSingleError(result, 'x', messageContains: 'tekrar');
     });
   });
 
-  group('bilinmeyen adlar', () {
-    test('bilinmeyen etki adı', () {
-      final card = _card(
+  group('metin', () {
+    final roles = {'k': <String, dynamic>{}};
+
+    test('en uzun adla 140 karakter', () {
+      // 'Muhammet' 8 harf + boşluk + 131 harf = 140.
+      final fits = _card(
         'a',
-        extra: {
-          'left': {
-            'label': 'Sol',
-            'effects': {'mutluluk': 5},
-          },
-        },
+        extra: {'roles': roles, 'text': '{k.ad} ${'a' * 131}'},
+      );
+      expect(_check([fits]).errors, isEmpty);
+      final tooLong = _card(
+        'a',
+        extra: {'roles': roles, 'text': '{k.ad} ${'a' * 132}'},
       );
       _expectSingleError(
-        _check([card]),
-        'a.left.effects.mutluluk',
-        'bilinmeyen alan',
+        _check([tooLong]),
+        'a.text',
+        messageContains: 'en uzun',
       );
     });
 
-    test('bilinmeyen bayrak (koşulda ve etkide)', () {
-      final card = _card(
-        'a',
-        extra: {
-          'conditions': {
-            'flags': ['kirci'],
-          },
-          'right': {
-            'label': 'Sağ',
-            'effects': {
-              'addFlags': ['evsahibi'],
-            },
-          },
-        },
-      );
-      final result = _check([card]);
-      expect(result.errors.map((e) => e.message), [
-        contains('"kirci"'),
-        contains('"evsahibi"'),
-      ]);
-    });
-
-    test('kartlar motorun bayraklarını ekleyip kaldıramaz', () {
-      final card = _card(
-        'a',
-        extra: {
-          'left': {
-            'label': 'Sol',
-            'effects': {
-              'addFlags': ['ev_sahibi'],
-            },
-          },
-          'right': {
-            'label': 'Sağ',
-            'effects': {
-              'removeFlags': ['borclu'],
-            },
-          },
-        },
-      );
-      final result = _check([card]);
-      expect(result.errors, hasLength(2));
-      expect(
-        result.errors.map((e) => e.message),
-        everyElement(contains('motorun bayrağı')),
-      );
-    });
-
-    test('motor bayrakları kayıtta olmadan da bilinir', () {
-      final card = _card(
-        'a',
-        extra: {
-          'mandatory': true,
-          'cooldown': 2,
-          'conditions': {
-            'flags': ['bunalim', 'borclu'],
-          },
-        },
-      );
-      expect(_check([card]).issues, isEmpty);
-    });
-
-    test('bilinmeyen konuşmacı', () {
+    test('akrabalık sözcüğü en uzun hâliyle sayılır', () {
+      final text = '{k.akraba} ${'a' * 126}';
       _expectSingleError(
         _check([
-          _card('a', extra: {'speaker': 'kaynana'}),
+          _card('a', extra: {'roles': roles, 'text': text}),
         ]),
-        'a.speaker',
-        '"kaynana"',
+        'a.text',
       );
+    });
+
+    test('seçenek en fazla 24 karakter', () {
+      final result = _check([
+        _card(
+          'a',
+          extra: {
+            'left': {'label': 'x' * 25},
+          },
+        ),
+      ]);
+      _expectSingleError(result, 'a.left.label');
+    });
+
+    test('tanımsız yuva, bilinmeyen alan, oyuncu alanı', () {
+      _expectSingleError(
+        _check([
+          _card('a', extra: {'text': '{kerem.ad} geldi.'}),
+        ]),
+        'a.text',
+        messageContains: 'rol yuvası yok',
+      );
+      _expectSingleError(
+        _check([
+          _card('a', extra: {'roles': roles, 'text': '{k.yas} yaşında.'}),
+        ]),
+        'a.text',
+        messageContains: 'bilinmeyen alan',
+      );
+      _expectSingleError(
+        _check([
+          _card('a', extra: {'text': '{oyuncu.soyad} ailesi.'}),
+        ]),
+        'a.text',
+        messageContains: 'oyuncu.ad',
+      );
+      expect(
+        _check([
+          _card('a', extra: {'text': '{oyuncu.ad|e} bir haber.'}),
+        ]).errors,
+        isEmpty,
+      );
+    });
+
+    test('elle yazılmış ek', () {
+      _expectSingleError(
+        _check([
+          _card('a', extra: {'roles': roles, 'text': "{k.ad}'e söyledin."}),
+        ]),
+        'a.text',
+        messageContains: 'elle yazılmış',
+      );
+    });
+
+    test('anı etiketi de denetlenir', () {
+      final result = _check([
+        _card(
+          'a',
+          extra: {
+            'roles': roles,
+            'left': {
+              'label': 'Sol',
+              'effects': {
+                'people': {
+                  'k': {'memory': _memory(label: 'x' * 49)},
+                },
+              },
+            },
+          },
+        ),
+      ]);
+      _expectSingleError(result, 'a.left.people.k.memory.label');
     });
   });
 
-  group('uzunluklar', () {
-    test('kart metni en fazla 140 karakter', () {
+  group('kişiler', () {
+    test('kişi etkisi tanımsız yuvaya yazılamaz', () {
+      final result = _check([
+        _card(
+          'a',
+          extra: {
+            'left': {
+              'label': 'Sol',
+              'effects': {
+                'people': {
+                  'k': {'memory': _memory()},
+                },
+              },
+            },
+          },
+        ),
+      ]);
+      _expectSingleError(
+        result,
+        'a.left.people.k',
+        messageContains: 'yuvası yok',
+      );
+    });
+
+    test('kişi olayı en az bir yuva ister', () {
+      _expectSingleError(
+        _check([
+          _card('a', extra: {'type': 'kisi'}),
+        ]),
+        'a.roles',
+      );
+    });
+
+    test('Aile Bağı doğrudan değiştirilemez', () {
+      final result = _check([
+        _card(
+          'a',
+          extra: {
+            'left': {
+              'label': 'Sol',
+              'effects': {'family': 5},
+            },
+          },
+        ),
+      ]);
+      _expectSingleError(result, 'a.left', messageContains: 'Aile Bağı');
+    });
+
+    test('18 yaş kuralı: romantik yuva', () {
+      final result = _check([
+        _card(
+          'a',
+          extra: {
+            'minAge': 16,
+            'roles': {
+              'k': {
+                'bond': ['sevgili'],
+                'minAge': 16,
+              },
+            },
+          },
+        ),
+      ]);
+      expect(result.errors.map((e) => e.path), [
+        'a.minAge',
+        'a.roles.k.minAge',
+      ], reason: result.issues.join('\n'));
+    });
+
+    test('18 yaş kuralı: romantik bağ kuran etki', () {
+      Map<String, dynamic> makesRomance(int roleMinAge) => _card(
+        'b',
+        extra: {
+          'minAge': 18,
+          'roles': {
+            'k': {'minAge': roleMinAge},
+          },
+          'left': {
+            'label': 'Sol',
+            'effects': {
+              'people': {
+                'k': {'bond': 'flort'},
+              },
+            },
+          },
+        },
+      );
+      expect(_check([makesRomance(18)]).errors, isEmpty);
+      _expectSingleError(_check([makesRomance(15)]), 'b.roles.k.minAge');
+    });
+  });
+
+  group('iplikler', () {
+    test('olmayan hedef', () {
+      final result = _check([
+        _card(
+          'a',
+          extra: {
+            'left': {
+              'label': 'Sol',
+              'effects': {
+                'schedule': {'event': 'yok', 'inYears': 1},
+              },
+            },
+          },
+        ),
+      ]);
+      _expectSingleError(result, 'a.left.schedule', messageContains: '"yok"');
+    });
+
+    test('taşınan yuva iki olayda da tanımlı olmalı', () {
+      Map<String, dynamic> source(Map<String, dynamic> roles) => _card(
+        'a',
+        extra: {
+          'roles': roles,
+          'left': {
+            'label': 'Sol',
+            'effects': {
+              'schedule': {
+                'event': 'devam',
+                'inYears': 1,
+                'with': ['k'],
+              },
+            },
+          },
+        },
+      );
+      final target = _card(
+        'devam',
+        extra: {
+          'type': 'iplik',
+          'roles': {'k': <String, dynamic>{}},
+        },
+      );
       expect(
         _check([
-          _card('a', extra: {'text': 'ç' * 140}),
-        ]).issues,
+          source({'k': <String, dynamic>{}}),
+          target,
+        ]).errors,
         isEmpty,
       );
       _expectSingleError(
-        _check([
-          _card('a', extra: {'text': 'ç' * 141}),
-        ]),
-        'a.text',
-        '141 karakter',
+        _check([source(const {}), target]),
+        'a.left.schedule.with',
+        messageContains: 'bu olayda',
       );
-    });
-
-    test('seçenek metni en fazla 24 karakter', () {
-      final ok = _card(
-        'a',
-        extra: {
-          'left': {'label': 'Hafta sonu dahil giderim'},
-        },
-      );
-      expect(_check([ok]).issues, isEmpty);
-      final tooLong = _card(
-        'a',
-        extra: {
-          'right': {'label': 'Hafta sonu dahil gideriz!'},
-        },
-      );
-      _expectSingleError(_check([tooLong]), 'a.right.label', '25 karakter');
-    });
-  });
-
-  group('tutarlılık', () {
-    test('dosyalar arasında tekrar eden kimlik', () {
-      final result = CardValidator(_registry).check({
-        'a.json': jsonEncode([_card('ayni')]),
-        'b.json': jsonEncode([_card('ayni')]),
-      });
-      _expectSingleError(result, 'ayni', 'ilki: a.json');
-      expect(result.errors.single.file, 'b.json');
-    });
-
-    test('olmayan zincir hedefi', () {
-      final card = _card(
-        'a',
-        extra: {
-          'left': {
-            'label': 'Sol',
-            'effects': {
-              'schedule': {'event': 'yok_boyle_kart', 'inYears': 1},
-            },
-          },
-        },
-      );
-      _expectSingleError(_check([card]), 'a.left.schedule', '"yok_boyle_kart"');
-    });
-
-    test('evre minAge ile uyuşmalı', () {
+      final bareTarget = _card('devam', extra: {'type': 'iplik'});
       _expectSingleError(
         _check([
-          _card('a', extra: {'stage': 'lise'}),
+          source({'k': <String, dynamic>{}}),
+          bareTarget,
         ]),
-        'a.stage',
-        'genc',
+        'a.left.schedule.with',
+        messageContains: 'hedef olay',
       );
     });
 
-    test('yukarı seçeneği sıradan kartta olmaz', () {
-      final card = _card(
-        'a',
-        extra: {
-          'up': {'label': 'Yukarı'},
-        },
-      );
-      _expectSingleError(_check([card]), 'a.up', 'nadir');
-      card['rarity'] = 'nadir';
-      expect(_check([card]).issues, isEmpty);
-    });
-
-    test('zorunlu kart tekrar sınırı ister', () {
-      _expectSingleError(
-        _check([
-          _card('a', extra: {'mandatory': true}),
-        ]),
-        'a.mandatory',
-        'her yıl',
-      );
-    });
-
-    test('planlanmayan zincir kartı uyarı verir', () {
+    test('planlanmayan iplik uyarı verir', () {
       final result = _check([
-        _card('a', extra: {'chainOnly': true}),
+        _card('a', extra: {'type': 'iplik'}),
       ]);
       expect(result.errors, isEmpty);
       expect(result.warnings.single.message, contains('hiç gelmez'));
     });
+  });
 
-    test('hiçbir kartın açmadığı bayrağa bakan kart uyarı verir', () {
+  group('koşullar ve bayraklar', () {
+    test('bilinmeyen bayrak (koşulda ve etkide)', () {
+      final result = _check([
+        _card(
+          'a',
+          extra: {
+            'conditions': {
+              'flags': ['yok1'],
+            },
+            'left': {
+              'label': 'Sol',
+              'effects': {
+                'addFlags': ['yok2'],
+              },
+            },
+          },
+        ),
+      ]);
+      final messages = result.errors.map((e) => e.message).join();
+      expect(messages, contains('yok1'));
+      expect(messages, contains('yok2'));
+    });
+
+    test('olaylar motorun bayraklarını ekleyip kaldıramaz', () {
+      final result = _check([
+        _card(
+          'a',
+          extra: {
+            'left': {
+              'label': 'Sol',
+              'effects': {
+                'addFlags': ['ev_sahibi'],
+              },
+            },
+          },
+        ),
+      ]);
+      _expectSingleError(result, 'a.left', messageContains: 'motorun');
+    });
+
+    test('bilinmeyen aile profili', () {
+      final result = _check([
+        _card(
+          'a',
+          extra: {
+            'conditions': {
+              'familyProfile': ['astronot'],
+            },
+          },
+        ),
+      ]);
+      _expectSingleError(result, 'a.conditions.familyProfile');
+    });
+
+    test('hiçbir olayın açmadığı bayrağa bakan olay uyarı verir', () {
       final result = _check([
         _card(
           'a',
@@ -283,12 +423,39 @@ void main() {
         ),
       ]);
       expect(result.errors, isEmpty);
-      expect(result.warnings.single.message, contains('"kiraci"'));
+      expect(result.warnings.single.message, contains('hiç gelmez'));
+    });
+
+    test('yukarı seçeneği sıradan olayda, nadirlik dönemeçte olmaz', () {
+      _expectSingleError(
+        _check([
+          _card(
+            'a',
+            extra: {
+              'up': {'label': 'Yukarı'},
+            },
+          ),
+        ]),
+        'a.up',
+      );
+      _expectSingleError(
+        _check([
+          _card(
+            'a',
+            extra: {
+              'type': 'donemec',
+              'rarity': 'nadir',
+              'up': {'label': 'Yukarı'},
+            },
+          ),
+        ]),
+        'a.rarity',
+      );
     });
 
     test('motorun baktığı bayrak kayıtta olmalı', () {
-      final registry = ContentRegistry(flags: const {}, speakers: const {});
-      final result = CardValidator(registry).check({'x.json': '[]'});
+      final registry = ContentRegistry(flags: const {});
+      final result = CardValidator(registry).check({});
       expect(
         result.errors.map((e) => e.path),
         containsAll(ContentRegistry.engineReferencedFlags),
@@ -301,7 +468,7 @@ void main() {
     final names = File('assets/names.json').readAsStringSync();
     final interactions = File('assets/interactions.json').readAsStringSync();
     const registry =
-        '{"flags": {"universite_ogrencisi": "", "ev_sahibi": "", "asker_anilari": "", "tasindi": ""}, "speakers": {}}';
+        '{"flags": {"universite_ogrencisi": "", "asker_anilari": "", "tasindi": ""}}';
     expect(
       () => loadContent(
         registrySource: registry,

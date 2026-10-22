@@ -394,18 +394,6 @@ abstract class AppLocalizations {
   /// **'Fazla mesai'**
   String get action_fazla_mesai;
 
-  /// No description provided for @action_aileyle_vakit.
-  ///
-  /// In tr, this message translates to:
-  /// **'Ailenle vakit geçir'**
-  String get action_aileyle_vakit;
-
-  /// No description provided for @action_arkadaslarla_bulus.
-  ///
-  /// In tr, this message translates to:
-  /// **'Arkadaşlarınla buluş'**
-  String get action_arkadaslarla_bulus;
-
   /// No description provided for @action_kitap_oku.
   ///
   /// In tr, this message translates to:
@@ -429,12 +417,6 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Sahilde yürüyüş'**
   String get action_yuruyus;
-
-  /// No description provided for @action_memleket_ziyareti.
-  ///
-  /// In tr, this message translates to:
-  /// **'Memleketi ziyaret et'**
-  String get action_memleket_ziyareti;
 
   /// No description provided for @action_tatil.
   ///

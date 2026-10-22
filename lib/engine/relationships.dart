@@ -208,4 +208,33 @@ abstract final class Relationships {
 
   /// Görüşme yapıldı: soğuma sıfırlanır.
   static Person touch(Person p, int now) => p.copyWith(lastContactAt: now);
+
+  /// Aile Bağı göstergesinin kaynağı olan akrabalar.
+  static const Set<Kinship> familyBondKin = {
+    Kinship.anne,
+    Kinship.baba,
+    Kinship.kardes,
+    Kinship.es,
+    Kinship.cocuk,
+  };
+
+  /// Aile Bağı: anne, baba, kardeşler, eş ve çocukların (doğmuş, hayatta)
+  /// yakınlık ortalaması. Böyle kimse kalmadıysa null.
+  static int? familyBond(Character c) {
+    final members = [
+      for (final p in c.people.bornBy(c.age))
+        if (p.isAlive && familyBondKin.contains(p.kin)) p,
+    ];
+    if (members.isEmpty) return null;
+    final sum = members.fold(0, (s, p) => s + closeness(p, c.age));
+    return (sum / members.length).round();
+  }
+
+  /// Aile Bağı göstergesini ailenin yakınlığına eşitler. Gösterge artık
+  /// olaylarla doğrudan değişmez; kimse kalmadıysa son değerinde kalır.
+  static Character syncFamilyBond(Character c) {
+    final bond = familyBond(c);
+    if (bond == null || bond == c.stats.family) return c;
+    return c.copyWith(stats: c.stats.copyWith(family: bond));
+  }
 }

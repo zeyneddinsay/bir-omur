@@ -212,7 +212,7 @@ class _RandomPlayer {
         final sides = [
           ChoiceSide.left,
           ChoiceSide.right,
-          if (state.currentCard!.up != null) ChoiceSide.up,
+          if (state.currentEvent!.card.up != null) ChoiceSide.up,
         ];
         engine.choose(sides[_random.nextInt(sides.length)]);
       case YearPhase.actions:

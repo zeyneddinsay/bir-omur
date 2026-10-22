@@ -13,6 +13,7 @@ class SwipeCard extends StatefulWidget {
   const SwipeCard({
     super.key,
     required this.card,
+    required this.text,
     required this.onChoose,
     this.onLean,
     this.speakerName,
@@ -20,6 +21,9 @@ class SwipeCard extends StatefulWidget {
   });
 
   final EventCard card;
+
+  /// Kişilerle kurulmuş olay metni.
+  final String text;
   final String? speakerName;
 
   /// Kartın üstündeki portre.
@@ -132,6 +136,7 @@ class _SwipeCardState extends State<SwipeCard>
                     angle: angle,
                     child: _CardFace(
                       card: card,
+                      text: widget.text,
                       speakerName: widget.speakerName,
                       portrait: widget.portrait,
                       lean: _lean,
@@ -192,6 +197,7 @@ class _SwipeCardState extends State<SwipeCard>
 class _CardFace extends StatelessWidget {
   const _CardFace({
     required this.card,
+    required this.text,
     required this.lean,
     required this.compact,
     this.speakerName,
@@ -199,6 +205,7 @@ class _CardFace extends StatelessWidget {
   });
 
   final EventCard card;
+  final String text;
   final String? speakerName;
   final ChoiceSide? lean;
 
@@ -238,8 +245,8 @@ class _CardFace extends StatelessWidget {
     final speaker = speakerName == null
         ? null
         : Text(speakerName!, style: theme.textTheme.labelLarge);
-    final text = Text(
-      card.text,
+    final body = Text(
+      text,
       key: const Key('card_text'),
       style: theme.textTheme.titleMedium?.copyWith(height: 1.4),
       textAlign: TextAlign.center,
@@ -267,7 +274,7 @@ class _CardFace extends StatelessWidget {
                       leanText,
                       ?speaker,
                       const SizedBox(height: 8),
-                      text,
+                      body,
                     ],
                   ),
                 )
@@ -284,7 +291,7 @@ class _CardFace extends StatelessWidget {
                     ],
                     const SizedBox(height: 16),
                     // Metin sığmazsa kendi içinde kayar.
-                    Flexible(child: SingleChildScrollView(child: text)),
+                    Flexible(child: SingleChildScrollView(child: body)),
                     const SizedBox(height: 12),
                   ],
                 ),

@@ -4,6 +4,7 @@ import '../engine/achievements.dart';
 import '../models/models.dart';
 import 'content_registry.dart';
 import 'sensitive_terms.dart';
+import 'turkish.dart';
 
 enum IssueLevel { error, warning }
 
@@ -57,9 +58,13 @@ class CardCheckResult {
 /// Kart dosyalarını okur ve tasarım kurallarına göre denetler. Hem uygulama
 /// yüklerken hem de `tools/card_lint` aynı denetimi kullanır.
 class CardValidator {
-  CardValidator(this.registry);
+  CardValidator(this.registry, {this.familyProfiles});
 
   final ContentRegistry registry;
+
+  /// Geçerli aile profili kimlikleri; verilmezse koşuldaki profil
+  /// denetlenmez.
+  final Set<String>? familyProfiles;
 
   static const int maxTextLength = 140;
   static const int maxLabelLength = 24;
@@ -79,7 +84,8 @@ class CardValidator {
     }
     _careersById = {for (final c in careers) c.id: c};
     _checkDuplicates(cards, issues);
-    final ids = {for (final c in cards) c.card.id};
+    final byId = {for (final c in cards) c.card.id: c.card};
+    final ids = byId.keys.toSet();
     final scheduledIds = {
       for (final c in cards)
         for (final choice in c.card.choices)
@@ -92,7 +98,7 @@ class CardValidator {
           for (final effect in choice.allEffects) ...effect.addFlags,
     };
     for (final sourced in cards) {
-      _checkCard(sourced, ids, scheduledIds, addedFlags, issues);
+      _checkCard(sourced, byId, scheduledIds, addedFlags, issues);
     }
     _checkRegistry(issues);
     final achievements = achievementsSource == null
@@ -412,9 +418,37 @@ class CardValidator {
     }
   }
 
+  /// Romantik bağlar: bunları isteyen ya da kuran olay 18 yaş kuralına
+  /// uyar.
+  static const Set<Bond> romanticBonds = {
+    Bond.flort,
+    Bond.sevgili,
+    Bond.nisanli,
+  };
+
+  /// Yaş kuralı: 18 yaşından önce romantik bağ yok.
+  static const int romanceMinAge = 18;
+
+  /// Anı etiketinin en fazla uzunluğu (kişi ekranında bir satır).
+  static const int maxMemoryLabelLength = 48;
+
+  /// Metin uzunluğu denetiminde bir yer tutucunun en kötü hâli: en uzun ad
+  /// ve en uzun akrabalık sözcüğü.
+  static const String longestName = 'Muhammet';
+  static const String longestKinWord = 'kayınbiraderin';
+  static const String longestSurname = 'Yıldırım';
+
+  /// Kişi yuvalarında geçerli alanlar; oyuncu için yalnızca ad.
+  static final Set<String> slotFields = {
+    'ad',
+    'soyad',
+    'akraba',
+    for (final a in Address.values) 'hitap.${a.key}',
+  };
+
   void _checkCard(
     SourcedCard sourced,
-    Set<String> ids,
+    Map<String, EventCard> byId,
     Set<String> scheduledIds,
     Set<String> addedFlags,
     List<CardIssue> issues,
@@ -428,44 +462,19 @@ class CardValidator {
     );
 
     _checkCareerUse(card, error);
-
-    final textLength = card.text.runes.length;
-    if (card.text.trim().isEmpty) error('.text', 'boş metin');
-    if (textLength > maxTextLength) {
-      error('.text', 'metin $textLength karakter, en fazla $maxTextLength');
-    }
-
-    final expectedStage = LifeStage.forAge(card.minAge);
-    if (card.stage != expectedStage) {
-      error(
-        '.stage',
-        '"${card.stage.id}" ama minAge ${card.minAge} "${expectedStage.id}" evresinde',
-      );
-    }
-
-    if (card.speaker case final speaker?
-        when !registry.speakers.containsKey(speaker)) {
-      error('.speaker', 'bilinmeyen konuşmacı "$speaker" (registry.json)');
-    }
+    _checkText(card, '.text', card.text, maxTextLength, error);
 
     if (card.up != null && card.rarity == Rarity.siradan) {
       error('.up', 'yukarı seçeneği yalnızca nadir ve efsane kartlarda olur');
     }
-
-    if (card.mandatory && !card.once && card.cooldown == 0) {
-      error(
-        '.mandatory',
-        'zorunlu kart once ya da cooldown istiyor, yoksa her yıl gelir',
-      );
-    }
-    if (card.chainOnly && card.mandatory) {
-      error('.chainOnly', 'zincir kartı zorunlu olamaz');
+    if (card.type == EventType.kisi && card.roles.isEmpty) {
+      error('.roles', 'kişi olayı en az bir rol yuvası ister');
     }
     if (card.chainOnly && !scheduledIds.contains(card.id)) {
-      warning(
-        '.chainOnly',
-        'hiçbir kart bu zincir kartını planlamıyor, hiç gelmez',
-      );
+      warning('.type', 'hiçbir olay bu ipliği planlamıyor, hiç gelmez');
+    }
+    if (card.type == EventType.donemec && card.rarity != Rarity.siradan) {
+      error('.rarity', 'dönemeç her zaman gelir; nadirlik anlamsız');
     }
 
     final known = registry.knownFlags;
@@ -483,22 +492,37 @@ class CardValidator {
           !ContentRegistry.engineOwnedFlags.contains(flag)) {
         warning(
           '.conditions',
-          '"$flag" bayrağını hiçbir kart açmıyor, kart hiç gelmez',
+          '"$flag" bayrağını hiçbir olay açmıyor, olay hiç gelmez',
         );
       }
     }
+    if (familyProfiles case final profiles?) {
+      for (final profile in card.conditions.familyProfiles) {
+        if (!profiles.contains(profile)) {
+          error(
+            '.conditions.familyProfile',
+            'bilinmeyen aile profili "$profile"',
+          );
+        }
+      }
+    }
+
+    final romanticRoles = {
+      for (final role in card.roles)
+        if (role.bonds.any(romanticBonds.contains)) role.name,
+    };
 
     final sides = {'left': card.left, 'right': card.right, 'up': ?card.up};
     for (final MapEntry(key: side, value: choice) in sides.entries) {
-      final labelLength = choice.label.runes.length;
-      if (choice.label.trim().isEmpty) error('.$side.label', 'boş seçenek');
-      if (labelLength > maxLabelLength) {
-        error(
-          '.$side.label',
-          '"${choice.label}" $labelLength karakter, en fazla $maxLabelLength',
-        );
-      }
+      _checkText(card, '.$side.label', choice.label, maxLabelLength, error);
       for (final effect in choice.allEffects) {
+        if (effect.stats.containsKey(StatKind.family)) {
+          error(
+            '.$side',
+            'Aile Bağı ailenin yakınlığından hesaplanır; olay onu '
+                'değiştiremez (aile üyesine anı yaz)',
+          );
+        }
         for (final flag in [...effect.addFlags, ...effect.removeFlags]) {
           if (ContentRegistry.engineOwnedFlags.contains(flag)) {
             error(
@@ -509,13 +533,124 @@ class CardValidator {
             error('.$side', 'bilinmeyen bayrak "$flag" (registry.json)');
           }
         }
-        if (effect.schedule case final s? when !ids.contains(s.cardId)) {
+        for (final MapEntry(key: slot, value: change)
+            in effect.people.entries) {
+          final where = '.$side.people.$slot';
+          if (card.role(slot) == null) {
+            error(where, '"$slot" diye bir rol yuvası yok');
+          }
+          if (change.memory case final m?) {
+            if (m.kind.trim().isEmpty) error('$where.memory', 'boş anı türü');
+            _checkText(
+              card,
+              '$where.memory.label',
+              m.label,
+              maxMemoryLabelLength,
+              error,
+            );
+          }
+          if (change.heal case final heal? when heal.trim().isEmpty) {
+            error('$where.heal', 'boş anı türü');
+          }
+          if (change.bond case final bond? when romanticBonds.contains(bond)) {
+            romanticRoles.add(slot);
+          }
+        }
+        if (effect.schedule case final s?) {
+          final target = byId[s.cardId];
+          if (target == null) {
+            error(
+              '.$side.schedule',
+              'iplik hedefi "${s.cardId}" diye bir kart yok',
+            );
+          }
+          for (final slot in s.withRoles) {
+            if (card.role(slot) == null) {
+              error(
+                '.$side.schedule.with',
+                '"$slot" bu olayda bir rol yuvası değil',
+              );
+            }
+            if (target != null && target.role(slot) == null) {
+              error(
+                '.$side.schedule.with',
+                '"$slot" hedef olay "${target.id}" içinde bir rol yuvası değil',
+              );
+            }
+          }
+        }
+      }
+    }
+
+    if (romanticRoles.isNotEmpty) {
+      if (card.minAge < romanceMinAge) {
+        error(
+          '.minAge',
+          'romantik bağ içeren olay en erken $romanceMinAge yaşında gelir',
+        );
+      }
+      for (final name in romanticRoles) {
+        final role = card.role(name);
+        if (role != null && (role.minAge ?? 0) < romanceMinAge) {
           error(
-            '.$side.schedule',
-            'zincir hedefi "${s.cardId}" diye bir kart yok',
+            '.roles.$name.minAge',
+            'romantik bağdaki kişi en az $romanceMinAge yaşında olmalı',
           );
         }
       }
+    }
+  }
+
+  /// Şablon denetimi: biçim, rol yuvaları, uzunluk (en kötü hâliyle).
+  void _checkText(
+    EventCard card,
+    String path,
+    String text,
+    int maxLength,
+    void Function(String path, String message) error,
+  ) {
+    if (text.trim().isEmpty) {
+      error(path, 'boş metin');
+      return;
+    }
+    final problems = templateProblems(text);
+    for (final p in problems) {
+      error(path, p.message);
+    }
+    if (problems.isNotEmpty) return;
+    var valid = true;
+    for (final token in parseTemplate(text)) {
+      final dot = token.path.indexOf('.');
+      final slot = dot < 0 ? token.path : token.path.substring(0, dot);
+      final field = dot < 0 ? '' : token.path.substring(dot + 1);
+      if (slot == EventCard.playerSlot) {
+        if (field != 'ad') {
+          error(path, 'oyuncu için yalnızca {oyuncu.ad}');
+          valid = false;
+        }
+      } else if (card.role(slot) == null) {
+        error(path, '{${token.path}}: "$slot" diye bir rol yuvası yok');
+        valid = false;
+      } else if (!slotFields.contains(field)) {
+        error(path, '{${token.path}}: bilinmeyen alan "$field"');
+        valid = false;
+      }
+    }
+    if (!valid) return;
+    final worst = renderTemplate(text, (p) {
+      final field = p.substring(p.indexOf('.') + 1);
+      if (field == 'soyad') return const TemplateValue(longestSurname);
+      if (field == 'akraba') {
+        return const TemplateValue(longestKinWord, proper: false);
+      }
+      if (field.startsWith('hitap.')) {
+        return const TemplateValue('kızım', proper: false);
+      }
+      return const TemplateValue(longestName);
+    });
+    final length = worst.runes.length;
+    if (length > maxLength) {
+      error(path, 'en uzun adla $length karakter, en fazla $maxLength');
     }
   }
 

@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:bir_omur/content/content_registry.dart';
 import 'package:bir_omur/models/models.dart';
 import 'package:bir_omur/ui/portrait/portrait_spec.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -105,20 +104,6 @@ void main() {
     expect(mouth(80), 'mouth_smile');
     expect(mouth(50), 'mouth_neutral');
     expect(mouth(10), 'mouth_sad');
-  });
-
-  test('kayıttaki her konuşmacının bir görünümü var', () {
-    final registry = ContentRegistry.parse(
-      File('assets/registry.json').readAsStringSync(),
-    );
-    for (final id in registry.speakers.keys) {
-      expect(
-        PortraitDesigner.speakers.containsKey(id) ||
-            PortraitDesigner.peerSpeakers.contains(id),
-        isTrue,
-        reason: '$id için portre görünümü yok',
-      );
-    }
   });
 
   test('karma sürümden sürüme sabit', () {

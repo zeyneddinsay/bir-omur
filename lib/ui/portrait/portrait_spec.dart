@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import '../../engine/seeded_random.dart';
 import '../../models/models.dart';
@@ -179,6 +180,15 @@ abstract final class PortraitDesigner {
     gender: gender,
     age: ageLookFor(age),
     mood: mood,
+  );
+
+  /// Oyuncunun hayatındaki bir kişi: yüzü ömür boyu aynı tohumdan gelir,
+  /// yaşı ilerledikçe saçı ve yüzü değişir.
+  static PortraitSpec ofPerson(Person p, {required int playerAge}) => build(
+    seed: p.portraitSeed,
+    gender: p.gender,
+    age: ageLookFor(max(0, p.ageAt(playerAge))),
+    mood: Mood.neutral,
   );
 
   static PortraitSpec forSpeaker(String speakerId, {required int playerAge}) {

@@ -42,9 +42,9 @@ void main() {
       },
     );
 
-    test('çocuklukta aile bağı soğumaz, yetişkinlikte soğur', () {
+    test('yaşlanma Aile Bağı göstergesine dokunmaz (aileden hesaplanır)', () {
       expect(tick.apply(testCharacter(age: 10)).stats.family, 50);
-      expect(tick.apply(testCharacter(age: 30)).stats.family, 49);
+      expect(tick.apply(testCharacter(age: 30)).stats.family, 50);
     });
 
     test('mutluluk 0 olunca bunalım başlar, toparlanınca biter', () {

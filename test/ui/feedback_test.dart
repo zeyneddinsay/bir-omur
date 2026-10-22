@@ -10,7 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../content/real_cards_test.dart' show loadRealContent;
+import '../helpers/content.dart';
 import '../helpers/stores.dart';
 
 class _Recorder implements FeedbackService {
@@ -25,7 +25,7 @@ class _Recorder implements FeedbackService {
 }
 
 void main() {
-  final content = loadRealContent();
+  final content = uiTestContent();
 
   testWidgets('bir hayat boyunca sesler ve titreşim olaylara göre çalar', (
     tester,

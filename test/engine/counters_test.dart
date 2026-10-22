@@ -23,9 +23,9 @@ void main() {
     test('taşınma ve kartla gelen altın sayılır', () {
       final resolver = EffectResolver(SeededRandom(1));
       var c = testCharacter(flags: {'tasindi'});
-      c = resolver.resolve(c, move, ChoiceSide.left).character;
+      c = resolver.resolve(c, PendingEvent(move), ChoiceSide.left).character;
       c = resolver
-          .resolve(c.copyWith(age: 26), move, ChoiceSide.left)
+          .resolve(c.copyWith(age: 26), PendingEvent(move), ChoiceSide.left)
           .character;
       // Bayrak zaten varken de her taşınma sayılır.
       expect(c.counters.moves, 2);

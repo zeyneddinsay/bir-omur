@@ -232,31 +232,7 @@ Yeniden doğ ← Paylaş ← Hayat özeti kartı ←─────────�
 
 Rastgelelik tohumlu (seed) olur; aynı tohum aynı hayatı üretir. Bu hem hata ayıklamayı hem de ileride "arkadaşının hayatını sen yaşa" özelliğini mümkün kılar.
 
-**Kart veri formatı:**
-
-```json
-{
-  "id": "kira_zammi_01",
-  "stage": "genc",
-  "minAge": 19,
-  "maxAge": 45,
-  "rarity": "siradan",
-  "cooldown": 3,
-  "conditions": { "notFlags": ["ev_sahibi"], "flags": ["kiraci"] },
-  "speaker": "ev_sahibi",
-  "text": "Ev sahibi kirayı iki katına çıkarmak istiyor. Gerekçesi: 'Piyasa böyle.'",
-  "left": {
-    "label": "Taşınırım",
-    "effects": { "money": -15000, "happiness": -5, "addFlags": ["tasindi"] }
-  },
-  "right": {
-    "label": "Pazarlık ederim",
-    "roll": { "stat": "luck", "threshold": 50 },
-    "success": { "money": -3000, "happiness": 3 },
-    "fail": { "money": -8000, "reputation": -2, "schedule": { "event": "ev_sahibi_ihtar", "inYears": 1 } }
-  }
-}
-```
+**Kart veri formatı:** D1 ile (22 Ekim 2026) yeni olay formatına geçildi; şema ve örnek `assets/cards/README.md` dosyasında.
 
 **Proje klasörleri:**
 

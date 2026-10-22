@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../content/real_cards_test.dart' show loadRealContent;
+import '../helpers/content.dart';
 import '../helpers/test_character.dart';
 
 Widget _wrap(Widget child) => MaterialApp(
@@ -23,7 +23,7 @@ Widget _wrap(Widget child) => MaterialApp(
 );
 
 void main() {
-  final content = loadRealContent();
+  final content = uiTestContent();
   final l10n = AppLocalizationsTr();
 
   group('jobLabel', () {

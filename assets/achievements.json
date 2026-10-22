@@ -76,18 +76,6 @@
     "requires": { "lastCareer": "plaza", "minLastTier": 5 }
   },
   {
-    "id": "dipten_dondu",
-    "name": "Dipten Döndü",
-    "description": "Zor bir dönemde yardım istedi ve toparlandı.",
-    "requires": { "seenCards": ["bunalim_doktor"] }
-  },
-  {
-    "id": "akraba_ortakligi",
-    "name": "Akrabayla İş Olur mu?",
-    "description": "Kuzeniyle ortak oldu ve hesabı gördü.",
-    "requires": { "seenCards": ["kuzen_ortaklik_sonu"] }
-  },
-  {
     "id": "sozu_dinlenen",
     "name": "Sözü Dinlenen",
     "description": "Mahalle onu sözüyle hatırladı.",
@@ -107,12 +95,5 @@
     "description": "Yüzüncü yaş gününü kutladı.",
     "rarity": "efsane",
     "requires": { "minDeathAge": 100 }
-  },
-  {
-    "id": "dort_kusak",
-    "name": "Dört Kuşak Bir Fotoğrafta",
-    "description": "Torununun torununu kucağına aldı.",
-    "rarity": "efsane",
-    "requires": { "seenCards": ["torunun_torunu"] }
   }
 ]

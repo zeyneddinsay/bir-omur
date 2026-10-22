@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../content/real_cards_test.dart' show loadRealContent;
+import '../helpers/content.dart';
 
 class _RecordingAnalytics implements AnalyticsService {
   final enabled = <bool>[];
@@ -22,7 +22,7 @@ class _RecordingAnalytics implements AnalyticsService {
 }
 
 void main() {
-  final content = loadRealContent();
+  final content = uiTestContent();
 
   Widget app(SaveStore store, AnalyticsService analytics) => ProviderScope(
     key: UniqueKey(),

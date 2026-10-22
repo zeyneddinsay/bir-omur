@@ -44,11 +44,13 @@ Canlı tasarım dokümanı: https://claude.ai/code/artifact/5e791558-0c95-419c-a
 
 - `lib/engine/` saf Dart'tır ve Flutter import etmez. Oyun mantığının tamamı buradadır ve `test/engine/` altında birim testleri vardır.
 - Rastgelelik tohumlu (`Random(seed)`) çalışır: aynı tohum aynı hayatı üretir. Testler sabit tohum kullanır.
-- İçerik veridir. Kartlar `assets/cards/*.json` dosyalarındadır ve yeni kart eklemek için kod değiştirilmez. Şema için `docs/GDD.md` dosyasındaki "Kart veri formatı" bölümüne bak.
+- İçerik veridir. Olaylar `assets/cards/*.json` dosyalarındadır ve yeni olay eklemek için kod değiştirilmez. Şema ve örnek: `assets/cards/README.md` (rol yuvaları, kişi etkileri, iplikler); kurallar canlı dokümanın "Derin hayat" sekmesinde, "Hikâye motoru" bölümünde.
 - Kartlar yüklenirken doğrulanır. `tools/card_lint` tüm kart dosyalarını şu açılardan kontrol eder (ayrıca kırmızı çizgilere giren kelimeler için uyarı verir; incelenen kullanımlar `registry.json` → `reviewedTerms`):
   - eksik alanlar
   - bilinmeyen bayrak ya da etki adları
-  - kart metni en fazla 140, seçenek metni en fazla 24 karakter
+  - kart metni en fazla 140 (en uzun adla), seçenek metni en fazla 24 karakter
+  - tanımsız rol yuvası, bilinmeyen yer tutucu alanı, elle yazılmış ek (`{ad|e}` yazılmalı)
+  - iplik hedefi ve taşınan yuvalar, Aile Bağı'nı doğrudan değiştiren etki, 18 yaş altı romantik bağ
   - tekrar eden kimlikler
 - Durum yönetimi Riverpod ile, kayıt yerel olarak Hive ile yapılır.
 - Platforma özgü her şey (reklam, satın alma, paylaşım, titreşim, analitik) `lib/services/` altında bir arayüzün arkasında durur. Motor hangi platformda çalıştığını bilmez.
@@ -142,7 +144,7 @@ D1 adımları (kişiler ve İnsanlar sekmesi):
 - [x] Kişilerin yılı: `lib/engine/people_tick.dart` (kendi hayatı, haberler, sınıflar, aynı evde soğumama, arşiv)
 - [x] Vakit puanı: `ActionCatalog.timeFor`, aksiyonların vakit bedeli (`timeCost`)
 - [x] Etkileşimler ve Ara sohbeti: `lib/engine/interactions.dart`, metinler `assets/interactions.json` (yükleyici denetler), `lib/content/person_text.dart`
-- [ ] Yeni olay formatı ve card_lint; eski kartların silinmesi
+- [x] Yeni olay formatı ve card_lint; eski kartlar silindi (şema `assets/cards/README.md`). Eski kartlara bağlı üç rozet (Dipten döndü, Akrabayla iş olur mu, Dört kuşak) geçici olarak kaldırıldı; D3, D4a ve D4b'de yeni sistemlerle dönecek. Aile Bağı artık ailenin yakınlığından hesaplanır; "Aileyle vakit", "Arkadaşlarla buluş" ve "Memleket ziyareti" aksiyonları kalktı (memleket D2'de şehirle döner).
 - [ ] D1 içeriği (yaklaşık 40 olay)
 - [ ] Kayıt sürüm 2
 - [ ] Arayüz: sekmeli ana ekran, İnsanlar, kişi detayı, Ara akışı, yıl günlüğü

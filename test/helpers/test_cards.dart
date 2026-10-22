@@ -1,7 +1,13 @@
 import 'package:bir_omur/models/models.dart';
 
-/// Testler için kart üretir; verilmeyen alanlar varsayılanla doldurulur.
-/// JSON yolundan geçtiği için kart şeması da birlikte denenmiş olur.
+/// Testler için olay üretir; verilmeyen alanlar varsayılanla doldurulur.
+/// JSON yolundan geçtiği için olay şeması da birlikte denenmiş olur.
+///
+/// Eski kart testleriyle uyumlu parametreler: [mandatory] dönemeç,
+/// [chainOnly] iplik olur; [once] ve [cooldown] tekrar kuralına çevrilir
+/// (ikisi de yoksa her yıl gelebilir). [theme] verilmezse her olay kendi
+/// teması varmış gibi davranır diye temalar sırayla dağıtılır; aynı yıl
+/// birden çok olay bekleyen testler farklı tema verir.
 EventCard testCard(
   String id, {
   int minAge = 0,
@@ -11,31 +17,92 @@ EventCard testCard(
   int cooldown = 0,
   bool mandatory = false,
   bool chainOnly = false,
+  String? type,
+  String? theme,
   Map<String, dynamic>? conditions,
+  Map<String, dynamic>? roles,
+  String? speaker,
+  String? text,
   Map<String, dynamic>? left,
   Map<String, dynamic>? right,
   Map<String, dynamic>? up,
 }) {
-  return EventCard.fromJson({
-    'id': id,
-    'stage': LifeStage.forAge(minAge).id,
-    'minAge': minAge,
-    'maxAge': maxAge,
-    'rarity': rarity,
-    'once': once,
-    'cooldown': cooldown,
-    'mandatory': mandatory,
-    'chainOnly': chainOnly,
-    'conditions': ?conditions,
-    'text': 'Test kartı $id',
-    'left': left ?? {'label': 'Sol'},
-    'right': right ?? {'label': 'Sağ'},
-    'up': ?up,
-  });
+  return EventCard.fromJson(
+    testCardJson(
+      id,
+      minAge: minAge,
+      maxAge: maxAge,
+      rarity: rarity,
+      once: once,
+      cooldown: cooldown,
+      mandatory: mandatory,
+      chainOnly: chainOnly,
+      type: type,
+      theme: theme,
+      conditions: conditions,
+      roles: roles,
+      speaker: speaker,
+      text: text,
+      left: left,
+      right: right,
+      up: up,
+    ),
+  );
 }
 
+/// [testCard] ile aynı, ama JSON olarak (denetçi testleri için).
+Map<String, dynamic> testCardJson(
+  String id, {
+  int minAge = 0,
+  int maxAge = 120,
+  String rarity = 'siradan',
+  bool once = false,
+  int cooldown = 0,
+  bool mandatory = false,
+  bool chainOnly = false,
+  String? type,
+  String? theme,
+  Map<String, dynamic>? conditions,
+  Map<String, dynamic>? roles,
+  String? speaker,
+  String? text,
+  Map<String, dynamic>? left,
+  Map<String, dynamic>? right,
+  Map<String, dynamic>? up,
+}) => {
+  'id': id,
+  'type': type ?? (mandatory ? 'donemec' : (chainOnly ? 'iplik' : 'genel')),
+  'theme': theme ?? _themeFor(id),
+  'minAge': minAge,
+  'maxAge': maxAge,
+  'rarity': rarity,
+  'repeat': once ? 'once' : {'cooldown': cooldown < 1 ? 1 : cooldown},
+  'conditions': ?conditions,
+  'roles': ?roles,
+  'speaker': ?speaker,
+  'text': text ?? 'Test kartı $id',
+  'left': left ?? {'label': 'Sol'},
+  'right': right ?? {'label': 'Sağ'},
+  'up': ?up,
+};
+
+const List<String> _themes = [
+  'aile',
+  'okul',
+  'ask',
+  'is',
+  'para',
+  'mahalle',
+  'saglik',
+  'genel',
+];
+
+String _themeFor(String id) =>
+    _themes[id.codeUnits.fold(0, (s, c) => s + c) % _themes.length];
+
 /// Simülasyon testleri için bütün evreleri kapsayan sentetik deste:
-/// zarlı, zincirli, zorunlu, yukarı seçenekli ve zor dönem kartları içerir.
+/// zarlı, iplikli, dönemeç, yukarı seçenekli, kişili ve zor dönem
+/// olayları içerir.
 List<EventCard> simulationDeck() {
   final cards = <EventCard>[];
   for (final stage in LifeStage.values) {
@@ -47,13 +114,14 @@ List<EventCard> simulationDeck() {
           '${stage.id}_iyi',
           minAge: min,
           maxAge: max,
+          theme: 'genel',
           left: {
             'label': 'Sol',
             'effects': {'happiness': 6, 'health': -3, 'money': -2000},
           },
           right: {
             'label': 'Sağ',
-            'effects': {'knowledge': 5, 'family': -4},
+            'effects': {'knowledge': 5},
           },
         ),
       )
@@ -63,6 +131,7 @@ List<EventCard> simulationDeck() {
           minAge: min,
           maxAge: max,
           cooldown: 2,
+          theme: 'para',
           left: {
             'label': 'Sol',
             'effects': {'reputation': -3},
@@ -77,17 +146,63 @@ List<EventCard> simulationDeck() {
       )
       ..add(
         testCard(
+          '${stage.id}_aile',
+          minAge: min,
+          maxAge: max,
+          cooldown: 2,
+          type: 'kisi',
+          theme: 'aile',
+          roles: {
+            'kisi': {
+              'kin': ['anne', 'baba', 'kardes', 'dede', 'nine'],
+            },
+          },
+          speaker: 'kisi',
+          text: '{kisi.akraba|in} bir isteği var, {oyuncu.ad}.',
+          left: {
+            'label': 'Kabul',
+            'effects': {
+              'happiness': 2,
+              'people': {
+                'kisi': {
+                  'memory': {
+                    'kind': 'kabul_etti',
+                    'label': 'İsteğimi kabul etti',
+                    'tone': 'olumlu',
+                    'severity': 1,
+                  },
+                },
+              },
+            },
+          },
+          right: {
+            'label': 'Ret',
+            'effects': {
+              'people': {
+                'kisi': {
+                  'memory': {
+                    'kind': 'reddetti',
+                    'label': 'İsteğimi geri çevirdi',
+                    'tone': 'olumsuz',
+                    'severity': 1,
+                  },
+                },
+              },
+            },
+          },
+        ),
+      )
+      ..add(
+        testCard(
           '${stage.id}_nadir',
           minAge: min,
           maxAge: max,
           rarity: 'nadir',
           once: true,
+          theme: 'saglik',
           left: {
             'label': 'Sol',
-            'effects': {
-              'health': -20,
-              'addFlags': ['${stage.id}_iz'],
-            },
+            'effects': {'health': -20},
           },
           right: {
             'label': 'Sağ',
@@ -107,6 +222,7 @@ List<EventCard> simulationDeck() {
       testCard(
         'zincir_devam',
         chainOnly: true,
+        theme: 'mahalle',
         left: {
           'label': 'Sol',
           'roll': {'stat': 'reputation', 'threshold': 40},
@@ -125,6 +241,7 @@ List<EventCard> simulationDeck() {
         maxAge: 29,
         once: true,
         mandatory: true,
+        theme: 'genel',
         conditions: {
           'gender': 'erkek',
           'notFlags': ['askerligini_yapti'],
@@ -144,12 +261,13 @@ List<EventCard> simulationDeck() {
         minAge: 19,
         mandatory: true,
         cooldown: 3,
+        theme: 'saglik',
         conditions: {
           'flags': ['bunalim'],
         },
         left: {
           'label': 'Sol',
-          'effects': {'happiness': 25, 'family': 5},
+          'effects': {'happiness': 25},
         },
       ),
     )
@@ -159,6 +277,7 @@ List<EventCard> simulationDeck() {
         minAge: 19,
         mandatory: true,
         cooldown: 2,
+        theme: 'para',
         conditions: {
           'flags': ['borclu'],
         },

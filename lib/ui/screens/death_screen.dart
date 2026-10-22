@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../content/event_text.dart';
 import '../../content/content_loader.dart';
 import '../../engine/engine.dart';
 import '../../l10n/generated/app_localizations.dart';
@@ -99,7 +100,14 @@ class DeathScreen extends ConsumerWidget {
                         const SizedBox(height: 4),
                         Text(l10n.biggestMomentAge(moment.age)),
                         const SizedBox(height: 8),
-                        Text(momentCard.text, textAlign: TextAlign.center),
+                        Text(
+                          EventText.render(
+                            momentCard.text,
+                            moment.people,
+                            summary.character,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
                         const SizedBox(height: 4),
                         Text(
                           l10n.momentChoice(

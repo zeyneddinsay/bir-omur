@@ -426,7 +426,6 @@ class _Resolver {
 
   int get _closeness => Relationships.closeness(p, now);
   int get _hostility => Relationships.hostility(p, now);
-  bool get _isFamily => p.kin != null;
 
   (Character, InteractionResult) run() {
     _money -= option.moneyCost;
@@ -501,19 +500,11 @@ class _Resolver {
     ifAbsent: () => delta,
   );
 
-  /// Aile bağı göstergesi D1'de hâlâ ayrı tutuluyor; ailevi etkileşim onu
-  /// da besler. (Göstergenin aile yakınlığından türetilmesi 7. adımda.)
-  void _familyBond(int delta) {
-    if (!_isFamily) return;
-    _stats.update(StatKind.family, (v) => v + delta, ifAbsent: () => delta);
-  }
-
   String _meet() {
     final good = (0.6 + _closeness / 250 - _hostility / 150).clamp(0.15, 0.95);
     if (_chance(good)) {
       _remember('bulus', MemoryTone.olumlu, 1);
       _happy(3);
-      _familyBond(1);
       return 'bulus.iyi';
     }
     if (_hostility >= 50) {
@@ -530,14 +521,12 @@ class _Resolver {
     }
     _remember('hediye', MemoryTone.olumlu, p.hasTrait(Trait.cikarci) ? 2 : 1);
     _happy(1);
-    _familyBond(1);
     return 'hediye.iyi';
   }
 
   String _confide() {
     _remember('dertles', MemoryTone.olumlu, 1);
     _happy(5);
-    _familyBond(1);
     if (p.hasTrait(Trait.dedikoducu) && _chance(0.5)) {
       _stats[StatKind.reputation] = -3;
       return 'dertles.yayildi';
@@ -581,13 +570,11 @@ class _Resolver {
   String _simple(String outcome, String memoryKind, int happiness) {
     _remember(memoryKind, MemoryTone.olumlu, 1);
     _happy(happiness);
-    _familyBond(1);
     return outcome;
   }
 
   String _match() {
     _remember('mac_izledik', MemoryTone.olumlu, 1);
-    _familyBond(1);
     if (_chance(0.3)) {
       _happy(-2);
       return 'baba.mac.kaybettik';
@@ -599,7 +586,6 @@ class _Resolver {
   String _kiss() {
     _remember('elini_optu', MemoryTone.olumlu, 1);
     _happy(2);
-    _familyBond(1);
     if (now < 18) {
       _money += Interactions.pocketMoney;
       return 'dede.el.harclik';
@@ -636,7 +622,6 @@ class _Resolver {
         }
         _remember('aradi', MemoryTone.olumlu, 1);
         _happy(1);
-        _familyBond(1);
         return 'ara.halhatir';
       case CallTone.nostalji:
         final m = _chosenMemory(null);

@@ -144,7 +144,7 @@ void main() {
       final oldDeck = EventDeck([testCard('eski', maxAge: 0)]);
       final engine = LifeEngine(deck: oldDeck, seed: 1);
       engine.startLife();
-      expect(engine.state.currentCard!.id, 'eski');
+      expect(engine.state.currentEvent!.card.id, 'eski');
 
       final restored = LifeEngine.restore(
         deck: EventDeck([]),
@@ -177,7 +177,7 @@ void main() {
       );
       restored.advanceYear();
       restored.advanceYear();
-      expect(restored.state.currentCard!.id, 'borc_geri');
+      expect(restored.state.currentEvent!.card.id, 'borc_geri');
     });
 
     test('bilinmeyen kayıt sürümü reddedilir', () {

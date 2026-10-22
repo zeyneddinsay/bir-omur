@@ -5,237 +5,282 @@ import 'package:flutter_test/flutter_test.dart';
 
 import '../helpers/test_character.dart';
 
-/// docs/GDD.md "Kart veri formatı" bölümündeki örnek, birebir.
-const _gddSample = '''
+/// assets/cards/README.md içindeki örnek olay, birebir.
+const _readmeSample = '''
 {
-  "id": "kira_zammi_01",
-  "stage": "genc",
-  "minAge": 19,
-  "maxAge": 45,
-  "rarity": "siradan",
-  "cooldown": 3,
-  "conditions": { "notFlags": ["ev_sahibi"], "flags": ["kiraci"] },
-  "speaker": "ev_sahibi",
-  "text": "Ev sahibi kirayı iki katına çıkarmak istiyor. Gerekçesi: 'Piyasa böyle.'",
-  "left": {
-    "label": "Taşınırım",
-    "effects": { "money": -15000, "happiness": -5, "addFlags": ["tasindi"] }
+  "id": "teneffus_not",
+  "type": "kisi",
+  "theme": "okul",
+  "minAge": 11,
+  "maxAge": 14,
+  "repeat": "once",
+  "roles": {
+    "kerem": { "roles": ["sinifArkadasi"], "minGap": -1, "maxGap": 1 }
   },
-  "right": {
-    "label": "Pazarlık ederim",
-    "roll": { "stat": "luck", "threshold": 50 },
-    "success": { "money": -3000, "happiness": 3 },
-    "fail": { "money": -8000, "reputation": -2, "schedule": { "event": "ev_sahibi_ihtar", "inYears": 1 } }
-  }
+  "speaker": "kerem",
+  "text": "Teneffüs. {kerem.ad}, sıra arkadaşına yazdığın notu buldu ve sınıfa okuyor.",
+  "left": {
+    "label": "Ver onu bana!",
+    "effects": {
+      "reputation": 3,
+      "people": {
+        "kerem": {
+          "memory": {
+            "kind": "rezil_etti",
+            "label": "Sınıfın ortasında üstüme yürüdü",
+            "tone": "olumsuz",
+            "severity": 2
+          }
+        }
+      }
+    }
+  },
+  "right": { "label": "Gülüp geçerim", "effects": { "happiness": -2 } }
 }
 ''';
 
 Map<String, dynamic> _sample() =>
-    jsonDecode(_gddSample) as Map<String, dynamic>;
+    jsonDecode(_readmeSample) as Map<String, dynamic>;
 
 Map<String, dynamic> _minimal() => {
   'id': 'test_01',
-  'stage': 'bebek',
+  'type': 'genel',
+  'theme': 'genel',
   'minAge': 0,
   'maxAge': 6,
+  'repeat': 'once',
   'text': 'Metin',
   'left': {'label': 'Sol'},
   'right': {'label': 'Sağ'},
 };
 
+void expectFormatError(Map<String, dynamic> json, String path) {
+  expect(
+    () => EventCard.fromJson(json),
+    throwsA(
+      isA<CardFormatException>().having((e) => e.path, 'yol', startsWith(path)),
+    ),
+  );
+}
+
 void main() {
   group('EventCard.fromJson', () {
-    test('GDD örnek kartını okur', () {
+    test('README örneğini okur', () {
       final card = EventCard.fromJson(_sample());
-
-      expect(card.id, 'kira_zammi_01');
-      expect(card.stage, LifeStage.genc);
-      expect(card.minAge, 19);
-      expect(card.maxAge, 45);
-      expect(card.rarity, Rarity.siradan);
-      expect(card.cooldown, 3);
-      expect(card.once, isFalse);
-      expect(card.speaker, 'ev_sahibi');
-      expect(card.conditions.flags, ['kiraci']);
-      expect(card.conditions.notFlags, ['ev_sahibi']);
-
-      expect(card.left.label, 'Taşınırım');
-      expect(card.left.hasRoll, isFalse);
-      expect(card.left.effects.money, -15000);
-      expect(card.left.effects.stats, {StatKind.happiness: -5});
-      expect(card.left.effects.addFlags, ['tasindi']);
-
-      expect(card.right.hasRoll, isTrue);
-      expect(card.right.roll!.stat, RollStat.luck);
-      expect(card.right.roll!.threshold, 50);
-      expect(card.right.success!.money, -3000);
-      expect(card.right.fail!.stats, {StatKind.reputation: -2});
-      expect(card.right.fail!.schedule!.cardId, 'ev_sahibi_ihtar');
-      expect(card.right.fail!.schedule!.inYears, 1);
-      expect(card.up, isNull);
+      expect(card.type, EventType.kisi);
+      expect(card.theme, EventTheme.okul);
+      expect(card.once, isTrue);
+      expect(card.speaker, 'kerem');
+      final kerem = card.role('kerem')!;
+      expect(kerem.roles, {RoleKind.sinifArkadasi});
+      expect(kerem.minGap, -1);
+      final memory = card.left.effects.people['kerem']!.memory!;
+      expect(memory.kind, 'rezil_etti');
+      expect(memory.tone, MemoryTone.olumsuz);
+      expect(memory.severity, 2);
+      expect(memory.owner, MemoryOwner.ikisi);
+      expect(card.left.effects.stats[StatKind.reputation], 3);
     });
 
-    test('isteğe bağlı alanlar varsayılan değer alır', () {
+    test('en küçük geçerli olay', () {
       final card = EventCard.fromJson(_minimal());
+      expect(card.roles, isEmpty);
       expect(card.rarity, Rarity.siradan);
-      expect(card.cooldown, 0);
-      expect(card.mandatory, isFalse);
-      expect(card.chainOnly, isFalse);
-      expect(card.left.effects.isEmpty, isTrue);
-      expect(card.choices, hasLength(2));
+      expect(card.conditions.flags, isEmpty);
     });
 
-    test('yukarı seçeneği okunur', () {
-      final json = _minimal()..['up'] = {'label': 'Yukarı'};
-      final card = EventCard.fromJson(json);
-      expect(card.choices, hasLength(3));
-      expect(card.choice(ChoiceSide.up).label, 'Yukarı');
+    test('tür, tema ve tekrar zorunlu', () {
+      for (final key in ['type', 'theme', 'repeat', 'minAge', 'text', 'left']) {
+        expectFormatError(_minimal()..remove(key), 'test_01.$key');
+      }
     });
 
-    void expectFormatError(Map<String, dynamic> json, String pathContains) {
-      expect(
-        () => EventCard.fromJson(json),
-        throwsA(
-          isA<CardFormatException>().having(
-            (e) => e.path,
-            'path',
-            contains(pathContains),
-          ),
-        ),
+    test('bilinmeyen alan, tür, tema reddedilir', () {
+      expectFormatError(_minimal()..['stage'] = 'bebek', 'test_01.stage');
+      expectFormatError(_minimal()..['type'] = 'masal', 'test_01.type');
+      expectFormatError(_minimal()..['theme'] = 'uzay', 'test_01.theme');
+    });
+
+    test('tekrar: once ya da cooldown', () {
+      final every = EventCard.fromJson(
+        _minimal()..['repeat'] = {'cooldown': 3},
       );
-    }
-
-    test('eksik alanı yoluyla bildirir', () {
-      expectFormatError(_minimal()..remove('text'), 'test_01.text');
+      expect(every.once, isFalse);
+      expect(every.cooldown, 3);
+      expectFormatError(_minimal()..['repeat'] = 'sik', 'test_01.repeat');
+      expectFormatError(
+        _minimal()..['repeat'] = {'cooldown': 0},
+        'test_01.repeat',
+      );
     });
 
-    test('bilinmeyen kart alanını reddeder', () {
-      expectFormatError(_minimal()..['weight'] = 5, 'test_01.weight');
+    test('tür türetilmiş özellikler', () {
+      final milestone = EventCard.fromJson(_minimal()..['type'] = 'donemec');
+      expect(milestone.mandatory, isTrue);
+      final thread = EventCard.fromJson(_minimal()..['type'] = 'iplik');
+      expect(thread.chainOnly, isTrue);
+      expect(EventTheme.fromId('is'), EventTheme.isHayati);
     });
 
-    test('bilinmeyen etki adını reddeder', () {
-      final json = _sample();
-      (json['left'] as Map)['effects']['mony'] = -10;
-      expectFormatError(json, 'kira_zammi_01.left.effects.mony');
+    test('rol yuvası adı ve oyuncu ayrılmış adı', () {
+      expectFormatError(
+        _minimal()..['roles'] = {'Kerem': <String, dynamic>{}},
+        'test_01.roles.Kerem',
+      );
+      expectFormatError(
+        _minimal()..['roles'] = {'oyuncu': <String, dynamic>{}},
+        'test_01.roles.oyuncu',
+      );
     });
 
-    test('bilinmeyen evre ve nadirliği reddeder', () {
-      expectFormatError(_minimal()..['stage'] = 'universite', 'stage');
-      expectFormatError(_minimal()..['rarity'] = 'destansi', 'rarity');
+    test('rol yuvası alanları', () {
+      final card = EventCard.fromJson(
+        _minimal()
+          ..['roles'] = {
+            'nine': {
+              'kin': ['nine'],
+              'side': 'anne',
+              'gender': 'kadin',
+              'minAge': 60,
+              'minCloseness': 50,
+              'traits': ['vefali'],
+              'noMemory': 'kustu',
+              'sameCity': true,
+              'offstage': true,
+            },
+          },
+      );
+      final nine = card.role('nine')!;
+      expect(nine.kin, {Kinship.nine});
+      expect(nine.side, Side.anne);
+      expect(nine.gender, Gender.kadin);
+      expect(nine.traits, {Trait.vefali});
+      expect(nine.sameCity, isTrue);
+      expect(nine.offstage, isTrue);
     });
 
-    test('ters yaş aralığını reddeder', () {
-      expectFormatError(_minimal()..['minAge'] = 7, 'minAge');
+    test('bozuk rol yuvası reddedilir', () {
+      Map<String, dynamic> withRole(Map<String, dynamic> role) =>
+          _minimal()..['roles'] = {'k': role};
+      expectFormatError(withRole({'renk': 'mavi'}), 'test_01.roles.k.renk');
+      expectFormatError(
+        withRole({
+          'kin': ['komsu'],
+        }),
+        'test_01.roles.k.kin',
+      );
+      expectFormatError(
+        withRole({'minCloseness': 120}),
+        'test_01.roles.k.minCloseness',
+      );
+      expectFormatError(
+        withRole({'minAge': 40, 'maxAge': 30}),
+        'test_01.roles.k',
+      );
     });
 
-    test('zarsız seçenekte success kullanılamaz', () {
-      final json = _minimal()
+    test('konuşmacı bir rol yuvası olmalı', () {
+      expectFormatError(_minimal()..['speaker'] = 'anne', 'test_01.speaker');
+    });
+
+    test('kişi etkisi', () {
+      Map<String, dynamic> withPeople(Map<String, dynamic> people) => _minimal()
+        ..['roles'] = {'k': <String, dynamic>{}}
         ..['left'] = {
           'label': 'Sol',
-          'success': {'money': 5},
+          'effects': {'people': people},
         };
-      expectFormatError(json, 'left.success');
+      final card = EventCard.fromJson(
+        withPeople({
+          'k': {'heal': '*', 'bond': 'arkadas', 'archive': true},
+        }),
+      );
+      final effect = card.left.effects.people['k']!;
+      expect(effect.heal, PersonEffect.healHeaviest);
+      expect(effect.bond, Bond.arkadas);
+      expect(effect.archive, isTrue);
+      expectFormatError(
+        withPeople({'k': <String, dynamic>{}}),
+        'test_01.left.effects.people.k',
+      );
+      expectFormatError(
+        withPeople({
+          'k': {
+            'memory': {
+              'kind': 'a',
+              'label': 'b',
+              'tone': 'olumlu',
+              'severity': 4,
+            },
+          },
+        }),
+        'test_01.left.effects.people.k.memory.severity',
+      );
+      expectFormatError(
+        withPeople({
+          'k': {
+            'memory': {'kind': 'a', 'label': 'b', 'tone': 'iyi', 'severity': 1},
+          },
+        }),
+        'test_01.left.effects.people.k.memory.tone',
+      );
     });
 
-    test('zarlı seçenekte fail eksikse hata verir', () {
-      final json = _minimal()
-        ..['left'] = {
-          'label': 'Sol',
-          'roll': {'stat': 'luck', 'threshold': 40},
-          'success': {'money': 5},
-        };
-      expectFormatError(json, 'left.fail');
+    test('iplik taşınan yuvaları okur', () {
+      final card = EventCard.fromJson(
+        _minimal()
+          ..['left'] = {
+            'label': 'Sol',
+            'effects': {
+              'schedule': {
+                'event': 'devam',
+                'inYears': 2,
+                'with': ['kerem'],
+              },
+            },
+          },
+      );
+      final s = card.left.effects.schedule!;
+      expect(s.withRoles, ['kerem']);
+      expect(s.inYears, 2);
     });
 
-    test('zar eşiği 0–100 dışındaysa hata verir', () {
-      final json = _sample();
-      (json['right'] as Map)['roll']['threshold'] = 150;
-      expectFormatError(json, 'roll.threshold');
+    test('zarsız success ve fail reddedilir', () {
+      expectFormatError(
+        _minimal()
+          ..['left'] = {
+            'label': 'Sol',
+            'success': {'money': 1},
+          },
+        'test_01.left.success',
+      );
     });
 
-    test('zincir kartı en az 1 yıl sonra olmalı', () {
-      final json = _sample();
-      (json['right'] as Map)['fail']['schedule']['inYears'] = 0;
-      expectFormatError(json, 'schedule.inYears');
+    test('yukarı seçeneği okunur ve choice onu verir', () {
+      final card = EventCard.fromJson(_minimal()..['up'] = {'label': 'Yukarı'});
+      expect(card.choice(ChoiceSide.up).label, 'Yukarı');
+      expect(
+        () => EventCard.fromJson(_minimal()).choice(ChoiceSide.up),
+        throwsStateError,
+      );
     });
   });
 
-  group('Conditions.isMetBy', () {
-    test('bayrak koşulları', () {
-      const conditions = Conditions(flags: ['kiraci'], notFlags: ['ev_sahibi']);
-      expect(conditions.isMetBy(testCharacter()), isFalse);
-      expect(conditions.isMetBy(testCharacter(flags: {'kiraci'})), isTrue);
+  group('Conditions', () {
+    test('aile profili koşulu', () {
+      final card = EventCard.fromJson(
+        _minimal()
+          ..['conditions'] = {
+            'familyProfile': ['fabrikator'],
+          },
+      );
+      final c = testCharacter();
+      expect(card.conditions.isMetBy(c), isFalse);
       expect(
-        conditions.isMetBy(testCharacter(flags: {'kiraci', 'ev_sahibi'})),
-        isFalse,
-      );
-    });
-
-    test('min dahil, max hariçtir', () {
-      const conditions = Conditions(
-        min: {'knowledge': 50},
-        max: {'money': 5000},
-      );
-      expect(
-        conditions.isMetBy(testCharacter(knowledge: 50, money: 4999)),
-        isTrue,
-      );
-      expect(
-        conditions.isMetBy(testCharacter(knowledge: 49, money: 0)),
-        isFalse,
-      );
-      expect(
-        conditions.isMetBy(testCharacter(knowledge: 80, money: 5000)),
-        isFalse,
-      );
-    });
-
-    test('şans, cinsiyet ve mizaç', () {
-      const conditions = Conditions(
-        min: {'luck': 60},
-        gender: Gender.kadin,
-        temperament: Temperament.hesapci,
-      );
-      expect(
-        conditions.isMetBy(
-          testCharacter(
-            luck: 60,
-            gender: Gender.kadin,
-            temperament: Temperament.hesapci,
-          ),
+        card.conditions.isMetBy(
+          Character.fromJson(c.toJson()..['family'] = 'fabrikator'),
         ),
         isTrue,
-      );
-      expect(
-        conditions.isMetBy(
-          testCharacter(
-            luck: 60,
-            gender: Gender.erkek,
-            temperament: Temperament.hesapci,
-          ),
-        ),
-        isFalse,
-      );
-      expect(
-        conditions.isMetBy(
-          testCharacter(
-            luck: 59,
-            gender: Gender.kadin,
-            temperament: Temperament.hesapci,
-          ),
-        ),
-        isFalse,
-      );
-    });
-
-    test('JSON koşulunda bilinmeyen eşik adını reddeder', () {
-      final json = _minimal()
-        ..['conditions'] = {
-          'min': {'iq': 50},
-        };
-      expect(
-        () => EventCard.fromJson(json),
-        throwsA(isA<CardFormatException>()),
       );
     });
   });

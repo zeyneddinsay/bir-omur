@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../content/content_registry.dart';
+import '../../content/event_text.dart';
 import '../../engine/engine.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../models/models.dart';
@@ -39,8 +40,8 @@ class _YearScreenState extends ConsumerState<YearScreen> {
     final engine = ref.read(lifeProvider.notifier).engine;
 
     final rolled = state.lastOutcome?.rollSucceeded;
-    final leaning = switch ((state.currentCard, _lean)) {
-      (final card?, final side?) => card.choice(side),
+    final leaning = switch ((state.currentEvent, _lean)) {
+      (final event?, final side?) => event.card.choice(side),
       _ => null,
     };
 
@@ -116,7 +117,11 @@ class _YearScreenState extends ConsumerState<YearScreen> {
   }
 
   Widget _cardPhase(LifeState state, AppLocalizations l10n) {
-    final card = state.currentCard!;
+    final event = state.currentEvent!;
+    final card = event.card;
+    final c = state.character;
+    final speakerId = card.speaker == null ? null : event.people[card.speaker];
+    final speaker = speakerId == null ? null : c.people[speakerId];
     return Column(
       children: [
         Padding(
@@ -128,14 +133,11 @@ class _YearScreenState extends ConsumerState<YearScreen> {
             // Her yeni kart sıfırdan başlasın.
             key: ValueKey('${state.character.age}-${card.id}'),
             card: card,
-            speakerName: widget.registry.speakers[card.speaker],
-            portrait: switch (card.speaker) {
-              final id? => PortraitDesigner.forSpeaker(
-                id,
-                playerAge: state.character.age,
-              ),
-              null => PortraitDesigner.forCharacter(state.character),
-            },
+            text: EventText.render(card.text, event.people, c),
+            speakerName: EventText.speakerName(card, event.people, c),
+            portrait: speaker == null
+                ? PortraitDesigner.forCharacter(c)
+                : PortraitDesigner.ofPerson(speaker, playerAge: c.age),
             onLean: (side) => setState(() => _lean = side),
             onChoose: (side) {
               setState(() => _lean = null);
@@ -241,10 +243,8 @@ class _ActionMenu extends ConsumerWidget {
 
   static IconData _categoryIcon(ActionCategory category) => switch (category) {
     ActionCategory.okulIs => Icons.work_outline,
-    ActionCategory.iliskiler => Icons.people_outline,
     ActionCategory.para => Icons.savings_outlined,
     ActionCategory.saglik => Icons.health_and_safety_outlined,
-    ActionCategory.memleket => Icons.home_work_outlined,
     ActionCategory.eglence => Icons.celebration_outlined,
   };
 }

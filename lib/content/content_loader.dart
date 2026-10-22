@@ -54,17 +54,22 @@ GameContent loadContent({
   required String interactionsSource,
 }) {
   final registry = ContentRegistry.parse(registrySource);
-  final result = CardValidator(registry).check(
-    cardFiles,
-    careerFiles: careerFiles,
-    achievementsSource: achievementsSource,
-  );
+  final families = _parseFamilies(familiesSource, namesSource);
+  final result =
+      CardValidator(
+        registry,
+        familyProfiles: {for (final p in families.profiles) p.id},
+      ).check(
+        cardFiles,
+        careerFiles: careerFiles,
+        achievementsSource: achievementsSource,
+      );
   if (result.hasErrors) throw ContentException(result.errors.toList());
   return GameContent(
     deck: EventDeck(result.cards.map((c) => c.card)),
     careers: CareerBook(result.careers),
     achievements: AchievementBook(result.achievements),
-    families: _parseFamilies(familiesSource, namesSource),
+    families: families,
     interactions: _parseInteractions(interactionsSource),
     registry: registry,
     warnings: result.warnings.toList(),

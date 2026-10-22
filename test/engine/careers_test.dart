@@ -7,6 +7,7 @@ import 'package:bir_omur/models/json_reader.dart';
 import 'package:bir_omur/models/models.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../helpers/test_cards.dart';
 import '../helpers/test_character.dart';
 
 Map<String, dynamic> _careerJson({double variance = 0}) => {
@@ -270,7 +271,6 @@ void main() {
   group('card_lint meslek denetimi', () {
     final registry = ContentRegistry(
       flags: {'universite_ogrencisi': '', 'asker_anilari': '', 'tasindi': ''},
-      speakers: const {},
     );
     final careerFiles = {'test.json': jsonEncode(_careerJson())};
 
@@ -278,13 +278,7 @@ void main() {
         CardValidator(registry).check({
           'x.json': jsonEncode([
             {
-              'id': 'a',
-              'stage': 'genc',
-              'minAge': 20,
-              'maxAge': 30,
-              'text': 'Metin.',
-              'left': {'label': 'Sol'},
-              'right': {'label': 'Sağ'},
+              ...testCardJson('a', minAge: 20, maxAge: 30, text: 'Metin.'),
               ...extra,
             },
           ]),

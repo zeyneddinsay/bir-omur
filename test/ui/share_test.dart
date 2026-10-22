@@ -13,7 +13,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../content/real_cards_test.dart' show loadRealContent;
+import '../helpers/content.dart';
 import '../helpers/auto_player.dart';
 import '../helpers/test_character.dart';
 
@@ -52,7 +52,7 @@ Widget _app(Widget home, {List overrides = const []}) => ProviderScope(
 
 /// Uzun yaşamış, sayıları dolu bir hayat.
 LifeSummary _longLife() {
-  final content = loadRealContent();
+  final content = uiTestContent();
   for (var seed = 0; seed < 50; seed++) {
     final engine = LifeEngine(
       deck: content.deck,
@@ -69,7 +69,7 @@ LifeSummary _longLife() {
 
 void main() {
   final l10n = AppLocalizationsTr();
-  final content = loadRealContent();
+  final content = uiTestContent();
 
   test('büyük tutarlar okunur yazılır', () {
     expect(compactMoney(l10n, 2854000), '2,9 milyon TL');

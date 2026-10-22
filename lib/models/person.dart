@@ -31,6 +31,7 @@ class Person {
     this.archived = false,
     this.loan = 0,
     this.reunited = false,
+    this.lastEventAt,
   }) : assert(base >= 0 && base <= 100),
        assert(health >= 0 && health <= 100),
        roles = List.unmodifiable(roles),
@@ -110,6 +111,10 @@ class Person {
   /// bir kez uygulanır.
   final bool reunited;
 
+  /// Son olayına çıktığı yıl oyuncunun yaşı; olaydan sonra 2 yıl dinlenir
+  /// (aile çekirdeği hariç).
+  final int? lastEventAt;
+
   static const int maxMemories = 8;
 
   bool get isAlive => diedAt == null;
@@ -141,6 +146,7 @@ class Person {
     bool? archived,
     int? loan,
     bool? reunited,
+    int? lastEventAt,
   }) => Person(
     id: id,
     name: name,
@@ -168,6 +174,7 @@ class Person {
     archived: archived ?? this.archived,
     loan: loan ?? this.loan,
     reunited: reunited ?? this.reunited,
+    lastEventAt: lastEventAt ?? this.lastEventAt,
   );
 
   Map<String, Object> toJson() => {
@@ -200,6 +207,7 @@ class Person {
     'archived': archived,
     if (loan != 0) 'loan': loan,
     if (reunited) 'reunited': true,
+    'lastEventAt': ?lastEventAt,
   };
 
   factory Person.fromJson(Map<String, dynamic> json) => Person(
@@ -245,6 +253,7 @@ class Person {
     archived: json['archived'] as bool,
     loan: json['loan'] as int? ?? 0,
     reunited: json['reunited'] as bool? ?? false,
+    lastEventAt: json['lastEventAt'] as int?,
   );
 }
 

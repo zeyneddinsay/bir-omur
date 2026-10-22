@@ -201,12 +201,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get action_fazla_mesai => 'Fazla mesai';
 
   @override
-  String get action_aileyle_vakit => 'Ailenle vakit geçir';
-
-  @override
-  String get action_arkadaslarla_bulus => 'Arkadaşlarınla buluş';
-
-  @override
   String get action_kitap_oku => 'Kitap oku';
 
   @override
@@ -217,9 +211,6 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get action_yuruyus => 'Sahilde yürüyüş';
-
-  @override
-  String get action_memleket_ziyareti => 'Memleketi ziyaret et';
 
   @override
   String get action_tatil => 'Tatile çık';

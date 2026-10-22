@@ -33,9 +33,6 @@ class YearTick {
       StatKind.health,
       yearlyHealthChange(age),
     );
-    if (age >= EngineFlags.hardshipMinAge) {
-      stats = stats.withDelta(StatKind.family, -1);
-    }
     stats = stats.withDelta(
       StatKind.reputation,
       reputationDrift(stats.reputation),

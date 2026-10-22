@@ -123,7 +123,6 @@ void main() {
   group('card_lint rozet denetimi', () {
     final registry = ContentRegistry(
       flags: {'universite_ogrencisi': '', 'asker_anilari': '', 'tasindi': ''},
-      speakers: const {},
     );
 
     CardCheckResult check(List<Object> achievements) =>
@@ -186,7 +185,7 @@ void main() {
             final engine = controller.engine;
             final s = engine.state;
             if (s.phase == YearPhase.cards) {
-              controller.choose(player.pickSide(s.currentCard!));
+              controller.choose(player.pickSide(s.currentEvent!.card));
             } else {
               final action = player.pickAction(engine);
               action == null

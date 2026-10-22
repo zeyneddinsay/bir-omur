@@ -72,6 +72,7 @@ class CardRecord {
     required this.cardId,
     required this.side,
     this.rollSucceeded,
+    this.people = const {},
   });
 
   final int age;
@@ -81,11 +82,15 @@ class CardRecord {
   /// Seçenekte zar yoksa null.
   final bool? rollSucceeded;
 
+  /// Olayın rol yuvalarına bağlanan kişiler: yuva adı → kişi kimliği.
+  final Map<String, String> people;
+
   Map<String, Object> toJson() => {
     'age': age,
     'card': cardId,
     'side': side.name,
     'roll': ?rollSucceeded,
+    if (people.isNotEmpty) 'people': people,
   };
 
   factory CardRecord.fromJson(Map<String, dynamic> json) => CardRecord(
@@ -93,6 +98,9 @@ class CardRecord {
     cardId: json['card'] as String,
     side: ChoiceSide.values.byName(json['side'] as String),
     rollSucceeded: json['roll'] as bool?,
+    people: {
+      ...?(json['people'] as Map<String, dynamic>?)?.cast<String, String>(),
+    },
   );
 }
 

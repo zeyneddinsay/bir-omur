@@ -2,7 +2,7 @@ import '../models/models.dart';
 import 'economy.dart';
 
 /// Aksiyon menüsünün kategorileri.
-enum ActionCategory { okulIs, iliskiler, para, saglik, memleket, eglence }
+enum ActionCategory { okulIs, para, saglik, eglence }
 
 /// Aksiyon menüsündeki bir seçenek. Adı ve açıklaması arayüzde [id] ile
 /// ARB dosyasından gelir.
@@ -103,17 +103,6 @@ abstract final class ActionCatalog {
       ),
     ),
     LifeAction(
-      id: 'aileyle_vakit',
-      category: ActionCategory.iliskiler,
-      effect: Effect(stats: {StatKind.family: 5}),
-    ),
-    LifeAction(
-      id: 'arkadaslarla_bulus',
-      category: ActionCategory.iliskiler,
-      minAge: 7,
-      effect: Effect(stats: {StatKind.happiness: 4, StatKind.reputation: 1}),
-    ),
-    LifeAction(
       id: 'kitap_oku',
       category: ActionCategory.okulIs,
       minAge: 30,
@@ -138,13 +127,6 @@ abstract final class ActionCatalog {
       category: ActionCategory.saglik,
       minAge: 50,
       effect: Effect(stats: {StatKind.health: 2, StatKind.happiness: 1}),
-    ),
-    LifeAction(
-      id: 'memleket_ziyareti',
-      category: ActionCategory.memleket,
-      minAge: 19,
-      cost: 5000,
-      effect: Effect(stats: {StatKind.family: 4, StatKind.happiness: 3}),
     ),
     LifeAction(
       id: 'tatil',

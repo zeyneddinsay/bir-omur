@@ -45,25 +45,35 @@ void main(List<String> args) {
           (f) => f.path.endsWith('.json'),
         )
       : const <File>[];
-  final result = CardValidator(registry).check(
-    {for (final f in files) f.uri.pathSegments.last: f.readAsStringSync()},
-    careerFiles: {
-      for (final f in careerFiles)
-        f.uri.pathSegments.last: f.readAsStringSync(),
-    },
-    achievementsSource: switch (File('${assetsDir.path}/achievements.json')) {
-      final f when f.existsSync() => f.readAsStringSync(),
-      _ => null,
-    },
+  final families = FamilyBook.parse(
+    familiesSource: File('${assetsDir.path}/families.json').readAsStringSync(),
+    namesSource: File('${assetsDir.path}/names.json').readAsStringSync(),
   );
+  final result =
+      CardValidator(
+        registry,
+        familyProfiles: {for (final p in families.profiles) p.id},
+      ).check(
+        {for (final f in files) f.uri.pathSegments.last: f.readAsStringSync()},
+        careerFiles: {
+          for (final f in careerFiles)
+            f.uri.pathSegments.last: f.readAsStringSync(),
+        },
+        achievementsSource: switch (File(
+          '${assetsDir.path}/achievements.json',
+        )) {
+          final f when f.existsSync() => f.readAsStringSync(),
+          _ => null,
+        },
+      );
 
   for (final issue in result.issues) {
     (issue.isError ? stderr : stdout).writeln(issue);
   }
 
-  final perStage = <LifeStage, int>{for (final s in LifeStage.values) s: 0};
+  final perType = <EventType, int>{for (final t in EventType.values) t: 0};
   for (final c in result.cards) {
-    perStage.update(c.card.stage, (n) => n + 1);
+    perType.update(c.card.type, (n) => n + 1);
   }
   stdout
     ..writeln()
@@ -71,7 +81,9 @@ void main(List<String> args) {
       '${files.length} kart dosyası, ${result.cards.length} kart, '
       '${result.careers.length} meslek, ${result.achievements.length} rozet',
     )
-    ..writeln(perStage.entries.map((e) => '${e.key.id}: ${e.value}').join(', '))
+    ..writeln(
+      perType.entries.map((e) => '${e.key.name}: ${e.value}').join(', '),
+    )
     ..writeln('${result.errors.length} hata, ${result.warnings.length} uyarı');
 
   if (result.hasErrors) exitCode = 1;

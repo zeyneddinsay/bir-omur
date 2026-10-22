@@ -9,6 +9,7 @@ import 'package:bir_omur/models/models.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../helpers/families.dart';
+import '../helpers/test_cards.dart';
 import '../helpers/test_character.dart';
 
 final InteractionBook _book = InteractionBook.parse(
@@ -503,14 +504,9 @@ void main() {
       expect(grown.money, 0);
     });
 
-    test('aile etkileşimi aile bağını besler, yabancıyla beslemez', () {
-      final (_, family) = run(
-        _person(kin: Kinship.teyze),
-        InteractionKind.dertles,
-      );
-      final (_, friend) = run(_person(), InteractionKind.dertles);
-      expect(family.stats[StatKind.family], 1);
-      expect(friend.stats.containsKey(StatKind.family), isFalse);
+    test('etkileşim Aile Bağı göstergesine doğrudan dokunmaz', () {
+      final (_, r) = run(_person(kin: Kinship.anne), InteractionKind.dertles);
+      expect(r.stats.containsKey(StatKind.family), isFalse);
     });
   });
 
@@ -726,16 +722,7 @@ void main() {
     test('kart aşamasında etkileşim yok', () {
       final engine = LifeEngine(
         deck: EventDeck([
-          EventCard.fromJson({
-            'id': 'k',
-            'stage': 'ortaokul',
-            'minAge': 12,
-            'maxAge': 12,
-            'mandatory': true,
-            'text': 'Bir olay.',
-            'left': {'label': 'Sol'},
-            'right': {'label': 'Sağ'},
-          }),
+          testCard('k', minAge: 12, maxAge: 12, mandatory: true, once: true),
         ]),
         seed: 5,
         families: families,

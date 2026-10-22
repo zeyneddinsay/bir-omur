@@ -9,7 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_ce/hive_ce.dart';
 
-import '../content/real_cards_test.dart' show loadRealContent;
+import '../helpers/content.dart';
 import '../helpers/auto_player.dart';
 
 LifeRecord _record(String name) => LifeRecord(
@@ -73,7 +73,7 @@ void main() {
   });
 
   group('LifeController kayıt', () {
-    final content = loadRealContent();
+    final content = uiTestContent();
 
     ProviderContainer containerWith(SaveStore store) {
       final container = ProviderContainer(
@@ -110,8 +110,8 @@ void main() {
       expect(after.character.toJson(), before.character.toJson());
       expect(after.phase, before.phase);
       expect(
-        after.pendingCards.map((c) => c.id),
-        before.pendingCards.map((c) => c.id),
+        after.pendingCards.map((e) => e.card.id),
+        before.pendingCards.map((e) => e.card.id),
       );
     });
 
@@ -167,7 +167,7 @@ class _ControllerPlayer {
     final state = engine.state;
     switch (state.phase) {
       case YearPhase.cards:
-        controller.choose(_player.pickSide(state.currentCard!));
+        controller.choose(_player.pickSide(state.currentEvent!.card));
       case YearPhase.actions:
         final action = _player.pickAction(engine);
         if (action != null) {

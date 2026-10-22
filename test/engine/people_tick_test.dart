@@ -5,6 +5,7 @@ import 'package:bir_omur/models/models.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../helpers/families.dart';
+import '../helpers/test_cards.dart';
 import '../helpers/test_character.dart';
 
 /// Kartsız bir hayatı sonuna kadar oynatır; her yılın durumunu döndürür.
@@ -253,16 +254,13 @@ void main() {
     final engine = LifeEngine(
       deck: EventDeck([
         for (var age = 0; age <= 30; age++)
-          EventCard.fromJson({
-            'id': 'kart_$age',
-            'stage': LifeStage.forAge(age).id,
-            'minAge': age,
-            'maxAge': age,
-            'mandatory': true,
-            'text': 'Bir olay.',
-            'left': {'label': 'Sol'},
-            'right': {'label': 'Sağ'},
-          }),
+          testCard(
+            'kart_$age',
+            minAge: age,
+            maxAge: age,
+            mandatory: true,
+            once: true,
+          ),
       ]),
       seed: 4,
       families: families,
@@ -277,7 +275,8 @@ void main() {
       }
       final before = engine.state.news;
       if (engine.state.timeLeft > 0) {
-        engine.doAction('aileyle_vakit');
+        final parent = engine.state.character.people.all.first;
+        engine.interact(InteractionRequest(InteractionKind.bulus, parent.id));
         expect(engine.state.news, before);
       }
       if (before.isNotEmpty) checked++;

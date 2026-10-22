@@ -1,5 +1,6 @@
 import 'assets.dart';
 import 'career.dart';
+import 'event_role.dart';
 import 'json_reader.dart';
 import 'stats.dart';
 
@@ -19,6 +20,7 @@ class Effect {
     this.addFlags = const [],
     this.removeFlags = const [],
     this.schedule,
+    this.people = const {},
   });
 
   static const Effect none = Effect();
@@ -34,6 +36,7 @@ class Effect {
   static const String addFlagsKey = 'addFlags';
   static const String removeFlagsKey = 'removeFlags';
   static const String scheduleKey = 'schedule';
+  static const String peopleKey = 'people';
 
   /// Kart JSON'unda bir etki nesnesinin alabileceği bütün anahtarlar.
   static final Set<String> knownKeys = {
@@ -49,6 +52,7 @@ class Effect {
     addFlagsKey,
     removeFlagsKey,
     scheduleKey,
+    peopleKey,
   };
 
   final Map<StatKind, int> stats;
@@ -76,6 +80,9 @@ class Effect {
   final List<String> removeFlags;
   final ScheduledEvent? schedule;
 
+  /// Rol yuvasındaki kişilere etkiler: yuva adı → etki.
+  final Map<String, PersonEffect> people;
+
   bool get isEmpty =>
       stats.isEmpty &&
       money == 0 &&
@@ -88,7 +95,8 @@ class Effect {
       career == null &&
       addFlags.isEmpty &&
       removeFlags.isEmpty &&
-      schedule == null;
+      schedule == null &&
+      people.isEmpty;
 
   factory Effect.fromJson(JsonReader r) {
     r.rejectUnknownKeys(knownKeys);
@@ -113,7 +121,16 @@ class Effect {
       addFlags: r.optionalStringList(addFlagsKey),
       removeFlags: r.optionalStringList(removeFlagsKey),
       schedule: schedule == null ? null : ScheduledEvent.fromJson(schedule),
+      people: _people(r.optionalObject(peopleKey)),
     );
+  }
+
+  static Map<String, PersonEffect> _people(JsonReader? r) {
+    if (r == null) return const {};
+    return Map.unmodifiable({
+      for (final slot in r.json.keys)
+        slot: PersonEffect.fromJson(r.requireObject(slot)),
+    });
   }
 }
 
@@ -148,21 +165,32 @@ class LoanTerms {
 
 /// Bir seçimin yıllar sonra getireceği devam kartı.
 class ScheduledEvent {
-  const ScheduledEvent({required this.cardId, required this.inYears})
-    : assert(inYears >= 1);
+  const ScheduledEvent({
+    required this.cardId,
+    required this.inYears,
+    this.withRoles = const [],
+  }) : assert(inYears >= 1);
 
   final String cardId;
 
   /// Kaç yıl sonra gelecek. En az 1.
   final int inYears;
 
+  /// Bu olaydaki hangi rol yuvaları devam olayına aynı kişiyle taşınır
+  /// (iki olayda da aynı adla tanımlı olmalı).
+  final List<String> withRoles;
+
   factory ScheduledEvent.fromJson(JsonReader r) {
-    r.rejectUnknownKeys(const {'event', 'inYears'});
+    r.rejectUnknownKeys(const {'event', 'inYears', 'with'});
     final inYears = r.requireInt('inYears');
     if (inYears < 1) {
       throw CardFormatException('${r.path}.inYears', 'en az 1 olmalı');
     }
-    return ScheduledEvent(cardId: r.requireString('event'), inYears: inYears);
+    return ScheduledEvent(
+      cardId: r.requireString('event'),
+      inYears: inYears,
+      withRoles: r.optionalStringList('with'),
+    );
   }
 }
 

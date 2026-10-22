@@ -2,23 +2,18 @@ import 'dart:convert';
 
 import '../engine/engine.dart';
 
-/// `assets/registry.json`: kartlarda kullanılabilecek bayrak ve konuşmacı
-/// adları. Yeni bir bayrak önce buraya eklenir; card_lint kayıtta olmayan
+/// `assets/registry.json`: kartlarda kullanılabilecek bayraklar ve incelenmiş
+/// hassas kelime kullanımları. Yeni bir bayrak önce buraya eklenir; card_lint kayıtta olmayan
 /// adı yazım hatası sayar.
 class ContentRegistry {
   ContentRegistry({
     required Map<String, String> flags,
-    required Map<String, String> speakers,
     Map<String, Set<String>> reviewedTerms = const {},
   }) : flags = Map.unmodifiable(flags),
-       speakers = Map.unmodifiable(speakers),
        reviewedTerms = Map.unmodifiable(reviewedTerms);
 
   /// Bayrak adı → açıklama.
   final Map<String, String> flags;
-
-  /// Konuşmacı kimliği → açıklama.
-  final Map<String, String> speakers;
 
   /// İncelenip uygun bulunan hassas kelime kullanımları: kart ya da rozet
   /// kimliği → kelimeler (bkz. `sensitive_terms.dart`).
@@ -48,7 +43,6 @@ class ContentRegistry {
     }
     return ContentRegistry(
       flags: _stringMap(json, 'flags'),
-      speakers: _stringMap(json, 'speakers'),
       reviewedTerms: _reviewedTerms(json['reviewedTerms']),
     );
   }

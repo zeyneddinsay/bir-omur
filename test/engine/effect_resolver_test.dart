@@ -57,7 +57,11 @@ void main() {
 
     test('zarsız seçenek etkileri uygular ve geçmişe yazar', () {
       final resolver = EffectResolver(Random(1));
-      final outcome = resolver.resolve(testCharacter(), card, ChoiceSide.left);
+      final outcome = resolver.resolve(
+        testCharacter(),
+        PendingEvent(card),
+        ChoiceSide.left,
+      );
       expect(outcome.rollSucceeded, isNull);
       expect(outcome.character.stats.money, 10000 - 15000);
       expect(outcome.character.hasFlag('tasindi'), isTrue);
@@ -70,7 +74,7 @@ void main() {
       var successes = 0;
       for (var seed = 0; seed < 200; seed++) {
         final outcome = EffectResolver(Random(seed))
-            .resolve(testCharacter(), card, ChoiceSide.right);
+            .resolve(testCharacter(), PendingEvent(card), ChoiceSide.right);
         expect(outcome.character.stats.happiness, 49);
         if (outcome.rollSucceeded!) {
           successes++;
@@ -78,7 +82,7 @@ void main() {
           expect(outcome.scheduled, isEmpty);
         } else {
           expect(outcome.character.stats.money, 2000);
-          expect(outcome.scheduled.single.cardId, 'ihtar');
+          expect(outcome.scheduled.single.event.cardId, 'ihtar');
         }
         expect(
           outcome.character.history.single.rollSucceeded,
@@ -110,9 +114,9 @@ void main() {
 
     test('aynı tohum aynı zarı atar', () {
       final a = EffectResolver(Random(42))
-          .resolve(testCharacter(), card, ChoiceSide.right);
+          .resolve(testCharacter(), PendingEvent(card), ChoiceSide.right);
       final b = EffectResolver(Random(42))
-          .resolve(testCharacter(), card, ChoiceSide.right);
+          .resolve(testCharacter(), PendingEvent(card), ChoiceSide.right);
       expect(a.rollSucceeded, b.rollSucceeded);
       expect(a.character.stats, b.character.stats);
     });

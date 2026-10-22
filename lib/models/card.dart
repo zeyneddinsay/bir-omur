@@ -1,7 +1,7 @@
 import 'character.dart';
 import 'effect.dart';
+import 'event_role.dart';
 import 'json_reader.dart';
-import 'life_stage.dart';
 import 'stats.dart';
 
 /// Kartın nadirliği ve desteden çekilme ağırlığı.
@@ -35,6 +35,7 @@ class Conditions {
     this.minTier,
     this.min = const {},
     this.max = const {},
+    this.familyProfiles = const [],
   });
 
   static const Conditions none = Conditions();
@@ -81,7 +82,15 @@ class Conditions {
   /// "Para < 5.000" demektir.
   final Map<String, int> max;
 
+  /// Boş değilse oyuncunun doğduğu aile profili bunlardan biri olmalı
+  /// (`fabrikator`, `isci`…).
+  final List<String> familyProfiles;
+
   bool isMetBy(Character c) {
+    if (familyProfiles.isNotEmpty &&
+        !familyProfiles.contains(c.familyProfile)) {
+      return false;
+    }
     if (!flags.every(c.hasFlag)) return false;
     if (notFlags.any(c.hasFlag)) return false;
     if (gender != null && c.gender != gender) return false;
@@ -137,6 +146,7 @@ class Conditions {
       'minTier',
       'min',
       'max',
+      'familyProfile',
     });
 
     Gender? gender;
@@ -184,6 +194,7 @@ class Conditions {
       minTier: r.optionalInt('minTier'),
       min: _thresholds(r.optionalObject('min')),
       max: _thresholds(r.optionalObject('max')),
+      familyProfiles: r.optionalStringList('familyProfile'),
     );
   }
 
@@ -248,52 +259,131 @@ class Choice {
   }
 }
 
-/// Bir olay kartı. Flutter'ın `Card` widget'ıyla karışmasın diye adı
-/// `EventCard`'dır.
+/// Olayın türü. Seçici her türe farklı davranır.
+enum EventType {
+  /// Hayatın dönüm noktası (sınav, askerlik): şartı sağlanınca mutlaka
+  /// gelir, yıllık olay sınırına takılmaz.
+  donemec,
+
+  /// Belirli bir kişiyle (rol yuvası) yaşanan olay.
+  kisi,
+
+  /// Okul, iş yeri ya da mahalle gibi bir yerde geçen olay.
+  yer,
+
+  /// Tesadüf: yolda, otobüste, sırada biriyle karşılaşma. Yılda en fazla 1.
+  tesaduf,
+
+  /// Kimseye ya da yere bağlı olmayan genel olay.
+  genel,
+
+  /// Yalnızca önceki bir seçimin planladığı devam olayı; desteden çekilmez.
+  iplik;
+
+  static EventType? fromId(String id) => values.asNameMap()[id];
+}
+
+/// Tema etiketi: aynı yıl aynı temadan iki olay gelmez (dönemeçler hariç).
+enum EventTheme {
+  aile('aile'),
+  okul('okul'),
+  ask('ask'),
+  isHayati('is'),
+  para('para'),
+  mahalle('mahalle'),
+  saglik('saglik'),
+  genel('genel');
+
+  const EventTheme(this.id);
+
+  final String id;
+
+  static EventTheme? fromId(String id) {
+    for (final t in values) {
+      if (t.id == id) return t;
+    }
+    return null;
+  }
+}
+
+/// Olayın tekrar kuralı: hayatta bir kez ya da en az [cooldown] yıl arayla.
+class Repeat {
+  const Repeat.once() : once = true, cooldown = 0;
+
+  const Repeat.every(this.cooldown) : once = false, assert(cooldown >= 1);
+
+  final bool once;
+
+  /// Tekrar için geçmesi gereken yıl ([once] ise 0).
+  final int cooldown;
+
+  /// JSON: `"repeat": "once"` ya da `"repeat": {"cooldown": 3}`.
+  factory Repeat.fromJson(Object? value, String path) {
+    if (value == 'once') return const Repeat.once();
+    if (value is Map<String, dynamic>) {
+      final r = JsonReader(value, path)..rejectUnknownKeys(const {'cooldown'});
+      final years = r.requireInt('cooldown');
+      if (years < 1) {
+        throw CardFormatException('$path.cooldown', 'en az 1 olmalı');
+      }
+      return Repeat.every(years);
+    }
+    throw CardFormatException(path, '"once" ya da {"cooldown": N} olmalı');
+  }
+}
+
+/// Bir olay. Flutter'ın `Card` widget'ıyla karışmasın diye adı
+/// `EventCard`'dır. Şema: docs/GDD.md "Kart veri formatı" ve canlı
+/// dokümanın "Hikâye motoru" bölümü.
 class EventCard {
   const EventCard({
     required this.id,
-    required this.stage,
+    required this.type,
+    required this.theme,
     required this.minAge,
     required this.maxAge,
+    required this.repeat,
     required this.text,
     required this.left,
     required this.right,
     this.up,
     this.rarity = Rarity.siradan,
-    this.once = false,
-    this.cooldown = 0,
-    this.mandatory = false,
-    this.chainOnly = false,
     this.conditions = Conditions.none,
+    this.roles = const [],
     this.speaker,
   });
 
   final String id;
-  final LifeStage stage;
+  final EventType type;
+  final EventTheme theme;
+
+  /// Oyuncunun yaşı (dahil).
   final int minAge;
   final int maxAge;
   final Rarity rarity;
+  final Repeat repeat;
 
-  /// Hayatta bir kez gelir.
-  final bool once;
-
-  /// Tekrar gelmesi için en az kaç yıl geçmeli. 0 ise her yıl gelebilir.
-  final int cooldown;
-
-  /// Koşul sağlanınca her zaman gelir (sınav, askerlik, emeklilik).
-  final bool mandatory;
-
-  /// Desteden çekilmez; yalnızca bir zincir (schedule) ile gelir.
-  final bool chainOnly;
+  /// Oyuncunun sağlaması gereken koşullar.
   final Conditions conditions;
+
+  /// Olayın ihtiyaç duyduğu kişiler, yazıldıkları sırayla bağlanır.
+  final List<RoleSlot> roles;
+
+  /// Konuşan rol yuvası (portresi kartta görünür); anlatıcıysa null.
   final String? speaker;
+
+  /// Metin; rol yuvaları `{kerem.ad}` gibi kullanılır.
   final String text;
   final Choice left;
   final Choice right;
 
-  /// Nadir kartlardaki üçüncü seçenek (yukarı kaydırma).
+  /// Nadir olaylardaki üçüncü seçenek (yukarı kaydırma).
   final Choice? up;
+
+  bool get mandatory => type == EventType.donemec;
+  bool get chainOnly => type == EventType.iplik;
+  bool get once => repeat.once;
+  int get cooldown => repeat.cooldown;
 
   List<Choice> get choices => [left, right, ?up];
 
@@ -304,19 +394,25 @@ class EventCard {
       up ?? (throw StateError('$id kartında yukarı seçeneği yok')),
   };
 
+  RoleSlot? role(String name) {
+    for (final r in roles) {
+      if (r.name == name) return r;
+    }
+    return null;
+  }
+
   bool isInAgeRange(int age) => age >= minAge && age <= maxAge;
 
   static const Set<String> knownKeys = {
     'id',
-    'stage',
+    'type',
+    'theme',
     'minAge',
     'maxAge',
     'rarity',
-    'once',
-    'cooldown',
-    'mandatory',
-    'chainOnly',
+    'repeat',
     'conditions',
+    'roles',
     'speaker',
     'text',
     'left',
@@ -324,19 +420,31 @@ class EventCard {
     'up',
   };
 
+  /// Rol yuvası adları: küçük harf, Türkçe harfler ve alt çizgi.
+  static final RegExp roleNamePattern = RegExp(r'^[a-zçğıöşü_]+$');
+
+  /// Metinlerde oyuncunun kendisi için ayrılmış ad.
+  static const String playerSlot = 'oyuncu';
+
   factory EventCard.fromJson(Map<String, dynamic> json) {
     final rawId = json['id'];
     final r = JsonReader(json, rawId is String ? rawId : '<kimliksiz kart>');
     r.rejectUnknownKeys(knownKeys);
 
-    final stageId = r.requireString('stage');
-    final stage = LifeStage.fromId(stageId);
-    if (stage == null) {
-      throw CardFormatException(
-        '${r.path}.stage',
-        'bilinmeyen evre "$stageId"',
-      );
-    }
+    final typeId = r.requireString('type');
+    final type =
+        EventType.fromId(typeId) ??
+        (throw CardFormatException(
+          '${r.path}.type',
+          'bilinmeyen tür "$typeId"',
+        ));
+    final themeId = r.requireString('theme');
+    final theme =
+        EventTheme.fromId(themeId) ??
+        (throw CardFormatException(
+          '${r.path}.theme',
+          'bilinmeyen tema "$themeId"',
+        ));
 
     final rarityId = r.optionalString('rarity') ?? Rarity.siradan.id;
     final rarity = Rarity.fromId(rarityId);
@@ -355,28 +463,47 @@ class EventCard {
         'yaş aralığı geçersiz ($minAge–$maxAge)',
       );
     }
+    if (!r.has('repeat')) {
+      throw CardFormatException('${r.path}.repeat', 'tekrar kuralı yazılmalı');
+    }
+    final repeat = Repeat.fromJson(json['repeat'], '${r.path}.repeat');
 
-    final cooldown = r.optionalInt('cooldown') ?? 0;
-    if (cooldown < 0) {
-      throw CardFormatException('${r.path}.cooldown', 'eksi olamaz');
+    final rolesReader = r.optionalObject('roles');
+    final roles = <RoleSlot>[
+      if (rolesReader != null)
+        for (final name in rolesReader.json.keys)
+          if (!roleNamePattern.hasMatch(name) || name == playerSlot)
+            throw CardFormatException(
+              '${rolesReader.path}.$name',
+              'geçersiz rol adı (küçük harf, "$playerSlot" ayrılmış)',
+            )
+          else
+            RoleSlot.fromJson(name, rolesReader.requireObject(name)),
+    ];
+
+    final speaker = r.optionalString('speaker');
+    if (speaker != null && !roles.any((s) => s.name == speaker)) {
+      throw CardFormatException(
+        '${r.path}.speaker',
+        '"$speaker" diye bir rol yuvası yok',
+      );
     }
 
     final conditions = r.optionalObject('conditions');
     final up = r.optionalObject('up');
     return EventCard(
       id: r.requireString('id'),
-      stage: stage,
+      type: type,
+      theme: theme,
       minAge: minAge,
       maxAge: maxAge,
       rarity: rarity,
-      once: r.optionalBool('once'),
-      cooldown: cooldown,
-      mandatory: r.optionalBool('mandatory'),
-      chainOnly: r.optionalBool('chainOnly'),
+      repeat: repeat,
       conditions: conditions == null
           ? Conditions.none
           : Conditions.fromJson(conditions),
-      speaker: r.optionalString('speaker'),
+      roles: List.unmodifiable(roles),
+      speaker: speaker,
       text: r.requireString('text'),
       left: Choice.fromJson(r.requireObject('left')),
       right: Choice.fromJson(r.requireObject('right')),
