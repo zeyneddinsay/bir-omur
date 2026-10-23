@@ -411,20 +411,42 @@
     }
   },
   {
-    "id": "dershane",
-    "type": "kisi",
+    "id": "dershane_varlikli",
+    "type": "donemec",
     "theme": "okul",
     "minAge": 16,
     "maxAge": 17,
     "repeat": "once",
-    "conditions": {
-      "familyProfile": ["esnaf", "memur", "isci", "ciftci", "yalniz"]
-    },
+    "conditions": { "background": "varlikli" },
     "roles": {
       "veli": { "kin": ["anne", "baba"] }
     },
     "speaker": "veli",
-    "text": "{veli.akraba} masaya bir broşür bıraktı: 'Dershane pahalı ama gerekirse borç ederiz.'",
+    "text": "{veli.akraba}: 'Şehrin en iyi dershanesini de, eve gelecek bir özel hocayı da ayarlarım. Sen yeter ki iste.'",
+    "left": {
+      "label": "Özel hoca gelsin",
+      "effects": { "knowledge": 7, "happiness": -2 },
+      "result": "Hoca haftada üç akşam eve geldi. Eksiklerin tek tek kapandı; parası kimsenin aklına bile gelmedi."
+    },
+    "right": {
+      "label": "Gerek yok",
+      "effects": { "knowledge": 3, "happiness": 2 },
+      "result": "Kendi temponla çalıştın. Hafta sonları sana kaldı; {veli.akraba} yine de broşürü çekmecede sakladı."
+    }
+  },
+  {
+    "id": "dershane",
+    "type": "donemec",
+    "theme": "okul",
+    "minAge": 16,
+    "maxAge": 17,
+    "repeat": "once",
+    "conditions": { "background": "orta" },
+    "roles": {
+      "veli": { "kin": ["anne", "baba"] }
+    },
+    "speaker": "veli",
+    "text": "{veli.akraba} masaya bir broşür bıraktı: 'Dershane pahalı ama senin geleceğin daha önemli. Ne dersin?'",
     "left": {
       "label": "Evde çalışırım",
       "effects": {
@@ -440,12 +462,189 @@
           }
         }
       },
-      "result": "Masa lambasının altında kendi başına çalıştın. {veli.akraba} borca girmediği için rahatladı."
+      "result": "Masa lambasının altında kendi başına çalıştın. {veli.akraba} o parayla evin eksiklerini tamamladı."
     },
     "right": {
       "label": "Gideyim",
       "effects": { "knowledge": 6, "happiness": -2 },
-      "result": "Dershaneye yazıldın. Hafta sonların gitti ama netlerin her denemede biraz arttı."
+      "result": "Dershanenin parasını ailen ödedi. Hafta sonların gitti ama netlerin her denemede biraz arttı."
+    }
+  },
+  {
+    "id": "dershane_dar",
+    "type": "donemec",
+    "theme": "okul",
+    "minAge": 16,
+    "maxAge": 17,
+    "repeat": "once",
+    "conditions": { "background": "dar" },
+    "roles": {
+      "veli": { "kin": ["anne", "baba"] },
+      "alacakli": {
+        "kin": ["dede", "nine", "dayi", "amca", "hala", "teyze"],
+        "minAge": 30,
+        "offstage": true
+      }
+    },
+    "speaker": "veli",
+    "text": "{veli.akraba} dershane broşürünü katlayıp açtı: 'Taksiti bize ağır gelir ama sen istersen bir yolunu buluruz.'",
+    "left": {
+      "label": "Ailem karşılasın",
+      "effects": {
+        "knowledge": 6,
+        "happiness": -3,
+        "people": {
+          "veli": {
+            "memory": {
+              "kind": "dershane_taksidi",
+              "label": "Dershane taksidi için kendimizden kıstık",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "Kaydın yapıldı. {veli.akraba} o yıl kendi ihtiyaçlarından kıstı; bunu bilmek içini sızlattı."
+    },
+    "right": {
+      "label": "Borç bulurum",
+      "effects": {
+        "knowledge": 6,
+        "happiness": -1,
+        "addFlags": ["dershane_borcu"],
+        "people": {
+          "alacakli": {
+            "memory": {
+              "kind": "dershane_borc_verdi",
+              "label": "Dershane parasını ben verdim",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "{alacakli.akraba} parayı verdi: 'İşe girince ödersin.' Bu sözü bir kenara yazdın."
+    },
+    "up": {
+      "label": "Evde çalışırım",
+      "effects": {
+        "knowledge": 3,
+        "people": {
+          "veli": {
+            "memory": {
+              "kind": "masraf_cikarmadi",
+              "label": "Bize masraf çıkarmadı",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "Kütüphanede deneme kitaplarını sıra bekleyerek çözdün. {veli.akraba} rahat bir nefes aldı."
+    }
+  },
+  {
+    "id": "dershane_borcu",
+    "type": "donemec",
+    "theme": "para",
+    "minAge": 18,
+    "maxAge": 70,
+    "repeat": "once",
+    "conditions": { "flags": ["dershane_borcu"], "career": "any" },
+    "roles": {
+      "alacakli": {
+        "kin": ["dede", "nine", "dayi", "amca", "hala", "teyze"],
+        "memory": "dershane_borc_verdi"
+      }
+    },
+    "speaker": "alacakli",
+    "text": "İşe girdiğini duyan {alacakli.akraba} aradı: 'Dershane parası için değil ha, öylesine sordum. Nasıl iş?'",
+    "left": {
+      "label": "Borcumu öderim",
+      "effects": {
+        "money": -90000,
+        "reputation": 1,
+        "removeFlags": ["dershane_borcu"],
+        "people": {
+          "alacakli": {
+            "memory": {
+              "kind": "dershane_borcu_odedi",
+              "label": "Dershane borcunu ilk maaşlarıyla ödedi",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      },
+      "result": "Borcu kuruşu kuruşuna ödedin. {alacakli.akraba} bunu bütün akrabaya gururla anlattı."
+    },
+    "right": {
+      "label": "Biraz bekle",
+      "effects": {
+        "people": {
+          "alacakli": {
+            "memory": {
+              "kind": "dershane_borcu_erteledi",
+              "label": "Dershane borcunu erteledi",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        },
+        "schedule": { "event": "dershane_borcu_son", "inYears": 2, "with": ["alacakli"] }
+      },
+      "result": "{alacakli.akraba} anlayışla karşıladı. Yine de o borç bir köşede seni bekliyor."
+    }
+  },
+  {
+    "id": "dershane_borcu_son",
+    "type": "iplik",
+    "theme": "para",
+    "minAge": 19,
+    "maxAge": 75,
+    "repeat": "once",
+    "roles": {
+      "alacakli": { "kin": ["dede", "nine", "dayi", "amca", "hala", "teyze"] }
+    },
+    "speaker": "alacakli",
+    "text": "{alacakli.akraba} yine aradı, bu kez lafı dolandırmadan: 'Dershane borcu duruyor, biliyorsun.'",
+    "closing": "{alacakli.akraba} {alacakli.ad} dershane borcunu bir daha hiç soramadı.",
+    "left": {
+      "label": "Faiziyle öderim",
+      "effects": {
+        "money": -110000,
+        "removeFlags": ["dershane_borcu"],
+        "people": {
+          "alacakli": {
+            "heal": "dershane_borcu_erteledi",
+            "memory": {
+              "kind": "dershane_borcu_odedi",
+              "label": "Geç de olsa dershane borcunu fazlasıyla ödedi",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "Borcu biraz da fazlasıyla ödedin. {alacakli.akraba} gülümsedi; aradaki soğukluk eridi."
+    },
+    "right": {
+      "label": "Şu an olmaz",
+      "effects": {
+        "happiness": -1,
+        "removeFlags": ["dershane_borcu"],
+        "people": {
+          "alacakli": {
+            "memory": {
+              "kind": "dershane_borcu_odemedi",
+              "label": "Dershane borcunu hiç ödemedi",
+              "tone": "olumsuz",
+              "severity": 2
+            }
+          }
+        }
+      },
+      "result": "Borç ödenmeden kaldı. {alacakli.akraba} bir daha sormadı ama bayramlarda aranıza bir sessizlik girdi."
     }
   },
   {

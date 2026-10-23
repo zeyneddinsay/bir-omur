@@ -1,5 +1,6 @@
 {
   "flags": {
+    "dershane_borcu": "Dershane için akrabasından borç aldı; işe girince öder",
     "askerligini_yapti": "Askerlik borcunu kapattı (bedelli ya da yaparak)",
     "asker_anilari": "Askerliği yaparak geçirdi; ömür boyu 'bizim bölükte' der",
     "bedelli": "Bedelli askerlik yaptı",
