@@ -285,11 +285,36 @@ class AppLocalizationsTr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Vakit: $count',
+      other: 'Bu yıl $count vakit hakkın kaldı',
       zero: 'Bu yılın vakti bitti',
     );
     return '$_temp0';
   }
+
+  @override
+  String get timeInfoTooltip => 'Vakit nedir?';
+
+  @override
+  String get timeInfoTitle => 'Vakit nedir?';
+
+  @override
+  String get timeInfoBody =>
+      'Kartlardan sonra Aktiviteler ve İnsanlar sekmelerinde yaptığın her şey vakit harcar: çoğu 1 vakit, tatil gibi uzun işler 2 vakit. Vakit bitince o yıl başka bir şey yapamazsın.\n\nYaşlan\'a basınca yeni yıl başlar ve vakit yenilenir. Kullanılmayan vakit sonraki yıla geçmez.';
+
+  @override
+  String timeInfoYours(int total) {
+    return 'Bu yıl toplam $total vakit hakkın var.';
+  }
+
+  @override
+  String get timeInfoTableTitle => 'Yaşa ve duruma göre yıllık vakit';
+
+  @override
+  String get timeInfoTable =>
+      '0–5 yaş: 0 (yalnızca kartlar)\n6–10 yaş: 2\nÖğrenci: 5\nİşsiz: 5\nMaaşlı çalışan: 3\nKendi işinin başında: 2\nHem iş hem işletme: 1\nEmekli: 6';
+
+  @override
+  String get timeInfoClose => 'Anladım';
 
   @override
   String get actionFree => 'Ücretsiz';

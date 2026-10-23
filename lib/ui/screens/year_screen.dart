@@ -92,13 +92,52 @@ class _YearScreenState extends ConsumerState<YearScreen> {
                   padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
                   child: Row(
                     children: [
+                      // Dokununca vaktin ne olduğu anlatılır.
                       Expanded(
-                        child: Text(
-                          l10n.timeLeft(state.timeLeft),
-                          key: const Key('actions_left'),
-                          style: Theme.of(context).textTheme.titleSmall,
+                        child: Tooltip(
+                          message: l10n.timeInfoTooltip,
+                          child: InkWell(
+                            key: const Key('time_info'),
+                            borderRadius: BorderRadius.circular(12),
+                            onTap: () => _showTimeInfo(state),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 6),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.hourglass_bottom,
+                                    size: 18,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .primary,
+                                  ),
+                                  const SizedBox(width: 6),
+                                  Flexible(
+                                    child: Text(
+                                      l10n.timeLeft(state.timeLeft),
+                                      key: const Key('actions_left'),
+                                      maxLines: 2,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleSmall,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Icon(
+                                    Icons.info_outline,
+                                    size: 16,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurface
+                                        .withValues(alpha: 0.5),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
                         ),
                       ),
+                      const SizedBox(width: 8),
                       // Temada düğmeler tam genişlik ister; satırda sınır.
                       ConstrainedBox(
                         constraints: const BoxConstraints(maxWidth: 180),
@@ -153,6 +192,51 @@ class _YearScreenState extends ConsumerState<YearScreen> {
               },
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  /// Vaktin ne olduğunu, bu yılki hakkı ve yaşa göre tabloyu anlatır.
+  void _showTimeInfo(LifeState state) {
+    final l10n = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      isScrollControlled: true,
+      builder: (context) => SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
+          child: Column(
+            key: const Key('time_info_sheet'),
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(l10n.timeInfoTitle, style: theme.textTheme.titleLarge),
+              const SizedBox(height: 8),
+              Text(l10n.timeInfoBody),
+              const SizedBox(height: 12),
+              Text(
+                l10n.timeInfoYours(state.timeSpent + state.timeLeft),
+                style: theme.textTheme.titleSmall?.copyWith(
+                  color: theme.colorScheme.primary,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Text(l10n.timeInfoTableTitle, style: theme.textTheme.labelLarge),
+              const SizedBox(height: 4),
+              Text(
+                l10n.timeInfoTable,
+                style: theme.textTheme.bodyMedium?.copyWith(height: 1.5),
+              ),
+              const SizedBox(height: 16),
+              FilledButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text(l10n.timeInfoClose),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -559,8 +559,50 @@ abstract class AppLocalizations {
   /// No description provided for @timeLeft.
   ///
   /// In tr, this message translates to:
-  /// **'{count, plural, =0{Bu yılın vakti bitti} other{Vakit: {count}}}'**
+  /// **'{count, plural, =0{Bu yılın vakti bitti} other{Bu yıl {count} vakit hakkın kaldı}}'**
   String timeLeft(int count);
+
+  /// No description provided for @timeInfoTooltip.
+  ///
+  /// In tr, this message translates to:
+  /// **'Vakit nedir?'**
+  String get timeInfoTooltip;
+
+  /// No description provided for @timeInfoTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Vakit nedir?'**
+  String get timeInfoTitle;
+
+  /// No description provided for @timeInfoBody.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kartlardan sonra Aktiviteler ve İnsanlar sekmelerinde yaptığın her şey vakit harcar: çoğu 1 vakit, tatil gibi uzun işler 2 vakit. Vakit bitince o yıl başka bir şey yapamazsın.\n\nYaşlan\'a basınca yeni yıl başlar ve vakit yenilenir. Kullanılmayan vakit sonraki yıla geçmez.'**
+  String get timeInfoBody;
+
+  /// No description provided for @timeInfoYours.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu yıl toplam {total} vakit hakkın var.'**
+  String timeInfoYours(int total);
+
+  /// No description provided for @timeInfoTableTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yaşa ve duruma göre yıllık vakit'**
+  String get timeInfoTableTitle;
+
+  /// No description provided for @timeInfoTable.
+  ///
+  /// In tr, this message translates to:
+  /// **'0–5 yaş: 0 (yalnızca kartlar)\n6–10 yaş: 2\nÖğrenci: 5\nİşsiz: 5\nMaaşlı çalışan: 3\nKendi işinin başında: 2\nHem iş hem işletme: 1\nEmekli: 6'**
+  String get timeInfoTable;
+
+  /// No description provided for @timeInfoClose.
+  ///
+  /// In tr, this message translates to:
+  /// **'Anladım'**
+  String get timeInfoClose;
 
   /// No description provided for @actionFree.
   ///

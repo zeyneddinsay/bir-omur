@@ -204,7 +204,7 @@ void main() {
     expect(find.text('Bu yılın vakti bitti'), findsOneWidget);
     // 6 yaşına kadar yıllar yalnızca olaylarla geçer.
     var steps = 0;
-    while (find.text('Vakit: 2').evaluate().isEmpty) {
+    while (find.text('Bu yıl 2 vakit hakkın kaldı').evaluate().isEmpty) {
       expect(++steps, lessThan(60), reason: '6 yaşına gelinemedi');
       if (find.byKey(const Key('choose_left')).evaluate().isNotEmpty) {
         await tester.tap(find.byKey(const Key('choose_left')));
@@ -219,7 +219,15 @@ void main() {
     await tester.ensureVisible(find.byKey(const Key('action_oyun_oyna')));
     await tester.tap(find.byKey(const Key('action_oyun_oyna')));
     await tester.pumpAndSettle();
-    expect(find.text('Vakit: 1'), findsOneWidget);
+    expect(find.text('Bu yıl 1 vakit hakkın kaldı'), findsOneWidget);
+    // Vakte dokununca ne olduğu anlatılır; 6 yaşında yıllık hak 2.
+    await tester.tap(find.byKey(const Key('time_info')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('time_info_sheet')), findsOneWidget);
+    expect(find.text('Bu yıl toplam 2 vakit hakkın var.'), findsOneWidget);
+    await tester.ensureVisible(find.text('Anladım'));
+    await tester.tap(find.text('Anladım'));
+    await tester.pumpAndSettle();
     await tester.ensureVisible(find.byKey(const Key('age_up')));
     await tester.tap(find.byKey(const Key('age_up')));
     await tester.pumpAndSettle();
