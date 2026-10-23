@@ -172,10 +172,13 @@ class PreviewChip extends StatelessWidget {
             Icon(item.icon, size: size, color: color),
             if (item.text case final text?) ...[
               const SizedBox(width: 3),
-              Text(
-                text,
-                style: Theme.of(context).textTheme.labelSmall
-                    ?.copyWith(color: color, fontWeight: FontWeight.w800),
+              // Dar ekranda uzun çip yazısı taşmaz, alt satıra geçer.
+              Flexible(
+                child: Text(
+                  text,
+                  style: Theme.of(context).textTheme.labelSmall
+                      ?.copyWith(color: color, fontWeight: FontWeight.w800),
+                ),
               ),
             ] else ...[
               Icon(arrow, size: size + 2, color: color),
