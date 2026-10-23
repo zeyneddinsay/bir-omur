@@ -26,7 +26,8 @@
             }
           }
         }
-      }
+      },
+      "result": "{eski.ad|e} teşekkür ettin. O eski teneffüs, ikiniz için de nihayet kapandı."
     },
     "right": {
       "label": "Ben unutmadım",
@@ -41,7 +42,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Mesajı kısa kestin. {eski.ad} uzattığı elin havada kaldığını anladı."
     }
   },
   {
@@ -71,11 +73,13 @@
             }
           }
         }
-      }
+      },
+      "result": "O gün sana nasıl kızdığını andınız ve ikiniz de güldünüz. Yıllanmış küslük bir düğün masasında bitti."
     },
     "right": {
       "label": "Hatırlamıyorum bile",
-      "effects": { "reputation": 1 }
+      "effects": { "reputation": 1 },
+      "result": "Omuz silktin. Masadakiler, kopya vermeyen o inatçı çocuğun sen olduğunu konuştu."
     }
   },
   {
@@ -104,11 +108,13 @@
             }
           }
         }
-      }
+      },
+      "result": "Gülerek cevap yazdın; yazışma o kopya gününün ayrıntılarıyla gece yarısına uzadı."
     },
     "right": {
       "label": "Çocuk görmesin",
-      "effects": { "reputation": 1 }
+      "effects": { "reputation": 1 },
+      "result": "Kısa bir tebrik yazıp geçtin. Eski suç ortaklığı, çocukların göremeyeceği yerde kaldı."
     }
   },
   {
@@ -137,11 +143,13 @@
             }
           }
         }
-      }
+      },
+      "result": "{eski.ad} 'Tabii saklıyorum' diye yazdı. O yamuk hediye yıllar sonra ikinizi de güldürdü."
     },
     "right": {
       "label": "Ne kötü yapmışım",
-      "effects": { "happiness": 2 }
+      "effects": { "happiness": 2 },
+      "result": "Fotoğrafa bakıp kendi kendine güldün. Yamuk ama emek dolu bir hediyeymiş."
     }
   },
   {
@@ -171,7 +179,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Bu sefer gittin, kucağında kocaman bir paketle. {eski.ad} yılların hesabını o an kapattı."
     },
     "right": {
       "label": "Yine olmayacak",
@@ -186,7 +195,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Yine gidemedin. {eski.ad} 'Biliyordum' diye yazdı; bu sefer gülmedi."
     }
   },
   {
@@ -216,11 +226,13 @@
             }
           }
         }
-      }
+      },
+      "result": "Kapıyı çalıp özür dilediniz. Camın sahibi önce şaşırdı, sonra ikinize de çay koydu."
     },
     "right": {
       "label": "Hâlâ kaçıyoruz",
-      "effects": { "happiness": 4 }
+      "effects": { "happiness": 4 },
+      "result": "Kapının önünden ıslık çalarak, koşar adım geçtiniz. Kahkahanız sokağın sonuna kadar duyuldu."
     }
   },
   {
@@ -249,11 +261,13 @@
             }
           }
         }
-      }
+      },
+      "result": "Masada bir an sessizlik oldu. {eski.ad} gülümsedi; o eski cam artık aranızda kırık değil."
     },
     "right": {
       "label": "Çocuktuk be",
-      "effects": { "happiness": 1 }
+      "effects": { "happiness": 1 },
+      "result": "Masa güldü, sen de güldün. {eski.ad} gülmedi; o cam aranızda hâlâ kırık."
     }
   },
   {
@@ -282,7 +296,8 @@
             }
           }
         }
-      }
+      },
+      "result": "İkiniz de güldünüz. Toplantıdan sonra birlikte kahve içtiniz; eski rekabet orada kapandı."
     },
     "right": {
       "label": "Tabii ki ben",
@@ -298,7 +313,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Kartviziti iddialı bir gülümsemeyle aldın. Toplantıda herkes ikinizin atışmasını izledi."
     }
   },
   {
@@ -329,11 +345,13 @@
           }
         },
         "schedule": { "event": "girisim_sonucu", "inYears": 3, "with": ["is"] }
-      }
+      },
+      "result": "Parayı yatırdın, {is.ad} sana sımsıkı sarıldı. Şimdi üç yıl beklemek var."
     },
     "right": {
       "label": "Sana şans dilerim",
-      "effects": { "happiness": -1 }
+      "effects": { "happiness": -1 },
+      "result": "Ona başarılar diledin. {is.ad} veda edip çıktı; içinde bir 'ya olsaydı' kaldı."
     }
   },
   {
@@ -353,13 +371,17 @@
       "label": "Söyle, hazırım",
       "roll": { "stat": "luck", "threshold": 55 },
       "success": { "money": 1200000, "happiness": 8 },
-      "fail": { "happiness": -4 }
+      "fail": { "happiness": -4 },
+      "successResult": "Şirket büyük bir firmaya satılmış! {is.ad} payını o hafta hesabına yatırdı.",
+      "failResult": "Şirket batmış. {is.ad|in} sesi titriyordu; para da hayal de gitti."
     },
     "right": {
       "label": "Kötü haberse sonra",
       "roll": { "stat": "luck", "threshold": 55 },
       "success": { "money": 1200000, "happiness": 6 },
-      "fail": { "happiness": -2 }
+      "fail": { "happiness": -2 },
+      "successResult": "Haber kötü değilmiş! Şirket satılmış, payın hesabına geçmiş bile.",
+      "failResult": "Ertesi gün mesajla öğrendin: şirket kapanmış. {is.ad} defalarca özür diledi."
     }
   },
   {
@@ -374,7 +396,7 @@
       "genc": { "roles": ["komsu"], "maxGap": -12, "minAge": 18 }
     },
     "speaker": "genc",
-    "text": "Komşunun oğlu {genc.ad} kapında, utanarak: 'Ehliyet kursu için biraz para lazım. Söz, iki yıla öderim.'",
+    "text": "Komşunun genci {genc.ad} kapında, utanarak:'Ehliyet kursu için biraz para lazım. Söz, iki yıla öderim.'",
     "left": {
       "label": "Al, dert etme",
       "effects": {
@@ -390,7 +412,8 @@
           }
         },
         "schedule": { "event": "komsu_genci_doner", "inYears": 2, "with": ["genc"] }
-      }
+      },
+      "result": "{genc.ad} parayı alırken gözleri doldu. 'İki yıl' dedi, 'söz.'"
     },
     "right": {
       "label": "Annen bilmesin mi?",
@@ -405,7 +428,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Lafı annesine getirdin. {genc.ad} kızarıp bozardı, sessizce kapıdan çekildi."
     }
   },
   {
@@ -435,11 +459,13 @@
             }
           }
         }
-      }
+      },
+      "result": "Zarfı geri ittin, baklavayı aldın. Mahallede bu hikâye uzun süre anlatıldı."
     },
     "right": {
       "label": "Eline sağlık",
-      "effects": { "money": 50000, "happiness": 2 }
+      "effects": { "money": 50000, "happiness": 2 },
+      "result": "Zarfı aldın, baklavayı birlikte yediniz. Borç da teşekkür de yerini buldu."
     }
   },
   {
@@ -468,11 +494,13 @@
             }
           }
         }
-      }
+      },
+      "result": "Düğünde onu içtenlikle kutladın. {eski.ad|in} gülümsemesi eski bir sayfayı güzelce kapattı."
     },
     "right": {
       "label": "Bir buket yollarım",
-      "effects": { "money": -1500 }
+      "effects": { "money": -1500 },
+      "result": "Gitmedin ama adına bir buket gitti. Kartta yalnızca 'Mutlu ol' yazıyordu."
     }
   }
 ,
@@ -502,11 +530,13 @@
             }
           }
         }
-      }
+      },
+      "result": "Yanakların yine ortaokuldaki gibi kızardı. Bütün masa güldü, en çok da siz ikiniz."
     },
     "right": {
       "label": "Hepsi dedikodu",
-      "effects": { "happiness": 1 }
+      "effects": { "happiness": 1 },
+      "result": "Omuz silkip lafı değiştirdin. {eski.ad} gülümseyip üstelemedi."
     }
   }
 

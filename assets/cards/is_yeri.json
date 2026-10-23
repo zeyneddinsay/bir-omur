@@ -10,11 +10,13 @@
     "text": "Cuma 17.58. Konusu 'ACİL' olan bir e-posta düştü. Çantan çoktan omzunda.",
     "left": {
       "label": "Açar, hallederim",
-      "effects": { "performance": 5, "happiness": -2 }
+      "effects": { "performance": 5, "happiness": -2 },
+      "result": "İşi bitirip eve geç vardın. Pazartesi müdür seni koridorda durdurup teşekkür etti."
     },
     "right": {
       "label": "Pazartesi bakarım",
-      "effects": { "performance": -3, "happiness": 2 }
+      "effects": { "performance": -3, "happiness": 2 },
+      "result": "Bilgisayarı kapatıp çıktın. Hafta sonu harikaydı; pazartesi müdür 'Cuma sana ulaşamadık' dedi."
     }
   },
   {
@@ -44,7 +46,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Fısıltı çay ocağında kaldı. {is.ad} biraz bozuldu ama ofiste ağzı sıkı biri diye bilinir oldun."
     },
     "right": {
       "label": "Kime kime söyledin?",
@@ -60,7 +63,8 @@
             }
           }
         }
-      }
+      },
+      "result": "{is.ad|le} yarım saat fısıldaştınız. Öğlene kadar bütün kat duydu; işin içinde senin adın da var."
     }
   },
   {
@@ -92,7 +96,8 @@
             }
           }
         }
-      }
+      },
+      "result": "{patron.ad} kalemi hemen ceketinin cebine taktı. Toplantılarda hâlâ onunla not alıyor."
     },
     "right": {
       "label": "Esprili bir kupa",
@@ -122,7 +127,9 @@
             }
           }
         }
-      }
+      },
+      "successResult": "Kupadaki espriyi okuyan {patron.ad} kahkahayı bastı. Bütün ofis kupanın fotoğrafını çekti.",
+      "failResult": "{patron.ad} kupaya uzun uzun baktı, gülmedi. Ofiste bir saniyelik derin bir sessizlik oldu."
     }
   },
   {
@@ -153,7 +160,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Gece yarısına kadar kaldın ve rapor yetişti. Sabah {is.ad} masana sıcak bir simit bıraktı."
     },
     "right": {
       "label": "Benim de işim var",
@@ -169,7 +177,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Kendi dosyanı bitirip çıktın. Müdür dosyanı övdü; {is.ad} ertesi gün selamını zor aldı."
     }
   },
   {
@@ -189,7 +198,8 @@
     "text": "{patron.ad} toplantıda: 'Biz burada bir aileyiz. Zam konusunu da ailece düşünürüz.'",
     "left": {
       "label": "Gülümser geçerim",
-      "effects": { "happiness": -1 }
+      "effects": { "happiness": -1 },
+      "result": "Gülümseyip başını salladın. Toplantıdan zamsız ve biraz buruk çıktın."
     },
     "right": {
       "label": "Aile zam da verir",
@@ -219,7 +229,9 @@
             }
           }
         }
-      }
+      },
+      "successResult": "Salon güldü, {patron.ad} da gülmek zorunda kaldı: 'Haklısın, konuşuruz.' Herkes sana hayran.",
+      "failResult": "Salon buz kesti. {patron.ad} 'Ailede saygı da olur' dedi; bu yıl gözü hep üstünde."
     }
   },
   {
@@ -250,7 +262,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Fikrin nasıl doğduğunu taslaklarınla anlattın. Müdür not aldı; {is.ad} kıpkırmızı oldu."
     },
     "right": {
       "label": "Sonra yüz yüze konuşurum",
@@ -267,7 +280,9 @@
           }
         }
       },
-      "fail": { "performance": -3, "happiness": -2 }
+      "fail": { "performance": -3, "happiness": -2 },
+      "successResult": "Baş başa konuştunuz. {is.ad} mahcup oldu, özür diledi; konu ikinizin arasında kaldı.",
+      "failResult": "{is.ad} omuz silkti: 'Fikirler havada uçuşuyor.' Fikrin onun adıyla yaşamaya devam etti."
     }
   },
   {
@@ -281,11 +296,13 @@
     "text": "Toplu taşıma arızalandı; işe yarım saat geç kalacaksın. Taksi durağı karşıda duruyor.",
     "left": {
       "label": "Taksiye atlarım",
-      "effects": { "money": -1500 }
+      "effects": { "money": -1500 },
+      "result": "Taksiyle tam saatinde yetiştin. Taksimetrenin gösterdiği ise bütün gün aklından çıkmadı."
     },
     "right": {
       "label": "Geç kalırım",
-      "effects": { "performance": -3 }
+      "effects": { "performance": -3 },
+      "result": "Yarım saat geç girdin. Müdür saatine baktı, bir şey demedi; demese de anladın."
     }
   },
   {
@@ -315,7 +332,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Oğlanın özgeçmişini insan kaynaklarına ilettin. Ofiste 'akrabasını sokacak' fısıltıları başladı."
     },
     "right": {
       "label": "Torpil yapmam",
@@ -331,7 +349,8 @@
             }
           }
         }
-      }
+      },
+      "result": "{akraba.akraba} bozuldu; bayramlar biraz soğuk geçecek. Ama işte adın tertemiz."
     }
   },
   {
@@ -361,7 +380,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Zamma razı oldun. {ev.ad} memnun ayrıldı; kira artık her ay biraz daha ağır."
     },
     "right": {
       "label": "Pazarlık ederim",
@@ -379,7 +399,9 @@
             }
           }
         }
-      }
+      },
+      "successResult": "Pazarlık işe yaradı. {ev.ad} 'Sen iyi kiracısın' dedi ve zammı epey aşağı çekti.",
+      "failResult": "{ev.ad} pazarlığa bozuldu: 'Öyleyse piyasa ne diyorsa o.' Zam beklediğinden de büyük oldu."
     }
   },
   {
@@ -409,7 +431,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Ustayı çağırıp kombiyi kendi cebinden yaptırdın. Ev ısındı, {ev.ad} de pek memnun."
     },
     "right": {
       "label": "Kiracı hakkımı ararım",
@@ -427,7 +450,9 @@
             }
           }
         }
-      }
+      },
+      "successResult": "Kiracı haklarını madde madde sıraladın. {ev.ad} ertesi gün ustayı kendisi yolladı.",
+      "failResult": "{ev.ad} kulak asmadı. Kışı battaniyeye sarılıp geçirdin; burnun hiç kurumadı."
     }
   },
   {
@@ -457,7 +482,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Akşama kadar bütün apartman kiranı, işini ve memleketini öğrenmişti. Kek ise çok güzeldi."
     },
     "right": {
       "label": "Teşekkürler, kek güzel",
@@ -473,7 +499,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Keki alıp kapıyı nazikçe kapattın. {komsu.ad} {komsu.hitap.amca} merdivende bir süre oyalandı."
     }
   },
   {
@@ -486,13 +513,16 @@
     "text": "Banka aradı: 'Size özel limitli kredi kartı tanımladık, kargoya veriyoruz.' Sen bir şey istememiştin.",
     "left": {
       "label": "Kesinlikle istemem",
-      "effects": { "knowledge": 1 }
+      "effects": { "knowledge": 1 },
+      "result": "Kibarca ama net bir hayır dedin. Telefonu kapatınca kendinle biraz gurur duydun."
     },
     "right": {
       "label": "Gelsin, dursun",
       "roll": { "stat": "knowledge", "threshold": 50 },
       "success": { "happiness": 2 },
-      "fail": { "money": -20000, "happiness": -3 }
+      "fail": { "money": -20000, "happiness": -3 },
+      "successResult": "Kart çekmecede durdu; yalnızca bir kez, acil bir bilet alırken işine yaradı.",
+      "failResult": "Kart bir indirim gününde çekmeceden çıktı. Ekstreyi açınca faizin ne demek olduğunu öğrendin."
     }
   },
   {
@@ -524,7 +554,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Börekler bitti, gramlar kutuya girdi. {komsu.ad} sofranı bütün mahalleye anlattı."
     },
     "right": {
       "label": "Bu ay olmaz",
@@ -539,7 +570,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Bu ayı pas geçtin. {komsu.ad} {komsu.hitap.amca} sırayı başkasına verdi, sana da biraz küstü."
     }
   },
   {
@@ -569,11 +601,13 @@
             }
           }
         }
-      }
+      },
+      "result": "Dükkânın önünde maçı birlikte izlediniz. Gol olunca {bakkal.ad} {bakkal.hitap.amca} çayını döktü."
     },
     "right": {
       "label": "Evde izlerim",
-      "effects": { "happiness": 1 }
+      "effects": { "happiness": 1 },
+      "result": "Maçı koltuğunda izledin. Sokaktan gelen sevinç çığlıkları golü senden önce haber verdi."
     }
   },
   {
@@ -607,7 +641,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Ertesi sabah yedide fabrikadaydın. {baba.akraba} uzaktan izledi; bir şey demedi ama gözleri parladı."
     },
     "right": {
       "label": "Kendi yolumu çizeceğim",
@@ -623,7 +658,8 @@
             }
           }
         }
-      }
+      },
+      "result": "{baba.akraba} uzun süre sustu, sonra 'Yolun açık olsun' dedi. Sesinde bir kırgınlık vardı."
     }
   }
 ]

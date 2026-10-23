@@ -156,14 +156,6 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get swipeHint => 'Kartı sola ya da sağa kaydır';
-
-  @override
-  String swipeUpHint(String label) {
-    return 'Yukarı kaydır: $label';
-  }
-
-  @override
   String get rollSuccess => 'Şans yüzüne güldü.';
 
   @override
@@ -171,6 +163,95 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get rollLuck => 'Şans';
+
+  @override
+  String get rollOdds_yuksek => 'İhtimal yüksek';
+
+  @override
+  String get rollOdds_orta => 'İhtimal orta';
+
+  @override
+  String get rollOdds_dusuk => 'İhtimal düşük';
+
+  @override
+  String rollChoiceLine(String stat) {
+    return '$stat zarı';
+  }
+
+  @override
+  String get previewIfSuccess => 'Tutarsa';
+
+  @override
+  String get previewIfFail => 'Tutmazsa';
+
+  @override
+  String get previewThread => 'Devamı var';
+
+  @override
+  String get previewThreadTooltip => 'Bu seçimin devamı ileride gelecek.';
+
+  @override
+  String previewMemoryTooltip(String name) {
+    return '$name bunu hatırlayacak';
+  }
+
+  @override
+  String previewStatUp(String stat) {
+    return '$stat artar';
+  }
+
+  @override
+  String previewStatDown(String stat) {
+    return '$stat azalır';
+  }
+
+  @override
+  String get previewWork => 'İşteki performans';
+
+  @override
+  String get previewBusiness => 'İşletmenin itibarı';
+
+  @override
+  String get previewGold => 'Altın';
+
+  @override
+  String get previewHouse => 'Ev';
+
+  @override
+  String get previewCar => 'Araba';
+
+  @override
+  String get themeName_aile => 'Aile';
+
+  @override
+  String get themeName_okul => 'Okul';
+
+  @override
+  String get themeName_ask => 'Aşk';
+
+  @override
+  String get themeName_isHayati => 'İş';
+
+  @override
+  String get themeName_para => 'Para';
+
+  @override
+  String get themeName_mahalle => 'Mahalle';
+
+  @override
+  String get themeName_saglik => 'Sağlık';
+
+  @override
+  String get themeName_genel => 'Hayat';
+
+  @override
+  String get rarityNadir => 'Nadir';
+
+  @override
+  String get rarityEfsane => 'Efsane';
+
+  @override
+  String get outcomeClose => 'Kapat';
 
   @override
   String rollBadge(String stat) {

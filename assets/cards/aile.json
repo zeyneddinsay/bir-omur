@@ -27,7 +27,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Yaz boyu {veli.akraba|in} yanında tezgâhtaydın. Harçlığını çıkardın, pazarlığı da öğrendin."
     },
     "right": {
       "label": "Ben de tatil isterim",
@@ -43,7 +44,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Yazı sokaklarda ve denizde geçirdin. {veli.akraba} dükkânı tek başına çevirdi, biraz da kırıldı."
     }
   },
   {
@@ -74,7 +76,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Şafakta {veli.akraba|le} tarladaydın. Akşam kolların sızladı ama için gururla doluydu."
     },
     "right": {
       "label": "Beş dakika daha...",
@@ -90,7 +93,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Beş dakika iki saat oldu. Tarlaya vardığında {veli.akraba} işin yarısını bitirmişti."
     }
   },
   {
@@ -120,7 +124,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Her makinenin ne yaptığını sordun. {veli.akraba} ustabaşına göz kırptı: 'Bizimki işi kapacak.'"
     },
     "right": {
       "label": "Sıkıldım, gidelim",
@@ -136,7 +141,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Gürültüden bunalıp arabaya döndün. {veli.akraba} eve kadar tek kelime etmedi."
     }
   },
   {
@@ -165,7 +171,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Ayakkabılarını çıkarıp üstüne battaniye örttün. Sabah {veli.akraba} onu katlarken gülümsedi."
     },
     "right": {
       "label": "Sofrayı ben kurayım",
@@ -181,7 +188,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Bildiğin tek yemeği, makarnayı yaptın. {veli.akraba} uyanınca hazır sofrayı görüp şaşırdı."
     }
   },
   {
@@ -211,7 +219,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Söz verdin. {veli.akraba|in} omzundan bir yük kalktı; biraz da seninkine bindi."
     },
     "right": {
       "label": "Önce okumalıyım",
@@ -227,7 +236,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Önce okumak istediğini söyledin. {veli.akraba} başını salladı ama içi burkuldu."
     }
   },
   {
@@ -257,7 +267,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Kitapları masana dizdin. {veli.akraba} her akşam kapıdan kaç test çözdüğünü sordu."
     },
     "right": {
       "label": "Ben başka yol çizerim",
@@ -273,7 +284,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Kendi yolunu çizeceğini söyledin. {veli.akraba} kitapları sessizce dolaba kaldırdı."
     }
   },
   {
@@ -302,7 +314,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Gönlünü aldın, sonra yarım saat konuştunuz. {anne.akraba} kapatırken sesi gülüyordu."
     },
     "right": {
       "label": "Çok yoğunum anne",
@@ -318,7 +331,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Telefon çabuk kapandı. {anne.akraba|in} 'Peki, sen bilirsin' deyişi kulağında kaldı."
     }
   },
   {
@@ -348,7 +362,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Devrin değiştiğini anlattın. {baba.akraba} çayını yudumladı; konuyu kapatmadı, erteledi."
     },
     "right": {
       "label": "Haklısın, bakacağım",
@@ -364,7 +379,8 @@
             }
           }
         }
-      }
+      },
+      "result": "'Bakacağım' dedin. {baba.akraba} memnun kaldı; sen o gece biraz huzursuz uyudun."
     }
   },
   {
@@ -395,7 +411,8 @@
           }
         },
         "schedule": { "event": "kardes_borc_iade", "inYears": 2, "with": ["kardes"] }
-      }
+      },
+      "result": "Parayı hemen verdin. {kardes.akraba} 'Bunu unutmam' dedi; sesi titriyordu."
     },
     "right": {
       "label": "Ben de darım şu an",
@@ -410,7 +427,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Senin de darda olduğunu söyledin. {kardes.akraba} anladığını söyledi ama konuyu çabucak kapattı."
     }
   },
   {
@@ -428,7 +446,8 @@
     "closing": "{kardes.akraba} {kardes.ad} verdiğin borcu hiç getiremedi; sen de hiç sormadın.",
     "left": {
       "label": "Sağ ol",
-      "effects": { "money": 33000 }
+      "effects": { "money": 33000 },
+      "result": "Zarfı aldın, borç kapandı. {kardes.akraba} sözünü tutmanın rahatlığıyla gitti."
     },
     "right": {
       "label": "Sende kalsın",
@@ -444,7 +463,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Zarfı geri ittin. {kardes.akraba} sana sıkıca sarıldı; bu hikâye bütün aileye yayıldı."
     }
   },
   {
@@ -474,7 +494,8 @@
             }
           }
         }
-      }
+      },
+      "result": "{kardes.akraba|le} kapıda sarıldınız. Kavganın sebebini zaten ikiniz de hatırlamıyordunuz."
     },
     "right": {
       "label": "Biraz daha küsüm",
@@ -489,7 +510,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Kapıyı aralık bıraktın ama yanaşmadın. {kardes.akraba} omuzları düşük gitti."
     }
   },
   {
@@ -518,7 +540,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Hikâyeyi yarıda kestin. {dede.akraba} kibriti yakamadan sustu ve pencereye döndü."
     },
     "right": {
       "label": "Sonra ne oldu?",
@@ -534,7 +557,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Kurdu, tipiyi ve son kibriti bir kez daha dinledin. {dede.akraba|in} gözleri parladı."
     }
   },
   {
@@ -562,7 +586,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Tabağı kenara ittin. {nine.akraba} 'Beğenmedin herhalde' diye bütün akşam söylendi."
     },
     "right": {
       "label": "Bir tabak daha!",
@@ -579,7 +604,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Üçüncü tabağı da bitirdin. {nine.akraba} çok mutlu; sen kemerini bir delik gevşettin."
     }
   },
   {
@@ -609,7 +635,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Gülümseyip geçiştirdin. {akraba.akraba} memnun ayrıldı ama soru akşama kadar kulağında çınladı."
     },
     "right": {
       "label": "Bul o zaman bana!",
@@ -625,7 +652,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Topu ona attın. {akraba.akraba} işi ciddiye aldı; artık bir listesi var."
     }
   },
   {
@@ -655,11 +683,13 @@
             }
           }
         }
-      }
+      },
+      "result": "Vitrindeki hediyeyi aldın. {veli.akraba} 'Niye zahmet ettin' diye söylendi ama gözleri doldu."
     },
     "right": {
       "label": "Kenara koyayım",
-      "effects": { "happiness": 1 }
+      "effects": { "happiness": 1 },
+      "result": "Maaşı kenara koydun, içini bir rahatlık kapladı. Vitrin bir dahaki aya kaldı."
     }
   },
   {
@@ -688,7 +718,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Dut lekeli tişörtleri, dalda geçen öğleden sonraları andınız. {kardes.akraba} telefonda güldü."
     },
     "right": {
       "label": "Pek hatırlamıyorum",
@@ -703,7 +734,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Ağacı hatırlayamadın. {kardes.akraba} bir süre sustu: 'Sen hep en üst dalda otururdun.'"
     }
   }
 ]

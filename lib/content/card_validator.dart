@@ -71,6 +71,9 @@ class CardValidator {
   static const int maxTextLength = 140;
   static const int maxLabelLength = 24;
 
+  /// Seçimden sonra görünen sonuç cümlesi.
+  static const int maxResultLength = 110;
+
   /// [files]: dosya adı → JSON içeriği. Her dosya bir kart dizisidir.
   /// [careerFiles]: her dosya tek bir meslek tanımıdır.
   CardCheckResult check(
@@ -184,6 +187,7 @@ class CardValidator {
           [
             c.card.text,
             for (final choice in c.card.choices) choice.label,
+            for (final choice in c.card.choices) ...choice.results,
           ].join('\n'),
         ),
       for (final a in achievements)
@@ -603,6 +607,7 @@ class CardValidator {
     final sides = {'left': card.left, 'right': card.right, 'up': ?card.up};
     for (final MapEntry(key: side, value: choice) in sides.entries) {
       _checkText(card, '.$side.label', choice.label, maxLabelLength, error);
+      _checkResults(card, side, choice, error);
       for (final effect in choice.allEffects) {
         if (effect.stats.containsKey(StatKind.family)) {
           error(
@@ -692,6 +697,29 @@ class CardValidator {
   }
 
   /// Şablon denetimi: biçim, rol yuvaları, uzunluk (en kötü hâliyle).
+  /// Her seçimin sonucu bir cümleyle anlatılır: zarsız seçenekte `result`,
+  /// zarlıda `successResult` ve `failResult`.
+  void _checkResults(
+    EventCard card,
+    String side,
+    Choice choice,
+    void Function(String path, String message) error,
+  ) {
+    final required = choice.hasRoll
+        ? {
+            'successResult': choice.successResult,
+            'failResult': choice.failResult,
+          }
+        : {'result': choice.result};
+    for (final MapEntry(key: key, value: text) in required.entries) {
+      if (text == null) {
+        error('.$side.$key', 'sonuç cümlesi yazılmalı');
+      } else {
+        _checkText(card, '.$side.$key', text, maxResultLength, error);
+      }
+    }
+  }
+
   void _checkText(
     EventCard card,
     String path,

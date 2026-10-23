@@ -778,6 +778,10 @@ void _story(int seed) {
       stdout.writeln(
         '     → ${EventText.render(out?.choice.label ?? '?', e.people, c)}$roll',
       );
+      if (out?.choice.resultFor(out.rollSucceeded) case final result?) {
+        final after = engine.state.character;
+        stdout.writeln('       ${EventText.render(result, e.people, after)}');
+      }
       continue;
     }
     player.step(engine);

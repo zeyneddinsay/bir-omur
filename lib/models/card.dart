@@ -273,6 +273,9 @@ class Choice {
     this.roll,
     this.success,
     this.fail,
+    this.result,
+    this.successResult,
+    this.failResult,
   }) : assert(
          (roll == null) == (success == null) &&
              (roll == null) == (fail == null),
@@ -284,17 +287,54 @@ class Choice {
   final Effect? success;
   final Effect? fail;
 
+  /// Seçimden sonra ne olduğunu anlatan cümle (zarsız seçenek). Seçimden
+  /// sonra şeritte ve yıl günlüğünde görünür; kart metni gibi yer
+  /// tutucular içerebilir.
+  final String? result;
+
+  /// Zar tuttuğunda ve tutmadığında ne olduğunu anlatan cümleler.
+  final String? successResult;
+  final String? failResult;
+
   bool get hasRoll => roll != null;
 
   /// Bu seçeneğin uygulayabileceği bütün etkiler (doğrulama için).
   Iterable<Effect> get allEffects => [effects, ?success, ?fail];
 
+  /// Bütün sonuç cümleleri (doğrulama için).
+  Iterable<String> get results => [?result, ?successResult, ?failResult];
+
+  /// Seçimin sonucunu anlatan cümle; [succeeded] zarın sonucudur (zarsız
+  /// seçenekte null).
+  String? resultFor(bool? succeeded) => switch (succeeded) {
+    null => result,
+    true => successResult,
+    false => failResult,
+  };
+
+  /// Zarın dalına göre seçimin bütün etkileri: önce [effects], sonra dal.
+  List<Effect> effectsFor(bool? succeeded) => [
+    effects,
+    if (succeeded == true) ?success,
+    if (succeeded == false) ?fail,
+  ];
+
   factory Choice.fromJson(JsonReader r) {
-    r.rejectUnknownKeys(const {'label', 'effects', 'roll', 'success', 'fail'});
+    r.rejectUnknownKeys(const {
+      'label',
+      'effects',
+      'roll',
+      'success',
+      'fail',
+      'result',
+      'successResult',
+      'failResult',
+    });
     final effects = r.optionalObject('effects');
     final roll = r.optionalObject('roll');
+    final rollOnly = const ['success', 'fail', 'successResult', 'failResult'];
     if (roll == null) {
-      for (final key in const ['success', 'fail']) {
+      for (final key in rollOnly) {
         if (r.has(key)) {
           throw CardFormatException(
             '${r.path}.$key',
@@ -302,6 +342,11 @@ class Choice {
           );
         }
       }
+    } else if (r.has('result')) {
+      throw CardFormatException(
+        '${r.path}.result',
+        'zarlı seçenekte successResult ve failResult yazılır',
+      );
     }
     return Choice(
       label: r.requireString('label'),
@@ -311,6 +356,9 @@ class Choice {
           ? null
           : Effect.fromJson(r.requireObject('success')),
       fail: roll == null ? null : Effect.fromJson(r.requireObject('fail')),
+      result: r.optionalString('result'),
+      successResult: r.optionalString('successResult'),
+      failResult: r.optionalString('failResult'),
     );
   }
 }

@@ -1,10 +1,12 @@
 import 'package:bir_omur/l10n/generated/app_localizations.dart';
+import 'package:bir_omur/models/models.dart';
 import 'package:bir_omur/ui/widgets/swipe_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../helpers/test_cards.dart';
+import '../helpers/test_character.dart';
 
 Widget _wrap(Widget child) => MaterialApp(
   locale: const Locale('tr'),
@@ -67,5 +69,65 @@ void main() {
     );
     await tester.pumpAndSettle();
     expect(find.text('Zar: Şans'), findsOneWidget);
+  });
+
+  testWidgets('seçenek neye dokunacağını ve zarın ihtimalini gösterir', (
+    tester,
+  ) async {
+    final card = testCard(
+      'salincak',
+      text: 'Parkta tek salıncak boş.',
+      left: {
+        'label': 'Ben de koşarım',
+        'roll': {'stat': 'luck', 'threshold': 50},
+        'success': {'happiness': 3},
+        'fail': {'happiness': -1, 'health': -1},
+      },
+      right: {
+        'label': 'Sıramı beklerim',
+        'effects': {'reputation': 1, 'money': -25000},
+      },
+    );
+    ChoiceSide? chosen;
+    await tester.pumpWidget(
+      _wrap(
+        SwipeCard(
+          card: card,
+          text: card.text,
+          character: testCharacter(luck: 90),
+          onChoose: (side) => chosen = side,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final left = find.byKey(const Key('choose_left'));
+    final right = find.byKey(const Key('choose_right'));
+    // Şansı yüksek oyuncuya ihtimal yüksek görünür.
+    expect(
+      find.descendant(
+        of: left,
+        matching: find.byKey(const Key('roll_odds_yuksek')),
+      ),
+      findsOneWidget,
+    );
+    expect(find.descendant(of: left, matching: find.text('Tutarsa')), findsOne);
+    expect(
+      find.descendant(of: left, matching: find.text('Tutmazsa')),
+      findsOne,
+    );
+    // Zarsız seçenekte para tutarıyla, gösterge yönüyle görünür.
+    expect(
+      find.descendant(of: right, matching: find.text('−25 bin TL')),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(of: right, matching: find.byTooltip('İtibar artar')),
+      findsOneWidget,
+    );
+
+    await tester.tap(right);
+    await tester.pumpAndSettle();
+    expect(chosen, ChoiceSide.right);
   });
 }

@@ -13,11 +13,13 @@
     "text": "İlk dişin çıkıyor. {veli.akraba} bütün gece seni kucağında taşıdı; sabah ikiniz de aynı yorgunluktasınız.",
     "left": {
       "label": "Parmağını ısır",
-      "effects": { "happiness": 2 }
+      "effects": { "happiness": 2 },
+      "result": "{veli.akraba|in} parmağını kemirdin; sızı geçti, ağlaman kıkırdamaya döndü."
     },
     "right": {
       "label": "Uykuya dal",
-      "effects": { "health": 1 }
+      "effects": { "health": 1 },
+      "result": "Sonunda derin bir uykuya daldın. Evde herkes ilk kez sabaha kadar uyudu."
     }
   },
   {
@@ -34,11 +36,13 @@
     "text": "{komsu.ad} beşiğinin başında: 'Aman ne tatlı! Kaşları babasına, burnu dayısına çekmiş.' Tartışma uzuyor.",
     "left": {
       "label": "Gülümse",
-      "effects": { "happiness": 2 }
+      "effects": { "happiness": 2 },
+      "result": "Gülümseyince {komsu.ad} kararını verdi: 'Bu gülüş kimseye çekmemiş, kendine has.'"
     },
     "right": {
       "label": "Ağlamaya başla",
-      "effects": { "happiness": -1 }
+      "effects": { "happiness": -1 },
+      "result": "Ağlamaya başlayınca tartışma bitti. {komsu.ad} 'Sesi de dedesine çekmiş' deyip kalktı."
     }
   },
   {
@@ -66,11 +70,13 @@
             }
           }
         }
-      }
+      },
+      "result": "{buyuk.akraba|in} kucağında mışıl mışıl uyudun. O bayramın bütün fotoğraflarında ikiniz varsınız."
     },
     "right": {
       "label": "Herkese gülücük",
-      "effects": { "happiness": 2 }
+      "effects": { "happiness": 2 },
+      "result": "Kucaktan kucağa dolaştın, herkese gülücük dağıttın. Bayramın neşesi sen oldun."
     }
   },
   {
@@ -83,11 +89,13 @@
     "text": "İlk doğum günün. Pastanın önüne oturttular; herkes telefonunu sana çevirmiş, mum yanıyor.",
     "left": {
       "label": "Elini pastaya daldır",
-      "effects": { "happiness": 3 }
+      "effects": { "happiness": 3 },
+      "result": "Pasta yüzüne gözüne bulaştı. O fotoğraf yıllarca her gelen misafire gösterilecek."
     },
     "right": {
       "label": "Mumu izle",
-      "effects": { "happiness": 1 }
+      "effects": { "happiness": 1 },
+      "result": "Mumu büyülenmiş gibi izledin. Üflemeyi büyükler senin yerine yaptı."
     }
   },
   {
@@ -104,11 +112,13 @@
     "text": "Banyo leğenindesin. {veli.akraba} sabun köpüğüyle sana sakal yaptı; aynaya bakıp kahkaha atıyorsun.",
     "left": {
       "label": "Suyu sıçrat",
-      "effects": { "happiness": 3 }
+      "effects": { "happiness": 3 },
+      "result": "Banyoyu suya boğdun. {veli.akraba} sırılsıklam oldu ama ikiniz de gülmekten duramadınız."
     },
     "right": {
       "label": "Köpüğü ye",
-      "effects": { "happiness": 1, "health": -1 }
+      "effects": { "happiness": 1, "health": -1 },
+      "result": "Köpük sandığın kadar tatlı değilmiş. Biraz hıçkırdın, karnın da ağrıdı."
     }
   },
   {
@@ -123,11 +133,14 @@
       "label": "Kuyruğunu yakala",
       "roll": { "stat": "luck", "threshold": 50 },
       "success": { "happiness": 3 },
-      "fail": { "happiness": -2, "health": -1 }
+      "fail": { "happiness": -2, "health": -1 },
+      "successResult": "Kedi kuyruğunu yakalatıp mırladı. O günden sonra kapının önünde seni bekledi.",
+      "failResult": "Kedi tısladı ve elini tırmaladı. Biraz ağladın; kediler artık biraz korkutucu."
     },
     "right": {
       "label": "Usulca sev",
-      "effects": { "happiness": 3 }
+      "effects": { "happiness": 3 },
+      "result": "Kedi başını avucuna sürttü. Hayatındaki ilk dostu edinmiş oldun."
     }
   },
   {
@@ -144,11 +157,13 @@
     "text": "Boya kalemlerini buldun ve salon duvarına bir güneş çizdin. {veli.akraba} kapıda donup kaldı.",
     "left": {
       "label": "Bir de ev çizerim",
-      "effects": { "happiness": 2 }
+      "effects": { "happiness": 2 },
+      "result": "Güneşin yanına bir de ev çizdin. {veli.akraba} kızamadı; resim duvarda yıllarca kaldı."
     },
     "right": {
       "label": "Kalemi saklarım",
-      "effects": { "reputation": -1 }
+      "effects": { "reputation": -1 },
+      "result": "Kalemi saklasan da ellerin boya içindeydi. Duvardaki güneşi bütün akrabalar duydu."
     }
   },
   {
@@ -165,11 +180,13 @@
     "text": "{veli.akraba}: 'Emziği kuşlara verelim mi? Onların bebekleri de ağlıyormuş.' Emziğe uzun uzun bakıyorsun.",
     "left": {
       "label": "Kuşlar alsın",
-      "effects": { "happiness": -1, "knowledge": 1 }
+      "effects": { "happiness": -1, "knowledge": 1 },
+      "result": "Emziği balkondan kuşlara bıraktın. İlk gece zor geçti ama büyüdüğünü hissettin."
     },
     "right": {
       "label": "Benim o!",
-      "effects": { "happiness": 1 }
+      "effects": { "happiness": 1 },
+      "result": "Emziğe sıkı sıkı sarıldın. Kuşların bebekleri bir süre daha bekleyecek."
     }
   },
   {
@@ -182,11 +199,13 @@
     "text": "Parkta kum havuzu. Yanındaki çocuk senin kovanı aldı ve kocaman bir kale yapıyor.",
     "left": {
       "label": "Kale birlikte",
-      "effects": { "happiness": 3, "reputation": 1 }
+      "effects": { "happiness": 3, "reputation": 1 },
+      "result": "Kaleyi birlikte bitirdiniz. Banktaki anneler 'Ne güzel paylaşıyorlar' diye konuştu."
     },
     "right": {
       "label": "Kovamı geri isterim",
-      "effects": { "happiness": 1 }
+      "effects": { "happiness": 1 },
+      "result": "Kovanı geri aldın ama kale yarım kaldı. Kumda tek başına küçük bir kule diktin."
     }
   },
   {
@@ -215,11 +234,13 @@
             }
           }
         }
-      }
+      },
+      "result": "Bildiğin tek şarkıyı telefona söyledin. {buyuk.akraba} onu yıllarca herkese anlattı."
     },
     "right": {
       "label": "Telefonu kapat",
-      "effects": { "happiness": 1 }
+      "effects": { "happiness": 1 },
+      "result": "Telefonu kapatıverdin. {buyuk.akraba} geri arayıp güldü: 'Tamam, anladım, meşgulsün.'"
     }
   },
   {
@@ -232,11 +253,13 @@
     "text": "İlk kez berber koltuğundasın; altına bir yastık koymuşlar. Makasın sesi kulağına çok yakın.",
     "left": {
       "label": "Kıpırdamadan otur",
-      "effects": { "reputation": 1 }
+      "effects": { "reputation": 1 },
+      "result": "Heykel gibi oturdun. Berber seni herkese örnek gösterdi, cebine de bir şeker koydu."
     },
     "right": {
       "label": "Kaçmaya çalış",
-      "effects": { "happiness": 1 }
+      "effects": { "happiness": 1 },
+      "result": "Kaçarken perçemin yamuk kesildi. Fotoğraflarda hâlâ belli ama kaçış çok eğlenceliydi."
     }
   },
   {
@@ -264,11 +287,13 @@
             }
           }
         }
-      }
+      },
+      "result": "{veli.akraba|in} yanına sokuldun. Canavar o gece bir daha görünmedi."
     },
     "right": {
       "label": "Işık açık kalsın",
-      "effects": { "happiness": 1 }
+      "effects": { "happiness": 1 },
+      "result": "Işık yanınca canavarın bir mont olduğu anlaşıldı. Rahat rahat uyudun."
     }
   },
   {
@@ -285,11 +310,13 @@
     "text": "Akşam yemeğinde ciddi bir sesle açıkladın: 'Bir köpek istiyorum.' {veli.akraba} çatalını bıraktı.",
     "left": {
       "label": "Adını bile koydum",
-      "effects": { "happiness": 2 }
+      "effects": { "happiness": 2 },
+      "result": "Köpeğin adını açıkladın: Karabaş. {veli.akraba} 'Bakarız' dedi; bu, hayır demekti."
     },
     "right": {
       "label": "Kedi de olur",
-      "effects": { "happiness": 1 }
+      "effects": { "happiness": 1 },
+      "result": "Pazarlığa açık olman {veli.akraba|in} hoşuna gitti. Konu bir sonraki bayrama kaldı."
     }
   },
   {
@@ -318,11 +345,13 @@
             }
           }
         }
-      }
+      },
+      "result": "Menemeni {veli.akraba|le} birlikte yaptın. Yarısı tezgâha döküldü ama en güzeli oydu."
     },
     "right": {
       "label": "Ben yemeye geldim",
-      "effects": { "happiness": 2 }
+      "effects": { "happiness": 2 },
+      "result": "Sofrada çatalınla bekledin. Menemen gelince ilk ekmeği de sen bandın."
     }
   },
   {
@@ -335,11 +364,13 @@
     "text": "İlk kez tek başına bakkala gönderildin: bir ekmek, bir yoğurt. Para avucunda terliyor.",
     "left": {
       "label": "Koşa koşa giderim",
-      "effects": { "happiness": 2, "reputation": 1 }
+      "effects": { "happiness": 2, "reputation": 1 },
+      "result": "Ekmekle yoğurdu eksiksiz getirdin. Bakkal arkandan 'Ne akıllı çocuk' dedi."
     },
     "right": {
       "label": "Bir de sakız alırım",
-      "effects": { "happiness": 3 }
+      "effects": { "happiness": 3 },
+      "result": "Paranın üstü sakıza gitti. Ekmekle yoğurt eve ulaştı, sakızın sırrı seninle kaldı."
     }
   },
   {
@@ -356,11 +387,13 @@
     "text": "İlk sütdişin düştü! {veli.akraba}: 'Yastığının altına koy, bakalım sabah ne çıkacak.'",
     "left": {
       "label": "Bütün gece beklerim",
-      "effects": { "happiness": 2 }
+      "effects": { "happiness": 2 },
+      "result": "Gece boyu yastığı yokladın. Sabah altında bir çikolata buldun; diş perisi gerçekmiş."
     },
     "right": {
       "label": "Çatıya atarım",
-      "effects": { "happiness": 2, "knowledge": 1 }
+      "effects": { "happiness": 2, "knowledge": 1 },
+      "result": "'Al eski dişi, ver yeni dişi' diye çatıya fırlattın. Bu adeti {veli.akraba} öğretti."
     }
   },
   {
@@ -373,11 +406,13 @@
     "text": "Çizgi film tam en heyecanlı yerinde. Mutfaktan ses geliyor: 'Yemek hazır, hemen masaya!'",
     "left": {
       "label": "Bir dakika daha",
-      "effects": { "happiness": 2 }
+      "effects": { "happiness": 2 },
+      "result": "Bir dakika on dakika oldu. Filmin sonunu gördün, çorban da biraz soğudu."
     },
     "right": {
       "label": "Masaya koşarım",
-      "effects": { "health": 1, "reputation": 1 }
+      "effects": { "health": 1, "reputation": 1 },
+      "result": "Masaya ilk sen oturdun. Herkes 'Aferin' dedi, en sıcak çorba sana kaldı."
     }
   },
   {
@@ -392,11 +427,14 @@
       "label": "Ben de koşarım",
       "roll": { "stat": "luck", "threshold": 50 },
       "success": { "happiness": 3 },
-      "fail": { "happiness": -1 }
+      "fail": { "happiness": -1, "health": -1 },
+      "successResult": "Salıncağa ilk sen vardın. Ayakların bulutlara değdi.",
+      "failResult": "O senden hızlıydı. Bir de koşarken dizini sıyırdın."
     },
     "right": {
       "label": "Sıramı beklerim",
-      "effects": { "reputation": 1 }
+      "effects": { "reputation": 1 },
+      "result": "Sıra sana geldi. Bankta oturan bir teyze 'Ne terbiyeli çocuk' dedi."
     }
   },
   {
@@ -409,11 +447,13 @@
     "text": "Anaokulunda kostüm günü. Herkes süper kahraman olmuş; sen de dolaptan ne bulduysan giymişsin.",
     "left": {
       "label": "Ben bir bulutum",
-      "effects": { "happiness": 3 }
+      "effects": { "happiness": 3 },
+      "result": "Beyaz bir çarşafa sarılıp bulut oldun. En çok alkışlanan kostüm seninkiydi."
     },
     "right": {
       "label": "Bir şey olmadım",
-      "effects": { "happiness": -1 }
+      "effects": { "happiness": -1 },
+      "result": "Köşede kostümsüz durdun. Sınıf fotoğrafında tek sıradan giyinen sendin."
     }
   },
   {
@@ -430,11 +470,13 @@
     "text": "Bugün yirminci kez 'Neden?' diye sordun. {veli.akraba} derin bir nefes aldı: 'Çünkü öyle.'",
     "left": {
       "label": "Neden öyle?",
-      "effects": { "knowledge": 2 }
+      "effects": { "knowledge": 2 },
+      "result": "Bu soru üzerine {veli.akraba} ansiklopediyi açtı. İkiniz de yeni bir şey öğrendiniz."
     },
     "right": {
       "label": "Peki",
-      "effects": { "happiness": 1 }
+      "effects": { "happiness": 1 },
+      "result": "Oyuncaklarına döndün. Evde uzun zamandır duyulmamış bir sessizlik oldu."
     }
   }
 ]

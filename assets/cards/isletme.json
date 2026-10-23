@@ -10,13 +10,16 @@
     "text": "Zabıta kapıda: 'Tabelanız yönetmeliğe uymuyor, yarım metre taşmış.' Yan dükkânın tabelası iki metre.",
     "left": {
       "label": "Hemen düzeltirim",
-      "effects": { "money": -15000, "business": 2 }
+      "effects": { "money": -15000, "business": 2 },
+      "result": "Tabelayı yeniden yaptırdın. Yenisi eskisinden güzel oldu; müşteriler bile fark etti."
     },
     "right": {
       "label": "Yan dükkân ne olacak?",
       "roll": { "stat": "reputation", "threshold": 55 },
       "success": { "happiness": 3 },
-      "fail": { "money": -40000, "happiness": -3 }
+      "fail": { "money": -40000, "happiness": -3 },
+      "successResult": "Zabıta yan dükkânın tabelasına bakıp güldü: 'Haklısın, bu seferlik yazmıyorum.'",
+      "failResult": "Zabıta bu söze bozuldu ve cezayı kesti. Yan dükkânın tabelası ise hâlâ yerinde."
     }
   },
   {
@@ -30,11 +33,13 @@
     "text": "Sabahtan beri sağanak. Tezgâhta altmış simit soğuyor, sokakta bir tek sen varsın.",
     "left": {
       "label": "Kapı kapı dolaşırım",
-      "effects": { "health": -2, "money": 3000, "business": 2 }
+      "effects": { "health": -2, "money": 3000, "business": 2 },
+      "result": "Tepsiyi başına alıp kapı kapı dolaştın. Sırılsıklam oldun ama simitlerin hepsi bitti."
     },
     "right": {
       "label": "Bugün paydos",
-      "effects": { "money": -2500, "happiness": 2 }
+      "effects": { "money": -2500, "happiness": 2 },
+      "result": "Kepengi erken indirdin. Soğuyan simitleri sokak kedileriyle paylaştın; çay da güzeldi."
     }
   },
   {
@@ -48,11 +53,13 @@
     "text": "Her sabah gelen beyefendi bugün de geldi: 'Dünkünden olmasın ama, çıtır olsun.'",
     "left": {
       "label": "Fırından yeni çıktı",
-      "effects": { "business": 3, "happiness": 1 }
+      "effects": { "business": 3, "happiness": 1 },
+      "result": "Beyefendi bir ısırık aldı: 'İşte bu!' Ertesi sabah yanında iki arkadaşıyla geldi."
     },
     "right": {
       "label": "Hepsi bugünün abi",
-      "effects": { "business": -1, "reputation": 1 }
+      "effects": { "business": -1, "reputation": 1 },
+      "result": "Beyefendi pek ikna olmadı ama dürüstlüğün mahallede konuşuldu."
     }
   },
   {
@@ -68,11 +75,14 @@
       "label": "Elimden geleni yaparım",
       "roll": { "stat": "knowledge", "threshold": 50 },
       "success": { "business": 4, "happiness": 2 },
-      "fail": { "business": -3, "happiness": -1 }
+      "fail": { "business": -3, "happiness": -1 },
+      "successResult": "Makas konuştu. Müşteri aynaya, sonra fotoğrafa baktı: 'Aynısı değil, daha iyisi!'",
+      "failResult": "Sonuç fotoğrafa hiç benzemedi. Müşteri şapkasını takıp sessizce çıktı."
     },
     "right": {
       "label": "Size başkası yakışır",
-      "effects": { "business": 1, "reputation": 1 }
+      "effects": { "business": 1, "reputation": 1 },
+      "result": "Yüzüne yakışacak bir kesim önerdin. Müşteri önce itiraz etti, sonra aynada kendini çok beğendi."
     }
   },
   {
@@ -86,11 +96,13 @@
     "text": "Koltuktaki müşteri yarım saattir ekonomiyi anlatıyor. Arkada sırada dört kişi var.",
     "left": {
       "label": "Haklısın, valla",
-      "effects": { "business": 2, "happiness": -1 }
+      "effects": { "business": 2, "happiness": -1 },
+      "result": "Yarım saat daha başını salladın. Müşteri seni bütün tanıdıklarına övecek; senin ise başın şişti."
     },
     "right": {
       "label": "Makası hızlandırırım",
-      "effects": { "money": 4000, "business": -1 }
+      "effects": { "money": 4000, "business": -1 },
+      "result": "Makas hızlandı, sıra çabuk eridi. Kasa doldu ama sohbetçi müşteri biraz alındı."
     }
   },
   {
@@ -104,11 +116,13 @@
     "text": "Yarım saat önce yıkadığınız araba çamura bulanmış geri geldi. Sahibi kollarını kavuşturmuş.",
     "left": {
       "label": "Bir daha yıkarız",
-      "effects": { "money": -1500, "business": 3 }
+      "effects": { "money": -1500, "business": 3 },
+      "result": "Arabayı yeniden yıkayıp bir de cila çektiniz. Sahibi kollarını çözdü; artık başka yere gitmiyor."
     },
     "right": {
       "label": "Yağmuru biz yağdırmadık",
-      "effects": { "business": -3, "happiness": 1 }
+      "effects": { "business": -3, "happiness": 1 },
+      "result": "Haklıydın ama sahibi ikna olmadı. Gidip herkese 'Bir daha oraya gitmem' dedi."
     }
   },
   {
@@ -123,17 +137,21 @@
     "text": "Bir kargo firması kırk aracını her hafta size yıkatmak istiyor. Ama fiyatta yüzde otuz indirim istiyorlar.",
     "left": {
       "label": "Anlaştık",
-      "effects": { "money": 180000, "health": -2, "business": -1 }
+      "effects": { "money": 180000, "business": -1 },
+      "result": "Kırk araç her hafta kapında. Kasa doldu ama sıradan müşteriler sırada bekletildi, homurdandılar."
     },
     "right": {
       "label": "Bu fiyata olmaz",
-      "effects": { "business": 1 }
+      "effects": { "business": 1 },
+      "result": "Teklifi geri çevirdin. Fiyatını korumana esnaf arasında saygı duyuldu."
     },
     "up": {
       "label": "Yüzde on beşte buluşalım",
       "roll": { "stat": "reputation", "threshold": 60 },
       "success": { "money": 260000, "business": 1 },
-      "fail": { "happiness": -2 }
+      "fail": { "happiness": -2 },
+      "successResult": "Kargocular uzun uzun düşündü, sonra el sıkıştınız. Hem kasa doldu hem adın büyüdü.",
+      "failResult": "Kargocular 'Biz başka yere gideriz' deyip kalktı. Pazarlık masada kaldı."
     }
   },
   {
@@ -149,11 +167,14 @@
       "label": "Ek ücretle yaparız",
       "roll": { "stat": "reputation", "threshold": 50 },
       "success": { "money": 120000, "business": 1 },
-      "fail": { "business": -4 }
+      "fail": { "business": -4 },
+      "successResult": "Müşteri ek ücrete itiraz etmedi. İş büyüdü, fatura da onunla birlikte büyüdü.",
+      "failResult": "Müşteri 'Küçük bir değişiklik için mi?' deyip başka firmaya gitti; çevresine de anlattı."
     },
     "right": {
       "label": "Müşteri her zaman haklı",
-      "effects": { "health": -3, "happiness": -2, "business": 4 }
+      "effects": { "health": -3, "happiness": -2, "business": 4 },
+      "result": "Aylarca gece gündüz çalıştınız. Müşteri bayıldı ve herkese sizi önerdi; uykusuzluk sende kaldı."
     }
   },
   {
@@ -167,11 +188,13 @@
     "text": "Gece üçte telefon: sistem çökmüş, müşterinin kampanyası sabah dokuzda başlıyor.",
     "left": {
       "label": "Kalkıp düzeltirim",
-      "effects": { "health": -3, "business": 4 }
+      "effects": { "health": -3, "business": 4 },
+      "result": "Sabaha kadar ekran başındaydın. Kampanya dokuzda sorunsuz açıldı; müşteri teşekkür etti."
     },
     "right": {
       "label": "Sabah bakarım",
-      "effects": { "business": -6, "happiness": 1 }
+      "effects": { "business": -6, "happiness": 1 },
+      "result": "Güzel bir uyku çektin. Sabah dokuzda kampanya açılmadı ve telefonun hiç susmadı."
     }
   },
   {
@@ -202,7 +225,8 @@
             }
           }
         }
-      }
+      },
+      "result": "{calisan.ad|in} maaşını artırdın. Ertesi sabah işe herkesten önce o geldi."
     },
     "right": {
       "label": "Şimdi olmaz",
@@ -217,7 +241,8 @@
             }
           }
         }
-      }
+      },
+      "result": "{calisan.ad} 'Peki' deyip sustu. O günden sonra çayları biraz daha sessiz getiriyor."
     }
   },
   {
@@ -247,7 +272,8 @@
             }
           }
         }
-      }
+      },
+      "result": "{calisan.ad} rahat bir nefes aldı. Ama ertesi hafta da sabahlar onsuz başladı."
     },
     "right": {
       "label": "Maaştan keserim",
@@ -263,7 +289,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Geç kaldığı saatleri maaşından düştün. {calisan.ad} ertesi gün erken geldi ama yüzü asıktı."
     }
   },
   {
@@ -294,13 +321,16 @@
             }
           }
         }
-      }
+      },
+      "result": "Sen de fiyatları kırdın. Müşteriler döndü ama {rakip.ad|le} aranızda bir fiyat savaşı başladı."
     },
     "right": {
       "label": "Kalite konuşur",
       "roll": { "stat": "reputation", "threshold": 55 },
       "success": { "business": 3, "happiness": 2 },
-      "fail": { "business": -4, "happiness": -2 }
+      "fail": { "business": -4, "happiness": -2 },
+      "successResult": "Fiyatına dokunmadın. Bir hafta sonra müşterilerin 'Seninki başka' deyip geri döndü.",
+      "failResult": "Kaliteyi kimse sormadı; sıra hep {rakip.ad|in} önündeydi. Müşterilerin yolunu unuttu."
     }
   },
   {
@@ -330,7 +360,8 @@
             }
           }
         }
-      }
+      },
+      "result": "{rakip.ad|le} çay içip kiraları konuştunuz. Rakipsiniz ama artık birbirinize selam veriyorsunuz."
     },
     "right": {
       "label": "İşim var, sağ ol",
@@ -346,7 +377,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Çayı geri çevirip müşterine döndün. {rakip.ad} iki çayla geldiği yoldan bozularak döndü."
     }
   },
   {
@@ -382,7 +414,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Nazarlık kapıda sallanıyor. {teyze.ad} her geçişinde ona bakıp memnun memnun gülümsüyor."
     },
     "right": {
       "label": "Vitrini kapatıyor ama",
@@ -398,7 +431,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Nazarlığı vitrinin köşesine taşıdın. Vitrin ferahladı ama {teyze.ad} bunu hiç beğenmedi."
     }
   },
   {
@@ -442,7 +476,9 @@
             }
           }
         }
-      }
+      },
+      "successResult": "Ay sonunda {komsu.ad} borcunu kuruşu kuruşuna getirdi. Mahallede güvenilir esnafsın artık.",
+      "failResult": "Maaş yattı ama {komsu.ad} gelmedi. Defterdeki o satır hâlâ orada duruyor."
     },
     "right": {
       "label": "Veresiye defteri kapalı",
@@ -457,7 +493,8 @@
             }
           }
         }
-      }
+      },
+      "result": "{komsu.ad} başını önüne eğip çıktı. Bir süre dükkânın önünden hiç geçmedi."
     }
   },
   {
@@ -473,11 +510,14 @@
       "label": "Pazarlık ederim",
       "roll": { "stat": "reputation", "threshold": 55 },
       "success": { "money": -30000 },
-      "fail": { "money": -90000, "happiness": -2 }
+      "fail": { "money": -90000, "happiness": -2 },
+      "successResult": "Pazarlık işe yaradı. Kira arttı ama ikiye katlanmadı; dükkân yine senin.",
+      "failResult": "Sahibi geri adım atmadı. Kiranın ikiye katlanmasına boyun eğdin; bu yıl kasa zor dönecek."
     },
     "right": {
       "label": "Mahkemede görüşürüz",
-      "effects": { "money": -50000, "happiness": -3, "business": -1 }
+      "effects": { "money": -50000, "happiness": -3, "business": -1 },
+      "result": "Avukat tuttun, dava açıldı. Dava uzadıkça masraf da uzadı; dükkânın üstüne gölge düştü."
     }
   },
   {
@@ -507,7 +547,8 @@
             }
           }
         }
-      }
+      },
+      "result": "{akraba.ad|i} kenara çekip konuştun. Ertesi gün sekizde dükkândaydı ama sana küskündü."
     },
     "right": {
       "label": "Ses etmem",
@@ -523,7 +564,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Ses etmedin. {akraba.ad} rahatladı ama sabahları müşteriler kapıda bekler oldu."
     }
   }
 ]

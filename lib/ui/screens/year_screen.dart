@@ -14,6 +14,7 @@ import '../portrait/portrait.dart';
 import '../portrait/portrait_spec.dart';
 import '../widgets/life_status.dart';
 import '../widgets/stats_bar.dart';
+import '../widgets/outcome_panel.dart';
 import '../widgets/swipe_card.dart';
 
 /// Bir yıl: üstte göstergeler, altta ya kart ya da aksiyon menüsü.
@@ -36,6 +37,9 @@ class _YearScreenState extends ConsumerState<YearScreen> {
   /// Serbest zamanda açık sekme; yıllar arasında korunur.
   HomeTab _tab = HomeTab.me;
 
+  /// Kapatılan sonuç paneli; yeni bir seçimde panel yine görünür.
+  ChoiceOutcome? _closedOutcome;
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
@@ -43,7 +47,6 @@ class _YearScreenState extends ConsumerState<YearScreen> {
     final c = state.character;
     final engine = ref.read(lifeProvider.notifier).engine;
 
-    final rolled = state.lastOutcome?.rollSucceeded;
     final leaning = switch ((state.currentEvent, _lean)) {
       (final event?, final side?) => event.card.choice(side),
       _ => null,
@@ -134,32 +137,14 @@ class _YearScreenState extends ConsumerState<YearScreen> {
                 career: engine.lastCareer,
                 onClose: () => setState(() => _closedSummaryAge = c.age),
               ),
-            // Son kartın zar sonucu; alttaki düğmeleri örtmesin diye
-            // SnackBar yerine burada durur.
-            if (rolled != null)
-              Container(
-                key: const Key('roll_result'),
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(vertical: 6),
-                color: rolled
-                    ? Theme.of(context).colorScheme.primaryContainer
-                    : Theme.of(context).colorScheme.errorContainer,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.casino_outlined, size: 18),
-                    const SizedBox(width: 6),
-                    Flexible(
-                      child: Text(switch (state.lastOutcome?.choice.roll) {
-                        final roll? => l10n.rollResultLine(
-                          l10n.rollStatName(roll.stat),
-                          rolled ? l10n.rollSuccess : l10n.rollFail,
-                        ),
-                        null => rolled ? l10n.rollSuccess : l10n.rollFail,
-                      }, textAlign: TextAlign.center),
-                    ),
-                  ],
-                ),
+            // Son seçimin sonucu; alttaki düğmeleri örtmesin diye SnackBar
+            // yerine burada durur.
+            if (state.lastOutcome case final outcome?
+                when !identical(outcome, _closedOutcome))
+              OutcomePanel(
+                outcome: outcome,
+                character: c,
+                onClose: () => setState(() => _closedOutcome = outcome),
               ),
             Expanded(
               child: switch (state.phase) {
@@ -182,8 +167,15 @@ class _YearScreenState extends ConsumerState<YearScreen> {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.only(top: 8),
-          child: Text(l10n.cardsLeft(state.pendingCards.length)),
+          padding: const EdgeInsets.only(top: 10),
+          child: Text(
+            l10n.cardsLeft(state.pendingCards.length),
+            style: Theme.of(context).textTheme.labelMedium?.copyWith(
+              color: Theme.of(context).colorScheme.onSurface
+                  .withValues(alpha: 0.6),
+              fontWeight: FontWeight.w700,
+            ),
+          ),
         ),
         Expanded(
           child: SwipeCard(
@@ -199,6 +191,9 @@ class _YearScreenState extends ConsumerState<YearScreen> {
             portrait: speaker == null
                 ? PortraitDesigner.forCharacter(c)
                 : PortraitDesigner.ofPerson(speaker, playerAge: c.age),
+            character: c,
+            people: event.people,
+            remaining: state.pendingCards.length - 1,
             onLean: (side) => setState(() => _lean = side),
             onChoose: (side) {
               setState(() => _lean = null);

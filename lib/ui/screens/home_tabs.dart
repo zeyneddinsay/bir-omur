@@ -129,16 +129,20 @@ class _MeTab extends ConsumerWidget {
     final choices = [
       for (final r in PeopleView.choicesThisYear(c))
         if (engine.deck.byId(r.cardId) case final card?)
-          l10n.journalChoiceWith(
-            _gist(
-              EventText.render(
-                EventText.cardText(card, c, record: r),
-                r.people,
-                c,
+          // Sonuç cümlesi varsa seçimin kendisi yerine ne olduğu yazılır.
+          switch (card.choice(r.side).resultFor(r.rollSucceeded)) {
+            final result? => EventText.render(result, r.people, c),
+            null => l10n.journalChoiceWith(
+              _gist(
+                EventText.render(
+                  EventText.cardText(card, c, record: r),
+                  r.people,
+                  c,
+                ),
               ),
+              EventText.render(card.choice(r.side).label, r.people, c),
             ),
-            EventText.render(card.choice(r.side).label, r.people, c),
-          ),
+          },
     ];
 
     return ListView(
@@ -160,10 +164,24 @@ class _MeTab extends ConsumerWidget {
                     padding: const EdgeInsets.only(bottom: 4),
                     child: Text('• $line'),
                   ),
+                // Bu yılın seçimleri ve sonuçları; haberlerden ikonla ayrılır.
                 for (final line in choices)
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 4),
-                    child: Text(line, style: theme.textTheme.bodySmall),
+                    padding: const EdgeInsets.only(bottom: 6),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 2, right: 6),
+                          child: Icon(
+                            Icons.auto_stories_outlined,
+                            size: 14,
+                            color: theme.colorScheme.primary,
+                          ),
+                        ),
+                        Expanded(child: Text(line)),
+                      ],
+                    ),
                   ),
               ],
             ),

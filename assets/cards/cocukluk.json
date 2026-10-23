@@ -13,7 +13,8 @@
     "text": "{buyuk.akraba} beşiğine mavi bir nazar boncuğu iliştirdi: 'Göz değmesin şu yanaklara.'",
     "left": {
       "label": "Boncuğa uzan",
-      "effects": { "happiness": 2 }
+      "effects": { "happiness": 2 },
+      "result": "Boncuğu yakalayıp ağzına götürdün. {buyuk.akraba} gülerek onu biraz daha yukarı astı."
     },
     "right": {
       "label": "Ona gülümse",
@@ -28,7 +29,8 @@
             }
           }
         }
-      }
+      },
+      "result": "{buyuk.akraba|e} ilk kez gülümsedin. O gün evde herkese tekrar tekrar anlatıldı."
     }
   },
   {
@@ -57,7 +59,8 @@
             }
           }
         }
-      }
+      },
+      "result": "İlk kelimen 'anne' oldu. {anne.akraba} sevinçten ağladı; {baba.akraba} hemen rövanş istedi."
     },
     "right": {
       "label": "Baba!",
@@ -72,7 +75,8 @@
             }
           }
         }
-      }
+      },
+      "result": "İlk kelimen 'baba' oldu. {baba.akraba} bunu bütün akrabalara telefonla tek tek duyurdu."
     }
   },
   {
@@ -85,11 +89,13 @@
     "text": "İlk adım zamanı. Bir yanda sehpanın sivri köşesi, öbür yanda yumuşacık halı.",
     "left": {
       "label": "Sehpaya tutun",
-      "effects": { "knowledge": 1 }
+      "effects": { "knowledge": 1 },
+      "result": "Sehpaya tutunup üç adım attın. Yürümeyi temkinli öğrendin; köşeye bir kez bile çarpmadın."
     },
     "right": {
       "label": "Halıya atıl",
-      "effects": { "happiness": 2 }
+      "effects": { "happiness": 2 },
+      "result": "Kendini halıya attın, kahkahalarla yuvarlandın. Yürümek bir hafta daha bekleyebilirdi."
     }
   },
   {
@@ -118,11 +124,13 @@
             }
           }
         }
-      }
+      },
+      "result": "Şekeri kapıp {buyuk.akraba|le} göz göze geldin. Bu sırrı ikiniz yıllarca sakladınız."
     },
     "right": {
       "label": "Yemekten önce olmaz",
-      "effects": { "knowledge": 1 }
+      "effects": { "knowledge": 1 },
+      "result": "Şekeri yemekten sonraya sakladın. {buyuk.akraba} 'Bu çocuk akıllı olacak' dedi."
     }
   },
   {
@@ -150,7 +158,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Gördüğünü anlattın. {kardes.ad} azar yedi ve sana günlerce küs durdu."
     },
     "right": {
       "label": "Neyse, boş ver",
@@ -166,7 +175,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Sustun; oyuncağın gitti ama {kardes.ad} bu iyiliği hiç unutmadı."
     }
   },
   {
@@ -196,7 +206,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Harçlık kumbarana girdi. {buyuk.akraba} sevincini görünce yanağını sıktı."
     },
     "right": {
       "label": "Olmaz, ayıp olur",
@@ -212,7 +223,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Parayı nazikçe geri çevirdin. {buyuk.akraba} bayram boyunca herkese terbiyeni anlattı."
     }
   },
   {
@@ -240,7 +252,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Güzelce teşekkür ettin. {bakkal.ad} {bakkal.hitap.amca} o günden sonra seni hep adınla çağırdı."
     },
     "right": {
       "label": "İki tane olmaz mı?",
@@ -256,7 +269,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Pazarlık işe yaradı, iki sakız oldu. {bakkal.ad} kahkahayı bastı: 'Bu çocuk tüccar olacak.'"
     }
   },
   {
@@ -293,11 +307,13 @@
             }
           }
         }
-      }
+      },
+      "result": "Misafirleri, yemeği, kimin ne dediğini anlattın. {komsu.ad} çok mutlu; {veli.akraba} hiç değil."
     },
     "right": {
       "label": "Bilmiyorum ki",
-      "effects": { "knowledge": 1 }
+      "effects": { "knowledge": 1 },
+      "result": "Omuz silkip geçtin. Evin sırları güvende; ağzı sıkı olmayı erken öğrendin."
     }
   },
   {
@@ -314,7 +330,8 @@
     "text": "Ateşin 39'a çıktı. {veli.akraba} bütün gece başında, alnındaki ıslak bezi değiştirip duruyor.",
     "left": {
       "label": "Uyumaya çalış",
-      "effects": { "health": 3 }
+      "effects": { "health": 3 },
+      "result": "Gözlerini yumdun, uyku ateşini aldı götürdü. Sabah {veli.akraba} alnını öpüp gülümsedi."
     },
     "right": {
       "label": "Gitme, yanımda kal",
@@ -330,7 +347,8 @@
             }
           }
         }
-      }
+      },
+      "result": "{veli.akraba} sabaha kadar elini bırakmadı. Ateşin düştüğünde ikiniz de bitkindiniz."
     }
   },
   {
@@ -343,11 +361,13 @@
     "text": "Anaokulunun ilk günü. Kapıda biri ağlıyor, öbürü kum havuzunda bir krallık kuruyor.",
     "left": {
       "label": "Kum havuzuna!",
-      "effects": { "happiness": 3 }
+      "effects": { "happiness": 3 },
+      "result": "Kum krallığına katıldın. İlk gün bitmeden kumdan bir şatonun veziri olmuştun."
     },
     "right": {
       "label": "Öğretmenin yanına",
-      "effects": { "knowledge": 2 }
+      "effects": { "knowledge": 2 },
+      "result": "Öğretmenin yanından ayrılmadın. Günün sonunda bütün renklerin adını biliyordun."
     }
   }
 ]

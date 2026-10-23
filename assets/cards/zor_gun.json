@@ -27,7 +27,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Saatlerce konuştunuz. İçindeki düğüm biraz gevşedi; o geceyi {arayan.ad|le} hiç unutmayacaksın."
     },
     "right": {
       "label": "İyiyim, sağ ol",
@@ -43,7 +44,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Kısa kestin. {arayan.ad} üstelemedi; yalnızca 'Ben buradayım' dedi."
     }
   },
   {
@@ -76,7 +78,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Çayını içtiniz, eski günleri andınız. O zor yıl hiç konuşulmadı."
     },
     "right": {
       "label": "Zor günümde neredeydin?",
@@ -92,7 +95,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Soruyu sordun; {eski.ad} cevap veremedi. Kapattığında içinde bir yük hafifledi."
     }
   },
   {
@@ -122,13 +126,15 @@
             }
           }
         }
-      }
+      },
+      "result": "{dost.ad|e} o yıl aradığı için teşekkür ettin. Bir süre kimse konuşmadı; gerek de yoktu."
     },
     "right": {
       "label": "Hiç açmayalım o yılı",
       "effects": {
         "happiness": 1
-      }
+      },
+      "result": "Konuyu kapattınız. Ama kalkarken {dost.ad|in} omzunu her zamankinden uzun sıktın."
     }
   }
 ]

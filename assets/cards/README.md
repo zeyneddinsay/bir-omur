@@ -58,7 +58,7 @@ motoru" bölümündedir.
 | `roles` | hayır | Rol yuvaları (aşağıda); uygun kişi yoksa olay gelmez |
 | `speaker` | hayır | Konuşan rol yuvası; kartta onun portresi görünür |
 | `text` | evet | En fazla 140 karakter (en uzun adla) |
-| `left`, `right`, `up` | sol ve sağ zorunlu | `label` (en fazla 24 karakter), `effects`, isteğe bağlı zar: `roll` + `success` + `fail` |
+| `left`, `right`, `up` | sol ve sağ zorunlu | `label` (en fazla 24 karakter), `effects`, `result` (sonuç cümlesi); zarlı seçenekte `roll` + `success` + `fail` ve `result` yerine `successResult` + `failResult` |
 
 ## Rol yuvası
 
@@ -84,6 +84,16 @@ Uygun kişi seçilirken yakınlığı ya da husumeti yüksek kişiler iki kat a�
   eşleşir (cenaze, taziye). Sahne dışıdır; ona kişi etkisi yazılmaz.
 - **Ekler:** Ekler `{kerem.ad|e}` biçiminde yazılır: `e`, `i`, `in`, `de`, `den`, `le`. Elle yazılan
   ek (`{kerem.ad}'e`) hatadır.
+
+## Sonuç cümlesi
+
+- Her seçenek, seçildikten sonra ne olduğunu bir cümleyle anlatır: zarsız seçenekte `result`, zarlıda
+  `successResult` (zar tuttu) ve `failResult` (tutmadı). Cümle seçimden sonra üstteki şeritte ve yıl
+  günlüğünde görünür; en fazla 110 karakter (en uzun adla), kart metniyle aynı yer tutucular.
+- İkinci tekil şahısla, olmuş bir şey gibi yazılır: "Salıncağa ilk sen vardın. Ayakların bulutlara
+  değdi." Etkilerle tutarlıdır: itibar artıyorsa sebebi, kişiye anı yazılıyorsa o kişi cümlede görünür.
+  Seçenek etiketini tekrar etmez, sayı söylemez.
+- Ağır olaylarda (hastalık, ölüm, boşanma) şaka yapılmaz; kısa ve şefkatli.
 
 ## Etkiler
 

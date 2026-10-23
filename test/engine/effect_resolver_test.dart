@@ -112,6 +112,43 @@ void main() {
       expect(countSuccesses(100), 300);
     });
 
+    test('ihtimal hesabı atılan zarla tutarlı; kaba ihtimal üç basamak', () {
+      const luckRoll = Roll(stat: RollStat.luck, threshold: 50);
+      // Şans zarında ihtimal kabaca şansın kendisi.
+      expect(
+        EffectResolver.rollChance(testCharacter(luck: 20), luckRoll),
+        closeTo(0.21, 0.01),
+      );
+      expect(EffectResolver.rollChance(testCharacter(luck: 100), luckRoll), 1);
+      // Bilgi zarında şans küçük bir pay ekler.
+      const knowledgeRoll = Roll(stat: RollStat.knowledge, threshold: 50);
+      final lucky = EffectResolver.rollChance(
+        testCharacter(knowledge: 70, luck: 100),
+        knowledgeRoll,
+      );
+      final unlucky = EffectResolver.rollChance(
+        testCharacter(knowledge: 70, luck: 0),
+        knowledgeRoll,
+      );
+      expect(lucky, greaterThan(unlucky));
+      expect(lucky - unlucky, closeTo(0.2, 0.02));
+      // Tohumlu atışların oranı hesaplanan ihtimale yakın.
+      final c = testCharacter(knowledge: 40, luck: 60);
+      var hits = 0;
+      for (var seed = 0; seed < 2000; seed++) {
+        if (EffectResolver(Random(seed)).rollSucceeds(c, knowledgeRoll)) {
+          hits++;
+        }
+      }
+      expect(
+        hits / 2000,
+        closeTo(EffectResolver.rollChance(c, knowledgeRoll), 0.04),
+      );
+      expect(RollOdds.of(0.8), RollOdds.yuksek);
+      expect(RollOdds.of(0.5), RollOdds.orta);
+      expect(RollOdds.of(0.2), RollOdds.dusuk);
+    });
+
     test('aynı tohum aynı zarı atar', () {
       final a = EffectResolver(Random(42))
           .resolve(testCharacter(), PendingEvent(card), ChoiceSide.right);

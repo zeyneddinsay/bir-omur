@@ -25,7 +25,8 @@
             }
           }
         }
-      }
+      },
+      "result": "{sira.ad|in} elini tuttun. Teneffüs zili çaldığında ikiniz de korkuyu çoktan unutmuştunuz."
     },
     "right": {
       "label": "Ben de ağlarım",
@@ -41,7 +42,8 @@
             }
           }
         }
-      }
+      },
+      "result": "İkiniz birden ağladınız. Öğretmen ikinize de birer mendil uzattı; o gün dert ortağı oldunuz."
     }
   },
   {
@@ -59,7 +61,9 @@
       "fail": {
         "happiness": -3,
         "schedule": { "event": "lise_secimi", "inYears": 1 }
-      }
+      },
+      "successResult": "Hiç acele etmeden soruları tek tek bitirdin. Puanın iyi bir liseye yetti; evde kutlama var.",
+      "failResult": "Son sorulara vakit kalmadı. Puan gelince evde kimse bir şey demedi; hangi lise, yeniden konuşulacak."
     },
     "right": {
       "label": "Önce kolay sorular",
@@ -68,7 +72,9 @@
       "fail": {
         "happiness": -3,
         "schedule": { "event": "lise_secimi", "inYears": 1 }
-      }
+      },
+      "successResult": "Kolaylar çabuk bitti, kalan vakit zorlara da yetti. Puanın iyi bir liseye yetti!",
+      "failResult": "Kolay sandıkların bile uzun sürdü. Puan, istediğin liseye yetmedi."
     }
   },
   {
@@ -81,11 +87,13 @@
     "text": "LGS puanın Anadolu lisesine yetmedi. Kayıt masasında iki form var: mahalledeki lise ve meslek lisesi.",
     "left": {
       "label": "Mahalledeki lise",
-      "effects": { "happiness": 1 }
+      "effects": { "happiness": 1 },
+      "result": "Mahalledeki liseye yazıldın. Okul yolunu zaten ezbere biliyorsun, arkadaşların da orada."
     },
     "right": {
       "label": "Meslek lisesi",
-      "effects": { "addFlags": ["meslek_lisesi"], "knowledge": 1 }
+      "effects": { "addFlags": ["meslek_lisesi"], "knowledge": 1 },
+      "result": "Meslek lisesine yazıldın. Atölyenin makine yağı kokusu ilk günden tanıdık geldi."
     }
   },
   {
@@ -101,14 +109,18 @@
       "label": "Derin nefes, sakin ol",
       "roll": { "stat": "luck", "threshold": 45 },
       "success": { "addFlags": ["yks_iyi_gecti"], "happiness": 2 },
-      "fail": { "happiness": -2 }
+      "fail": { "happiness": -2 },
+      "successResult": "Nefesin düzene girdi, kalem kendiliğinden aktı. Salondan içinde iyi bir hisle çıktın.",
+      "failResult": "Sakin olmaya çalıştın ama ilk soruda takıldın. Çıkışta cevap anahtarına bakamadın."
     },
     "right": {
       "label": "Son dakika tekrarı",
       "effects": { "knowledge": 2 },
       "roll": { "stat": "knowledge", "threshold": 55 },
       "success": { "addFlags": ["yks_iyi_gecti"] },
-      "fail": { "happiness": -3 }
+      "fail": { "happiness": -3 },
+      "successResult": "Kapıda baktığın formül ilk on soruda karşına çıktı. Salondan gülümseyerek çıktın.",
+      "failResult": "Son dakika tekrarı kafanı karıştırdı. Bildiğin sorularda bile iki şık arasında kaldın."
     }
   },
   {
@@ -124,13 +136,17 @@
       "label": "Bu sefer olacak",
       "roll": { "stat": "luck", "threshold": 45 },
       "success": { "addFlags": ["yks_iyi_gecti"], "happiness": 2 },
-      "fail": { "happiness": -2 }
+      "fail": { "happiness": -2 },
+      "successResult": "Bu sefer eller titremedi. Çıkışta tanıdık yüzlerle 'Bu iş tamam' diye bakıştınız.",
+      "failResult": "Yine o tanıdık sıkışma geldi. Çıkışta kimseyle konuşmadan eve yürüdün."
     },
     "right": {
       "label": "Zor sorulardan başla",
       "roll": { "stat": "knowledge", "threshold": 60 },
       "success": { "addFlags": ["yks_iyi_gecti"], "knowledge": 1 },
-      "fail": { "happiness": -3 }
+      "fail": { "happiness": -3 },
+      "successResult": "Zor soruları başta devirdin, gerisi su gibi aktı. Bir yıllık emek karşılığını verdi.",
+      "failResult": "Zor sorular vaktini yedi; kolaylara sıra geldiğinde süre bitmişti."
     }
   },
   {
@@ -143,11 +159,13 @@
     "text": "Mezuniyet töreni. Kep havada, diploma elinde; okul yıllarının hepsi tek bir fotoğrafa sığıyor.",
     "left": {
       "label": "Kepi fırlat!",
-      "effects": { "knowledge": 5, "happiness": 6 }
+      "effects": { "knowledge": 5, "happiness": 6 },
+      "result": "Kepin kimin kafasına düştüğünü hiç öğrenemedin. Fotoğrafta herkes kahkaha atıyor."
     },
     "right": {
       "label": "Hocalara teşekkür et",
-      "effects": { "knowledge": 5, "happiness": 3, "reputation": 3 }
+      "effects": { "knowledge": 5, "happiness": 3, "reputation": 3 },
+      "result": "Hocalarının elini sıktın; biri 'Seninle gurur duyuyorum' dedi. Bu söz diplomadan ağır geldi."
     }
   },
   {
@@ -170,14 +188,16 @@
         "money": -10000,
         "happiness": 3,
         "reputation": 2
-      }
+      },
+      "result": "Davulcunun bahşişi senden çıktı ama bütün mahalle seni omuzlarda yolcu etti."
     },
     "right": {
       "label": "Sessizce gidip dön",
       "effects": {
         "addFlags": ["askerde"],
         "health": 3
-      }
+      },
+      "result": "Sabah erkenden çantanı alıp otobüse bindin. Talim ve erken yatmak vücuduna iyi geldi."
     }
   },
   {
@@ -199,14 +219,16 @@
         "addFlags": ["askerde"],
         "health": 3,
         "reputation": 2
-      }
+      },
+      "result": "Parayı bedelliye yatırmadın, yola çıktın. Mahallede 'Delikanlı adam' diye konuşuluyor."
     },
     "right": {
       "label": "Bedelli öderim",
       "effects": {
         "addFlags": ["askerligini_yapti", "bedelli"],
         "money": -300000
-      }
+      },
+      "result": "Bedelli parası hesaptan çıktı. Askerlik bitti ama 'bizim bölükte' hikâyelerin hiç olmayacak."
     }
   },
   {
@@ -226,11 +248,13 @@
     "variants": ["{merhum.akraba} gitti. Büyükler siyahlar giymiş; sana uzun bir yolculuğa çıktığını söylüyorlar."],
     "left": {
       "label": "Birine sıkıca sarıl",
-      "effects": { "happiness": -3 }
+      "effects": { "happiness": -3 },
+      "result": "En yakındaki kucağa sığındın. Uzun süre öyle kaldınız; kimse bir şey söylemedi."
     },
     "right": {
       "label": "Resmine uzun uzun bak",
-      "effects": { "happiness": -4 }
+      "effects": { "happiness": -4 },
+      "result": "{merhum.akraba|in} resminin önünde oturdun. Gülüşünü hiç unutmamaya söz verdin."
     }
   },
   {
@@ -251,11 +275,13 @@
     "variants": ["{merhum.akraba|in} cenazesi kalabalıktı. Herkes onun bir lafını, bir şakasını hatırlıyor.", "{merhum.akraba} artık yok. Biri onun eski bir fotoğrafını elden ele dolaştırıyor; herkes susuyor.", "{merhum.akraba} için helva kavruldu. Kokusu bütün evi doldurdu; aklına çocukluğundan bir gün geldi."],
     "left": {
       "label": "Gelenleri karşıla",
-      "effects": { "reputation": 2, "happiness": -4 }
+      "effects": { "reputation": 2, "happiness": -4 },
+      "result": "Bütün gün kapıda durup gelenleri karşıladın. Yorgundun ama hiçbir misafir yalnız kalmadı."
     },
     "right": {
       "label": "Bir köşede onu an",
-      "effects": { "happiness": -6 }
+      "effects": { "happiness": -6 },
+      "result": "Kalabalıktan uzaklaşıp sessizce oturdun. Onun sesi, gülüşü bir süre seninle kaldı."
     }
   },
   {
@@ -272,11 +298,13 @@
     "variants": ["{merhum.akraba} da gitti. Çocukken paylaştığınız odanın kapısı gözünün önünden gitmiyor."],
     "left": {
       "label": "Cenazeyi ben kaldırırım",
-      "effects": { "reputation": 2, "happiness": -8 }
+      "effects": { "reputation": 2, "happiness": -8 },
+      "result": "Cenazenin bütün işlerini sen üstlendin. Akşam eve dönünce ancak ağlayabildin."
     },
     "right": {
       "label": "Fotoğraflara bakarım",
-      "effects": { "happiness": -9 }
+      "effects": { "happiness": -9 },
+      "result": "Eski fotoğraflara saatlerce baktın. Neredeyse her karede yan yanaydınız."
     }
   },
   {
@@ -293,11 +321,13 @@
     "variants": ["{merhum.akraba} da gitti. Evin anahtarı artık sende; kapıyı açmak hiç bu kadar zor olmamıştı."],
     "left": {
       "label": "Her işi ben üstlenirim",
-      "effects": { "reputation": 3, "health": -3, "happiness": -8 }
+      "effects": { "reputation": 3, "health": -3, "happiness": -8 },
+      "result": "Mezarlıktan taziyeye her işi sen yürüttün. Herkes sana yaslandı; sen kimseye yaslanamadın."
     },
     "right": {
       "label": "Yasımı yaşayayım",
-      "effects": { "happiness": -10 }
+      "effects": { "happiness": -10 },
+      "result": "Kendine ağlamaya izin verdin. İşleri başkaları halletti; sen yalnızca onu andın."
     }
   }
 ]

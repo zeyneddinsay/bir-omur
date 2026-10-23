@@ -25,10 +25,11 @@
             }
           }
         }
-      }
+      },
+      "result": "Can kulağıyla dinledin. Ertesi gün dedikodu bütün apartmanı dolaşmıştı; bir ucu da sendeydi."
     },
     "right": {
-      "label": "Bize ne teyze",
+      "label": "Bize ne komşum",
       "effects": {
         "people": {
           "komsu": {
@@ -40,7 +41,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Lafı nazikçe kestin. {komsu.ad} dudak büktü; bir süre kapını pek çalmadı."
     }
   },
   {
@@ -72,10 +74,11 @@
             }
           }
         }
-      }
+      },
+      "result": "Borcu kapattın. {bakkal.ad} {bakkal.hitap.amca} sayfanın üstünü kocaman bir çizgiyle çizdi."
     },
     "right": {
-      "label": "Ay başına amca",
+      "label": "Ay başına öderim",
       "effects": {
         "people": {
           "bakkal": {
@@ -87,7 +90,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Defter kapandı ama adın orada kaldı. {bakkal.ad} {bakkal.hitap.amca} derin bir iç çekti."
     }
   },
   {
@@ -103,11 +107,13 @@
     "text": "Bakkal {bakkal.ad} {bakkal.hitap.amca} vefat etmiş. Kepenkte bir kâğıt var; köşesi rüzgârda kalkıp iniyor.",
     "left": {
       "label": "Taziyeye giderim",
-      "effects": { "reputation": 2, "happiness": -2 }
+      "effects": { "reputation": 2, "happiness": -2 },
+      "result": "Taziyeye gittin. Ailesi, onun seni hep sorduğunu anlattı; gözlerin doldu."
     },
     "right": {
       "label": "İçimden anarım",
-      "effects": { "happiness": -2 }
+      "effects": { "happiness": -2 },
+      "result": "Kepengin önünde biraz durdun. Tezgâhın ardındaki hâli, hatır soruşu bir bir aklından geçti."
     }
   },
   {
@@ -120,11 +126,13 @@
     "text": "Yaşlı bir amca seni durdurdu: 'Gül Sokak ne tarafta {oyuncu.hitap.evlat}?' Elinde buruşuk bir kâğıt var.",
     "left": {
       "label": "Elinden tutup götür",
-      "effects": { "reputation": 2, "happiness": 2 }
+      "effects": { "reputation": 2, "happiness": 2 },
+      "result": "Koluna girip Gül Sokak'a kadar götürdün. Amca yol boyu gençliğini anlattı."
     },
     "right": {
       "label": "Tarif ederim",
-      "effects": { "happiness": 1 }
+      "effects": { "happiness": 1 },
+      "result": "Tarifini dikkatle dinledi, iki kez tekrarlattı. Köşeyi dönerken sana el salladı."
     }
   },
   {
@@ -154,7 +162,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Pazarın köşesindeki çay ocağında saatler geçti. {eski.ad} ile yeniden arkadaş oldunuz."
     },
     "right": {
       "label": "Acelem var, sonra",
@@ -170,7 +179,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Numarasını aldın ama hiç aramadın. {eski.ad} pazarın kalabalığında kayboldu."
     }
   },
   {
@@ -199,11 +209,13 @@
             }
           }
         }
-      }
+      },
+      "result": "Eğilip elini öptün. {ogretmen.ad} {ogretmen.hitap.bey} gözlerini silip 'Ne güzel büyümüşsün' dedi."
     },
     "right": {
       "label": "Selam verip geç",
-      "effects": { "happiness": 1 }
+      "effects": { "happiness": 1 },
+      "result": "Selamlaşıp yoluna devam ettin. Arkandan gülümsediğini hissettin."
     }
   },
   {
@@ -232,7 +244,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Masum olduğunu yazdıkça yeni 'tanıklar' çıktı. Grup o gece eski günlerle çalkalandı."
     },
     "right": {
       "label": "Cevap vermem",
@@ -248,7 +261,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Mesajı okudun, cevap yazmadın. {eski.ad} bir süre sonra 'Alındı galiba' diye ekledi."
     }
   },
   {
@@ -261,11 +275,13 @@
     "text": "Parktaki bankta emekliler kendi zamanlarını anlatıyor. Herkes sana döndü: 'Sen anlat bakalım.'",
     "left": {
       "label": "Ben gençken...",
-      "effects": { "reputation": 2, "happiness": 2 }
+      "effects": { "reputation": 2, "happiness": 2 },
+      "result": "Gençlik hikâyelerini anlattın; kimse sözünü kesmedi. Ertesi gün bankta sana yer ayırdılar."
     },
     "right": {
       "label": "Ben dinleyeyim",
-      "effects": { "knowledge": 1, "happiness": 1 }
+      "effects": { "knowledge": 1, "happiness": 1 },
+      "result": "Herkesi dinledin, her hikâyeden bir şey öğrendin. Bankın en sevilen dinleyicisi oldun."
     }
   },
   {
@@ -279,11 +295,13 @@
     "text": "Merdivenin yarısında soluk soluğa kaldın. Doktor: 'Kolesterol, tansiyon, şeker; hepsine bir bakalım.'",
     "left": {
       "label": "Tahlilleri yaptır",
-      "effects": { "money": -6500, "health": 5 }
+      "effects": { "money": -6500, "health": 5 },
+      "result": "Tahliller yapıldı, ilaçlar düzene girdi. Merdivenleri artık eskisinden rahat çıkıyorsun."
     },
     "right": {
       "label": "Bir şeyim yok",
-      "effects": { "health": -3 }
+      "effects": { "health": -3 },
+      "result": "Doktora gitmedin. Merdivenler her geçen ay biraz daha uzadı."
     }
   },
   {
@@ -303,11 +321,14 @@
       "effects": { "money": -50000 },
       "roll": { "stat": "luck", "threshold": 45 },
       "success": { "addFlags": ["ehliyet_var"], "happiness": 4 },
-      "fail": { "happiness": -3 }
+      "fail": { "happiness": -3 },
+      "successResult": "Direksiyon sınavını ilk seferde geçtin! Hocan, sözünü tuttuğu için senden çok sevindi.",
+      "failResult": "Sınavda yokuşta stop ettin. Kursun parası gitti, ehliyet başka bahara kaldı."
     },
     "right": {
       "label": "Otobüs de araba",
-      "effects": { "happiness": 1 }
+      "effects": { "happiness": 1 },
+      "result": "Kurs yerine aylık otobüs kartı aldın. Yolda kitap okumak da bir keyif."
     }
   }
 ]

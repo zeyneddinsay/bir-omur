@@ -5,6 +5,30 @@ import '../models/models.dart';
 
 /// Motorun döndürdüğü kimlikleri ARB metinlerine çevirir.
 extension L10nNames on AppLocalizations {
+  String rollOddsName(RollOdds odds) => switch (odds) {
+    RollOdds.yuksek => rollOdds_yuksek,
+    RollOdds.orta => rollOdds_orta,
+    RollOdds.dusuk => rollOdds_dusuk,
+  };
+
+  String themeName(EventTheme theme) => switch (theme) {
+    EventTheme.aile => themeName_aile,
+    EventTheme.okul => themeName_okul,
+    EventTheme.ask => themeName_ask,
+    EventTheme.isHayati => themeName_isHayati,
+    EventTheme.para => themeName_para,
+    EventTheme.mahalle => themeName_mahalle,
+    EventTheme.saglik => themeName_saglik,
+    EventTheme.genel => themeName_genel,
+  };
+
+  /// Sıradan kartta etiket yok.
+  String? rarityName(Rarity rarity) => switch (rarity) {
+    Rarity.siradan => null,
+    Rarity.nadir => rarityNadir,
+    Rarity.efsane => rarityEfsane,
+  };
+
   String statName(StatKind kind) => switch (kind) {
     StatKind.health => statHealth,
     StatKind.happiness => statHappiness,

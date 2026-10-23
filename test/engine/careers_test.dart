@@ -305,6 +305,8 @@ void main() {
             {
               ...testCardJson('a', minAge: 20, maxAge: 30, text: 'Metin.'),
               ...extra,
+              if (extra['left'] case final Map<String, dynamic> left)
+                'left': withChoiceResult(left),
             },
           ]),
         }, careerFiles: careerFiles);

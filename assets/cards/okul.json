@@ -25,9 +25,14 @@
             }
           }
         }
-      }
+      },
+      "result": "Notu {kerem.ad|in} elinden kaptın. Sınıf alkışladı; {kerem.ad} ise bunu hiç unutmadı."
     },
-    "right": { "label": "Gülüp geçerim", "effects": { "happiness": -2 } }
+    "right": {
+      "label": "Gülüp geçerim",
+      "effects": { "happiness": -2 },
+      "result": "Gülüp geçtin ama not bütün sınıfa okundu. Yanakların teneffüs bitene kadar kızardı."
+    }
   },
   {
     "id": "karne_zayif",
@@ -55,7 +60,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Suçu öğretmene attın. {veli.akraba} inanmış gibi yaptı ama gözlerinden inanmadığı belliydi."
     },
     "right": {
       "label": "Bu dönem çalışacağım",
@@ -72,7 +78,8 @@
             }
           }
         }
-      }
+      },
+      "result": "O dönem akşamların ders masasında geçti. {veli.akraba} sözünü tuttuğunu gördü."
     }
   },
   {
@@ -90,7 +97,8 @@
     "text": "Takdir belgesi! {veli.akraba} bütün akrabaları tek tek arıyor, telefon elden ele dolaşıyor.",
     "left": {
       "label": "Yapma, utanıyorum",
-      "effects": { "happiness": 2 }
+      "effects": { "happiness": 2 },
+      "result": "Kulakların kızardı ama için için keyiflendin. Telefon yine de elden ele dolaştı."
     },
     "right": {
       "label": "Ben de konuşayım!",
@@ -106,7 +114,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Telefonu alıp akrabalara tek tek teşekkür ettin. {veli.akraba} gururdan ağlamaklıydı."
     }
   },
   {
@@ -137,7 +146,9 @@
       },
       "roll": { "stat": "luck", "threshold": 50 },
       "success": { "happiness": 1 },
-      "fail": { "reputation": -4, "happiness": -3 }
+      "fail": { "reputation": -4, "happiness": -3 },
+      "successResult": "Öğretmen pencereden hiç dönmedi. {arkadas.ad} çıkışta sana bir gofret ısmarladı.",
+      "failResult": "Öğretmen tam o an döndü. İkinizin de kâğıdı alındı, adınız müdüre kadar gitti."
     },
     "right": {
       "label": "Olmaz, yakalanırız",
@@ -152,7 +163,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Kâğıdını kolunla kapattın. {arkadas.ad} sınav boyunca sana küskün küskün baktı."
     }
   },
   {
@@ -184,7 +196,9 @@
           }
         }
       },
-      "fail": { "happiness": -2 }
+      "fail": { "happiness": -2 },
+      "successResult": "Soruyu adım adım çözdün. {ogretmen.ad} {ogretmen.hitap.bey} 'Aferin' dedi, sınıf alkışladı.",
+      "failResult": "Tebeşir elinde, tahtanın önünde donup kaldın. Sınıfın bakışları altında yerine sessizce döndün."
     },
     "right": {
       "label": "Bilmiyorum öğretmenim",
@@ -200,7 +214,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Bilmediğini dürüstçe söyledin. {ogretmen.ad} {ogretmen.hitap.bey} soruyu sana baştan anlattı."
     }
   },
   {
@@ -234,7 +249,8 @@
             }
           }
         }
-      }
+      },
+      "result": "{arkadas.ad|le} köşeyi dönene kadar koştunuz. Akşam cam sahibi sizin kapıyı da çaldı."
     },
     "right": {
       "label": "Onu gösteririm",
@@ -250,7 +266,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Topu atanı gösterdin. Cam sahibi dürüstlüğünü övdü; {arkadas.ad} sana haftalarca küstü."
     }
   },
   {
@@ -285,7 +302,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Renkli kâğıtlardan bir kutu yaptın. {arkadas.ad} onu bütün hediyelerin önüne koydu."
     },
     "right": {
       "label": "Gitmesem de olur",
@@ -300,7 +318,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Evde kaldın. Pazartesi {arkadas.ad} selam vermeden yanından geçti."
     }
   },
   {
@@ -329,11 +348,13 @@
             }
           }
         }
-      }
+      },
+      "result": "Dönüp kafa tuttun. Kıkırdamalar kesildi; {rakip.ad} bunu kendine dert edindi."
     },
     "right": {
       "label": "Boş ver, geç",
-      "effects": { "happiness": -2 }
+      "effects": { "happiness": -2 },
+      "result": "Hiçbir şey demeden yürüdün. Kıkırdamalar koridor boyunca arkandan geldi."
     }
   },
   {
@@ -365,7 +386,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Tutturmadın; telefon bir yıl daha bekleyecek. {veli.akraba} bu anlayışını hiç unutmadı."
     },
     "right": {
       "label": "Ama herkeste var!",
@@ -383,7 +405,9 @@
             }
           }
         }
-      }
+      },
+      "successResult": "{veli.akraba} sonunda eski telefonunu sana verdi. Ekranı çatlak ama artık senin!",
+      "failResult": "Ev ayağa kalktı, kapılar çarptı. Telefon yok; {veli.akraba} da sana biraz kırgın."
     }
   },
   {
@@ -415,11 +439,13 @@
             }
           }
         }
-      }
+      },
+      "result": "Masa lambasının altında kendi başına çalıştın. {veli.akraba} borca girmediği için rahatladı."
     },
     "right": {
       "label": "Gideyim",
-      "effects": { "knowledge": 6, "happiness": -2 }
+      "effects": { "knowledge": 6, "happiness": -2 },
+      "result": "Dershaneye yazıldın. Hafta sonların gitti ama netlerin her denemede biraz arttı."
     }
   },
   {
@@ -451,11 +477,13 @@
             }
           }
         }
-      }
+      },
+      "result": "Gitmedin; pazartesi herkes filmi konuştu. {veli.akraba} o akşam sana sıkıca sarıldı."
     },
     "right": {
       "label": "Lütfen, bu seferlik",
-      "effects": { "happiness": 3 }
+      "effects": { "happiness": 3 },
+      "result": "{veli.akraba} cüzdandaki son parayı uzattı. Film harikaydı, mısırı arkadaşlarınla bölüştün."
     }
   }
 ]

@@ -10,13 +10,16 @@
     "text": "Meslek lisesinin stajı sanayide. Usta ilk gün eline çaydanlığı verdi: 'Önce çay, sonra motor.'",
     "left": {
       "label": "Çayı demlerim",
-      "effects": { "reputation": 2, "happiness": -1 }
+      "effects": { "reputation": 2, "happiness": -1 },
+      "result": "Bütün yaz çay demledin. Usta giderken 'Bu çocuk sabırlı' dedi; sanayide adın iyiye çıktı."
     },
     "right": {
       "label": "Motora bakmak istiyorum",
       "roll": { "stat": "luck", "threshold": 50 },
       "success": { "knowledge": 3, "happiness": 2 },
-      "fail": { "reputation": -2 }
+      "fail": { "reputation": -2 },
+      "successResult": "Usta keyifliydi, seni kaputun altına çağırdı. Bir haftada bujiyi karbüratörden ayırır oldun.",
+      "failResult": "Usta kaşlarını çattı: 'Çay demleyemeyen motor mu bağlayacak?' Atölyede adın 'aceleci' kaldı."
     }
   },
   {
@@ -44,7 +47,8 @@
             }
           }
         }
-      }
+      },
+      "result": "{rakip.ad|i} tebrik ettin. Önce şaşırdı, sonra gülümsedi: 'Bir dahakine sen geçersin.'"
     },
     "right": {
       "label": "Bir dahakine görürsün",
@@ -60,7 +64,8 @@
             }
           }
         }
-      }
+      },
+      "result": "{rakip.ad} kaşını kaldırdı. O günden sonra kütüphaneden en son hep siz ikiniz çıktınız."
     }
   },
   {
@@ -103,7 +108,9 @@
             }
           }
         }
-      }
+      },
+      "successResult": "{oda.ad} mahcup oldu; hemen bir bulaşık nöbeti listesi yapıp dolabın kapağına astınız.",
+      "failResult": "{oda.ad} bozuldu: 'Annem gibi konuşma!' Bulaşıklar bir gün daha lavaboda bekledi."
     },
     "right": {
       "label": "Ben yıkarım",
@@ -119,7 +126,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Bulaşığı tek başına yıkadın. {oda.ad} bir şey demedi ama akşam sana bir paket bisküvi aldı."
     }
   },
   {
@@ -148,7 +156,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Faturayı ikiye böldünüz. {ev.ad} payını ödedi ama bir hafta boyunca surat astı."
     },
     "right": {
       "label": "Bu sefer ben öderim",
@@ -164,7 +173,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Faturanın hepsini sen yatırdın. {ev.ad} rahatladı: 'Bir dahaki benden, söz.'"
     }
   },
   {
@@ -182,7 +192,8 @@
     "text": "Yarın vize var. {arkadas.ad}: 'Kafede birlikte çalışalım' diyor; ikiniz de biliyorsunuz ki sohbet edeceksiniz.",
     "left": {
       "label": "Kütüphaneye giderim",
-      "effects": { "knowledge": 4, "happiness": -2 }
+      "effects": { "knowledge": 4, "happiness": -2 },
+      "result": "Kütüphanede sabahladın. Vizede sorular tanıdık geldi ama gözlerin kan çanağıydı."
     },
     "right": {
       "label": "Kafeye gidelim",
@@ -199,7 +210,8 @@
             }
           }
         }
-      }
+      },
+      "result": "{arkadas.ad|le} sabaha kadar konuştunuz. Ders yarım kaldı ama o gece hiç unutulmadı."
     }
   },
   {
@@ -229,7 +241,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Sözü {arkadas.ad|e} bıraktın. Hoca projeyi onun sandı; sınıfta senin adın hiç geçmedi."
     },
     "right": {
       "label": "Hocaya anlatırım",
@@ -245,7 +258,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Hocaya her şeyi anlattın. Projeyi sen sundun ama {arkadas.ad} artık selam vermiyor."
     }
   },
   {
@@ -259,11 +273,13 @@
     "text": "Dağcılık kulübü stant açmış: 'Hafta sonu kamp var, çadır bizden, çorba senden.'",
     "left": {
       "label": "Yazılırım",
-      "effects": { "money": -3000, "happiness": 4, "health": 2 }
+      "effects": { "money": -3000, "happiness": 4, "health": 2 },
+      "result": "Aidatı ödeyip kampa gittin. Çorban dibine tuttu ama zirvede herkes kâseyi bitirdi."
     },
     "right": {
       "label": "Hafta sonu ders var",
-      "effects": { "knowledge": 1 }
+      "effects": { "knowledge": 1 },
+      "result": "Hafta sonunu derse verdin. Pazartesi kampçıların fotoğraflarına bakarken biraz kıskandın."
     }
   },
   {
@@ -281,11 +297,13 @@
         "addFlags": ["staj_yapti"],
         "knowledge": 3,
         "happiness": -2
-      }
+      },
+      "result": "Bütün yaz ücretsiz çalıştın. Bol fotokopi çektin ama özgeçmişine ilk satırı da yazdın."
     },
     "right": {
       "label": "Yaz tatil yapacağım",
-      "effects": { "happiness": 4 }
+      "effects": { "happiness": 4 },
+      "result": "Yaz deniz, kum ve uzun uykularla geçti. Staj işini başka bahara bıraktın."
     }
   },
   {
@@ -319,7 +337,8 @@
             }
           }
         }
-      }
+      },
+      "result": "{veli.akraba|e} 'Dert etme' dedin. Ay sonunu makarnayla getirdin; onun sesi ferahladı ya, yetti."
     },
     "right": {
       "label": "Zaten zor geçiniyorum",
@@ -334,7 +353,8 @@
             }
           }
         }
-      }
+      },
+      "result": "{veli.akraba} bir süre sustu: 'Haklısın {oyuncu.hitap.evlat}.' Telefonu kapatınca içinde burukluk kaldı."
     }
   },
   {
@@ -364,7 +384,8 @@
             }
           }
         }
-      }
+      },
+      "result": "{asker.ad|le} bir saat bölük günlerini andınız. Kapatırken buluşmak için söz verdiniz."
     },
     "right": {
       "label": "Pek hatırlamıyorum",
@@ -379,7 +400,8 @@
             }
           }
         }
-      }
+      },
+      "result": "{asker.ad} biraz bozuldu: 'Neyse, sen yine de iyi bak kendine.' Konuşma kısa sürdü."
     }
   },
   {
@@ -397,7 +419,8 @@
     "text": "{akraba.akraba}: 'Bizim komşunun oğlu bankaya girdi. Sen niye girmiyorsun, diplomayı çerçeveye mi koydun?'",
     "left": {
       "label": "İlanlara bakıyorum",
-      "effects": { "happiness": -1, "knowledge": 1 }
+      "effects": { "happiness": -1, "knowledge": 1 },
+      "result": "O akşam ilanları baştan sona taradın. Kimse aramadı ama hangi işin ne istediğini öğrendin."
     },
     "right": {
       "label": "Herkesin yolu ayrı",
@@ -413,7 +436,8 @@
             }
           }
         }
-      }
+      },
+      "result": "{akraba.akraba} dudak büktü ama sen rahatladın. İş konusunu bir daha açmadı."
     }
   }
 ]

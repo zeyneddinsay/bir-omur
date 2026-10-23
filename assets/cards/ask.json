@@ -26,7 +26,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Fısıltı teneffüs bitmeden sınıfı dolaştı. {a.ad} bütün gün sana bakmamaya çalıştı."
     },
     "right": {
       "label": "{b.ad}",
@@ -42,11 +43,13 @@
             }
           }
         }
-      }
+      },
+      "result": "Sır, zil çalmadan {b.ad|in} kulağına gitti. Göz göze gelince ikiniz de kıpkırmızı oldunuz."
     },
     "up": {
       "label": "Söylemem!",
-      "effects": { "reputation": 1 }
+      "effects": { "reputation": 1 },
+      "result": "Ağzından tek kelime alamadılar. Sınıfta sır küpü diye anılmaya başladın."
     }
   },
   {
@@ -76,7 +79,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Fısıltı teneffüs bitmeden sınıfı dolaştı. {a.ad} o gün top oynarken üç kez sana baktı."
     },
     "right": {
       "label": "{b.ad}",
@@ -92,11 +96,13 @@
             }
           }
         }
-      }
+      },
+      "result": "Sır, zil çalmadan {b.ad|in} kulağına gitti. Ertesi gün koridorda sana utangaç bir 'Günaydın' dedi."
     },
     "up": {
       "label": "Söylemem!",
-      "effects": { "reputation": 1 }
+      "effects": { "reputation": 1 },
+      "result": "Ağzından tek kelime alamadılar. Bu sırrı kimseye vermeyen biri olarak anıldın."
     }
   },
   {
@@ -126,11 +132,13 @@
             }
           }
         }
-      }
+      },
+      "result": "Tuzlu kahveyi son damlasına kadar içtin. {nisanli.ad} gülmemek için dudağını ısırdı."
     },
     "right": {
       "label": "Bir yudum, gülümseme",
-      "effects": { "happiness": 1, "reputation": -1 }
+      "effects": { "happiness": 1, "reputation": -1 },
+      "result": "Bir yudum alıp gülümsedin. Odadaki teyzeler birbirine baktı: 'Damat pek nazlıymış.'"
     }
   },
   {
@@ -160,7 +168,8 @@
             }
           }
         }
-      }
+      },
+      "result": "{nisanli.ad} tuzlu kahveyi yüzünü buruşturmadan içti. Kahkahanı mutfağa kaçıp orada attın."
     },
     "right": {
       "label": "Şekerli yaparım",
@@ -175,7 +184,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Kahveyi şekerli yaptın. {nisanli.ad} ilk yudumda sana minnetle baktı."
     }
   },
   {
@@ -193,11 +203,13 @@
     "closing": "{nisanli.ad} ile düğün hiç olmadı; davetiyeler çekmecede kaldı.",
     "left": {
       "label": "Salon düğünü",
-      "effects": { "money": -700000, "gold": 60, "happiness": 8 }
+      "effects": { "money": -700000, "gold": 60, "happiness": 8 },
+      "result": "Salon tıklım tıklımdı, halay gece yarısına kadar sürdü. Takı masasından da epey altın çıktı."
     },
     "right": {
       "label": "Belediyede nikâh",
-      "effects": { "money": -30000, "gold": 5, "happiness": 4 }
+      "effects": { "money": -30000, "gold": 5, "happiness": 4 },
+      "result": "Belediyede, en yakınlarınızın önünde 'Evet' dediniz. Birkaç çeyrek takıldı, gözler doldu."
     }
   },
   {
@@ -216,15 +228,18 @@
     "variants": ["Yine bebek sesi! {es.ad} yorgun ama gülümsüyor. Ad yine masada: büyüklerin dediği mi, bugünün adı mı?", "Ev yine kalabalıklaştı: yeni bebek geldi. {es.ad}: 'Bu sefer adı kolay olsun.'", "Kalabalık bir aile oldunuz. Yeni bebek {es.ad|in} kucağında uyuyor; ablalar, ağabeyler sıraya girmiş."],
     "left": {
       "label": "Büyüklerin dediği",
-      "effects": { "happiness": 8 }
+      "effects": { "happiness": 8 },
+      "result": "Bebeğe büyüklerden birinin adı verildi. Nineler, dedeler gururdan kabardı."
     },
     "right": {
       "label": "Bugünün bir adı",
-      "effects": { "happiness": 8 }
+      "effects": { "happiness": 8 },
+      "result": "Bugünün adlarından biri seçildi. Büyükler önce kaş kaldırdı, sonra adı en çok onlar sevdi."
     },
     "up": {
       "label": "Biz koyacağız",
-      "effects": { "happiness": 10 }
+      "effects": { "happiness": 10 },
+      "result": "Adı siz koydunuz. {es.ad} bebeğin kulağına adını ilk kez fısıldadı."
     }
   },
   {
@@ -255,7 +270,9 @@
             }
           }
         }
-      }
+      },
+      "successResult": "Tarihi şans eseri tutturdun. {sevgili.ad} boynuna sarıldı; kalbin hâlâ küt küt atıyor.",
+      "failResult": "Yanlış tarihi söyledin. {sevgili.ad} tek kelime etmeden içeri girdi; akşam sessiz geçti."
     },
     "right": {
       "label": "Özür, telafi ederim",
@@ -271,7 +288,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Özür diledin, akşam onu en sevdiği yere götürdün. Hesap kabarık ama gönlü yerine geldi."
     }
   },
   {
@@ -299,7 +317,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Telefonu uzattın. Kargo mesajını gören {sevgili.ad} utanıp güldü, mesele kapandı."
     },
     "right": {
       "label": "Bu güvensizlik yorucu",
@@ -315,7 +334,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Sesler yükseldi, kapılar çarptı. O gece ikiniz de uyuyamadınız."
     }
   },
   {
@@ -345,14 +365,16 @@
             }
           }
         }
-      }
+      },
+      "result": "Deniz kenarında bir hafta geçirdiniz. Yanık omuzlar, tuzlu saçlar, {sevgili.ad} ile ilk albüm."
     },
     "right": {
       "label": "Şehirde bir hafta sonu",
       "effects": {
         "money": -10000,
         "happiness": 3
-      }
+      },
+      "result": "Şehirde iki gün turist gibi gezdiniz. Bütçe sağ salim, keyif de yerinde."
     }
   },
   {
@@ -370,7 +392,8 @@
     "text": "{sevgili.ad} {anne.akraba|le} ilk kez tanıştı. Dönüşte sessiz: 'Annen beni sevmedi, değil mi?'",
     "left": {
       "label": "Zamanla sever",
-      "effects": { "happiness": -1 }
+      "effects": { "happiness": -1 },
+      "result": "Konuyu geçiştirdin. {sevgili.ad} başını cama yasladı; yol boyunca pek konuşmadınız."
     },
     "right": {
       "label": "Annemle konuşurum",
@@ -385,7 +408,8 @@
             }
           }
         }
-      }
+      },
+      "result": "{anne.akraba|le} konuştun ve {sevgili.ad|in} arkasında durdun. Bunu hiç unutmayacak."
     }
   },
   {
@@ -415,7 +439,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Bayramı {es.ad|in} ailesinde geçirdiniz. Sofra uzundu, sohbet ondan da uzun."
     },
     "right": {
       "label": "Annem çok bekliyor",
@@ -430,7 +455,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Bayramı yine senin ailende geçirdiniz. {es.ad} bayram boyunca güldü ama dönüş yolunda hiç konuşmadı."
     }
   },
   {
@@ -459,7 +485,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Güler yüzle çay koydun, içinden biraz söylenerek. {kayin.akraba} giderken 'Elinize sağlık' dedi."
     },
     "right": {
       "label": "Haber verseydiniz",
@@ -474,7 +501,8 @@
             }
           }
         }
-      }
+      },
+      "result": "{kayin.akraba} kaşlarını kaldırdı, çayını içmeden kalktı. Bu söz kolay unutulmayacak."
     }
   },
   {
@@ -502,7 +530,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Makineyi boşaltmak artık senin işin. {es.ad} ilk hafta seni takdirle izledi."
     },
     "right": {
       "label": "Ama yemeği ben yaptım",
@@ -517,7 +546,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Yemek mi zor, bulaşık mı? Tartışma uzadı; {es.ad} makineyi söylene söylene boşalttı."
     }
   },
   {
@@ -534,11 +564,13 @@
     "text": "{cocuk.ad} koltuğa tutunarak doğruldu, bıraktı, iki adım attı ve kahkahayla popo üstü oturdu.",
     "left": {
       "label": "Videoya çektim!",
-      "effects": { "happiness": 6 }
+      "effects": { "happiness": 6 },
+      "result": "Videoyu yüz kez izledin. Telefonun hafızası doldu ama o iki adımı silmeye kıyamadın."
     },
     "right": {
       "label": "Herkesi ararım",
-      "effects": { "happiness": 5, "reputation": 1 }
+      "effects": { "happiness": 5, "reputation": 1 },
+      "result": "Bütün akrabalar haberi aynı akşam aldı. {cocuk.ad|in} ilk adımları dilden dile dolaştı."
     }
   },
   {
@@ -566,11 +598,13 @@
             }
           }
         }
-      }
+      },
+      "result": "Akşamları {cocuk.ad} ile ödeve oturdun. Pencereye kaçan bakışlar azaldı, senin sabrın da."
     },
     "right": {
       "label": "Ben de öyleydim",
-      "effects": { "happiness": 2 }
+      "effects": { "happiness": 2 },
+      "result": "Öğretmene gülümsedin. Eve dönünce {cocuk.ad|e} pencereden ne gördüğünü sordun; uzun uzun anlattı."
     }
   },
   {
@@ -599,12 +633,12 @@
             }
           }
         }
-      }
+      },
+      "result": "Cumartesi tribünün en önündeydin. {cocuk.ad} gol atamadı ama her koşusunda sana baktı."
     },
     "right": {
       "label": "İşim var, sonra",
       "effects": {
-        "performance": 0,
         "people": {
           "cocuk": {
             "memory": {
@@ -615,7 +649,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Maçı iş yüzünden kaçırdın. Akşam {cocuk.ad} skoru söyledi, sonra odasına çekildi."
     }
   },
   {
@@ -643,11 +678,13 @@
             }
           }
         }
-      }
+      },
+      "result": "Kapıyı tıklattın; bir süre sonra açıldı. {cocuk.ad} bir saat anlattı, sen yalnızca dinledin."
     },
     "right": {
       "label": "Biraz yalnız kalsın",
-      "effects": { "happiness": -1 }
+      "effects": { "happiness": -1 },
+      "result": "Kapı akşama kadar açılmadı. Yemekte {cocuk.ad} tek kelime etmedi."
     }
   },
   {
@@ -663,11 +700,13 @@
     "text": "{merhum.ad} artık yok. Ev çok sessiz; ikinci çay bardağını hâlâ dolaptan çıkarıyorsun.",
     "left": {
       "label": "Sevdiklerime sarılırım",
-      "effects": { "happiness": -12 }
+      "effects": { "happiness": -12 },
+      "result": "Kalabalık bir sofrada birlikte sustunuz. Sevdiklerinin elleri o boşluğu biraz olsun taşıdı."
     },
     "right": {
       "label": "Bir süre yalnız kalırım",
-      "effects": { "happiness": -14, "health": -2 }
+      "effects": { "happiness": -14, "health": -2 },
+      "result": "Günlerce kimseyi görmedin; iştahın da uykun da kaçtı."
     }
   },
   {
@@ -683,11 +722,13 @@
     "text": "{merhum.ad|i} toprağa verdiniz. Kimse bir şey söylemiyor; söylenecek bir şey yok.",
     "left": {
       "label": "Birbirimize tutunuruz",
-      "effects": { "happiness": -18 }
+      "effects": { "happiness": -18 },
+      "result": "Birbirinizin elini bırakmadınız. Acı azalmadı ama kimse onu tek başına taşımadı."
     },
     "right": {
       "label": "Sessizce otururum",
-      "effects": { "happiness": -20, "health": -3 }
+      "effects": { "happiness": -20, "health": -3 },
+      "result": "Günlerce aynı sandalyede oturdun; ne yemek geçti boğazından ne uyku geldi."
     }
   }
 ]

@@ -11,11 +11,14 @@
       "label": "Dönüp el salla",
       "roll": { "stat": "luck", "threshold": 50 },
       "success": { "happiness": 5 },
-      "fail": { "health": -2, "happiness": 2 }
+      "fail": { "health": -2, "happiness": 2 },
+      "successResult": "Dönüp el salladın, bisiklet hiç sallanmadı. O akşam bunu herkese üç kez anlattın.",
+      "failResult": "El sallarken gidon döndü, dizin sıyrıldı. Biraz ağladın, sonra yine bindin."
     },
     "right": {
       "label": "Durmadan devam",
-      "effects": { "happiness": 4 }
+      "effects": { "happiness": 4 },
+      "result": "Sokağın sonuna kadar pedal çevirdin. Dönüp baktığında koca bir yol gitmiştin."
     }
   },
   {
@@ -28,11 +31,13 @@
     "text": "Saklambaç oynuyorsunuz; ebe sensin. Sayarken herkesin nereye saklandığını duydun.",
     "left": {
       "label": "Hile yapmam",
-      "effects": { "reputation": 1, "happiness": 2 }
+      "effects": { "reputation": 1, "happiness": 2 },
+      "result": "Duymamış gibi dürüstçe aradın. Oyun bitince çocuklar 'Bu hile yapmaz' diye seni takıma istedi."
     },
     "right": {
       "label": "Hepsini bul!",
-      "effects": { "happiness": 3, "reputation": -1 }
+      "effects": { "happiness": 3, "reputation": -1 },
+      "result": "Üç saniyede herkesi buldun. 'Kesin dikizledi!' diye söylendiler; kazandın ama alkış yok."
     }
   },
   {
@@ -60,11 +65,13 @@
             }
           }
         }
-      }
+      },
+      "result": "Resmini beşiğin kenarına koydun. {kardes.ad} uykusunda gülümsedi; sana gülümsediğine karar verdin."
     },
     "right": {
       "label": "Odamda küserim",
-      "effects": { "happiness": -2 }
+      "effects": { "happiness": -2 },
+      "result": "Akşama kadar odadan çıkmadın. Kimsenin fark etmemesi en çok buna koydu."
     }
   },
   {
@@ -93,11 +100,13 @@
             }
           }
         }
-      }
+      },
+      "result": "Cebinden şekeri çıkardın; {torun.ad} boynuna sarıldı. O cep bundan sonra hiç boş kalmayacak."
     },
     "right": {
       "label": "Önce yemek",
-      "effects": { "happiness": 2, "health": 1 }
+      "effects": { "happiness": 2, "health": 1 },
+      "result": "Önce sofraya oturdunuz. {torun.ad} çorbasını bitirince şekerini aldı; ikiniz de memnundunuz."
     }
   },
   {
@@ -126,11 +135,13 @@
             }
           }
         }
-      }
+      },
+      "result": "Eski ansiklopediyi tozundan çıkardın. {torun.ad|le} ödevi birlikte, hem de el yazısıyla bitirdiniz."
     },
     "right": {
       "label": "Kendin çöz bakalım",
-      "effects": { "happiness": 1 }
+      "effects": { "happiness": 1 },
+      "result": "O uğraştı, sen yanında çay içtin. {torun.ad} bitirince 'Kolaymış zaten' dedi."
     }
   },
   {
@@ -147,11 +158,13 @@
     "text": "{torun.ad} yeni telefonunu kuruyor. Üçüncü kez aynı şeyi soruyorsun; sabrı tükeniyor ama gülümsüyor.",
     "left": {
       "label": "Bir kâğıda yaz",
-      "effects": { "knowledge": 2, "happiness": 2 }
+      "effects": { "knowledge": 2, "happiness": 2 },
+      "result": "{torun.ad} adımları bir kâğıda yazdı; kâğıt telefonun kılıfında duruyor. Artık sormuyorsun."
     },
     "right": {
       "label": "Eskisi iyiydi",
-      "effects": { "happiness": -1 }
+      "effects": { "happiness": -1 },
+      "result": "Eski telefonunu çekmeceden çıkardın. {torun.ad} güldü; yenisi kutusunda kaldı."
     }
   },
   {
@@ -181,11 +194,13 @@
             }
           }
         }
-      }
+      },
+      "result": "Herkesin cebine bir harçlık koydun. {evlat.akraba} 'Bu ev hiç değişmiyor' dedi; akşama kadar kimse gitmedi."
     },
     "right": {
       "label": "Biraz yoruldum",
-      "effects": { "happiness": 2, "health": -1 }
+      "effects": { "happiness": 2, "health": -1 },
+      "result": "Öğleden sonra bir köşeye çekilip uzandın. Kalabalığın sesi uykuna karıştı."
     }
   },
   {
@@ -200,11 +215,14 @@
       "label": "Mars ederim",
       "roll": { "stat": "luck", "threshold": 50 },
       "success": { "happiness": 5, "reputation": 1 },
-      "fail": { "happiness": 1 }
+      "fail": { "happiness": 1 },
+      "successResult": "Zarlar senden yanaydı; öğretmeni mars ettin! Bütün kahve masanın başına toplandı.",
+      "failResult": "Zarlar bugün öğretmeni sevdi. Kaybettin, ama çaylar onun hesabına; yarın rövanş var."
     },
     "right": {
       "label": "Seyretmek yeter",
-      "effects": { "happiness": 2 }
+      "effects": { "happiness": 2 },
+      "result": "Öğretmen başka bir rakip buldu. Kenardan her hamleye yorum yaptın; önce kızdılar, sonra güldüler."
     }
   },
   {
@@ -218,11 +236,13 @@
     "text": "Akşam ev çok sessiz. Telefon rehberinde uzun zamandır aramadığın isimler var.",
     "left": {
       "label": "Birini ararım",
-      "effects": { "happiness": 4 }
+      "effects": { "happiness": 4 },
+      "result": "Eski bir arkadaşının numarasını çevirdin. Sesinden tanıdı; telefon bir saat kapanmadı."
     },
     "right": {
       "label": "Radyoyu açarım",
-      "effects": { "happiness": 1 }
+      "effects": { "happiness": 1 },
+      "result": "Radyoda bir arkası yarın vardı. Ev biraz daha az sessiz geldi."
     }
   },
   {
@@ -235,13 +255,16 @@
     "text": "Doktor: 'Artık bir baston iyi olur.' Baston köşede duruyor, gururun da onun önünde.",
     "left": {
       "label": "Bastonu alırım",
-      "effects": { "health": 3 }
+      "effects": { "health": 3 },
+      "result": "İlk gün biraz utandın. Sonra baston yol arkadaşın oldu; adımların sağlamlaştı."
     },
     "right": {
       "label": "Daha gencim",
       "roll": { "stat": "luck", "threshold": 55 },
       "success": { "happiness": 3 },
-      "fail": { "health": -5 }
+      "fail": { "health": -5 },
+      "successResult": "Bastonu köşede bıraktın ve bu yıl dimdik yürüdün. Doktor kontrolde kaşlarını kaldırdı.",
+      "failResult": "Kaldırımın kenarında ayağın kaydı ve sert düştün. Baston hâlâ köşede, seni bekliyor."
     }
   },
   {
@@ -254,11 +277,13 @@
     "text": "Çekmecede eski fotoğraflar buldun: okul önlüğü, askerlik, bir düğün. Kenarları sararmış.",
     "left": {
       "label": "Birine anlatırım",
-      "effects": { "happiness": 4 }
+      "effects": { "happiness": 4 },
+      "result": "Fotoğrafları yanındakine bir bir anlattın. Her birinin hikâyesi bir öncekinden uzun çıktı."
     },
     "right": {
       "label": "Tek tek bakarım",
-      "effects": { "happiness": 3 }
+      "effects": { "happiness": 3 },
+      "result": "Fotoğraflara tek tek baktın. Bazı yüzlere gülümsedin, bazılarında biraz durdun."
     }
   },
   {
@@ -271,11 +296,13 @@
     "text": "Balkonda domates yetiştirmeye başladın. İlk domates kızardı; kimseye göstermeden duramıyorsun.",
     "left": {
       "label": "Herkese fotoğraf",
-      "effects": { "happiness": 4 }
+      "effects": { "happiness": 4 },
+      "result": "Domatesin fotoğrafını herkese gönderdin. Gelen tebrik mesajları domatesten büyük çıktı."
     },
     "right": {
       "label": "Sessizce yerim",
-      "effects": { "happiness": 3, "health": 1 }
+      "effects": { "happiness": 3, "health": 1 },
+      "result": "Tuzlayıp balkonda tek başına yedin. Hayatının en güzel domatesiydi; aksini kimse iddia edemez."
     }
   },
   {
@@ -305,11 +332,13 @@
             }
           }
         }
-      }
+      },
+      "result": "{es.ad|le} yola çıktınız. Yer değişmişti, ama aynı köşede durup aynı şeye güldünüz."
     },
     "right": {
       "label": "Dizlerim ağrıyor",
-      "effects": { "happiness": -1 }
+      "effects": { "happiness": -1 },
+      "result": "Bu sefer gidemediniz. {es.ad} çantayı boşaltırken biraz sustu."
     }
   },
   {
@@ -323,11 +352,13 @@
     "text": "Aylık yatmış. Banka kuyruğunda herkes fiyatları konuşuyor; önündeki teyze sana da bir tane anlatacak.",
     "left": {
       "label": "Dinlerim",
-      "effects": { "happiness": 2, "reputation": 1 }
+      "effects": { "happiness": 2, "reputation": 1 },
+      "result": "Teyzenin fiyat hikâyesini sonuna kadar dinledin. Kuyruktan çıkarken yarım mahalleyle tanışmıştın."
     },
     "right": {
       "label": "Mobil bankacılık",
-      "effects": { "knowledge": 1 }
+      "effects": { "knowledge": 1 },
+      "result": "Kuyruktan çıkıp işini telefondan hallettin. Arkandaki teyze sana hayranlıkla baktı."
     }
   },
   {
@@ -356,11 +387,13 @@
             }
           }
         }
-      }
+      },
+      "result": "Yemekte eski ekip toplandı; aynı şakalara yine güldünüz. {eski.ad} 'Sensiz eksik olurdu' dedi."
     },
     "right": {
       "label": "Bakarız artık",
-      "effects": { "happiness": -1 }
+      "effects": { "happiness": -1 },
+      "result": "'Bakarız' dedin; ikiniz de bakmayacağınızı biliyordunuz. {eski.ad} inerken el salladı."
     }
   },
   {
@@ -388,11 +421,13 @@
             }
           }
         }
-      }
+      },
+      "result": "Altını taktın; fotoğrafçı tam o anı yakaladı. {kuzen.ad} kulağına 'Sağ ol' diye fısıldadı."
     },
     "right": {
       "label": "Zarf yeter",
-      "effects": { "money": -3000 }
+      "effects": { "money": -3000 },
+      "result": "Zarfı uzattın, {kuzen.ad} teşekkür edip sarıldı. Kimse zarfın kalınlığına bakmadı."
     }
   },
   {
@@ -421,11 +456,13 @@
             }
           }
         }
-      }
+      },
+      "result": "Kâğıt parayı avucuna koydun. {yegen.ad} sevinçten zıpladı; bu bayramın en cömerdi sendin."
     },
     "right": {
       "label": "Şeker yeter",
-      "effects": { "happiness": 1 }
+      "effects": { "happiness": 1 },
+      "result": "Avucuna bir şeker bıraktın. {yegen.ad} teşekkür etti, ama gözü bir süre cebinde kaldı."
     }
   },
   {
@@ -455,11 +492,13 @@
             }
           }
         }
-      }
+      },
+      "result": "Kıyafet, hazırlık, koşturma; cebin hafifledi. Ama {dost.ad} düğün fotoğraflarının hepsinde yanında."
     },
     "right": {
       "label": "Misafir olayım",
-      "effects": { "money": -3000 }
+      "effects": { "money": -3000 },
+      "result": "Misafir masasından {dost.ad|e} el salladın. Bir zarf bıraktın, halayda da en öndeydin."
     }
   },
   {
@@ -490,11 +529,13 @@
             }
           }
         }
-      }
+      },
+      "result": "{anne.akraba|i} yanına aldın. Evin düzeni değişti, uykun azaldı; ama akşam çayını o koyuyor."
     },
     "right": {
       "label": "Bakıcı tutarız",
-      "effects": { "money": -200000 }
+      "effects": { "money": -200000 },
+      "result": "Bir bakıcı tuttunuz. Masrafı büyük, ama {anne.akraba} artık gün boyu yalnız değil."
     },
     "up": {
       "label": "Kardeşimle sırayla",
@@ -509,7 +550,8 @@
             }
           }
         }
-      }
+      },
+      "result": "{kardes.akraba|le} bir takvim yaptınız: bir hafta sizde, bir hafta onda. Yük bölününce hafifledi."
     }
   },
   {
@@ -539,7 +581,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Bir hafta deniz, kum ve dondurma. {cocuk.ad} dönüşte arabada uyudu, elinde bir deniz kabuğu."
     },
     "right": {
       "label": "Bu yıl olmaz",
@@ -554,7 +597,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Bu yaz denize gidilmedi. {cocuk.ad} haritayı sessizce katlayıp çekmeceye koydu."
     }
   },
   {
@@ -567,13 +611,16 @@
     "text": "Yerden bir kalem aldın ve belin orada kaldı. Herkesin bir önerisi var: sıcak havlu, ısırgan, bir de o meşhur krem.",
     "left": {
       "label": "Doktora giderim",
-      "effects": { "money": -3000, "health": 2 }
+      "effects": { "money": -3000, "health": 2 },
+      "result": "Doktor ilaç ve dinlenme önerdi. Bir hafta sonra yerden kalemi korkmadan aldın."
     },
     "right": {
       "label": "O meşhur krem",
       "roll": { "stat": "luck", "threshold": 50 },
       "success": { "happiness": 2 },
-      "fail": { "health": -3 }
+      "fail": { "health": -3 },
+      "successResult": "O meşhur krem gerçekten işe yaradı. Şimdi sen de herkese öneriyorsun.",
+      "failResult": "Krem işe yaramadı, ağrı sırtına yayıldı. Bir hafta yatakta, sıcak havluyla geçti."
     }
   }
 ,
@@ -588,11 +635,13 @@
     "text": "Kira yine gecikti, kart borcu büyüyor. Ev sahibi kibar ama mesajları kısaldı. Bir şeyin değişmesi lazım.",
     "left": {
       "label": "Daha küçük eve geçerim",
-      "effects": { "rentChange": -110000, "money": -20000, "happiness": -2 }
+      "effects": { "rentChange": -110000, "money": -20000, "happiness": -2 },
+      "result": "Daha küçük bir eve taşındın. Nakliye cebini yaktı, ama ayın sonu artık görünüyor."
     },
     "right": {
       "label": "Bir yolunu bulurum",
-      "effects": { "happiness": -3 }
+      "effects": { "happiness": -3 },
+      "result": "Ev sahibine 'Bu ay hallederim' diye yazdın. O gece uzun süre tavana baktın."
     }
   }
 

@@ -30,7 +30,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Arife akşamı kapıdaydın. {buyuk.akraba} seni görünce sofraya bir tabak daha koydu."
     },
     "right": {
       "label": "Bu sefer olmaz",
@@ -45,7 +46,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Bayramı telefonda geçirdin. {buyuk.akraba} sofrayı yine kurdu; senin yerin boş kaldı."
     }
   },
   {
@@ -73,7 +75,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Kapları tertemiz götürdün. {anne.akraba} onları alırken içlerini yine doldurdu."
     },
     "right": {
       "label": "Kaplar bende kalsın",
@@ -89,7 +92,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Kaplar dolabına yerleşti. {anne.akraba} her telefonda onları bir kez sordu."
     }
   },
   {
@@ -120,7 +124,9 @@
       },
       "roll": { "stat": "luck", "threshold": 45 },
       "success": { "happiness": 2 },
-      "fail": { "money": -10000, "happiness": -2 }
+      "fail": { "money": -10000, "happiness": -2 },
+      "successResult": "Bir saat uğraştınız ve musluk sustu. {baba.akraba} 'Gördün mü, usta lazım değil' dedi.",
+      "failResult": "Conta fırladı, mutfağı su bastı. Sonunda usta geldi; parasını da sen ödedin."
     },
     "right": {
       "label": "Usta çağırıyorum baba",
@@ -136,7 +142,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Usta yarım saatte işi bitirdi. {baba.akraba} o süre boyunca kapıda kollarını kavuşturdu."
     }
   },
   {
@@ -165,7 +172,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Sabaha kadar konuştunuz. Uykusuz kaldın ama {kardes.akraba} kapatırken 'İyi ki varsın' dedi."
     },
     "right": {
       "label": "Yarın konuşsak?",
@@ -180,7 +188,8 @@
             }
           }
         }
-      }
+      },
+      "result": "{kardes.akraba} 'Tamam' deyip kapattı. Ertesi gün aradığında konuyu hiç açmadı."
     }
   },
   {
@@ -210,7 +219,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Hafta sonu yola düştün. {buyuk.akraba} kapıda seni görünce gözlerini sildi."
     },
     "right": {
       "label": "Bu ay olmaz",
@@ -225,7 +235,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Ziyaret başka aya kaldı. {buyuk.akraba} 'Sağlık olsun' dedi, sesi biraz kısıktı."
     }
   },
   {
@@ -255,7 +266,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Sermayeyi uzattın. {akraba.akraba} işini kurarken her adımı sana haber verdi."
     },
     "right": {
       "label": "Şu an olmaz",
@@ -270,7 +282,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Nazikçe reddettin. {akraba.akraba} anladığını söyledi ama bir süre aramadı."
     }
   },
   {
@@ -300,7 +313,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Tabağı kekle doldurup geri yolladın. {komsu.ad} {komsu.hitap.amca} ertesi gün tarifini istedi."
     },
     "right": {
       "label": "Tabağı boş veririm",
@@ -316,7 +330,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Tabak boş gitti. {komsu.ad} {komsu.hitap.amca} kapıda bir tabağa, bir sana baktı."
     }
   },
   {
@@ -344,7 +359,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Kapıyı çaldın; {komsu.ad} {komsu.hitap.amca} hastaymış. Çorbasını, ilacını sen getirdin."
     },
     "right": {
       "label": "Yöneticiye haber ver",
@@ -359,7 +375,8 @@
             }
           }
         }
-      }
+      },
+      "result": "Yönetici kapıyı açtırdı; {komsu.ad} {komsu.hitap.amca} hastaymış, hemen doktor çağrıldı."
     }
   },
   {
@@ -372,11 +389,13 @@
     "text": "Apartman toplantısı. Konu yine asansör; biri 'Ben merdiven kullanıyorum' diye aidat ödemek istemiyor.",
     "left": {
       "label": "Söz alıp ortayı bul",
-      "effects": { "reputation": 2, "happiness": -1 }
+      "effects": { "reputation": 2, "happiness": -1 },
+      "result": "Söz alıp orta yolu buldun: merdivenciler yarım aidat ödeyecek. Toplantı uzadı ama bitti."
     },
     "right": {
       "label": "Sessizce imzala",
-      "effects": { "happiness": 1 }
+      "effects": { "happiness": 1 },
+      "result": "İmzanı atıp çıktın. Tartışma senin yokluğunda iki saat daha sürdü."
     }
   },
   {
@@ -389,13 +408,16 @@
     "text": "Bir sipariş bekliyordun. Telefona mesaj düştü: 'Kargonuz gümrükte, ödeme için bağlantıya tıklayın.'",
     "left": {
       "label": "Kargo firmasını ararım",
-      "effects": { "knowledge": 2, "happiness": -1 }
+      "effects": { "knowledge": 2, "happiness": -1 },
+      "result": "Firmayı aradın: mesaj sahteymiş. Böyle bağlantılara tıklamamayı bir kez daha öğrendin."
     },
     "right": {
       "label": "Silip geçerim",
       "roll": { "stat": "luck", "threshold": 40 },
       "success": { "happiness": 1 },
-      "fail": { "happiness": -2 }
+      "fail": { "happiness": -2 },
+      "successResult": "Mesajı sildin; birkaç gün sonra paketin kapına geldi. Sahte mesajmış, kurtuldun.",
+      "failResult": "Mesajı sildin ama meğer gerçekmiş. Paket gümrükte bekleyip geri gönderildi."
     }
   },
   {
@@ -408,11 +430,13 @@
     "text": "Doktor tahlillere baktı, gözlüğünün üstünden süzdü: 'Tuzu azaltacağız, her gün de yürüyeceğiz.'",
     "left": {
       "label": "Söz, yürüyeceğim",
-      "effects": { "health": 4, "happiness": -1 }
+      "effects": { "health": 4, "happiness": -1 },
+      "result": "Her sabah yürüyüşe çıkıyorsun. Yemekler biraz yavan ama tansiyon yerine oturdu."
     },
     "right": {
       "label": "Turşusuz olmaz",
-      "effects": { "health": -2, "happiness": 2 }
+      "effects": { "health": -2, "happiness": 2 },
+      "result": "Turşu kavanozu yerinde. Tansiyon aleti ise her ölçümde biraz daha somurtuyor."
     }
   }
 ]

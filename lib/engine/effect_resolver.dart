@@ -21,12 +21,21 @@ class ChoiceOutcome {
   const ChoiceOutcome({
     required this.character,
     required this.choice,
+    this.before,
+    this.event,
     this.rollSucceeded,
     this.scheduled = const [],
   });
 
   final Character character;
   final Choice choice;
+
+  /// Seçimden önceki karakter; arayüz seçimin göstergelere etkisini
+  /// gösterir.
+  final Character? before;
+
+  /// Seçilen olay (kişileriyle); sonuç cümlesi bununla kurulur.
+  final PendingEvent? event;
 
   /// Seçenekte zar yoksa null.
   final bool? rollSucceeded;
@@ -102,6 +111,8 @@ class EffectResolver {
     return ChoiceOutcome(
       character: next,
       choice: choice,
+      before: character,
+      event: event,
       rollSucceeded: succeeded,
       scheduled: scheduled,
     );
@@ -218,11 +229,36 @@ class EffectResolver {
   /// Zar: 0–100 arası bir atış ile bakılan değerin ortalaması eşiği
   /// geçerse başarılı. Şans dışındaki zarlarda şans küçük bir pay ekler
   /// (şans 100 ise +5, 0 ise −5).
-  bool rollSucceeds(Character character, Roll roll) {
+  bool rollSucceeds(Character character, Roll roll) =>
+      _rollScore(character, roll, random.nextInt(101)) >= roll.threshold;
+
+  static double _rollScore(Character character, Roll roll, int dice) {
     final kind = roll.stat.statKind;
     final value = kind == null ? character.luck : character.stats[kind];
     final luckBonus = kind == null ? 0 : (character.luck - 50) / 10;
-    final dice = random.nextInt(101);
-    return (value + dice) / 2 + luckBonus >= roll.threshold;
+    return (value + dice) / 2 + luckBonus;
   }
+
+  /// Zarın tutma ihtimali (0–1): 0–100 arası atışlardan kaçı eşiği geçer.
+  /// Arayüz bunu "yüksek / orta / düşük" diye gösterir.
+  static double rollChance(Character character, Roll roll) {
+    var hits = 0;
+    for (var dice = 0; dice <= 100; dice++) {
+      if (_rollScore(character, roll, dice) >= roll.threshold) hits++;
+    }
+    return hits / 101;
+  }
+}
+
+/// Zar ihtimalinin oyuncuya gösterilen kabası.
+enum RollOdds {
+  dusuk,
+  orta,
+  yuksek;
+
+  static RollOdds of(double chance) => chance >= 0.65
+      ? yuksek
+      : chance >= 0.35
+      ? orta
+      : dusuk;
 }

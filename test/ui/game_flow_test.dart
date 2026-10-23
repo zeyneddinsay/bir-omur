@@ -170,6 +170,20 @@ void main() {
     expect(find.byKey(const Key('age_up')), findsOneWidget);
   });
 
+  testWidgets('seçimden sonra sonuç paneli görünür ve kapatılır', (
+    tester,
+  ) async {
+    await _bornAs(tester, 'Ali');
+    expect(find.byKey(const Key('outcome_panel')), findsNothing);
+    await tester.tap(find.byKey(const Key('choose_right')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('outcome_panel')), findsOneWidget);
+    await tester.tap(find.byKey(const Key('outcome_close')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('outcome_panel')), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('kısa sürükleme kartı geri bırakır', (tester) async {
     await _bornAs(tester, 'Ali');
     await tester.drag(find.byKey(const Key('card_text')), const Offset(-40, 0));

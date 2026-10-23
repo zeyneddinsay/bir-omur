@@ -21,14 +21,19 @@ final _registry = ContentRegistry(
   },
 );
 
-Map<String, dynamic> _card(
-  String id, {
-  Map<String, dynamic> extra = const {},
-}) => {
-  ...testCardJson(id, minAge: 20, maxAge: 30, theme: 'genel'),
-  'text': 'Kısa bir metin.',
-  ...extra,
-};
+Map<String, dynamic> _card(String id, {Map<String, dynamic> extra = const {}}) {
+  final card = {
+    ...testCardJson(id, minAge: 20, maxAge: 30, theme: 'genel'),
+    'text': 'Kısa bir metin.',
+    ...extra,
+  };
+  for (final side in const ['left', 'right', 'up']) {
+    if (card[side] case final Map<String, dynamic> choice) {
+      card[side] = withChoiceResult(choice);
+    }
+  }
+  return card;
+}
 
 CardCheckResult _check(List<Object?> cards, {String file = 'genc.json'}) =>
     CardValidator(
@@ -93,6 +98,50 @@ void main() {
 
   group('metin', () {
     final roles = {'k': <String, dynamic>{}};
+
+    test('her seçeneğin sonuç cümlesi var; zarlıda iki dal', () {
+      _expectSingleError(
+        _check([
+          _card(
+            'a',
+            extra: {
+              'left': {'label': 'Sol', 'result': null},
+            },
+          ),
+        ]),
+        'a.left.result',
+        messageContains: 'sonuç cümlesi',
+      );
+      _expectSingleError(
+        _check([
+          _card(
+            'b',
+            extra: {
+              'right': {
+                'label': 'Sağ',
+                'roll': {'stat': 'luck', 'threshold': 50},
+                'success': {'happiness': 1},
+                'fail': {'happiness': -1},
+                'failResult': null,
+              },
+            },
+          ),
+        ]),
+        'b.right.failResult',
+      );
+      // Sonuç cümlesinde tanımsız yuva hata.
+      _expectSingleError(
+        _check([
+          _card(
+            'c',
+            extra: {
+              'left': {'label': 'Sol', 'result': '{yok.ad} güldü.'},
+            },
+          ),
+        ]),
+        'c.left.result',
+      );
+    });
 
     test('en uzun adla 140 karakter', () {
       // 'Muhammet' 8 harf + boşluk + 131 harf = 140.

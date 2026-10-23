@@ -334,18 +334,6 @@ abstract class AppLocalizations {
   /// **'Bu yıl {count, plural, =1{son kart} other{{count} kart daha}}'**
   String cardsLeft(int count);
 
-  /// No description provided for @swipeHint.
-  ///
-  /// In tr, this message translates to:
-  /// **'Kartı sola ya da sağa kaydır'**
-  String get swipeHint;
-
-  /// No description provided for @swipeUpHint.
-  ///
-  /// In tr, this message translates to:
-  /// **'Yukarı kaydır: {label}'**
-  String swipeUpHint(String label);
-
   /// No description provided for @rollSuccess.
   ///
   /// In tr, this message translates to:
@@ -363,6 +351,168 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Şans'**
   String get rollLuck;
+
+  /// No description provided for @rollOdds_yuksek.
+  ///
+  /// In tr, this message translates to:
+  /// **'İhtimal yüksek'**
+  String get rollOdds_yuksek;
+
+  /// No description provided for @rollOdds_orta.
+  ///
+  /// In tr, this message translates to:
+  /// **'İhtimal orta'**
+  String get rollOdds_orta;
+
+  /// No description provided for @rollOdds_dusuk.
+  ///
+  /// In tr, this message translates to:
+  /// **'İhtimal düşük'**
+  String get rollOdds_dusuk;
+
+  /// No description provided for @rollChoiceLine.
+  ///
+  /// In tr, this message translates to:
+  /// **'{stat} zarı'**
+  String rollChoiceLine(String stat);
+
+  /// No description provided for @previewIfSuccess.
+  ///
+  /// In tr, this message translates to:
+  /// **'Tutarsa'**
+  String get previewIfSuccess;
+
+  /// No description provided for @previewIfFail.
+  ///
+  /// In tr, this message translates to:
+  /// **'Tutmazsa'**
+  String get previewIfFail;
+
+  /// No description provided for @previewThread.
+  ///
+  /// In tr, this message translates to:
+  /// **'Devamı var'**
+  String get previewThread;
+
+  /// No description provided for @previewThreadTooltip.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu seçimin devamı ileride gelecek.'**
+  String get previewThreadTooltip;
+
+  /// No description provided for @previewMemoryTooltip.
+  ///
+  /// In tr, this message translates to:
+  /// **'{name} bunu hatırlayacak'**
+  String previewMemoryTooltip(String name);
+
+  /// No description provided for @previewStatUp.
+  ///
+  /// In tr, this message translates to:
+  /// **'{stat} artar'**
+  String previewStatUp(String stat);
+
+  /// No description provided for @previewStatDown.
+  ///
+  /// In tr, this message translates to:
+  /// **'{stat} azalır'**
+  String previewStatDown(String stat);
+
+  /// No description provided for @previewWork.
+  ///
+  /// In tr, this message translates to:
+  /// **'İşteki performans'**
+  String get previewWork;
+
+  /// No description provided for @previewBusiness.
+  ///
+  /// In tr, this message translates to:
+  /// **'İşletmenin itibarı'**
+  String get previewBusiness;
+
+  /// No description provided for @previewGold.
+  ///
+  /// In tr, this message translates to:
+  /// **'Altın'**
+  String get previewGold;
+
+  /// No description provided for @previewHouse.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ev'**
+  String get previewHouse;
+
+  /// No description provided for @previewCar.
+  ///
+  /// In tr, this message translates to:
+  /// **'Araba'**
+  String get previewCar;
+
+  /// No description provided for @themeName_aile.
+  ///
+  /// In tr, this message translates to:
+  /// **'Aile'**
+  String get themeName_aile;
+
+  /// No description provided for @themeName_okul.
+  ///
+  /// In tr, this message translates to:
+  /// **'Okul'**
+  String get themeName_okul;
+
+  /// No description provided for @themeName_ask.
+  ///
+  /// In tr, this message translates to:
+  /// **'Aşk'**
+  String get themeName_ask;
+
+  /// No description provided for @themeName_isHayati.
+  ///
+  /// In tr, this message translates to:
+  /// **'İş'**
+  String get themeName_isHayati;
+
+  /// No description provided for @themeName_para.
+  ///
+  /// In tr, this message translates to:
+  /// **'Para'**
+  String get themeName_para;
+
+  /// No description provided for @themeName_mahalle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Mahalle'**
+  String get themeName_mahalle;
+
+  /// No description provided for @themeName_saglik.
+  ///
+  /// In tr, this message translates to:
+  /// **'Sağlık'**
+  String get themeName_saglik;
+
+  /// No description provided for @themeName_genel.
+  ///
+  /// In tr, this message translates to:
+  /// **'Hayat'**
+  String get themeName_genel;
+
+  /// No description provided for @rarityNadir.
+  ///
+  /// In tr, this message translates to:
+  /// **'Nadir'**
+  String get rarityNadir;
+
+  /// No description provided for @rarityEfsane.
+  ///
+  /// In tr, this message translates to:
+  /// **'Efsane'**
+  String get rarityEfsane;
+
+  /// No description provided for @outcomeClose.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kapat'**
+  String get outcomeClose;
 
   /// No description provided for @rollBadge.
   ///

@@ -52,6 +52,7 @@ Canlı tasarım dokümanı: https://claude.ai/code/artifact/5e791558-0c95-419c-a
   - tanımsız rol yuvası, bilinmeyen yer tutucu alanı, elle yazılmış ek (`{ad|e}` yazılmalı)
   - iplik hedefi ve taşınan yuvalar, Aile Bağı'nı doğrudan değiştiren etki, 18 yaş altı romantik bağ
   - tekrar eden kimlikler
+  - her seçeneğin sonuç cümlesi (`result`; zarlıda `successResult` ve `failResult`, en fazla 110 karakter)
 - Durum yönetimi Riverpod ile, kayıt yerel olarak Hive ile yapılır.
 - Platforma özgü her şey (reklam, satın alma, paylaşım, titreşim, analitik) `lib/services/` altında bir arayüzün arkasında durur. Motor hangi platformda çalıştığını bilmez.
 - Arayüz metinleri `lib/l10n/` altındaki ARB dosyalarındadır. Kart metinleri Türkçe olarak JSON dosyalarında durur.
@@ -251,6 +252,7 @@ D5 adımları (denge, mantık taraması, hikâye akışı, cila):
 - [x] Cila: kendi işindeki oyuncu "Kendi işinde", Varlıklar'da işletme satırları, işletme açılamama sebebi (kredi), ölüm ekranında tekrar eden satır yok, rozet adı "Bir Şehrin Çocuğu".
 - [x] Telefon bulguları (23 Ekim 2026): romantik içerik yalnızca karşı cinsle (14 yaş dönemeci sınıftan iki adla); kişi, genel, yer ve tesadüf olayları bir hayatta bir kez (card_lint denetler); 0–6 yaşa 20 yeni olay (`bebeklik.json`), her hayat farklı başlar; doğumda "Rastgele" cinsiyet kalktı (seçilmeden düğme kapalı); Ayarlar'da "Yeni hayat başlat" (onaylı, yarım hayat albüme girmez); aynı ailede iki kişi aynı adı taşımaz.
 - [x] Kullanıcının ilk notları (23 Ekim 2026): ilgi seçimi kaldırıldı; aynı kart tekrar gelmez (50 yaş üstüne 36 yeni olay, yaşlılıkta boş yıl azaldı); soru eki `{ad|mi}`; bir olayda aynı adlı iki kişi seçilmez; cenaze, bebek ve zor gün aramasında metin çeşitleri.
+- [x] Seçimin sonucu ve kart tasarımı (23 Ekim 2026): her seçeneğe sonuç cümlesi (226 olay, yaklaşık 500 cümle); seçimden sonra üstte sonuç paneli (cümle ve göstergelerde gerçekten ne değiştiği), yıl günlüğünde seçim yerine sonuç. Seçenekler kartın altında satır: yön, etiket, neye dokunacağı (gösterge yönü, para tutarı, anı yazılan kişi, "devamı var"), zarlıda "Tutarsa / Tutmazsa" ve kaba ihtimal (yüksek / orta / düşük, `EffectResolver.rollChance`). Kart yeni tasarımda: tema ve nadirlik etiketi, oyun kartı boyu, arkada deste.
 - [ ] Telefonda deneme (kullanıcı)
 
 ## Bekleyen aşama: F3a — Dağıtıma hazırlık

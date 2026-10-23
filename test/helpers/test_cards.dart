@@ -84,10 +84,20 @@ Map<String, dynamic> testCardJson(
   'roles': ?roles,
   'speaker': ?speaker,
   'text': text ?? 'Test kartı $id',
-  'left': left ?? {'label': 'Sol'},
-  'right': right ?? {'label': 'Sağ'},
-  'up': ?up,
+  'left': withChoiceResult(left ?? {'label': 'Sol'}),
+  'right': withChoiceResult(right ?? {'label': 'Sağ'}),
+  'up': ?(up == null ? null : withChoiceResult(up)),
 };
+
+/// Denetçi her seçenekte sonuç cümlesi ister; yazılmamışsa varsayılanı
+/// eklenir. Testler `result: null` vererek eksik cümleyi deneyebilir.
+Map<String, dynamic> withChoiceResult(Map<String, dynamic> choice) {
+  if (choice.containsKey('roll')) {
+    return {'successResult': 'Tuttu.', 'failResult': 'Tutmadı.', ...choice}
+      ..removeWhere((_, v) => v == null);
+  }
+  return {'result': 'Oldu.', ...choice}..removeWhere((_, v) => v == null);
+}
 
 const List<String> _themes = [
   'aile',

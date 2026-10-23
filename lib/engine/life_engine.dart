@@ -283,6 +283,8 @@ class LifeEngine {
     final storedOutcome = ChoiceOutcome(
       character: character,
       choice: outcome.choice,
+      before: _state.character,
+      event: event,
       rollSucceeded: outcome.rollSucceeded,
       scheduled: outcome.scheduled,
     );
