@@ -11,7 +11,11 @@ import '../helpers/stores.dart';
 
 final _content = uiTestContent();
 
-Future<ProviderContainer> _bornAndGrown(WidgetTester tester, int age) async {
+Future<ProviderContainer> _bornAndGrown(
+  WidgetTester tester,
+  int age, {
+  int seed = 7,
+}) async {
   tester.view.devicePixelRatio = 3;
   tester.view.physicalSize = const Size(390, 844) * 3;
   addTearDown(tester.view.reset);
@@ -19,7 +23,7 @@ Future<ProviderContainer> _bornAndGrown(WidgetTester tester, int age) async {
     ProviderScope(
       overrides: [
         contentProvider.overrideWith((ref) async => _content),
-        seedGeneratorProvider.overrideWithValue(() => 7),
+        seedGeneratorProvider.overrideWithValue(() => seed),
         saveStoreProvider.overrideWithValue(answeredStore()),
       ],
       child: const BirOmurApp(),
@@ -27,6 +31,8 @@ Future<ProviderContainer> _bornAndGrown(WidgetTester tester, int age) async {
   );
   await tester.pumpAndSettle();
   await tester.enterText(find.byKey(const Key('birth_name')), 'Elif');
+  await tester.tap(find.byKey(const Key('gender_kadin')));
+  await tester.pump();
   await tester.tap(find.byKey(const Key('birth_button')));
   await tester.pumpAndSettle();
   final container = ProviderScope.containerOf(
@@ -179,7 +185,7 @@ void main() {
   testWidgets('Okul / İş sekmesinden işletme açılır ve yönetilir', (
     tester,
   ) async {
-    final container = await _bornAndGrown(tester, 19);
+    final container = await _bornAndGrown(tester, 19, seed: 1);
     final before = container.read(lifeProvider)!;
     expect(before.character.stats.money, greaterThanOrEqualTo(130000));
     await tester.tap(find.byKey(const Key('tab_work')));

@@ -22,6 +22,7 @@ class BirthScreen extends ConsumerStatefulWidget {
 
 class _BirthScreenState extends ConsumerState<BirthScreen> {
   final _name = TextEditingController();
+  // Cinsiyet seçilmeden doğum düğmesi açılmaz.
   Gender? _gender;
 
   @override
@@ -103,7 +104,9 @@ class _BirthScreenState extends ConsumerState<BirthScreen> {
                       hintText: l10n.birthNameHint,
                       border: const OutlineInputBorder(),
                     ),
-                    onSubmitted: (_) => _born(),
+                    onSubmitted: (_) {
+                      if (_gender != null) _born();
+                    },
                   ),
                   const SizedBox(height: 16),
                   Text(
@@ -111,32 +114,35 @@ class _BirthScreenState extends ConsumerState<BirthScreen> {
                     style: theme.textTheme.labelLarge,
                   ),
                   const SizedBox(height: 8),
-                  SegmentedButton<Gender?>(
-                    // Seçili segment renginden belli olur; tik işareti dar
-                    // ekranda "Rastgele" etiketini iki satıra bölüyordu.
+                  SegmentedButton<Gender>(
                     showSelectedIcon: false,
+                    emptySelectionAllowed: true,
                     segments: [
                       for (final (value, label) in [
                         (Gender.kadin, l10n.genderFemale),
                         (Gender.erkek, l10n.genderMale),
-                        (null, l10n.genderRandom),
                       ])
                         ButtonSegment(
                           value: value,
                           label: FittedBox(
                             fit: BoxFit.scaleDown,
-                            child: Text(label, maxLines: 1),
+                            child: Text(
+                              label,
+                              key: Key('gender_${value.name}'),
+                              maxLines: 1,
+                            ),
                           ),
                         ),
                     ],
-                    selected: {_gender},
-                    onSelectionChanged: (s) =>
-                        setState(() => _gender = s.single),
+                    selected: {?_gender},
+                    onSelectionChanged: (s) => setState(
+                      () => _gender = s.isEmpty ? _gender : s.single,
+                    ),
                   ),
                   const SizedBox(height: 32),
                   FilledButton.icon(
                     key: const Key('birth_button'),
-                    onPressed: _born,
+                    onPressed: _gender == null ? null : _born,
                     icon: const Icon(Icons.child_care),
                     label: Text(l10n.birthButton),
                   ),

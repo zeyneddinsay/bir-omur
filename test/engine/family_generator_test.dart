@@ -47,6 +47,14 @@ void main() {
     }
   });
 
+  test('aynı ailede iki kişi aynı adı taşımaz', () {
+    for (var seed = 0; seed < 200; seed++) {
+      final c = BirthGenerator(SeededRandom(seed), families: book).generate();
+      final names = [for (final p in c.people.all) p.name];
+      expect(names.toSet().length, names.length, reason: 'tohum $seed: $names');
+    }
+  });
+
   test('aynı tohum aynı aileyi üretir', () {
     expect(
       jsonEncode(family(42).people.toJson()),

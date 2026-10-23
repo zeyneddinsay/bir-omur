@@ -54,6 +54,17 @@ class SettingsScreen extends ConsumerWidget {
               style: Theme.of(context).textTheme.bodySmall,
             ),
           ),
+          // Süren bir hayat varken baştan başlama.
+          if (ref.watch(lifeProvider) case final life? when !life.isOver) ...[
+            const Divider(),
+            ListTile(
+              key: const Key('setting_new_life'),
+              leading: const Icon(Icons.restart_alt),
+              title: Text(l10n.settingsNewLife),
+              subtitle: Text(l10n.settingsNewLifeHint),
+              onTap: () => _confirmNewLife(context, ref),
+            ),
+          ],
           const Divider(),
           ListTile(
             leading: const Icon(Icons.description_outlined),
@@ -66,5 +77,31 @@ class SettingsScreen extends ConsumerWidget {
         ],
       ),
     );
+  }
+
+  /// Onay alınca yarım hayat silinir ve doğum ekranına dönülür.
+  Future<void> _confirmNewLife(BuildContext context, WidgetRef ref) async {
+    final l10n = AppLocalizations.of(context);
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.newLifeConfirmTitle),
+        content: Text(l10n.newLifeConfirmBody),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(l10n.cancel),
+          ),
+          FilledButton(
+            key: const Key('new_life_confirm'),
+            onPressed: () => Navigator.of(context).pop(true),
+            child: Text(l10n.newLifeConfirm),
+          ),
+        ],
+      ),
+    );
+    if (ok != true || !context.mounted) return;
+    ref.read(lifeProvider.notifier).reset();
+    Navigator.of(context).popUntil((route) => route.isFirst);
   }
 }

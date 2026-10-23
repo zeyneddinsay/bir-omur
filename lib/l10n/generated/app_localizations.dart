@@ -154,12 +154,6 @@ abstract class AppLocalizations {
   /// **'Kadın'**
   String get genderFemale;
 
-  /// No description provided for @genderRandom.
-  ///
-  /// In tr, this message translates to:
-  /// **'Rastgele'**
-  String get genderRandom;
-
   /// No description provided for @birthButton.
   ///
   /// In tr, this message translates to:
@@ -717,6 +711,36 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Uygulama çökerse, hatayı bulabilmemiz için anonim bir çökme kaydı gönderilir.'**
   String get settingsCrashNote;
+
+  /// No description provided for @settingsNewLife.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yeni hayat başlat'**
+  String get settingsNewLife;
+
+  /// No description provided for @settingsNewLifeHint.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu hayatı bırakıp doğum ekranına dön'**
+  String get settingsNewLifeHint;
+
+  /// No description provided for @newLifeConfirmTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yeni bir hayata mı başlıyorsun?'**
+  String get newLifeConfirmTitle;
+
+  /// No description provided for @newLifeConfirmBody.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu hayat yarıda kalır; albüme ve rozetlere sayılmaz.'**
+  String get newLifeConfirmBody;
+
+  /// No description provided for @newLifeConfirm.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yeni hayat'**
+  String get newLifeConfirm;
 
   /// No description provided for @consentTitle.
   ///

@@ -42,6 +42,8 @@ Future<void> _bornAs(
   await tester.pumpWidget(_app());
   await tester.pumpAndSettle();
   await tester.enterText(find.byKey(const Key('birth_name')), name);
+  await tester.tap(find.byKey(const Key('gender_kadin')));
+  await tester.pump();
   await tester.tap(find.byKey(const Key('birth_button')));
   await tester.pumpAndSettle();
 }
@@ -73,7 +75,7 @@ void main() {
     await tester.pumpAndSettle();
 
     final lineHeight = tester.getSize(find.text('Kadın')).height;
-    for (final label in ['Erkek', 'Rastgele']) {
+    for (final label in ['Erkek']) {
       expect(
         tester.getSize(find.text(label)).height,
         lineHeight,
@@ -92,6 +94,8 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byKey(const Key('resume_button')), findsNothing);
     await tester.enterText(find.byKey(const Key('birth_name')), 'Defne');
+    await tester.tap(find.byKey(const Key('gender_kadin')));
+    await tester.pump();
     await tester.tap(find.byKey(const Key('birth_button')));
     await tester.pumpAndSettle();
     await _finishCards(tester);
@@ -127,6 +131,31 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byKey(const Key('discard_old_save')), findsNothing);
     expect(await store.loadCurrentLife(), isNull);
+  });
+
+  testWidgets('cinsiyet seçilmeden doğum düğmesi kapalı', (tester) async {
+    _phone(tester);
+    await tester.pumpWidget(_app());
+    await tester.pumpAndSettle();
+    expect(find.text('Rastgele'), findsNothing);
+    FilledButton button() =>
+        tester.widget<FilledButton>(find.byKey(const Key('birth_button')));
+    expect(button().onPressed, isNull);
+    await tester.tap(find.byKey(const Key('gender_erkek')));
+    await tester.pump();
+    expect(button().onPressed, isNotNull);
+  });
+
+  testWidgets('Ayarlar\'dan yeni hayat başlatılır', (tester) async {
+    await _bornAs(tester, 'Zeynep');
+    await tester.tap(find.byKey(const Key('settings_button')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('setting_new_life')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('new_life_confirm')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('birth_button')), findsOneWidget);
+    expect(find.byKey(const Key('resume_button')), findsNothing);
   });
 
   testWidgets('kart sürüklenerek seçilir', (tester) async {

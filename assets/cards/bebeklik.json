@@ -1,0 +1,440 @@
+[
+  {
+    "id": "ilk_dis",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 0,
+    "maxAge": 1,
+    "repeat": "once",
+    "roles": {
+      "veli": { "kin": ["anne", "baba"] }
+    },
+    "speaker": "veli",
+    "text": "İlk dişin çıkıyor. {veli.akraba} bütün gece seni kucağında taşıdı; sabah ikiniz de aynı yorgunluktasınız.",
+    "left": {
+      "label": "Parmağını ısır",
+      "effects": { "happiness": 2 }
+    },
+    "right": {
+      "label": "Uykuya dal",
+      "effects": { "health": 1 }
+    }
+  },
+  {
+    "id": "kime_cekmis",
+    "type": "kisi",
+    "theme": "mahalle",
+    "minAge": 0,
+    "maxAge": 1,
+    "repeat": "once",
+    "roles": {
+      "komsu": { "roles": ["komsu"], "sameCity": true }
+    },
+    "speaker": "komsu",
+    "text": "{komsu.ad} beşiğinin başında: 'Aman ne tatlı! Kaşları babasına, burnu dayısına çekmiş.' Tartışma uzuyor.",
+    "left": {
+      "label": "Gülümse",
+      "effects": { "happiness": 2 }
+    },
+    "right": {
+      "label": "Ağlamaya başla",
+      "effects": { "happiness": -1 }
+    }
+  },
+  {
+    "id": "ilk_bayram_kucak",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 0,
+    "maxAge": 2,
+    "repeat": "once",
+    "roles": {
+      "buyuk": { "kin": ["dede", "nine"] }
+    },
+    "speaker": "buyuk",
+    "text": "İlk bayramın. Herkes seni kucağına almak için sıraya girmiş; {buyuk.akraba} sırayı hiç bırakmıyor.",
+    "left": {
+      "label": "Onun kucağında uyu",
+      "effects": {
+        "people": {
+          "buyuk": {
+            "memory": {
+              "kind": "kucagimda_uyudu",
+              "label": "İlk bayramında kucağımda uyudu",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Herkese gülücük",
+      "effects": { "happiness": 2 }
+    }
+  },
+  {
+    "id": "ilk_dogum_gunu",
+    "type": "genel",
+    "theme": "aile",
+    "minAge": 1,
+    "maxAge": 1,
+    "repeat": "once",
+    "text": "İlk doğum günün. Pastanın önüne oturttular; herkes telefonunu sana çevirmiş, mum yanıyor.",
+    "left": {
+      "label": "Elini pastaya daldır",
+      "effects": { "happiness": 3 }
+    },
+    "right": {
+      "label": "Mumu izle",
+      "effects": { "happiness": 1 }
+    }
+  },
+  {
+    "id": "banyo_legeni",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 0,
+    "maxAge": 2,
+    "repeat": "once",
+    "roles": {
+      "veli": { "kin": ["anne", "baba"] }
+    },
+    "speaker": "veli",
+    "text": "Banyo leğenindesin. {veli.akraba} sabun köpüğüyle sana sakal yaptı; aynaya bakıp kahkaha atıyorsun.",
+    "left": {
+      "label": "Suyu sıçrat",
+      "effects": { "happiness": 3 }
+    },
+    "right": {
+      "label": "Köpüğü ye",
+      "effects": { "happiness": 1, "health": -1 }
+    }
+  },
+  {
+    "id": "kedi_ile_tanisma",
+    "type": "genel",
+    "theme": "mahalle",
+    "minAge": 1,
+    "maxAge": 3,
+    "repeat": "once",
+    "text": "Mahallenin sarı kedisi bahçe duvarından sana bakıyor. Sen de ona. Elini uzattın.",
+    "left": {
+      "label": "Kuyruğunu yakala",
+      "roll": { "stat": "luck", "threshold": 50 },
+      "success": { "happiness": 3 },
+      "fail": { "happiness": -2, "health": -1 }
+    },
+    "right": {
+      "label": "Usulca sev",
+      "effects": { "happiness": 3 }
+    }
+  },
+  {
+    "id": "duvara_resim",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 2,
+    "maxAge": 5,
+    "repeat": "once",
+    "roles": {
+      "veli": { "kin": ["anne", "baba"] }
+    },
+    "speaker": "veli",
+    "text": "Boya kalemlerini buldun ve salon duvarına bir güneş çizdin. {veli.akraba} kapıda donup kaldı.",
+    "left": {
+      "label": "Bir de ev çizerim",
+      "effects": { "happiness": 2 }
+    },
+    "right": {
+      "label": "Kalemi saklarım",
+      "effects": { "reputation": -1 }
+    }
+  },
+  {
+    "id": "emzik_vedasi",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 2,
+    "maxAge": 3,
+    "repeat": "once",
+    "roles": {
+      "veli": { "kin": ["anne", "baba"] }
+    },
+    "speaker": "veli",
+    "text": "{veli.akraba}: 'Emziği kuşlara verelim mi? Onların bebekleri de ağlıyormuş.' Emziğe uzun uzun bakıyorsun.",
+    "left": {
+      "label": "Kuşlar alsın",
+      "effects": { "happiness": -1, "knowledge": 1 }
+    },
+    "right": {
+      "label": "Benim o!",
+      "effects": { "happiness": 1 }
+    }
+  },
+  {
+    "id": "kum_havuzu",
+    "type": "genel",
+    "theme": "mahalle",
+    "minAge": 2,
+    "maxAge": 5,
+    "repeat": "once",
+    "text": "Parkta kum havuzu. Yanındaki çocuk senin kovanı aldı ve kocaman bir kale yapıyor.",
+    "left": {
+      "label": "Kale birlikte",
+      "effects": { "happiness": 3, "reputation": 1 }
+    },
+    "right": {
+      "label": "Kovamı geri isterim",
+      "effects": { "happiness": 1 }
+    }
+  },
+  {
+    "id": "dede_telefon",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 2,
+    "maxAge": 5,
+    "repeat": "once",
+    "roles": {
+      "buyuk": { "kin": ["dede", "nine"], "livesTogether": false }
+    },
+    "speaker": "buyuk",
+    "text": "Telefonda {buyuk.akraba}: 'Kimin sesi bu? Büyüdün mü sen?' Sen sadece telefona üflüyorsun.",
+    "left": {
+      "label": "Şarkı söyle",
+      "effects": {
+        "happiness": 2,
+        "people": {
+          "buyuk": {
+            "memory": {
+              "kind": "telefonda_sarki",
+              "label": "Telefonda bana şarkı söyledi",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Telefonu kapat",
+      "effects": { "happiness": 1 }
+    }
+  },
+  {
+    "id": "ilk_berber",
+    "type": "genel",
+    "theme": "mahalle",
+    "minAge": 2,
+    "maxAge": 5,
+    "repeat": "once",
+    "text": "İlk kez berber koltuğundasın; altına bir yastık koymuşlar. Makasın sesi kulağına çok yakın.",
+    "left": {
+      "label": "Kıpırdamadan otur",
+      "effects": { "reputation": 1 }
+    },
+    "right": {
+      "label": "Kaçmaya çalış",
+      "effects": { "happiness": 1 }
+    }
+  },
+  {
+    "id": "kabus_gecesi",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 3,
+    "maxAge": 6,
+    "repeat": "once",
+    "roles": {
+      "veli": { "kin": ["anne", "baba"], "livesTogether": true }
+    },
+    "speaker": "veli",
+    "text": "Gece yarısı kâbusla uyandın; dolabın gölgesi bir canavara benziyor. {veli.akraba} uykulu gözlerle kapıda.",
+    "left": {
+      "label": "Yanınızda uyuyayım",
+      "effects": {
+        "people": {
+          "veli": {
+            "memory": {
+              "kind": "kabus_gecesi",
+              "label": "Kâbus görüp yanımıza geldi",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Işık açık kalsın",
+      "effects": { "happiness": 1 }
+    }
+  },
+  {
+    "id": "kopek_istiyorum",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 3,
+    "maxAge": 6,
+    "repeat": "once",
+    "roles": {
+      "veli": { "kin": ["anne", "baba"] }
+    },
+    "speaker": "veli",
+    "text": "Akşam yemeğinde ciddi bir sesle açıkladın: 'Bir köpek istiyorum.' {veli.akraba} çatalını bıraktı.",
+    "left": {
+      "label": "Adını bile koydum",
+      "effects": { "happiness": 2 }
+    },
+    "right": {
+      "label": "Kedi de olur",
+      "effects": { "happiness": 1 }
+    }
+  },
+  {
+    "id": "pazar_kahvaltisi",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 3,
+    "maxAge": 6,
+    "repeat": "once",
+    "roles": {
+      "veli": { "kin": ["anne", "baba"], "livesTogether": true }
+    },
+    "speaker": "veli",
+    "text": "Pazar kahvaltısı. {veli.akraba} sana da bir çatal verdi: 'Bugün menemeni sen karıştır.'",
+    "left": {
+      "label": "Karıştırırım!",
+      "effects": {
+        "happiness": 3,
+        "people": {
+          "veli": {
+            "memory": {
+              "kind": "menemen",
+              "label": "Pazar kahvaltısında birlikte menemen yaptık",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Ben yemeye geldim",
+      "effects": { "happiness": 2 }
+    }
+  },
+  {
+    "id": "ilk_bakkal_gorevi",
+    "type": "genel",
+    "theme": "mahalle",
+    "minAge": 5,
+    "maxAge": 7,
+    "repeat": "once",
+    "text": "İlk kez tek başına bakkala gönderildin: bir ekmek, bir yoğurt. Para avucunda terliyor.",
+    "left": {
+      "label": "Koşa koşa giderim",
+      "effects": { "happiness": 2, "reputation": 1 }
+    },
+    "right": {
+      "label": "Bir de sakız alırım",
+      "effects": { "happiness": 3 }
+    }
+  },
+  {
+    "id": "dis_perisi",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 5,
+    "maxAge": 7,
+    "repeat": "once",
+    "roles": {
+      "veli": { "kin": ["anne", "baba"] }
+    },
+    "speaker": "veli",
+    "text": "İlk sütdişin düştü! {veli.akraba}: 'Yastığının altına koy, bakalım sabah ne çıkacak.'",
+    "left": {
+      "label": "Bütün gece beklerim",
+      "effects": { "happiness": 2 }
+    },
+    "right": {
+      "label": "Çatıya atarım",
+      "effects": { "happiness": 2, "knowledge": 1 }
+    }
+  },
+  {
+    "id": "cizgi_film_saati",
+    "type": "genel",
+    "theme": "aile",
+    "minAge": 3,
+    "maxAge": 6,
+    "repeat": "once",
+    "text": "Çizgi film tam en heyecanlı yerinde. Mutfaktan ses geliyor: 'Yemek hazır, hemen masaya!'",
+    "left": {
+      "label": "Bir dakika daha",
+      "effects": { "happiness": 2 }
+    },
+    "right": {
+      "label": "Masaya koşarım",
+      "effects": { "health": 1, "reputation": 1 }
+    }
+  },
+  {
+    "id": "salincak",
+    "type": "genel",
+    "theme": "mahalle",
+    "minAge": 2,
+    "maxAge": 6,
+    "repeat": "once",
+    "text": "Parkta tek salıncak boş. Senden büyük bir çocuk da ona doğru koşuyor.",
+    "left": {
+      "label": "Ben de koşarım",
+      "roll": { "stat": "luck", "threshold": 50 },
+      "success": { "happiness": 3 },
+      "fail": { "happiness": -1 }
+    },
+    "right": {
+      "label": "Sıramı beklerim",
+      "effects": { "reputation": 1 }
+    }
+  },
+  {
+    "id": "kostum_secimi",
+    "type": "genel",
+    "theme": "genel",
+    "minAge": 4,
+    "maxAge": 6,
+    "repeat": "once",
+    "text": "Anaokulunda kostüm günü. Herkes süper kahraman olmuş; sen de dolaptan ne bulduysan giymişsin.",
+    "left": {
+      "label": "Ben bir bulutum",
+      "effects": { "happiness": 3 }
+    },
+    "right": {
+      "label": "Bir şey olmadım",
+      "effects": { "happiness": -1 }
+    }
+  },
+  {
+    "id": "neden_sorusu",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 3,
+    "maxAge": 5,
+    "repeat": "once",
+    "roles": {
+      "veli": { "kin": ["anne", "baba"] }
+    },
+    "speaker": "veli",
+    "text": "Bugün yirminci kez 'Neden?' diye sordun. {veli.akraba} derin bir nefes aldı: 'Çünkü öyle.'",
+    "left": {
+      "label": "Neden öyle?",
+      "effects": { "knowledge": 2 }
+    },
+    "right": {
+      "label": "Peki",
+      "effects": { "happiness": 1 }
+    }
+  }
+]

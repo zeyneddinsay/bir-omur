@@ -287,7 +287,11 @@ class FamilyGenerator {
     RoleKind? role,
     Trait? requiredTrait,
   }) {
-    final name = _pick(book.namesFor(gender, NameEra.forAgeGap(age)));
+    // Aynı ailede iki kişi aynı adı taşımaz (iki dede de "Mustafa" olmasın).
+    final taken = {for (final p in _book.all) p.name};
+    final names = book.namesFor(gender, NameEra.forAgeGap(age));
+    final fresh = names.where((n) => !taken.contains(n)).toList();
+    final name = _pick(fresh.isEmpty ? names : fresh);
     final traits = _pickTraits(requiredTrait);
     final seed = random.nextInt(1 << 30);
     final (next, _) = _book.add(

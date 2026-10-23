@@ -96,6 +96,9 @@ void main() {
     await tester.tap(find.byKey(const Key('consent_accept')));
     await tester.pumpAndSettle();
     await tester.enterText(find.byKey(const Key('birth_name')), 'Gizliİsim');
+    await tester.ensureVisible(find.byKey(const Key('gender_kadin')));
+    await tester.tap(find.byKey(const Key('gender_kadin')));
+    await tester.pump();
     await tester.ensureVisible(find.byKey(const Key('birth_button')));
     await tester.tap(find.byKey(const Key('birth_button')));
     await tester.pumpAndSettle();

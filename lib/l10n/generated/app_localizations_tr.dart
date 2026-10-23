@@ -43,9 +43,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get genderFemale => 'Kadın';
 
   @override
-  String get genderRandom => 'Rastgele';
-
-  @override
   String get birthButton => 'Doğ';
 
   @override
@@ -388,6 +385,22 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get settingsCrashNote =>
       'Uygulama çökerse, hatayı bulabilmemiz için anonim bir çökme kaydı gönderilir.';
+
+  @override
+  String get settingsNewLife => 'Yeni hayat başlat';
+
+  @override
+  String get settingsNewLifeHint => 'Bu hayatı bırakıp doğum ekranına dön';
+
+  @override
+  String get newLifeConfirmTitle => 'Yeni bir hayata mı başlıyorsun?';
+
+  @override
+  String get newLifeConfirmBody =>
+      'Bu hayat yarıda kalır; albüme ve rozetlere sayılmaz.';
+
+  @override
+  String get newLifeConfirm => 'Yeni hayat';
 
   @override
   String get consentTitle => 'Oyunu birlikte geliştirelim';
