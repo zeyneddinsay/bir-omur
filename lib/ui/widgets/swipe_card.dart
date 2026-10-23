@@ -25,6 +25,7 @@ class SwipeCard extends StatefulWidget {
     this.character,
     this.people = const {},
     this.remaining = 0,
+    this.render = _plain,
   });
 
   final EventCard card;
@@ -48,6 +49,12 @@ class SwipeCard extends StatefulWidget {
 
   /// Bu yıl bu karttan sonra gelecek kart sayısı (arkada deste görünür).
   final int remaining;
+
+  /// Seçenek etiketlerindeki yer tutucuları (`{a.ad}`) kişilerle kurar.
+  /// Ekranda hiçbir zaman ham şablon görünmez.
+  final String Function(String template) render;
+
+  static String _plain(String text) => text;
 
   @override
   State<SwipeCard> createState() => _SwipeCardState();
@@ -179,6 +186,7 @@ class _SwipeCardState extends State<SwipeCard>
                                   speakerName: widget.speakerName,
                                   portrait: widget.portrait,
                                   lean: _lean,
+                                  render: widget.render,
                                   compact: compact,
                                   maxHeight: min(
                                     constraints.maxHeight - 24,
@@ -215,6 +223,7 @@ class _SwipeCardState extends State<SwipeCard>
                               key: Key('choose_${side.name}'),
                               side: side,
                               choice: card.choice(side),
+                              label: widget.render(card.choice(side).label),
                               character: widget.character,
                               people: widget.people,
                               highlighted: _lean == side,
@@ -257,6 +266,7 @@ class _CardFace extends StatelessWidget {
     required this.card,
     required this.text,
     required this.lean,
+    required this.render,
     required this.compact,
     required this.maxHeight,
     this.speakerName,
@@ -267,6 +277,7 @@ class _CardFace extends StatelessWidget {
   final String text;
   final String? speakerName;
   final ChoiceSide? lean;
+  final String Function(String template) render;
 
   /// Küçük ekranda portre gizlenir, yer metne kalır.
   final bool compact;
@@ -300,8 +311,9 @@ class _CardFace extends StatelessWidget {
       Rarity.efsane => AppColors.legendary,
     };
     final leanLabel = switch (lean) {
-      final side? when side != ChoiceSide.up || card.up != null =>
+      final side? when side != ChoiceSide.up || card.up != null => render(
         card.choice(side).label,
+      ),
       _ => null,
     };
     final muted = scheme.onSurface.withValues(alpha: 0.62);
@@ -511,6 +523,7 @@ class ChoiceTile extends StatelessWidget {
     super.key,
     required this.side,
     required this.choice,
+    required this.label,
     required this.onTap,
     this.character,
     this.people = const {},
@@ -520,6 +533,9 @@ class ChoiceTile extends StatelessWidget {
 
   final ChoiceSide side;
   final Choice choice;
+
+  /// Kişilerle kurulmuş etiket.
+  final String label;
   final VoidCallback onTap;
   final Character? character;
   final Map<String, String> people;
@@ -551,7 +567,7 @@ class ChoiceTile extends StatelessWidget {
     final effects = <Widget>[
       if (roll != null && dense) RollLine(roll: roll, character: character),
       for (final item in base) PreviewChip(item: item, dense: true),
-      for (final (i, (label, list)) in [
+      for (final (i, (branch, list)) in [
         (l10n.previewIfSuccess, success),
         (l10n.previewIfFail, fail),
       ].indexed)
@@ -560,7 +576,7 @@ class ChoiceTile extends StatelessWidget {
             padding: EdgeInsets.only(
               left: i == 0 && base.isEmpty && !dense ? 0 : 6,
             ),
-            child: Text(label, style: labelStyle),
+            child: Text(branch, style: labelStyle),
           ),
           for (final item in list) PreviewChip(item: item, dense: true),
         ],
@@ -611,7 +627,7 @@ class ChoiceTile extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      choice.label,
+                      label,
                       style: theme.textTheme.titleSmall?.copyWith(
                         fontWeight: FontWeight.w800,
                       ),

@@ -277,6 +277,7 @@ class _YearScreenState extends ConsumerState<YearScreen> {
                 : PortraitDesigner.ofPerson(speaker, playerAge: c.age),
             character: c,
             people: event.people,
+            render: (template) => EventText.render(template, event.people, c),
             remaining: state.pendingCards.length - 1,
             onLean: (side) => setState(() => _lean = side),
             onChoose: (side) {

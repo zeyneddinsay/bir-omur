@@ -117,7 +117,16 @@ String _choiceLabel(String? ref, Character c, EventDeck deck) {
   final side = ChoiceSide.values.asNameMap()[ref.substring(colon + 1)];
   if (card == null || side == null) return ref;
   if (side == ChoiceSide.up && card.up == null) return ref;
-  return EventText.render(card.choice(side).label, const {}, c);
+  // Etiketteki kişiler ({a.ad}) o seçimin kaydından kurulur.
+  final record = c.history.lastWhere(
+    (r) => r.cardId == card.id && r.side == side,
+    orElse: () => CardRecord(age: c.age, cardId: card.id, side: side),
+  );
+  try {
+    return EventText.render(card.choice(side).label, record.people, c);
+  } on StateError {
+    return card.choice(side).label.replaceAll(RegExp(r'\{[^}]*\}'), '…');
+  }
 }
 
 class _Row extends StatelessWidget {

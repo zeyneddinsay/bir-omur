@@ -101,6 +101,13 @@ void main() {
         if (label.runes.length > CardValidator.maxLabelLength) {
           problems.add('$where: uzun seçenek "$label"');
         }
+        // Etiket ve sonuç cümleleri de kişilerle eksiksiz kurulur.
+        for (final t in [label, ...choice.results]) {
+          final rendered = EventText.render(t, event.people, c);
+          if (rendered.contains('{') || rendered.contains('}')) {
+            problems.add('$where: kurulamayan yazı "$rendered"');
+          }
+        }
       }
       if (card.speaker != null &&
           EventText.speakerName(card, event.people, c) == null) {

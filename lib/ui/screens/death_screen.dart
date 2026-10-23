@@ -127,7 +127,11 @@ class DeathScreen extends ConsumerWidget {
                         const SizedBox(height: 4),
                         Text(
                           l10n.momentChoice(
-                            momentCard.choice(moment.side).label,
+                            EventText.render(
+                              momentCard.choice(moment.side).label,
+                              moment.people,
+                              summary.character,
+                            ),
                           ),
                           style: theme.textTheme.titleSmall,
                         ),
