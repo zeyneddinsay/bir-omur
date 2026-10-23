@@ -76,7 +76,10 @@ Map<String, dynamic> testCardJson(
   'minAge': minAge,
   'maxAge': maxAge,
   'rarity': rarity,
-  'repeat': once ? 'once' : {'cooldown': cooldown < 1 ? 1 : cooldown},
+  // Denetçi tekrarı yalnızca dönemeç ve iplikte kabul eder.
+  'repeat': once || (cooldown == 0 && !mandatory && !chainOnly && type == null)
+      ? 'once'
+      : {'cooldown': cooldown < 1 ? 1 : cooldown},
   'conditions': ?conditions,
   'roles': ?roles,
   'speaker': ?speaker,

@@ -32,7 +32,10 @@ enum Suffix {
   den('den'),
 
   /// Birliktelik ("ile"): Murat'la, Ayşe'yle.
-  le('le');
+  le('le'),
+
+  /// Soru eki, ayrı yazılır: Ahmet mi, Can mı, Umut mu.
+  mi('mi');
 
   const Suffix(this.key);
 
@@ -103,7 +106,9 @@ String withSuffix(String word, Suffix suffix, {bool proper = true}) {
     Suffix.de => '$d$two',
     Suffix.den => '$d${two}n',
     Suffix.le => endsWithVowel ? 'yl$two' : 'l$two',
+    Suffix.mi => 'm$four',
   };
+  if (suffix == Suffix.mi) return '$trimmed $ending';
   return proper ? "$trimmed'$ending" : '$trimmed$ending';
 }
 

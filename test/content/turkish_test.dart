@@ -429,6 +429,14 @@ void main() {
     });
   });
 
+  test('soru eki ayrı ve uyumlu yazılır', () {
+    expect(withSuffix('Ahmet', Suffix.mi), 'Ahmet mi');
+    expect(withSuffix('Can', Suffix.mi), 'Can mı');
+    expect(withSuffix('Umut', Suffix.mi), 'Umut mu');
+    expect(withSuffix('Gül', Suffix.mi), 'Gül mü');
+    expect(withSuffix('Ayşe', Suffix.mi), 'Ayşe mi');
+  });
+
   group('cins adlara ek (kesme işareti yok)', () {
     test('rol adları', () {
       expect(withSuffix('teyze', Suffix.e, proper: false), 'teyzeye');

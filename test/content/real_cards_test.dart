@@ -84,7 +84,11 @@ void main() {
       final card = event.card;
       final c = state.character;
       final where = 'tohum $seed, ${c.age} yaş, ${card.id}';
-      final text = EventText.render(card.text, event.people, c);
+      final text = EventText.render(
+        EventText.cardText(card, c),
+        event.people,
+        c,
+      );
       if (text.contains('{') || text.contains('}')) {
         problems.add('$where: kurulamayan metin "$text"');
       }

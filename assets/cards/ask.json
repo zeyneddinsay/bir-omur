@@ -1,23 +1,102 @@
 [
   {
-    "id": "ilk_hoslanti",
+    "id": "ilk_hoslanti_erkek",
     "type": "donemec",
     "theme": "ask",
-    "minAge": 14,
+    "minAge": 13,
     "maxAge": 14,
     "repeat": "once",
-    "text": "Teneffüste herkes kimden hoşlandığını fısıldıyor. Sıra sana geldi; yanakların şimdiden kızardı.",
+    "conditions": { "gender": "erkek" },
+    "roles": {
+      "a": { "roles": ["sinifArkadasi"], "gender": "kadin", "minGap": -1, "maxGap": 1 },
+      "b": { "roles": ["sinifArkadasi"], "gender": "kadin", "minGap": -1, "maxGap": 1 }
+    },
+    "text": "Teneffüste herkes sınıfta kimden hoşlandığını fısıldıyor. Sıra sana geldi: {a.ad|mi}, {b.ad|mi}?",
     "left": {
-      "label": "Kızlardan",
-      "effects": { "addFlags": ["ilgi_kadin"] }
+      "label": "{a.ad}",
+      "effects": {
+        "happiness": 2,
+        "people": {
+          "a": {
+            "memory": {
+              "kind": "ilk_hoslanti",
+              "label": "Benden gizlice hoşlandığını duydum",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
     },
     "right": {
-      "label": "Oğlanlardan",
-      "effects": { "addFlags": ["ilgi_erkek"] }
+      "label": "{b.ad}",
+      "effects": {
+        "happiness": 2,
+        "people": {
+          "b": {
+            "memory": {
+              "kind": "ilk_hoslanti",
+              "label": "Benden gizlice hoşlandığını duydum",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
     },
     "up": {
-      "label": "İkisinden de",
-      "effects": { "addFlags": ["ilgi_kadin", "ilgi_erkek"] }
+      "label": "Söylemem!",
+      "effects": { "reputation": 1 }
+    }
+  },
+  {
+    "id": "ilk_hoslanti_kiz",
+    "type": "donemec",
+    "theme": "ask",
+    "minAge": 13,
+    "maxAge": 14,
+    "repeat": "once",
+    "conditions": { "gender": "kadin" },
+    "roles": {
+      "a": { "roles": ["sinifArkadasi"], "gender": "erkek", "minGap": -1, "maxGap": 1 },
+      "b": { "roles": ["sinifArkadasi"], "gender": "erkek", "minGap": -1, "maxGap": 1 }
+    },
+    "text": "Teneffüste herkes sınıfta kimden hoşlandığını fısıldıyor. Sıra sana geldi: {a.ad|mi}, {b.ad|mi}?",
+    "left": {
+      "label": "{a.ad}",
+      "effects": {
+        "happiness": 2,
+        "people": {
+          "a": {
+            "memory": {
+              "kind": "ilk_hoslanti",
+              "label": "Benden gizlice hoşlandığını duydum",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "{b.ad}",
+      "effects": {
+        "happiness": 2,
+        "people": {
+          "b": {
+            "memory": {
+              "kind": "ilk_hoslanti",
+              "label": "Benden gizlice hoşlandığını duydum",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "up": {
+      "label": "Söylemem!",
+      "effects": { "reputation": 1 }
     }
   },
   {
@@ -100,40 +179,6 @@
     }
   },
   {
-    "id": "aile_tanisma_yemegi",
-    "type": "iplik",
-    "theme": "ask",
-    "minAge": 20,
-    "maxAge": 90,
-    "repeat": { "cooldown": 1 },
-    "roles": {
-      "nisanli": { "bond": ["nisanli"], "minAge": 18 }
-    },
-    "speaker": "nisanli",
-    "text": "İki aile ilk kez aynı sofrada. Ortam biraz gergin; {nisanli.ad} masanın altından elini tuttu.",
-    "closing": "{nisanli.ad} ile o sofra hiç kurulmadı.",
-    "left": {
-      "label": "Ben konuşurum",
-      "effects": {
-        "reputation": 2,
-        "people": {
-          "nisanli": {
-            "memory": {
-              "kind": "aileleri_tanistirdi",
-              "label": "Ailelerin önünde arkamda durdu",
-              "tone": "olumlu",
-              "severity": 2
-            }
-          }
-        }
-      }
-    },
-    "right": {
-      "label": "Yemekleri överim",
-      "effects": { "happiness": 2 }
-    }
-  },
-  {
     "id": "dugun",
     "type": "iplik",
     "theme": "ask",
@@ -168,6 +213,7 @@
     },
     "speaker": "es",
     "text": "Bebek geldi! Büyükler kendi büyüklerinin adını, gençler bugünün adlarını öneriyor. {es.ad} sana bakıyor.",
+    "variants": ["Yine bebek sesi! {es.ad} yorgun ama gülümsüyor. Ad yine masada: büyüklerin dediği mi, bugünün adı mı?", "Ev yine kalabalıklaştı: yeni bebek geldi. {es.ad}: 'Bu sefer adı kolay olsun.'", "Kalabalık bir aile oldunuz. Yeni bebek {es.ad|in} kucağında uyuyor; ablalar, ağabeyler sıraya girmiş."],
     "left": {
       "label": "Büyüklerin dediği",
       "effects": { "happiness": 8 }
@@ -187,7 +233,7 @@
     "theme": "ask",
     "minAge": 19,
     "maxAge": 80,
-    "repeat": { "cooldown": 4, "max": 3 },
+    "repeat": "once",
     "roles": {
       "sevgili": { "bond": ["sevgili", "nisanli"], "minAge": 18 }
     },
@@ -234,7 +280,7 @@
     "theme": "ask",
     "minAge": 19,
     "maxAge": 70,
-    "repeat": { "cooldown": 5, "max": 2 },
+    "repeat": "once",
     "roles": {
       "sevgili": { "bond": ["sevgili", "nisanli"], "traits": ["kiskanc"], "minAge": 18 }
     },
@@ -348,7 +394,7 @@
     "theme": "aile",
     "minAge": 20,
     "maxAge": 90,
-    "repeat": { "cooldown": 5, "max": 3 },
+    "repeat": "once",
     "roles": {
       "es": { "kin": ["es"] },
       "kayin": { "kin": ["kayinvalide", "kayinpeder"], "offstage": true },
@@ -393,7 +439,7 @@
     "theme": "aile",
     "minAge": 20,
     "maxAge": 90,
-    "repeat": { "cooldown": 4, "max": 4 },
+    "repeat": "once",
     "roles": {
       "kayin": { "kin": ["kayinvalide"] }
     },
@@ -437,7 +483,7 @@
     "theme": "aile",
     "minAge": 20,
     "maxAge": 90,
-    "repeat": { "cooldown": 4, "max": 3 },
+    "repeat": "once",
     "roles": {
       "es": { "kin": ["es"] }
     },
@@ -480,7 +526,7 @@
     "theme": "aile",
     "minAge": 20,
     "maxAge": 70,
-    "repeat": { "cooldown": 1, "max": 3 },
+    "repeat": "once",
     "roles": {
       "cocuk": { "kin": ["cocuk"], "minAge": 1, "maxAge": 1 }
     },
@@ -501,7 +547,7 @@
     "theme": "aile",
     "minAge": 25,
     "maxAge": 80,
-    "repeat": { "cooldown": 3, "max": 4 },
+    "repeat": "once",
     "roles": {
       "cocuk": { "kin": ["cocuk"], "minAge": 7, "maxAge": 14 }
     },
@@ -533,7 +579,7 @@
     "theme": "aile",
     "minAge": 25,
     "maxAge": 80,
-    "repeat": { "cooldown": 3, "max": 3 },
+    "repeat": "once",
     "roles": {
       "cocuk": { "kin": ["cocuk"], "minAge": 8, "maxAge": 13 }
     },
@@ -578,7 +624,7 @@
     "theme": "aile",
     "minAge": 28,
     "maxAge": 85,
-    "repeat": { "cooldown": 3, "max": 2 },
+    "repeat": "once",
     "roles": {
       "cocuk": { "kin": ["cocuk"], "minAge": 14, "maxAge": 17 }
     },

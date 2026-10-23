@@ -530,6 +530,9 @@ class CardValidator {
 
     _checkCareerUse(card, error);
     _checkText(card, '.text', card.text, maxTextLength, error);
+    for (var i = 0; i < card.variants.length; i++) {
+      _checkText(card, '.variants[$i]', card.variants[i], maxTextLength, error);
+    }
     if (card.closing case final closing?) {
       if (!card.chainOnly) {
         error('.closing', 'kapanış cümlesi yalnızca iplikte olur');
@@ -542,6 +545,13 @@ class CardValidator {
         card.rarity == Rarity.siradan &&
         card.type != EventType.donemec) {
       error('.up', 'yukarı seçeneği yalnızca nadir, efsane ve dönemeçte olur');
+    }
+    // Aynı olay bir hayatta iki kez gelmez (karar, 23 Ekim 2026); yalnızca
+    // dönemeçler (cenazeler) ve iplikler tekrar edebilir.
+    if (!card.once &&
+        card.type != EventType.donemec &&
+        card.type != EventType.iplik) {
+      error('.repeat', 'olay hayatta bir kez gelir: "once" olmalı');
     }
     if (card.type == EventType.kisi && card.roles.isEmpty) {
       error('.roles', 'kişi olayı en az bir rol yuvası ister');

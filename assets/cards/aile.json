@@ -282,7 +282,7 @@
     "theme": "aile",
     "minAge": 19,
     "maxAge": 70,
-    "repeat": { "cooldown": 4, "max": 6 },
+    "repeat": "once",
     "roles": {
       "anne": { "kin": ["anne"], "maxCloseness": 75, "livesTogether": false }
     },
@@ -327,7 +327,7 @@
     "theme": "aile",
     "minAge": 22,
     "maxAge": 35,
-    "repeat": { "cooldown": 5, "max": 2 },
+    "repeat": "once",
     "conditions": { "notFlags": ["evli", "iliskide", "evlenmis"] },
     "roles": {
       "baba": { "kin": ["baba"] }
@@ -373,7 +373,7 @@
     "theme": "para",
     "minAge": 22,
     "maxAge": 65,
-    "repeat": { "cooldown": 6, "max": 3 },
+    "repeat": "once",
     "conditions": { "min": { "money": 33000 } },
     "roles": {
       "kardes": { "kin": ["kardes"], "minAge": 20 }
@@ -453,7 +453,7 @@
     "theme": "aile",
     "minAge": 8,
     "maxAge": 80,
-    "repeat": { "cooldown": 5, "max": 4 },
+    "repeat": "once",
     "roles": {
       "kardes": { "kin": ["kardes"], "minAge": 6, "minHostility": 20 }
     },
@@ -498,7 +498,7 @@
     "theme": "aile",
     "minAge": 7,
     "maxAge": 35,
-    "repeat": { "cooldown": 6, "max": 3 },
+    "repeat": "once",
     "roles": {
       "dede": { "kin": ["dede"] }
     },
@@ -543,7 +543,7 @@
     "theme": "aile",
     "minAge": 5,
     "maxAge": 40,
-    "repeat": { "cooldown": 5, "max": 4 },
+    "repeat": "once",
     "roles": {
       "nine": { "kin": ["nine"] }
     },
@@ -634,7 +634,7 @@
     "theme": "aile",
     "minAge": 18,
     "maxAge": 60,
-    "repeat": { "cooldown": 6, "max": 4 },
+    "repeat": "once",
     "conditions": { "career": "any" },
     "roles": {
       "veli": { "kin": ["anne", "baba"] }

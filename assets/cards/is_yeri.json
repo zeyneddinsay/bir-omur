@@ -5,7 +5,7 @@
     "theme": "is",
     "minAge": 19,
     "maxAge": 64,
-    "repeat": { "cooldown": 4, "max": 3 },
+    "repeat": "once",
     "conditions": { "careers": ["plaza", "yazilimci", "emlakci", "memur"] },
     "text": "Cuma 17.58. Konusu 'ACİL' olan bir e-posta düştü. Çantan çoktan omzunda.",
     "left": {
@@ -23,7 +23,7 @@
     "theme": "is",
     "minAge": 19,
     "maxAge": 64,
-    "repeat": { "cooldown": 5, "max": 2 },
+    "repeat": "once",
     "conditions": { "career": "any" },
     "roles": {
       "is": { "roles": ["isArkadasi"], "traits": ["dedikoducu"] }
@@ -69,7 +69,7 @@
     "theme": "is",
     "minAge": 19,
     "maxAge": 64,
-    "repeat": { "cooldown": 6, "max": 2 },
+    "repeat": "once",
     "conditions": {
       "careers": ["plaza", "yazilimci", "emlakci"]
     },
@@ -131,7 +131,7 @@
     "theme": "is",
     "minAge": 19,
     "maxAge": 64,
-    "repeat": { "cooldown": 4, "max": 3 },
+    "repeat": "once",
     "conditions": { "careers": ["plaza", "yazilimci", "emlakci", "memur"] },
     "roles": {
       "is": { "roles": ["isArkadasi"] }
@@ -178,7 +178,7 @@
     "theme": "is",
     "minAge": 19,
     "maxAge": 64,
-    "repeat": { "cooldown": 6, "max": 2 },
+    "repeat": "once",
     "conditions": {
       "careers": ["plaza", "yazilimci", "emlakci", "garson", "oto_tamircisi"]
     },
@@ -276,7 +276,7 @@
     "theme": "is",
     "minAge": 19,
     "maxAge": 64,
-    "repeat": { "cooldown": 5, "max": 2 },
+    "repeat": "once",
     "conditions": { "career": "any" },
     "text": "Toplu taşıma arızalandı; işe yarım saat geç kalacaksın. Taksi durağı karşıda duruyor.",
     "left": {
@@ -340,7 +340,7 @@
     "theme": "para",
     "minAge": 18,
     "maxAge": 90,
-    "repeat": { "cooldown": 3, "max": 4 },
+    "repeat": "once",
     "conditions": { "flags": ["kiraci"] },
     "roles": {
       "ev": { "roles": ["evSahibi"], "minGap": 12 }
@@ -388,7 +388,7 @@
     "theme": "mahalle",
     "minAge": 18,
     "maxAge": 90,
-    "repeat": { "cooldown": 6, "max": 2 },
+    "repeat": "once",
     "conditions": { "flags": ["kiraci"] },
     "roles": {
       "ev": { "roles": ["evSahibi"], "minGap": 12 }
@@ -436,7 +436,7 @@
     "theme": "mahalle",
     "minAge": 18,
     "maxAge": 90,
-    "repeat": { "cooldown": 5, "max": 3 },
+    "repeat": "once",
     "conditions": { "flags": ["yeni_tasindi"] },
     "roles": {
       "komsu": { "roles": ["komsu"], "sameCity": true, "noMemory": "kek_sorgusu" }
@@ -482,7 +482,7 @@
     "theme": "para",
     "minAge": 20,
     "maxAge": 70,
-    "repeat": { "cooldown": 8, "max": 2 },
+    "repeat": "once",
     "text": "Banka aradı: 'Size özel limitli kredi kartı tanımladık, kargoya veriyoruz.' Sen bir şey istememiştin.",
     "left": {
       "label": "Kesinlikle istemem",
@@ -501,7 +501,7 @@
     "theme": "mahalle",
     "minAge": 25,
     "maxAge": 75,
-    "repeat": { "cooldown": 5, "max": 2 },
+    "repeat": "once",
     "conditions": { "gender": "kadin" },
     "roles": {
       "komsu": { "roles": ["komsu"], "sameCity": true }
@@ -548,7 +548,7 @@
     "theme": "mahalle",
     "minAge": 25,
     "maxAge": 75,
-    "repeat": { "cooldown": 5, "max": 3 },
+    "repeat": "once",
     "conditions": { "gender": "erkek" },
     "roles": {
       "bakkal": { "roles": ["bakkal"], "sameCity": true }

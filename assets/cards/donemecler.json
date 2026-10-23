@@ -223,6 +223,7 @@
       }
     },
     "text": "{merhum.akraba} artık yok. Evde herkes alçak sesle konuşuyor; kimse sana tam olarak anlatmıyor.",
+    "variants": ["{merhum.akraba} gitti. Büyükler siyahlar giymiş; sana uzun bir yolculuğa çıktığını söylüyorlar."],
     "left": {
       "label": "Birine sıkıca sarıl",
       "effects": { "happiness": -3 }
@@ -247,6 +248,7 @@
       }
     },
     "text": "{merhum.akraba} vefat etti. Taziye evinin kapısı hiç kapanmıyor; gelen herkes onu bir hatırayla anıyor.",
+    "variants": ["{merhum.akraba|in} cenazesi kalabalıktı. Herkes onun bir lafını, bir şakasını hatırlıyor.", "{merhum.akraba} artık yok. Biri onun eski bir fotoğrafını elden ele dolaştırıyor; herkes susuyor.", "{merhum.akraba} için helva kavruldu. Kokusu bütün evi doldurdu; aklına çocukluğundan bir gün geldi."],
     "left": {
       "label": "Gelenleri karşıla",
       "effects": { "reputation": 2, "happiness": -4 }
@@ -267,6 +269,7 @@
       "merhum": { "kin": ["kardes"], "deceased": true }
     },
     "text": "{merhum.akraba} vefat etti. Çocukluğunuzun bütün fotoğraflarında o da var; şimdi onlara bakmak zor.",
+    "variants": ["{merhum.akraba} da gitti. Çocukken paylaştığınız odanın kapısı gözünün önünden gitmiyor."],
     "left": {
       "label": "Cenazeyi ben kaldırırım",
       "effects": { "reputation": 2, "happiness": -8 }
@@ -287,6 +290,7 @@
       "merhum": { "kin": ["anne", "baba"], "deceased": true }
     },
     "text": "{merhum.akraba} vefat etti. Telefon sabah erkenden çaldı; o günden geriye yalnızca parçalar kaldı.",
+    "variants": ["{merhum.akraba} da gitti. Evin anahtarı artık sende; kapıyı açmak hiç bu kadar zor olmamıştı."],
     "left": {
       "label": "Her işi ben üstlenirim",
       "effects": { "reputation": 3, "health": -3, "happiness": -8 }

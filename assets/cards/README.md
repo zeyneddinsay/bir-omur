@@ -50,9 +50,10 @@ motoru" bölümündedir.
 | `type` | evet | `donemec` (şartı sağlanınca mutlaka gelir), `kisi`, `yer`, `tesaduf` (yılda en fazla 1), `genel`, `iplik` (yalnızca başka bir olayın `schedule` etkisiyle gelir) |
 | `theme` | evet | `aile`, `okul`, `ask`, `is`, `para`, `mahalle`, `saglik`, `genel`; aynı yıl aynı temadan iki olay gelmez (dönemeçler hariç) |
 | `minAge`, `maxAge` | evet | Oyuncunun yaşı, dahil |
-| `repeat` | evet | `"once"` ya da `{"cooldown": 3}`; isteğe bağlı `"max": 4` hayat boyu en fazla kaç kez geleceğini sınırlar. Daha önce gelmiş olay çekilişte her gelişinde daha az ağırlık alır |
+| `repeat` | evet | `"once"`; tekrar (`{"cooldown": 3}`) yalnızca dönemeç ve iplikte (aynı olay bir hayatta iki kez gelmez); isteğe bağlı `"max": 4` hayat boyu en fazla kaç kez geleceğini sınırlar. Daha önce gelmiş olay çekilişte her gelişinde daha az ağırlık alır |
 | `rarity` | hayır | `siradan` (varsayılan), `nadir`, `efsane`; yukarı seçeneği (`up`) yalnızca nadir, efsane ve dönemeçte |
 | `closing` | hayır | Yalnızca iplikte: taşınan kişi vefat ettiyse ya da çevreden ayrıldıysa olay gelmez, bu cümle yıl günlüğüne yazılır |
+| `variants` | hayır | Metnin çeşitleri: tekrar edebilen olayda (cenaze, bebek, zor gün) her gelişte sıradaki metin kullanılır |
 | `conditions` | hayır | Oyuncunun koşulları: `flags`, `notFlags`, `gender`, `temperament`, `background`, `familyProfile`, `career`, `careers` (meslek listesi; biri yeter), `business` (işletme türü, `any` ya da `none`; `yazilim` ekipli şirketi de kapsar), `businessTypes` (tür listesi; biri yeter), `atBusiness` (`true`: uyan işletmenin başında; müşteriyle, çalışanla yüz yüze olaylar için), `minTier`, `min`, `max` |
 | `roles` | hayır | Rol yuvaları (aşağıda); uygun kişi yoksa olay gelmez |
 | `speaker` | hayır | Konuşan rol yuvası; kartta onun portresi görünür |

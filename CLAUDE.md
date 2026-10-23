@@ -130,7 +130,8 @@ Bu aşamada alınan kararlar (22 Ekim 2026):
 
 - Temel kural: ilişkiler oyuncunun arkasından değişmez. Yakınlık ve husumet ancak oyuncunun bir seçimiyle değişir; kişilik özellikleri davranışı değiştirir, çubuğu değil.
 - Ekonomi gerçek 2026 rakamlarına çekilir (mevcut tutarlar yaklaşık × 3,3; ayrıntı dokümanın "Ekonomi ölçeği" bölümünde).
-- Oyuncu romantik ilişkide cinsiyet seçebilir. 18 yaşından önce romantik bağ yalnızca platonik ve en fazla 1 yaş farkla olur.
+- Karar (23 Ekim 2026, kullanıcı): oyunda eşcinsel içerik hiç yer almaz; romantik ilişki yalnızca karşı cinsle kurulur (22 Ekim'deki "cinsiyet seçebilir" kararının yerine). 18 yaşından önce romantik bağ yalnızca platonik ve en fazla 1 yaş farkla olur.
+- Karar (23 Ekim 2026, kullanıcı): aynı olay bir hayatta iki kez gelmez. Kişi, genel, yer ve tesadüf olayları `"once"`; tekrar yalnızca dönemeç (cenaze) ve iplikte, onlarda da metin çeşitleriyle (`variants`). card_lint denetler.
 - Yıllık vakit puanı eski aksiyon hakkının yerine geçti (yukarıda "Vakit"); yarı zamanlı iş, fazla mesai ve kendi işi D2 ve D3'te eklenir.
 - İlk sürüm kapsamı dar başlar: 6 kişilik özelliği; 4 işletme (simit, berber, oto yıkama, yazılım; fabrika yalnızca aileden devralma); alan başına 1 meslek. Kalanlar güncellemelerle gelir.
 - Mevcut Esnaf mesleği kaldırılacak; "kendi dükkânı" işletme sistemine geçer.
@@ -223,10 +224,10 @@ D4a adımları (iplikler, dünya küçük, zor gün):
 
 D4b adımları (aşk, evlilik, çocuklar; `lib/engine/romance.dart`):
 
-- [x] 14 yaş dönemeci `ilk_hoslanti`: kızlar, oğlanlar ya da ikisi (`ilgi_kadin`, `ilgi_erkek`). Seçilmediyse karşı cins. Romantik bağ 18+ ve yaş kuralıyla (küçük olan büyüğün yarısı artı 7).
+- [x] 13–14 yaş dönemeci `ilk_hoslanti_erkek` / `ilk_hoslanti_kiz`: karşı cinsten iki sınıf arkadaşından hangisinden hoşlandığın (platonik; yıllar sonra `sinif_bulusmasi` olayıyla döner). Romantik bağ yalnızca karşı cinsle, 18+ ve yaş kuralıyla (küçük olan büyüğün yarısı artı 7).
 - [x] Aktiviteler'de "Biriyle tanış": ilgi duyulan cinsiyetten, yaşı uyan, bekâr biri arkadaş olarak gelir.
 - [x] İnsanlar'da yeni etkileşimler: duygularını açıkla (50+), ciddi düşünüyorum (60+, flörtten en az 1 yıl sonra), evlenme teklifi (75+, 20 yaş), ayrıl ya da boşan (nakit yarı yarıya), çocuk isteyelim mi (60+, 20–45 yaş, en fazla 4 çocuk, iki yıl arayla).
-- [x] Teklif kabul edilince gelecek yıl kız isteme (çiftin cinsiyetine göre damat, gelin ya da iki ailenin tanışma yemeği), ondan sonraki yıl düğün. Düğünde eş olur, kayınvalide ve kayınpeder gelir, aile evinde yaşayan kiraya çıkar.
+- [x] Teklif kabul edilince gelecek yıl kız isteme (oyuncu erkekse damat, kadınsa gelin tarafı), ondan sonraki yıl düğün. Düğünde eş olur, kayınvalide ve kayınpeder gelir, aile evinde yaşayan kiraya çıkar.
 - [x] Doğum: adı kayın taraf, annen ya da siz koyarsınız. Eş ve 18 yaşından küçük çocuklar aynı evde sayılır ve taşınınca birlikte taşınır.
 - [x] Hane bütçesi: çalışan eş +300 bin, çalışmayan eş −150 bin, evdeki her çocuk −100 bin (deftere ayrı kalemler).
 - [x] Çocuklar 24 yaşından sonra evlenir; evli çocuğun torunu olur. Rozetler geri döndü: Dört Kuşak Bir Fotoğrafta (`dort_kusak`), Dipten Döndü (`dipten_dondu`).
@@ -248,6 +249,7 @@ D5 adımları (denge, mantık taraması, hikâye akışı, cila):
 - [x] Bağımsız tam oyun taraması: arşivdekiler de yaşlanır ve vefat eder (en geç 105); eksi bakiyeye %15 faiz; gelir kirayı karşılamıyorsa evden çıkılamaz ve ailesiz şehre taşınılamaz; kirada borca batana "kira borcu" olayı; emeklinin yaşam gideri 100 bin; en büyük an dönüm noktalarından seçilir; uzak akrabanın vefatı yalnızca günlükte, kardeşin ayrı cenaze kartı; istifa ve satışla vakit kazanılmaz; askerde YKS yok; yılbaşı durumu kayda girer.
 - [x] Hikâye akışı (`life_report hikaye TOHUM` ile yıl yıl döküm): cümle başında büyük harf; geri dönüş olayları (çocukluk ve okul anıları yıllar sonra döner) ve yeni iplikler (girişim, komşu gencine borç, eski sevgilinin düğünü); yaşlılık, torun, yeğen, çocukluk ve yetişkinlik olayları; eş ve akraba yanlış rolde çıkmaz; eş vefatından sonra 2 yıl yas; oyuncunun adı başkasına verilmez; tekrar eden esprilere ömür sınırı; günlükte seçimler olayın kısa hâliyle.
 - [x] Cila: kendi işindeki oyuncu "Kendi işinde", Varlıklar'da işletme satırları, işletme açılamama sebebi (kredi), ölüm ekranında tekrar eden satır yok, rozet adı "Bir Şehrin Çocuğu".
+- [x] Kullanıcının ilk notları (23 Ekim 2026): ilgi seçimi kaldırıldı; aynı kart tekrar gelmez (50 yaş üstüne 36 yeni olay, yaşlılıkta boş yıl azaldı); soru eki `{ad|mi}`; bir olayda aynı adlı iki kişi seçilmez; cenaze, bebek ve zor gün aramasında metin çeşitleri.
 - [ ] Telefonda deneme (kullanıcı)
 
 ## Bekleyen aşama: F3a — Dağıtıma hazırlık

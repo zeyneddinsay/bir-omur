@@ -190,7 +190,11 @@ class _YearScreenState extends ConsumerState<YearScreen> {
             // Her yeni kart sıfırdan başlasın.
             key: ValueKey('${state.character.age}-${card.id}'),
             card: card,
-            text: EventText.render(card.text, event.people, c),
+            text: EventText.render(
+              EventText.cardText(card, c),
+              event.people,
+              c,
+            ),
             speakerName: EventText.speakerName(card, event.people, c),
             portrait: speaker == null
                 ? PortraitDesigner.forCharacter(c)

@@ -130,7 +130,13 @@ class _MeTab extends ConsumerWidget {
       for (final r in PeopleView.choicesThisYear(c))
         if (engine.deck.byId(r.cardId) case final card?)
           l10n.journalChoiceWith(
-            _gist(EventText.render(card.text, r.people, c)),
+            _gist(
+              EventText.render(
+                EventText.cardText(card, c, record: r),
+                r.people,
+                c,
+              ),
+            ),
             EventText.render(card.choice(r.side).label, r.people, c),
           ),
     ];

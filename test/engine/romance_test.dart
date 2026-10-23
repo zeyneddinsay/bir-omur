@@ -16,16 +16,11 @@ void main() {
     expect(Romance.agesFit(40, 27), isTrue);
   });
 
-  test('ilgi: seçilmediyse karşı cins; bayraklarla değişir', () {
-    expect(Romance.attraction(testCharacter()), {Gender.kadin});
-    expect(Romance.attraction(testCharacter(flags: {Romance.likesMen})), {
-      Gender.erkek,
-    });
+  test('romantik ilişki yalnızca karşı cinsle', () {
+    expect(Romance.partnerGender(testCharacter()), Gender.kadin);
     expect(
-      Romance.attraction(
-        testCharacter(flags: {Romance.likesMen, Romance.likesWomen}),
-      ),
-      {Gender.erkek, Gender.kadin},
+      Romance.partnerGender(testCharacter(gender: Gender.kadin)),
+      Gender.erkek,
     );
   });
 

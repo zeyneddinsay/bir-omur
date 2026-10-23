@@ -5,7 +5,7 @@
     "theme": "mahalle",
     "minAge": 18,
     "maxAge": 80,
-    "repeat": { "cooldown": 4, "max": 2 },
+    "repeat": "once",
     "roles": {
       "komsu": { "roles": ["komsu"], "sameCity": true }
     },
@@ -257,7 +257,7 @@
     "theme": "mahalle",
     "minAge": 65,
     "maxAge": 110,
-    "repeat": { "cooldown": 6, "max": 2 },
+    "repeat": "once",
     "text": "Parktaki bankta emekliler kendi zamanlarını anlatıyor. Herkes sana döndü: 'Sen anlat bakalım.'",
     "left": {
       "label": "Ben gençken...",
@@ -274,7 +274,7 @@
     "theme": "saglik",
     "minAge": 35,
     "maxAge": 110,
-    "repeat": { "cooldown": 8, "max": 5 },
+    "repeat": "once",
     "conditions": { "min": { "money": 6500 }, "max": { "health": 60 } },
     "text": "Merdivenin yarısında soluk soluğa kaldın. Doktor: 'Kolesterol, tansiyon, şeker; hepsine bir bakalım.'",
     "left": {
@@ -292,7 +292,7 @@
     "theme": "genel",
     "minAge": 18,
     "maxAge": 45,
-    "repeat": { "cooldown": 3, "max": 3 },
+    "repeat": "once",
     "conditions": {
       "notFlags": ["ehliyet_var"],
       "min": { "money": 50000 }

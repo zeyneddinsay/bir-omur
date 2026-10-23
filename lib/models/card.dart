@@ -422,6 +422,7 @@ class EventCard {
     this.roles = const [],
     this.speaker,
     this.closing,
+    this.variants = const [],
   });
 
   final String id;
@@ -450,6 +451,17 @@ class EventCard {
 
   /// Nadir olaylardaki üçüncü seçenek (yukarı kaydırma).
   final Choice? up;
+
+  /// Metnin çeşitleri: kart tekrar geldiğinde (cenaze, bebek, zor gün)
+  /// sırayla bunlar kullanılır.
+  final List<String> variants;
+
+  /// [occurrence]. gelişin (0'dan başlar) metni.
+  String textAt(int occurrence) {
+    if (variants.isEmpty) return text;
+    final i = occurrence % (variants.length + 1);
+    return i == 0 ? text : variants[i - 1];
+  }
 
   /// İplikte: taşınan kişi vefat ettiyse ya da çevreden ayrıldıysa olay
   /// gelmez, bu cümle yıl günlüğüne yazılır.
@@ -494,6 +506,7 @@ class EventCard {
     'right',
     'up',
     'closing',
+    'variants',
   };
 
   /// Rol yuvası adları: küçük harf, Türkçe harfler ve alt çizgi.
@@ -585,6 +598,7 @@ class EventCard {
       right: Choice.fromJson(r.requireObject('right')),
       up: up == null ? null : Choice.fromJson(up),
       closing: r.optionalString('closing'),
+      variants: r.optionalStringList('variants'),
     );
   }
 }

@@ -173,7 +173,6 @@ class SummaryBuilder {
     'teneffus_yillar_sonra': 8,
     'kiz_isteme_damat': 7,
     'kiz_isteme_gelin': 7,
-    'aile_tanisma_yemegi': 7,
     'mezuniyet': 6,
     'komsu_genci_doner': 6,
     'kopya_tesekkuru': 6,

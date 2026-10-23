@@ -128,7 +128,7 @@
     "theme": "para",
     "minAge": 18,
     "maxAge": 40,
-    "repeat": { "cooldown": 4, "max": 2 },
+    "repeat": "once",
     "roles": {
       "ev": { "roles": ["evArkadasi"] }
     },
@@ -173,7 +173,7 @@
     "theme": "okul",
     "minAge": 18,
     "maxAge": 28,
-    "repeat": { "cooldown": 2, "max": 2 },
+    "repeat": "once",
     "conditions": { "flags": ["universite_ogrencisi"] },
     "roles": {
       "arkadas": { "roles": ["sinifArkadasi"] }
@@ -343,7 +343,7 @@
     "theme": "genel",
     "minAge": 23,
     "maxAge": 70,
-    "repeat": { "cooldown": 8, "max": 2 },
+    "repeat": "once",
     "roles": {
       "asker": { "formerRoles": ["bolukArkadasi"] }
     },

@@ -161,7 +161,13 @@ class AutoPlayer {
           if (blocked == null) t,
       ];
       if (open.isNotEmpty) {
-        return engine.openBusiness(open[_random.nextInt(open.length)].id);
+        // Yazılım açabilen çoğu zaman onu seçer (nadir yolun olayları da
+        // denensin).
+        final software = open.where((t) => t.id == 'yazilim').firstOrNull;
+        final pick = software != null && _random.nextBool()
+            ? software
+            : open[_random.nextInt(open.length)];
+        return engine.openBusiness(pick.id);
       }
     }
     for (final b in c.businesses) {

@@ -35,7 +35,7 @@
     "theme": "okul",
     "minAge": 10,
     "maxAge": 17,
-    "repeat": { "cooldown": 3, "max": 2 },
+    "repeat": "once",
     "conditions": { "max": { "knowledge": 20 } },
     "roles": {
       "veli": { "kin": ["anne", "baba"] }
@@ -81,7 +81,7 @@
     "theme": "okul",
     "minAge": 11,
     "maxAge": 17,
-    "repeat": { "cooldown": 3, "max": 3 },
+    "repeat": "once",
     "conditions": { "min": { "knowledge": 40 } },
     "roles": {
       "veli": { "kin": ["anne", "baba"] }
@@ -161,7 +161,7 @@
     "theme": "okul",
     "minAge": 8,
     "maxAge": 18,
-    "repeat": { "cooldown": 4, "max": 2 },
+    "repeat": "once",
     "roles": {
       "ogretmen": { "roles": ["ogretmen"] }
     },
@@ -259,7 +259,7 @@
     "theme": "okul",
     "minAge": 8,
     "maxAge": 15,
-    "repeat": { "cooldown": 3, "max": 2 },
+    "repeat": "once",
     "conditions": { "max": { "money": 1500 } },
     "roles": {
       "arkadas": {
@@ -309,7 +309,7 @@
     "theme": "okul",
     "minAge": 12,
     "maxAge": 18,
-    "repeat": { "cooldown": 3, "max": 2 },
+    "repeat": "once",
     "roles": {
       "rakip": { "roles": ["sinifArkadasi"], "minHostility": 30 }
     },
@@ -428,7 +428,7 @@
     "theme": "para",
     "minAge": 11,
     "maxAge": 17,
-    "repeat": { "cooldown": 3, "max": 2 },
+    "repeat": "once",
     "conditions": {
       "familyProfile": ["esnaf", "memur", "isci", "ciftci", "yalniz"]
     },

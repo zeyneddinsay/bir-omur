@@ -1,7 +1,5 @@
 {
   "flags": {
-    "ilgi_kadin": "Oyuncu kadınlara ilgi duyuyor (14 yaş dönemeci)",
-    "ilgi_erkek": "Oyuncu erkeklere ilgi duyuyor (14 yaş dönemeci)",
     "askerligini_yapti": "Askerlik borcunu kapattı (bedelli ya da yaparak)",
     "asker_anilari": "Askerliği yaparak geçirdi; ömür boyu 'bizim bölükte' der",
     "bedelli": "Bedelli askerlik yaptı",

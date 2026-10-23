@@ -57,7 +57,6 @@ class ContentRegistry {
     Romance.birthEvent,
     'kiz_isteme_damat',
     'kiz_isteme_gelin',
-    'aile_tanisma_yemegi',
   };
 
   factory ContentRegistry.parse(String source) {

@@ -35,6 +35,17 @@ abstract final class EventText {
     return PersonText.resolve('kisi.$field', person, c);
   }
 
+  /// Kartın bu gelişteki ham metni: daha önce kaç kez geldiyse sıradaki
+  /// çeşit. [record] verilirse o kaydın gelişi.
+  static String cardText(EventCard card, Character c, {CardRecord? record}) {
+    final seen = c.history
+        .where(
+          (r) => r.cardId == card.id && (record == null || r.age < record.age),
+        )
+        .length;
+    return card.textAt(seen);
+  }
+
   /// Kartın üstünde konuşanın adı: akrabaysa "Annen", değilse adı.
   static String? speakerName(
     EventCard card,

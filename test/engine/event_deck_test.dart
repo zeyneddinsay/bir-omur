@@ -72,7 +72,7 @@ void main() {
       expect(allowedAt(20), isFalse);
       expect(allowedAt(22), isFalse);
       expect(allowedAt(23), isTrue);
-      final yearly = testCard('b');
+      final yearly = testCard('b', cooldown: 1);
       expect(
         EventDeck.isRepeatAllowed(
           yearly,
@@ -301,7 +301,7 @@ void main() {
 
     test('her yuvaya ayrı ve uygun bir kişi', () {
       final c = withPeople(testCharacter(age: 12), [
-        testPerson('x', kin: Kinship.anne, gender: Gender.kadin),
+        testPerson('x', name: 'Ayşe', kin: Kinship.anne, gender: Gender.kadin),
         testPerson(
           'x',
           age: 12,
@@ -324,7 +324,7 @@ void main() {
 
     test('meşgul ve dinlenmedeki kişi seçilmez; sabit kişi korunur', () {
       final c = withPeople(testCharacter(age: 12), [
-        testPerson('x', kin: Kinship.anne),
+        testPerson('x', name: 'Ayşe', kin: Kinship.anne),
         testPerson(
           'x',
           age: 12,

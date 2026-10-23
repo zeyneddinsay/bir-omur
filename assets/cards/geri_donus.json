@@ -475,5 +475,39 @@
       "effects": { "money": -1500 }
     }
   }
+,
+  {
+    "id": "sinif_bulusmasi",
+    "type": "kisi",
+    "theme": "genel",
+    "minAge": 30,
+    "maxAge": 70,
+    "repeat": "once",
+    "roles": {
+      "eski": { "memory": "ilk_hoslanti", "memoryYears": 15 }
+    },
+    "speaker": "eski",
+    "text": "Sınıf buluşmasında {eski.ad} gülerek: 'Ortaokulda benden hoşlandığını herkes biliyordu, haberin var mı?'",
+    "left": {
+      "label": "Hâlâ kızarıyorum",
+      "effects": {
+        "happiness": 3,
+        "people": {
+          "eski": {
+            "memory": {
+              "kind": "sinif_bulusmasi",
+              "label": "Yıllar sonra o eski hoşlantıya birlikte güldük",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "label": "Hepsi dedikodu",
+      "effects": { "happiness": 1 }
+    }
+  }
 
 ]

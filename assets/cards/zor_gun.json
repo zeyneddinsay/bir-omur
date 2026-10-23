@@ -12,6 +12,7 @@
     },
     "speaker": "arayan",
     "text": "{arayan.ad} aradı. Bir süre ikiniz de sustunuz. Sonra: 'Duydum. Nasılsın, gerçekten?'",
+    "variants": ["{arayan.ad} aradı: 'Ne zaman istersen ara, gece yarısı bile olsa. Biliyorsun, değil mi?'", "{arayan.ad} kapında, elinde bir tencere yemek: 'Hiçbir şey sorma, sadece ye.'"],
     "left": {
       "label": "Açıp dertleşirim",
       "effects": {
@@ -51,7 +52,7 @@
     "theme": "genel",
     "minAge": 20,
     "maxAge": 90,
-    "repeat": { "cooldown": 6, "max": 2 },
+    "repeat": "once",
     "conditions": { "min": { "money": 2000000 }, "notFlags": ["zor_gun"] },
     "roles": {
       "eski": {
@@ -100,7 +101,7 @@
     "theme": "genel",
     "minAge": 22,
     "maxAge": 100,
-    "repeat": { "cooldown": 8, "max": 2 },
+    "repeat": "once",
     "conditions": { "notFlags": ["zor_gun"] },
     "roles": {
       "dost": { "memory": "zor_gunde_dertlesti", "memoryYears": 5, "minCloseness": 40 }

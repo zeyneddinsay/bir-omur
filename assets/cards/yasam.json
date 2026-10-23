@@ -24,7 +24,7 @@
     "theme": "mahalle",
     "minAge": 7,
     "maxAge": 11,
-    "repeat": { "cooldown": 3, "max": 2 },
+    "repeat": "once",
     "text": "Saklambaç oynuyorsunuz; ebe sensin. Sayarken herkesin nereye saklandığını duydun.",
     "left": {
       "label": "Hile yapmam",
@@ -73,7 +73,7 @@
     "theme": "aile",
     "minAge": 50,
     "maxAge": 100,
-    "repeat": { "cooldown": 3, "max": 3 },
+    "repeat": "once",
     "roles": {
       "torun": { "kin": ["torun"], "minAge": 3, "maxAge": 10 }
     },
@@ -106,7 +106,7 @@
     "theme": "aile",
     "minAge": 55,
     "maxAge": 100,
-    "repeat": { "cooldown": 4, "max": 2 },
+    "repeat": "once",
     "roles": {
       "torun": { "kin": ["torun"], "minAge": 8, "maxAge": 14 }
     },
@@ -139,7 +139,7 @@
     "theme": "aile",
     "minAge": 60,
     "maxAge": 100,
-    "repeat": { "cooldown": 4, "max": 2 },
+    "repeat": "once",
     "roles": {
       "torun": { "kin": ["torun"], "minAge": 14, "maxAge": 30 }
     },
@@ -160,7 +160,7 @@
     "theme": "aile",
     "minAge": 50,
     "maxAge": 100,
-    "repeat": { "cooldown": 4, "max": 3 },
+    "repeat": "once",
     "roles": {
       "evlat": { "kin": ["cocuk"], "minAge": 22, "livesTogether": false }
     },
@@ -194,7 +194,7 @@
     "theme": "mahalle",
     "minAge": 62,
     "maxAge": 95,
-    "repeat": { "cooldown": 3, "max": 2 },
+    "repeat": "once",
     "text": "Kahvehanede tavla masası boşaldı. Yan masadaki emekli öğretmen pulları diziyor: 'Bir el atalım mı?'",
     "left": {
       "label": "Mars ederim",
@@ -213,7 +213,7 @@
     "theme": "genel",
     "minAge": 65,
     "maxAge": 100,
-    "repeat": { "cooldown": 5, "max": 2 },
+    "repeat": "once",
     "conditions": { "notFlags": ["evli"] },
     "text": "Akşam ev çok sessiz. Telefon rehberinde uzun zamandır aramadığın isimler var.",
     "left": {
@@ -318,7 +318,7 @@
     "theme": "para",
     "minAge": 62,
     "maxAge": 100,
-    "repeat": { "cooldown": 6, "max": 2 },
+    "repeat": "once",
     "conditions": { "flags": ["emekli"] },
     "text": "Aylık yatmış. Banka kuyruğunda herkes fiyatları konuşuyor; önündeki teyze sana da bir tane anlatacak.",
     "left": {
@@ -336,7 +336,7 @@
     "theme": "is",
     "minAge": 26,
     "maxAge": 64,
-    "repeat": { "cooldown": 6, "max": 2 },
+    "repeat": "once",
     "roles": {
       "eski": { "formerRoles": ["isArkadasi"], "sameCity": true }
     },
@@ -369,7 +369,7 @@
     "theme": "aile",
     "minAge": 20,
     "maxAge": 70,
-    "repeat": { "cooldown": 6, "max": 2 },
+    "repeat": "once",
     "roles": {
       "kuzen": { "kin": ["kuzen", "yegen"], "minAge": 20, "maxAge": 40 }
     },
@@ -401,7 +401,7 @@
     "theme": "aile",
     "minAge": 25,
     "maxAge": 85,
-    "repeat": { "cooldown": 4, "max": 3 },
+    "repeat": "once",
     "roles": {
       "yegen": { "kin": ["yegen"], "minAge": 5, "maxAge": 14 }
     },
@@ -434,7 +434,7 @@
     "theme": "genel",
     "minAge": 22,
     "maxAge": 50,
-    "repeat": { "cooldown": 4, "max": 2 },
+    "repeat": "once",
     "roles": {
       "dost": { "bond": ["arkadas", "yakinArkadas"], "minAge": 20 }
     },
@@ -518,7 +518,7 @@
     "theme": "aile",
     "minAge": 28,
     "maxAge": 65,
-    "repeat": { "cooldown": 4, "max": 3 },
+    "repeat": "once",
     "roles": {
       "cocuk": { "kin": ["cocuk"], "minAge": 5, "maxAge": 15 }
     },
@@ -563,7 +563,7 @@
     "theme": "saglik",
     "minAge": 35,
     "maxAge": 64,
-    "repeat": { "cooldown": 8, "max": 2 },
+    "repeat": "once",
     "text": "Yerden bir kalem aldın ve belin orada kaldı. Herkesin bir önerisi var: sıcak havlu, ısırgan, bir de o meşhur krem.",
     "left": {
       "label": "Doktora giderim",
@@ -583,7 +583,7 @@
     "theme": "para",
     "minAge": 19,
     "maxAge": 100,
-    "repeat": { "cooldown": 3, "max": 3 },
+    "repeat": "once",
     "conditions": { "flags": ["kiraci", "borclu"] },
     "text": "Kira yine gecikti, kart borcu büyüyor. Ev sahibi kibar ama mesajları kısaldı. Bir şeyin değişmesi lazım.",
     "left": {

@@ -160,7 +160,7 @@ class LifeShareCard extends StatelessWidget {
                   const SizedBox(height: 6),
                   Text(
                     '${l10n.biggestMomentAge(moment.age)}: '
-                    '${EventText.render(momentCard.text, moment.people, summary.character)}',
+                    '${EventText.render(EventText.cardText(momentCard, summary.character, record: moment), moment.people, summary.character)}',
                     style: base.copyWith(
                       fontSize: 13,
                       fontStyle: FontStyle.italic,

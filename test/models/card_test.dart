@@ -101,6 +101,14 @@ void main() {
       expectFormatError(_minimal()..['theme'] = 'uzay', 'test_01.theme');
     });
 
+    test('metin çeşitleri sırayla döner', () {
+      final card = EventCard.fromJson(_minimal()..['variants'] = ['İki', 'Üç']);
+      expect(card.textAt(0), card.text);
+      expect(card.textAt(1), 'İki');
+      expect(card.textAt(2), 'Üç');
+      expect(card.textAt(3), card.text);
+    });
+
     test('tekrar: once ya da cooldown', () {
       final every = EventCard.fromJson(
         _minimal()..['repeat'] = {'cooldown': 3},

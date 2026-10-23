@@ -186,10 +186,16 @@ class EventDeck {
         continue;
       }
       // Vefat yuvası yalnızca ölmüşlere bakar; dinlenme kuralı ona işlemez.
-      final pool = slot.deceased ? c.people.bornBy(now) : c.people.active(now);
+      // Anı yuvası arşivdeki eski tanıdığa da bakar (geçmiş geri döner).
+      final pool = slot.deceased || slot.memory != null
+          ? c.people.bornBy(now)
+          : c.people.active(now);
+      // Aynı olayda aynı adlı iki kişi olmaz ("Elif mi, Elif mi?").
+      final names = {for (final id in bound.values) c.people[id]?.name};
       final candidates = [
         for (final p in pool)
           if (!bound.containsValue(p.id) &&
+              !names.contains(p.name) &&
               !busy.contains(p.id) &&
               (slot.deceased || RoleMatcher.isRested(p, now)) &&
               RoleMatcher.matches(slot, p, c))

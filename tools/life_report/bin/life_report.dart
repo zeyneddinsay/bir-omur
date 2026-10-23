@@ -542,6 +542,8 @@ class _PeopleStats {
   int _events = 0;
   int _years = 0;
   int _emptyYears = 0;
+  final _emptyByDecade = <int, int>{};
+  final _yearsByDecade = <int, int>{};
   int _funerals = 0;
   int _reached19 = 0;
   int _universityStarted = 0;
@@ -577,7 +579,11 @@ class _PeopleStats {
     final eventAges = {for (final r in c.history) r.age};
     for (var age = 3; age < now; age++) {
       _years++;
-      if (!eventAges.contains(age)) _emptyYears++;
+      if (!eventAges.contains(age)) {
+        _emptyYears++;
+        _emptyByDecade.update(age ~/ 10 * 10, (v) => v + 1, ifAbsent: () => 1);
+      }
+      _yearsByDecade.update(age ~/ 10 * 10, (v) => v + 1, ifAbsent: () => 1);
     }
     _funerals += c.history.where((r) => _funeralIds.contains(r.cardId)).length;
 
@@ -620,7 +626,10 @@ class _PeopleStats {
       ..writeln(
         '  hayat başına ${avg(_events)} olay, yılda '
         '${(_events / (_years == 0 ? 1 : _years)).toStringAsFixed(2)}; '
-        '3 yaştan sonra olaysız yıl ${share(_emptyYears, _years)}',
+        '3 yaştan sonra olaysız yıl ${share(_emptyYears, _years)}'
+        ' (on yıl dilimine göre: '
+        '${(_yearsByDecade.keys.toList()..sort()).map((d) => '$d'
+            'lar ${share(_emptyByDecade[d] ?? 0, _yearsByDecade[d]!)}').join(', ')})',
       )
       ..writeln('  cenaze kartı hayat başına ${avg(_funerals)}')
       ..writeln(
@@ -759,7 +768,7 @@ void _story(int seed) {
     lastUsed = {...state.interactionsUsed};
     if (state.phase == YearPhase.cards) {
       final e = state.currentEvent!;
-      final text = EventText.render(e.card.text, e.people, c);
+      final text = EventText.render(EventText.cardText(e.card, c), e.people, c);
       player.step(engine);
       final out = engine.state.lastOutcome;
       final roll = out?.rollSucceeded == null

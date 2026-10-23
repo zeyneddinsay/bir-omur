@@ -4,22 +4,17 @@ import '../models/models.dart';
 import 'person_factory.dart';
 import 'relationships.dart';
 
-/// Kız isteme sahnesi: çiftin cinsiyetine göre üç olaydan biri.
-enum ProposalScene { damat, gelin, tanismaYemegi }
+/// Kız isteme sahnesi: oyuncu erkekse damat, kadınsa gelin tarafı.
+enum ProposalScene { damat, gelin }
 
 /// Aşk, evlilik ve çocuklar (canlı doküman, "Aşk, evlilik ve çocuklar").
 ///
-/// - Oyuncu 14 yaşındaki dönemeçte kimlerle romantik ilişki kurmak
-///   istediğini seçer ([attractionFlags]); seçmeden önce karşı cins sayılır.
+/// - Romantik ilişki yalnızca karşı cinsle kurulur (karar, 23 Ekim 2026).
 /// - Romantik bağ 18 yaşından itibaren ve yaş kuralıyla: küçük olanın yaşı en
 ///   az büyüğün yarısı artı 7.
 /// - Yol: arkadaş → flört (duygularını açıkla) → sevgili (ciddi düşünüyorum)
 ///   → nişanlı (teklif) → kız isteme (bir yıl sonra) → düğün (iki yıl sonra).
 abstract final class Romance {
-  static const String likesWomen = 'ilgi_kadin';
-  static const String likesMen = 'ilgi_erkek';
-  static const Set<String> attractionFlags = {likesWomen, likesMen};
-
   /// Motorun türettiği bayraklar: hayatta bir eşi var; hayatta bir çocuğu
   /// var.
   static const String marriedFlag = 'evli';
@@ -42,7 +37,6 @@ abstract final class Romance {
   static const Map<ProposalScene, String> proposalEvents = {
     ProposalScene.damat: 'kiz_isteme_damat',
     ProposalScene.gelin: 'kiz_isteme_gelin',
-    ProposalScene.tanismaYemegi: 'aile_tanisma_yemegi',
   };
 
   /// Olaylardaki yuva adları.
@@ -94,15 +88,9 @@ abstract final class Romance {
     Bond.nisanli,
   };
 
-  /// Oyuncunun ilgi duyduğu cinsiyetler.
-  static Set<Gender> attraction(Character c) {
-    final set = {
-      if (c.hasFlag(likesWomen)) Gender.kadin,
-      if (c.hasFlag(likesMen)) Gender.erkek,
-    };
-    if (set.isNotEmpty) return set;
-    return {c.gender == Gender.erkek ? Gender.kadin : Gender.erkek};
-  }
+  /// Romantik ilişkinin kurulabileceği cinsiyet: karşı cins.
+  static Gender partnerGender(Character c) =>
+      c.gender == Gender.erkek ? Gender.kadin : Gender.erkek;
 
   /// Yaş kuralı: ikisi de 18+ ve küçük olan en az büyüğün yarısı artı 7.
   static bool agesFit(int a, int b) {
@@ -137,17 +125,15 @@ abstract final class Romance {
       p.marital == MaritalStatus.bekar &&
       !romanticBonds.contains(p.bond) &&
       p.bond != Bond.eskiEs &&
-      attraction(c).contains(p.gender) &&
+      p.gender == partnerGender(c) &&
       agesFit(c.age, p.ageAt(c.age));
 
   /// Flörtün başladığı yaş ("açıldı" anısı); yoksa null.
   static int? datingSince(Person p) =>
       p.memories.where((m) => m.kind == 'acildi').map((m) => m.age).lastOrNull;
 
-  static ProposalScene sceneFor(Character c, Person p) {
-    if (c.gender == p.gender) return ProposalScene.tanismaYemegi;
-    return c.gender == Gender.erkek ? ProposalScene.damat : ProposalScene.gelin;
-  }
+  static ProposalScene sceneFor(Character c, Person p) =>
+      c.gender == Gender.erkek ? ProposalScene.damat : ProposalScene.gelin;
 
   /// Çocuk kararı açılır mı: eşle, yaşlar uygun, yakınlık hariç.
   static bool childAgeFits(Character c, Person spouse) {
@@ -364,11 +350,10 @@ abstract final class Romance {
     );
   }
 
-  /// Biriyle tanışır (kafe, kurs, arkadaş ortamı): ilgi duyulan cinsiyetten,
-  /// yaş kuralına uyan, bekâr, aynı şehirden biri arkadaş olarak gelir.
+  /// Biriyle tanışır (kafe, kurs, arkadaş ortamı): karşı cinsten, yaş
+  /// kuralına uyan, bekâr, aynı şehirden biri arkadaş olarak gelir.
   static Character meet(Character c, PersonFactory f) {
-    final genders = attraction(c).toList();
-    final gender = genders[f.random.nextInt(genders.length)];
+    final gender = partnerGender(c);
     final low = max(minAge, c.age ~/ 2 + 7);
     final high = max(low, min(c.age + 6, (c.age - 7) * 2));
     final (book, _) = f.add(
