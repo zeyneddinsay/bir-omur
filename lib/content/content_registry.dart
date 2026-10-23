@@ -54,6 +54,7 @@ class ContentRegistry {
     LifeEngine.graduationEvent,
     HardDay.callCard,
     Romance.weddingEvent,
+    Romance.lateWeddingEvent,
     Romance.birthEvent,
     'kiz_isteme_damat',
     'kiz_isteme_gelin',

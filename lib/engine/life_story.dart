@@ -13,6 +13,15 @@ enum BusinessEnd {
   batti,
 }
 
+/// İleri yaşta evlenenin mirası nasıl bölüşüldü.
+enum Inheritance {
+  /// Vasiyet vardı; sessizce bölüşüldü.
+  vasiyet,
+
+  /// Eşle çocuklar arasında kavga çıktı.
+  kavga,
+}
+
 /// Hayat özetinin kişileri (canlı doküman, "Hayatın sonu"): kim yanındaydı,
 /// kim geldi, kim gerçek dosttu. Ölüm anındaki karakterden hesaplanır.
 class LifeStory {
@@ -63,10 +72,17 @@ class LifeStory {
   /// gerçek dostlar ve küs olduğu hâlde gelen.
   late final List<Person> mourners = {
     for (final p in _alive)
-      if (_closeness(p) >= 40 && Relationships.hostility(p, _now) < 40) p,
+      if ((_closeness(p) >= 40 || _family(p)) &&
+          Relationships.hostility(p, _now) < 40)
+        p,
     ...trueFriends,
     ?cameAnyway,
   }.toList();
+
+  /// Eş ve yetişkin çocuklar, yakınlık düşük olsa da cenazeye gelir;
+  /// yalnızca küslük (husumet) onları uzak tutar.
+  bool _family(Person p) =>
+      p.kin == Kinship.es || (p.kin == Kinship.cocuk && p.ageAt(_now) >= 18);
 
   /// Küs olduğu hâlde gelen: husumeti yüksek ama arada sevgi de kalmış.
   late final Person? cameAnyway = () {
@@ -77,6 +93,46 @@ class LifeStory {
     }
     return null;
   }();
+
+  /// Hayattaki eş; yoksa null.
+  late final Person? spouse = _alive
+      .where((p) => p.kin == Kinship.es)
+      .firstOrNull;
+
+  /// Cenazeye gelmeyen yetişkin çocuklar: aradaki kırgınlık ağır bastı.
+  late final List<Person> absentChildren = [
+    for (final p in _alive)
+      if (p.kin == Kinship.cocuk &&
+          p.ageAt(_now) >= 18 &&
+          !mourners.contains(p))
+        p,
+  ];
+
+  /// İleri yaşta evlenenin ardından miras. Vasiyet yazdıysa sessizce
+  /// bölüşülür; yazmadıysa ve çocuklarla arası açıksa ya da evi eşinin
+  /// üzerine yaptıysa eşle çocuklar arasında kavga çıkar. Eşi ya da yetişkin
+  /// çocuğu yoksa miras konusu açılmaz.
+  late final Inheritance? inheritance = () {
+    if (!c.hasFlag(lateMarriageFlag)) return null;
+    final spouse = this.spouse;
+    final children = [
+      for (final p in _alive)
+        if (p.kin == Kinship.cocuk && p.ageAt(_now) >= 18) p,
+    ];
+    if (spouse == null || children.isEmpty) return null;
+    if (c.hasFlag(willFlag)) return Inheritance.vasiyet;
+    final rift =
+        absentChildren.isNotEmpty ||
+        c.hasFlag(houseToSpouseFlag) ||
+        children.any((p) => Relationships.hostility(p, _now) >= 30);
+    return rift ? Inheritance.kavga : null;
+  }();
+
+  /// İleri yaşta evlendi; vasiyet yazdı; evi eşinin üzerine yaptı (kart
+  /// bayrakları).
+  static const String lateMarriageFlag = 'gec_evlendi';
+  static const String willFlag = 'vasiyet_yazdi';
+  static const String houseToSpouseFlag = 'ev_esin_uzerine';
 
   /// Seni en çok özleyecek kişi: yakınlık ve olumlu anıların toplamı.
   late final Person? mostMissed = () {

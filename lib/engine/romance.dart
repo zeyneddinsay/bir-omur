@@ -56,8 +56,10 @@ abstract final class Romance {
   /// Erkek oyuncu ve iki erkekte evlat edinme için üst yaş.
   static const int fatherMaxAge = 55;
 
-  /// Teklif bu yaşa kadar (kız isteme sahneleri gençlere göre yazıldı).
-  static const int proposalMaxAge = 70;
+  /// Bu yaştan sonra evlilik kız isteme ve düğün olmadan olur: teklif kabul
+  /// edilince gelecek yıl belediyede sade bir nikâh ([lateWeddingEvent]).
+  static const int lateMarriageAge = 70;
+  static const String lateWeddingEvent = 'gec_nikah';
 
   /// En fazla çocuk; yeni karar için en küçüğün en az bu yaşta olması.
   static const int maxChildren = 4;

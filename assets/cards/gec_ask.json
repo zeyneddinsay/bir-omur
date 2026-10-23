@@ -1,0 +1,468 @@
+[
+  {
+    "id": "gec_nikah",
+    "type": "iplik",
+    "theme": "ask",
+    "minAge": 70,
+    "maxAge": 115,
+    "repeat": { "cooldown": 1 },
+    "roles": {
+      "nisanli": { "bond": ["nisanli"], "minAge": 18 }
+    },
+    "speaker": "nisanli",
+    "text": "Nikâh günü! Belediye memuru kimliklerinize iki kez baktı. {nisanli.ad} elini sıktı: 'Bu yaşta heyecan iyi gelir.'",
+    "closing": "{nisanli.ad} ile nikâh hiç kıyılamadı; belediyedeki randevu boşa gitti.",
+    "left": {
+      "label": "Çocuklar şahit olsun",
+      "effects": {
+        "money": -30000,
+        "happiness": 5,
+        "addFlags": ["gec_evlendi"]
+      },
+      "result": "Şahit koltuklarını torunlar kaptı. Nikâh şekeri yerine şekersiz lokum dağıttınız."
+    },
+    "right": {
+      "label": "Sessizce kıyalım",
+      "effects": {
+        "money": -10000,
+        "happiness": 4,
+        "addFlags": ["gec_evlendi", "gizli_nikah"]
+      },
+      "result": "İki şahit, bir memur, bir de kapıdaki çaycı. Haberi çocuklar ertesi gün mahalleden duydu."
+    }
+  },
+  {
+    "id": "gec_ask_park",
+    "type": "kisi",
+    "theme": "ask",
+    "minAge": 70,
+    "maxAge": 110,
+    "repeat": "once",
+    "conditions": { "flags": ["iliskide"], "notFlags": ["evli"] },
+    "roles": {
+      "sevgili": { "bond": ["flort", "sevgili"], "minAge": 18 }
+    },
+    "speaker": "sevgili",
+    "text": "{sevgili.ad} ile parkta buluştunuz. İkinizin de cebinde bir ilaç kutusu, bir de kolonyalı mendil var.",
+    "left": {
+      "label": "İlaç saati birlikte",
+      "effects": {
+        "happiness": 3,
+        "people": {
+          "sevgili": {
+            "memory": {
+              "kind": "ilac_saati",
+              "label": "İlaç saatimizi birlikte tuttuk",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "Öğle ilacını aynı anda içtiniz. Bankın öbür ucundakiler sizi kıskançlıkla izledi."
+    },
+    "right": {
+      "label": "Güvercinlere yem",
+      "effects": { "money": -100, "happiness": 2 },
+      "result": "Bir paket yem aldınız. Güvercinler ikinizi de tanıdı; {sevgili.ad} onlara 'ortak dostlarımız' diyor."
+    }
+  },
+  {
+    "id": "gec_ask_torun",
+    "type": "kisi",
+    "theme": "ask",
+    "minAge": 70,
+    "maxAge": 110,
+    "repeat": "once",
+    "conditions": { "flags": ["iliskide"], "notFlags": ["evli"] },
+    "roles": {
+      "sevgili": { "bond": ["flort", "sevgili"], "minAge": 18, "offstage": true },
+      "torun": { "kin": ["torun"], "minAge": 7 }
+    },
+    "speaker": "torun",
+    "text": "Torunun {torun.ad} kıkırdadı: 'Herkes biliyor! {sevgili.ad} senin sevgilin mi?'",
+    "left": {
+      "label": "Evet, ne olmuş?",
+      "effects": {
+        "happiness": 3,
+        "people": {
+          "torun": {
+            "memory": {
+              "kind": "askini_saklamadi",
+              "label": "Büyüğüm aşkını benden saklamadı",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "Göğsünü gere gere söyledin. {torun.ad} bunu herkese anlattı; ailenin en havalı büyüğü oldun."
+    },
+    "right": {
+      "label": "Arkadaşım sadece",
+      "effects": {
+        "happiness": -1,
+        "people": {
+          "sevgili": {
+            "memory": {
+              "kind": "arkadas_dedi",
+              "label": "Beni torunlarına arkadaş diye tanıttı",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "{torun.ad} 'Tabii tabii' deyip göz kırptı. {sevgili.ad} bunu duyunca biraz bozuldu."
+    }
+  },
+  {
+    "id": "gec_ask_rakip",
+    "type": "kisi",
+    "theme": "ask",
+    "minAge": 70,
+    "maxAge": 110,
+    "repeat": "once",
+    "conditions": { "flags": ["iliskide"], "notFlags": ["evli"] },
+    "roles": {
+      "sevgili": { "bond": ["flort", "sevgili"], "minAge": 18, "offstage": true }
+    },
+    "text": "Duydun mu? Mahallede biri {sevgili.ad|e} her sabah sıcak simit götürüyormuş. Hem de kapıya kadar.",
+    "left": {
+      "label": "Ben poğaça götürürüm",
+      "effects": {
+        "money": -2000,
+        "happiness": 2,
+        "people": {
+          "sevgili": {
+            "memory": {
+              "kind": "kapida_pogaca",
+              "label": "Her sabah kapımda sıcak poğaça vardı",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "Ertesi sabah kapıda sıcak poğaçayla bekliyordun. Simitli rakip o gün eli boş döndü."
+    },
+    "right": {
+      "label": "Gönlü bilir",
+      "effects": { "happiness": -2 },
+      "result": "Gururunu bozmadın. Ama o hafta simit kokusu nereye gitsen burnuna geldi."
+    }
+  },
+  {
+    "id": "gec_ask_itiraz",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 70,
+    "maxAge": 110,
+    "repeat": "once",
+    "conditions": { "flags": ["iliskide"], "notFlags": ["evli"] },
+    "roles": {
+      "sevgili": { "bond": ["flort", "sevgili"], "minAge": 18, "offstage": true },
+      "cocuk": { "kin": ["cocuk"], "minAge": 35 }
+    },
+    "speaker": "cocuk",
+    "text": "{cocuk.akraba} telefonda: 'Bu yaşta flört mü olur? Mahalle ne der, akrabalar ne der?'",
+    "left": {
+      "label": "Ömür dediğin bu",
+      "effects": {
+        "happiness": 3,
+        "people": {
+          "cocuk": {
+            "memory": {
+              "kind": "yaslilikta_dinlemedi",
+              "label": "Yaşlılığında sözümü dinlemedi",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "'Mahalle zaten konuşuyor, bari güzel şeyler konuşsun' dedin. {cocuk.akraba} sessizce telefonu kapattı."
+    },
+    "right": {
+      "label": "Biraz yavaşlarım",
+      "effects": {
+        "happiness": -3,
+        "people": {
+          "sevgili": {
+            "memory": {
+              "kind": "cocuklari_yuzunden",
+              "label": "Çocukları yüzünden benden uzaklaştı",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          },
+          "cocuk": {
+            "memory": {
+              "kind": "sozumu_dinledi",
+              "label": "Yaşlılığında sözümü dinledi",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "{cocuk.akraba} rahatladı. {sevgili.ad} ise o hafta telefonlarını hep geç açtı."
+    }
+  },
+  {
+    "id": "gec_ask_telefon",
+    "type": "kisi",
+    "theme": "ask",
+    "minAge": 70,
+    "maxAge": 110,
+    "repeat": "once",
+    "conditions": { "flags": ["iliskide"], "notFlags": ["evli"] },
+    "roles": {
+      "sevgili": { "bond": ["flort", "sevgili"], "minAge": 18 }
+    },
+    "speaker": "sevgili",
+    "text": "Gece dokuzda {sevgili.ad} aradı: 'Uyumadın, değil mi?' Dizinin finali başlamak üzere.",
+    "left": {
+      "label": "Sabaha kadar konuşuruz",
+      "effects": {
+        "health": -1,
+        "happiness": 3,
+        "people": {
+          "sevgili": {
+            "memory": {
+              "kind": "gece_telefonu",
+              "label": "Gece yarısına kadar gençliğimizi konuştuk",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "Finali kaçırdınız ama gençliğinizi konuştunuz. Sabah ikiniz de esneyerek uyandınız."
+    },
+    "right": {
+      "label": "Finalden sonra",
+      "effects": { "happiness": 1 },
+      "result": "Finali izleyip aradın. {sevgili.ad} çoktan uyumuştu; sabah ilk iş seni aradı."
+    }
+  },
+  {
+    "id": "gizli_nikah_duyuldu",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 70,
+    "maxAge": 115,
+    "repeat": "once",
+    "conditions": { "flags": ["gizli_nikah", "evli"] },
+    "roles": {
+      "cocuk": { "kin": ["cocuk"], "minAge": 30 }
+    },
+    "speaker": "cocuk",
+    "text": "{cocuk.akraba} kapıda, sesi titriyor: 'Senin nikâhını mahalledeki bakkaldan duymak zorunda mıydım?'",
+    "left": {
+      "label": "Haklısın, kusura bakma",
+      "effects": {
+        "happiness": -1,
+        "people": {
+          "cocuk": {
+            "memory": {
+              "kind": "nikah_ozru",
+              "label": "Nikâhını sakladığı için özür diledi",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "Özür diledin, çay koydun. {cocuk.akraba} ikinci bardakta gülümsedi ama kırgınlık tam geçmedi."
+    },
+    "right": {
+      "label": "Karışırdınız diye",
+      "effects": {
+        "people": {
+          "cocuk": {
+            "memory": {
+              "kind": "nikahi_sakladi",
+              "label": "Nikâhını bizden sakladı",
+              "tone": "olumsuz",
+              "severity": 2
+            }
+          }
+        }
+      },
+      "result": "'Karışırdınız' dedin. {cocuk.akraba} bir şey demedi; o günden sonra telefonları kısa sürdü."
+    }
+  },
+  {
+    "id": "gec_evlilik_cocuk",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 70,
+    "maxAge": 115,
+    "repeat": "once",
+    "conditions": { "flags": ["gec_evlendi", "evli"] },
+    "roles": {
+      "cocuk": { "kin": ["cocuk"], "minAge": 30 },
+      "es": { "kin": ["es"], "offstage": true }
+    },
+    "speaker": "cocuk",
+    "text": "{cocuk.akraba} bayramda kapıya kadar geldi ama içeri girmedi: 'O evde artık bizim yerimiz yok gibi.'",
+    "left": {
+      "label": "Kapım hep açık",
+      "effects": {
+        "happiness": -1,
+        "people": {
+          "cocuk": {
+            "memory": {
+              "kind": "kapisi_acik",
+              "label": "Yeniden evlense de kapısını bize açık tuttu",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "Kapıda uzun uzun sarıldınız. Bir sonraki bayram {cocuk.akraba} içeri girdi; {es.ad} çayını tazeledi."
+    },
+    "right": {
+      "label": "Bu benim hayatım",
+      "effects": {
+        "happiness": 1,
+        "people": {
+          "cocuk": {
+            "memory": {
+              "kind": "yeni_esi_secti",
+              "label": "Yeni eşini bize tercih etti",
+              "tone": "olumsuz",
+              "severity": 2
+            }
+          },
+          "es": {
+            "memory": {
+              "kind": "beni_savundu",
+              "label": "Beni çocuklarına karşı savundu",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "Kapıyı yavaşça kapattın. {es.ad} elini tuttu; {cocuk.akraba} o bayramdan sonra aramadı."
+    }
+  },
+  {
+    "id": "miras_dedikodusu",
+    "type": "kisi",
+    "theme": "para",
+    "minAge": 70,
+    "maxAge": 115,
+    "repeat": "once",
+    "conditions": { "flags": ["gec_evlendi", "evli"] },
+    "roles": {
+      "cocuk": { "kin": ["cocuk"], "minAge": 30 },
+      "es": { "kin": ["es"], "maxGap": -20, "offstage": true }
+    },
+    "speaker": "cocuk",
+    "text": "{cocuk.akraba}: '{es.ad} senden yirmi yaş küçük. Herkes bu evliliğin miras için olduğunu konuşuyor.'",
+    "left": {
+      "label": "Vasiyet yazarım",
+      "effects": {
+        "money": -15000,
+        "addFlags": ["vasiyet_yazdi"],
+        "people": {
+          "cocuk": {
+            "memory": {
+              "kind": "vasiyet_yazdi",
+              "label": "Vasiyet yazıp içimizi rahatlattı",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          },
+          "es": {
+            "memory": {
+              "kind": "vasiyette_unuttu",
+              "label": "Vasiyette beni hesaba katmadı",
+              "tone": "olumsuz",
+              "severity": 2
+            }
+          }
+        }
+      },
+      "result": "Notere gidip vasiyetini yazdın. {cocuk.akraba} rahatladı; {es.ad} o akşam yemeği sessiz yedi."
+    },
+    "right": {
+      "label": "O beni seviyor",
+      "effects": {
+        "people": {
+          "cocuk": {
+            "memory": {
+              "kind": "mirasa_goz_dikene_inandi",
+              "label": "Mirasa göz dikene inandı, bizi dinlemedi",
+              "tone": "olumsuz",
+              "severity": 2
+            }
+          },
+          "es": {
+            "memory": {
+              "kind": "beni_savundu",
+              "label": "Beni çocuklarına karşı savundu",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "{es.ad|i} savundun. {cocuk.akraba} kapıyı çarpıp çıktı; aranızdaki mesafe büyüdü."
+    }
+  },
+  {
+    "id": "ev_esin_uzerine",
+    "type": "kisi",
+    "theme": "para",
+    "minAge": 70,
+    "maxAge": 115,
+    "repeat": "once",
+    "conditions": {
+      "flags": ["gec_evlendi", "evli", "cocuklu"],
+      "min": { "house": 1 }
+    },
+    "roles": {
+      "es": { "kin": ["es"], "maxGap": -15 }
+    },
+    "speaker": "es",
+    "text": "{es.ad}: 'Evi benim üzerime yapsan... Yarın sana bir şey olursa sokakta kalmayayım.'",
+    "left": {
+      "label": "Tamam, yaparız",
+      "effects": {
+        "addFlags": ["ev_esin_uzerine"],
+        "people": {
+          "es": {
+            "memory": {
+              "kind": "evi_uzerime_yapti",
+              "label": "Evi benim üzerime yaptı",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      },
+      "result": "Tapu dairesinden el ele çıktınız. Akşama haber çocuklarına kadar gitmişti bile."
+    },
+    "right": {
+      "label": "Çocuklarım ne der?",
+      "effects": {
+        "people": {
+          "es": {
+            "memory": {
+              "kind": "evi_vermedi",
+              "label": "Evi bana güvenip vermedi",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "{es.ad} 'Haklısın' dedi ama gözlerini kaçırdı. O akşam televizyonun sesi hep biraz yüksekti."
+    }
+  }
+]

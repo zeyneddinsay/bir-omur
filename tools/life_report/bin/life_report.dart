@@ -797,4 +797,11 @@ void _story(int seed) {
     'yakınlar ${story.closest.map((p) => p.name).join(', ')} · '
     'gerçek dost ${story.trueFriends.map((p) => p.name).join(', ')}',
   );
+  if (story.absentChildren.isNotEmpty || story.inheritance != null) {
+    stdout.writeln(
+      '  gelmeyen çocuklar: '
+      '${story.absentChildren.map((p) => p.name).join(', ')} · '
+      'miras: ${story.inheritance?.name ?? '-'}',
+    );
+  }
 }

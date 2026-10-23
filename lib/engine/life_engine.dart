@@ -321,7 +321,7 @@ class LifeEngine {
     ChoiceSide side,
   ) {
     switch (event.card.id) {
-      case Romance.weddingEvent:
+      case Romance.weddingEvent || Romance.lateWeddingEvent:
         final id = event.people[Romance.partnerSlot];
         if (id == null) return (c, const []);
         var married = Romance.marry(c, id, _factory);
@@ -507,10 +507,20 @@ class LifeEngine {
         queue = queue.without({
           ...Romance.proposalEvents.values,
           Romance.weddingEvent,
+          Romance.lateWeddingEvent,
         });
       case 'ayril.bosanma':
         queue = queue.without({Romance.birthEvent});
         people = Romance.clearInLaws(people);
+      case 'teklif.evet' when age >= Romance.lateMarriageAge:
+        // İleri yaşta kız isteme ve düğün yok: gelecek yıl sade nikâh.
+        if (deck.byId(Romance.lateWeddingEvent) != null) {
+          queue = queue.add(
+            Romance.lateWeddingEvent,
+            atAge: age + 1,
+            people: {Romance.partnerSlot: person.id},
+          );
+        }
       case 'teklif.evet':
         final scene =
             Romance.proposalEvents[Romance.sceneFor(character, person)]!;

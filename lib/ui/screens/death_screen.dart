@@ -227,6 +227,9 @@ class _LifeStorySection extends StatelessWidget {
   static String _lowerFirst(String s) =>
       s.isEmpty ? s : lowerTr(s[0]) + s.substring(1);
 
+  static String _upperFirst(String s) =>
+      s.isEmpty ? s : upperTr(s[0]) + s.substring(1);
+
   /// Akrabaysa "kızın Selin", değilse adı: listede annesini adıyla anan
   /// olmaz.
   static String _who(Person p) => switch (PersonText.kinWord(p)) {
@@ -268,7 +271,16 @@ class _LifeStorySection extends StatelessWidget {
           l10n.storyFuneralFriends(friends.map((p) => p.name).join(', ')),
         if (story.cameAnyway case final p?) l10n.storyCameAnyway(_who(p)),
         if (rich && mourners > 0) l10n.storyStrangers,
+        if (story.absentChildren.isNotEmpty)
+          _upperFirst(
+            l10n.storyAbsentChildren(story.absentChildren.map(_who).join(', ')),
+          ),
       ].join(' '),
+      if (story.inheritance case final inheritance?)
+        switch (inheritance) {
+          Inheritance.vasiyet => l10n.storyInheritanceWill,
+          Inheritance.kavga => l10n.storyInheritanceFeud(_who(story.spouse!)),
+        },
       // Tek yakın, özleyecek kişiyle aynıysa iki kez yazılmaz.
       if (story.closest.length > 1 ||
           (story.closest.isNotEmpty && story.closest.first != missed))

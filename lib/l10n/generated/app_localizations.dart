@@ -1702,6 +1702,24 @@ abstract class AppLocalizations {
   /// **'Hiç tanımadığın üç akraba da oradaydı.'**
   String get storyStrangers;
 
+  /// No description provided for @storyAbsentChildren.
+  ///
+  /// In tr, this message translates to:
+  /// **'{names} cenazene gelmedi.'**
+  String storyAbsentChildren(String names);
+
+  /// No description provided for @storyInheritanceFeud.
+  ///
+  /// In tr, this message translates to:
+  /// **'Cenazenden sonra {spouse} ile çocukların arasında miras kavgası çıktı; dava yıllarca sürdü.'**
+  String storyInheritanceFeud(String spouse);
+
+  /// No description provided for @storyInheritanceWill.
+  ///
+  /// In tr, this message translates to:
+  /// **'Vasiyetin sayesinde miras sessizce bölüşüldü; kimse kimseye küsmedi.'**
+  String get storyInheritanceWill;
+
   /// No description provided for @storyClosest.
   ///
   /// In tr, this message translates to:

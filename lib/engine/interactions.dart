@@ -327,8 +327,7 @@ abstract final class Interactions {
         if (p.hasRole(RoleKind.komsu)) InteractionKind.cayaGit,
         if (Romance.canCourt(c, p)) InteractionKind.acil,
         if (p.bond == Bond.flort) InteractionKind.ciddi,
-        if (p.bond == Bond.sevgili && now <= Romance.proposalMaxAge)
-          InteractionKind.teklif,
+        if (p.bond == Bond.sevgili) InteractionKind.teklif,
         if (Romance.romanticBonds.contains(p.bond) || p.kin == Kinship.es)
           InteractionKind.ayril,
         if (p.kin == Kinship.es && Romance.childAgeFits(c, p))

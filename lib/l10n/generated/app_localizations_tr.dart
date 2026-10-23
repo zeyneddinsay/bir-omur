@@ -988,6 +988,20 @@ class AppLocalizationsTr extends AppLocalizations {
   String get storyStrangers => 'Hiç tanımadığın üç akraba da oradaydı.';
 
   @override
+  String storyAbsentChildren(String names) {
+    return '$names cenazene gelmedi.';
+  }
+
+  @override
+  String storyInheritanceFeud(String spouse) {
+    return 'Cenazenden sonra $spouse ile çocukların arasında miras kavgası çıktı; dava yıllarca sürdü.';
+  }
+
+  @override
+  String get storyInheritanceWill =>
+      'Vasiyetin sayesinde miras sessizce bölüşüldü; kimse kimseye küsmedi.';
+
+  @override
   String storyClosest(String names) {
     return 'En yakınların: $names';
   }
