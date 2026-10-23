@@ -409,14 +409,14 @@ abstract class AppLocalizations {
   /// No description provided for @previewThread.
   ///
   /// In tr, this message translates to:
-  /// **'Devamı var'**
-  String get previewThread;
+  /// **'{years} yıl sonra devamı var'**
+  String previewThread(int years);
 
   /// No description provided for @previewThreadTooltip.
   ///
   /// In tr, this message translates to:
-  /// **'Bu seçimin devamı ileride gelecek.'**
-  String get previewThreadTooltip;
+  /// **'Bu seçimin devamı {years} yıl sonra karşına çıkacak.'**
+  String previewThreadTooltip(int years);
 
   /// No description provided for @previewMemoryTooltip.
   ///

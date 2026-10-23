@@ -194,10 +194,14 @@ class AppLocalizationsTr extends AppLocalizations {
   String get previewIfFail => 'Tutmazsa';
 
   @override
-  String get previewThread => 'Devamı var';
+  String previewThread(int years) {
+    return '$years yıl sonra devamı var';
+  }
 
   @override
-  String get previewThreadTooltip => 'Bu seçimin devamı ileride gelecek.';
+  String previewThreadTooltip(int years) {
+    return 'Bu seçimin devamı $years yıl sonra karşına çıkacak.';
+  }
 
   @override
   String previewMemoryTooltip(String name) {

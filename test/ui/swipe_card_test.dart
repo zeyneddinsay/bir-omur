@@ -192,4 +192,31 @@ void main() {
       findsNothing,
     );
   });
+
+  testWidgets('devamı olan seçenek kaç yıl sonra geleceğini yazar', (
+    tester,
+  ) async {
+    final card = testCard(
+      'sinav',
+      text: 'Sınav sabahı.',
+      left: {
+        'label': 'Baştan sona',
+        'roll': {'stat': 'knowledge', 'threshold': 50},
+        'success': {'happiness': 2},
+        'fail': {
+          'happiness': -2,
+          'schedule': {'event': 'devam', 'inYears': 1},
+        },
+      },
+    );
+    await tester.pumpWidget(
+      _wrap(SwipeCard(card: card, text: card.text, onChoose: (_) {})),
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('1 yıl sonra devamı var'), findsOneWidget);
+    expect(
+      find.byTooltip('Bu seçimin devamı 1 yıl sonra karşına çıkacak.'),
+      findsOneWidget,
+    );
+  });
 }

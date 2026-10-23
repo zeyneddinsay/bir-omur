@@ -116,8 +116,8 @@ List<PreviewItem> previewItems(
       PreviewItem(
         icon: Icons.hourglass_bottom,
         positive: true,
-        text: l10n.previewThread,
-        tooltip: l10n.previewThreadTooltip,
+        text: l10n.previewThread(effect.schedule!.inYears),
+        tooltip: l10n.previewThreadTooltip(effect.schedule!.inYears),
       ),
     );
   }
