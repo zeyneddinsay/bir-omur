@@ -82,6 +82,35 @@ void main() {
                     await tester.tap(find.byKey(key));
                     await tester.pumpAndSettle();
                     expectNoTemplate('$steps kişi $key');
+                    // Ara: eski günleri an ve bir anı seç (vakit varsa).
+                    final call = find.byKey(const Key('interaction_ara'));
+                    if (call.evaluate().isNotEmpty) {
+                      await tester.ensureVisible(call);
+                      await tester.tap(call);
+                      await tester.pumpAndSettle();
+                      final nostalgia = find.byKey(
+                        const Key('call_tone_nostalji'),
+                      );
+                      if (nostalgia.evaluate().isNotEmpty) {
+                        await tester.tap(nostalgia);
+                        await tester.pumpAndSettle();
+                        expect(tester.takeException(), isNull);
+                        expectNoTemplate('$steps anı listesi');
+                        final memory = find.byWidgetPredicate(
+                          (w) => '${w.key}'.contains("'call_memory_"),
+                        );
+                        if (memory.evaluate().isNotEmpty) {
+                          await tester.tap(memory.first);
+                          await tester.pumpAndSettle();
+                          expect(tester.takeException(), isNull);
+                        }
+                      }
+                      // Sayfa açık kaldıysa kapanır.
+                      if (find.byType(BottomSheet).evaluate().isNotEmpty) {
+                        await tester.tapAt(const Offset(195, 40));
+                        await tester.pumpAndSettle();
+                      }
+                    }
                     final back = find.byType(BackButton);
                     if (back.evaluate().isNotEmpty) {
                       await tester.tap(back.first);

@@ -473,7 +473,13 @@ abstract final class Interactions {
               now,
             ).compareTo(Relationships.weightOf(a, p, now)),
           );
-    return shared.take(callMemoryChoices).toList();
+    // Aynı türden anı ("eski günleri andık" iki kez) listede bir kez, en
+    // güçlü hâliyle durur; seçim türle yapılır.
+    final seen = <String>{};
+    return [
+      for (final m in shared)
+        if (seen.add(m.kind)) m,
+    ].take(callMemoryChoices).toList();
   }
 
   static Memory? _grievance(Person p) {
