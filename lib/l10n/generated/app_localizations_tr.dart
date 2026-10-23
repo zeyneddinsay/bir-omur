@@ -981,7 +981,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String storyCameAnyway(String name) {
-    return '$name de gelmiş, en arkada durmuş.';
+    return 'Küs olduğun $name bile gelmiş, en arkada durmuş.';
   }
 
   @override

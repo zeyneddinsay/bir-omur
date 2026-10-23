@@ -84,7 +84,7 @@ void main() {
     expect(line(const PersonNews(NewsKind.evlendi, 'p2')), 'Kerem evlendi.');
     expect(
       line(const PersonNews(NewsKind.isBuldu, 'p2', detail: 'memur')),
-      'Kerem iş buldu: Memur.',
+      'Kerem iş buldu: memur.',
     );
   });
 }

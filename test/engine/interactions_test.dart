@@ -857,6 +857,41 @@ void main() {
       );
     });
 
+    test('çocuk oyuncuya çocuk metni öncelikli', () {
+      final child = _book.textFor('bulus.iyi', 0, child: true);
+      expect(child, _book.texts['bulus.iyi.cocuk']!.first);
+      final kid = _book.textFor(
+        'bulus.iyi',
+        0,
+        traits: ['cikarci'],
+        child: true,
+      );
+      expect(kid, _book.texts['bulus.iyi.cocuk']!.first);
+      expect(_book.textFor('hediye.iyi', 0, child: true), isNotNull);
+    });
+
+    test('komşuya sesleniş yaş farkına göre', () {
+      final player = testCharacter(age: 40);
+      String hitap(int age) => PersonText.render(
+        '{kisi.ad} {kisi.hitap.amca}',
+        _person(name: 'Ayşe', gender: Gender.kadin, age: age, playerAge: 40),
+        player,
+      );
+      expect(hitap(65), 'Ayşe teyze');
+      expect(hitap(48), 'Ayşe abla');
+      expect(hitap(41), 'Ayşe Hanım');
+      expect(hitap(30), 'Ayşe Hanım');
+    });
+
+    test('genel sonuçta akraba adıyla değil akrabalığıyla anılır', () {
+      final mother = _person(kin: Kinship.anne, gender: Gender.kadin);
+      final text = _book.texts['bulus.iyi']!.first;
+      expect(
+        PersonText.render(text, mother, testCharacter()),
+        startsWith('Annenle'),
+      );
+    });
+
     test('büyük kardeş abla ya da ağabey, küçüğü kardeş', () {
       Person sibling(Gender gender, int bornAt) => Person.fromJson({
         ..._person(kin: Kinship.kardes, gender: gender).toJson(),

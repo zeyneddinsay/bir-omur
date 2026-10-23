@@ -6,7 +6,7 @@
   "entry": { "minAge": 18, "maxAge": 45 },
   "tiers": [
     {
-      "name": "Babasının yanında stajyer",
+      "name": "Fabrikada stajyer",
       "salary": 420000,
       "promotion": { "minYears": 2, "chance": 0.7 }
     },

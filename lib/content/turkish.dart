@@ -148,7 +148,8 @@ enum Address {
   /// Anne ya da babanın çocuğuna seslenişi: oğlum / kızım.
   evlat('evlat'),
 
-  /// Yaşlı tanımadık: amca / teyze.
+  /// Yaşça çok büyük tanıdık: amca / teyze. Kişi metinlerinde yaş farkına
+  /// göre abi/abla ya da Bey/Hanım'a döner (`PersonText.elderAddress`).
   amca('amca'),
 
   /// Resmî: Bey / Hanım (addan sonra).
@@ -287,10 +288,25 @@ List<TemplateProblem> templateProblems(String template) {
           m.end,
         ),
       );
+    } else if (_harmonyParticle.firstMatch(rest) case final p?) {
+      // "{ad} de", "{akraba} da": ünlü uyumu ada göre değişir ("Kaan da",
+      // "annen de"); elle yazılan hep birinde yanlış çıkar.
+      problems.add(
+        TemplateProblem(
+          'yer tutucudan sonra elle yazılmış "${p[1]}"; ünlü uyumu tutmaz, '
+          'soru için {$path|mi} kullan ya da cümleyi değiştir',
+          m.end,
+        ),
+      );
     }
   }
   return problems;
 }
+
+/// Yer tutucudan sonra ayrı yazılan ama ünlü uyumuna giren ilgeçler.
+final RegExp _harmonyParticle = RegExp(
+  r'^ (de|da|mi|mı|mu|mü)(?=[\s.,;:!?…]|$)',
+);
 
 /// Şablondaki yer tutucuları [resolve] ile çözüp ekleri ekler. [resolve]
 /// null dönerse [StateError] fırlatır: olay seçicisi rolleri doldurmadan

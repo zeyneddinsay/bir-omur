@@ -340,7 +340,7 @@
   "@storyFuneral": { "placeholders": { "count": { "type": "int" } } },
   "storyFuneralFriends": "En önde {names} vardı.",
   "@storyFuneralFriends": { "placeholders": { "names": { "type": "String" } } },
-  "storyCameAnyway": "{name} de gelmiş, en arkada durmuş.",
+  "storyCameAnyway": "Küs olduğun {name} bile gelmiş, en arkada durmuş.",
   "@storyCameAnyway": { "placeholders": { "name": { "type": "String" } } },
   "storyStrangers": "Hiç tanımadığın üç akraba da oradaydı.",
   "storyClosest": "En yakınların: {names}",

@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../content/event_text.dart';
+import '../../content/person_text.dart';
+import '../../content/turkish.dart';
 import '../../content/content_loader.dart';
 import '../../engine/engine.dart';
 import '../../l10n/generated/app_localizations.dart';
+import '../../models/models.dart';
 import '../l10n_names.dart';
 import '../people/people_text.dart';
 import '../portrait/portrait.dart';
@@ -222,7 +225,14 @@ class _LifeStorySection extends StatelessWidget {
   final bool rich;
 
   static String _lowerFirst(String s) =>
-      s.isEmpty ? s : s[0].toLowerCase() + s.substring(1);
+      s.isEmpty ? s : lowerTr(s[0]) + s.substring(1);
+
+  /// Akrabaysa "kızın Selin", değilse adı: listede annesini adıyla anan
+  /// olmaz.
+  static String _who(Person p) => switch (PersonText.kinWord(p)) {
+    final kin? => '$kin ${p.name}',
+    null => p.name,
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -256,15 +266,15 @@ class _LifeStorySection extends StatelessWidget {
         l10n.storyFuneral(mourners),
         if (friends.isNotEmpty && mourners > 0)
           l10n.storyFuneralFriends(friends.map((p) => p.name).join(', ')),
-        if (story.cameAnyway case final p?) l10n.storyCameAnyway(p.name),
+        if (story.cameAnyway case final p?) l10n.storyCameAnyway(_who(p)),
         if (rich && mourners > 0) l10n.storyStrangers,
       ].join(' '),
       // Tek yakın, özleyecek kişiyle aynıysa iki kez yazılmaz.
       if (story.closest.length > 1 ||
           (story.closest.isNotEmpty && story.closest.first != missed))
-        l10n.storyClosest(story.closest.map((p) => p.name).join(', ')),
+        l10n.storyClosest(story.closest.map(_who).join(', ')),
       if (friends.isNotEmpty) l10n.storyTrueFriend(friends.first.name),
-      if (missed != null) l10n.storyMissed(missed.name),
+      if (missed != null) l10n.storyMissed(_who(missed)),
       if (businesses.isNotEmpty) l10n.storyBusinesses(businesses.join(', ')),
     ];
     return Column(

@@ -4,7 +4,8 @@ import 'turkish.dart';
 /// Bir kişi hakkındaki metinlerde kullanılabilen yer tutucular:
 ///
 /// - `{kisi.ad}`, `{kisi.soyad}`
-/// - `{kisi.hitap.abi}` (abi/abla), `.evlat`, `.amca`, `.bey`
+/// - `{kisi.hitap.abi}` (abi/abla), `.evlat`, `.amca`, `.bey`; `.amca` yaş
+///   farkına göre kurulur (bkz. [PersonText.elderAddress])
 /// - `{kisi.akraba}`: oyuncunun ağzından akrabalık ("deden", "babaannen",
 ///   "dayın"); akraba değilse adı
 /// - `{oyuncu.ad}`, `{oyuncu.hitap.evlat}` (büyüğün oyuncuya "oğlum/kızım"
@@ -68,9 +69,27 @@ abstract final class PersonText {
           ? TemplateValue(p.name)
           : TemplateValue(word, proper: false);
     }
+    if (path == 'kisi.hitap.amca') {
+      return TemplateValue(elderAddress(p).forGender(p.gender), proper: false);
+    }
     return addressOf(path, 'kisi', p.gender) ??
         addressOf(path, EventCard.playerSlot, c.gender);
   }
+
+  /// Mahallede yaşça büyük tanıdığa (komşu, bakkal) sesleniş, yaş farkına
+  /// göre: en az [auntGap] yaş büyükse amca/teyze, en az [siblingGap] yaş
+  /// büyükse abi/abla, değilse Bey/Hanım. Kırk yaşındaki oyuncu kırk
+  /// beşlik komşusuna "teyze", yetmişlik oyuncu ellilik bakkala "amca"
+  /// demez.
+  static Address elderAddress(Person p) {
+    final gap = -p.bornAt;
+    if (gap >= auntGap) return Address.amca;
+    if (gap >= siblingGap) return Address.abi;
+    return Address.bey;
+  }
+
+  static const int auntGap = 20;
+  static const int siblingGap = 4;
 
   /// `{<yuva>.hitap.<hitap>}` yolunu verilen cinsiyete göre kurar.
   static TemplateValue? addressOf(String path, String slot, Gender gender) {

@@ -178,7 +178,7 @@
       "ogretmen": { "roles": ["ogretmen"] }
     },
     "speaker": "ogretmen",
-    "text": "{ogretmen.ad} {ogretmen.hitap.bey} seni tahtaya kaldırdı. Soru tahtada, sınıf nefesini tutmuş bekliyor.",
+    "text": "{ogretmen.ad} Öğretmen seni tahtaya kaldırdı. Soru tahtada, sınıf nefesini tutmuş bekliyor.",
     "left": {
       "label": "Bildiğim kadar",
       "roll": { "stat": "knowledge", "threshold": 50 },
@@ -197,7 +197,7 @@
         }
       },
       "fail": { "happiness": -2 },
-      "successResult": "Soruyu adım adım çözdün. {ogretmen.ad} {ogretmen.hitap.bey} 'Aferin' dedi, sınıf alkışladı.",
+      "successResult": "Soruyu adım adım çözdün. {ogretmen.ad} Öğretmen 'Aferin' dedi, sınıf alkışladı.",
       "failResult": "Tebeşir elinde, tahtanın önünde donup kaldın. Sınıfın bakışları altında yerine sessizce döndün."
     },
     "right": {
@@ -215,7 +215,7 @@
           }
         }
       },
-      "result": "Bilmediğini dürüstçe söyledin. {ogretmen.ad} {ogretmen.hitap.bey} soruyu sana baştan anlattı."
+      "result": "Bilmediğini dürüstçe söyledin. {ogretmen.ad} Öğretmen soruyu sana baştan anlattı."
     }
   },
   {
@@ -407,7 +407,7 @@
         }
       },
       "successResult": "{veli.akraba} sonunda eski telefonunu sana verdi. Ekranı çatlak ama artık senin!",
-      "failResult": "Ev ayağa kalktı, kapılar çarptı. Telefon yok; {veli.akraba} da sana biraz kırgın."
+      "failResult": "Ev ayağa kalktı, kapılar çarptı. Telefon yok; üstelik {veli.akraba} sana biraz kırgın."
     }
   },
   {
@@ -540,7 +540,7 @@
           }
         }
       },
-      "result": "Kütüphanede deneme kitaplarını sıra bekleyerek çözdün. {veli.akraba} rahat bir nefes aldı."
+      "result": "Kütüphaneden ödünç aldığın deneme kitaplarını evde tek tek çözdün. {veli.akraba} rahat bir nefes aldı."
     }
   },
   {

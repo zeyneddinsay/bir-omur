@@ -77,7 +77,9 @@ Uygun kişi seçilirken yakınlığı ya da husumeti yüksek kişiler iki kat a�
 - **Yer tutucular:** `{yuva.ad}`, `{yuva.soyad}`, `{yuva.akraba}` ("deden", "babaannen", "ablan",
   "dayın"), `{oyuncu.ad}`.
 - **Hitaplar:** `{yuva.hitap.abi}` (abi/abla), `.evlat` (oğlum/kızım), `.amca` (amca/teyze), `.bey`
-  (Bey/Hanım) kişinin cinsiyetine göre kurulur: oyuncu ona böyle seslenir. Kişi oyuncuya
+  (Bey/Hanım) kişinin cinsiyetine göre kurulur: oyuncu ona böyle seslenir. `.amca` yaş farkına da
+  bakar: kişi oyuncudan en az 20 yaş büyükse amca/teyze, en az 4 yaş büyükse abi/abla, değilse
+  Bey/Hanım olur. Öğretmene `{yuva.ad} Öğretmen` denir; okulda kimse "Bey/Hanım" demez. Kişi oyuncuya
   seslenirken `{oyuncu.hitap.evlat}` ("oğlum/kızım") ya da `{oyuncu.hitap.abi}` kullanılır; bunlar
   oyuncunun cinsiyetine göre kurulur.
 - **Vefat yuvası:** `"deceased": true` olan yuva yalnızca son bir yıl içinde vefat etmiş kişiyle

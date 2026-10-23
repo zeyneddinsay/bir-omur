@@ -86,7 +86,7 @@
     "id": "kopya_ortakligi",
     "type": "kisi",
     "theme": "genel",
-    "minAge": 25,
+    "minAge": 33,
     "maxAge": 60,
     "repeat": "once",
     "roles": {
@@ -277,6 +277,7 @@
     "minAge": 26,
     "maxAge": 55,
     "repeat": "once",
+    "conditions": { "careers": ["plaza", "yazilimci", "emlakci", "memur", "hemsire", "aile_fabrikasi"] },
     "roles": {
       "eski": { "memory": "deneme_rekabet", "memoryYears": 8 }
     },
@@ -393,10 +394,10 @@
     "repeat": "once",
     "conditions": { "min": { "money": 200000 } },
     "roles": {
-      "genc": { "roles": ["komsu"], "maxGap": -12, "minAge": 18 }
+      "genc": { "roles": ["komsu"], "gender": "kadin", "sameCity": true }
     },
     "speaker": "genc",
-    "text": "Komşunun genci {genc.ad} kapında, utanarak:'Ehliyet kursu için biraz para lazım. Söz, iki yıla öderim.'",
+    "text": "Komşun {genc.ad} {genc.hitap.amca} kapında, utanarak: 'Oğlanın ehliyet kursu var, biraz para lazım. Söz, iki yılda öderiz.'",
     "left": {
       "label": "Al, dert etme",
       "effects": {
@@ -416,7 +417,7 @@
       "result": "{genc.ad} parayı alırken gözleri doldu. 'İki yıl' dedi, 'söz.'"
     },
     "right": {
-      "label": "Annen bilmesin mi?",
+      "label": "Benim de durumum yok",
       "effects": {
         "people": {
           "genc": {
@@ -429,7 +430,7 @@
           }
         }
       },
-      "result": "Lafı annesine getirdin. {genc.ad} kızarıp bozardı, sessizce kapıdan çekildi."
+      "result": "Senin de durumun olmadığını söyledin. {genc.ad} kızarıp bozardı, sessizce kapıdan çekildi."
     }
   },
   {
@@ -443,8 +444,8 @@
       "genc": { "minAge": 18 }
     },
     "speaker": "genc",
-    "text": "{genc.ad} kapında, elinde bir zarf ve bir kutu baklava: 'Ehliyeti aldım, işe de girdim. Borcum, bir de teşekkürüm.'",
-    "closing": "{genc.ad} verdiğin borcu hiç getirmedi; sen de annesine hiç söylemedin.",
+    "text": "{genc.ad} kapında, elinde bir zarf ve bir kutu baklava: 'Oğlan ehliyeti aldı, işe de girdi. Borcumuz, bir de teşekkürümüz.'",
+    "closing": "{genc.ad} verdiğin borcu hiç getiremedi; sen de hiç sormadın.",
     "left": {
       "label": "Baklava yeter",
       "effects": {

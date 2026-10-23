@@ -531,6 +531,16 @@ void main() {
         expect(problems('{kerem.ad}e söyle'), [contains('bitişik harf')]);
       });
 
+      test('yer tutucudan sonra elle yazılmış de/da ve mi yakalanır', () {
+        expect(problems('{kerem.ad} de geldi'), [
+          contains('elle yazılmış "de"'),
+        ]);
+        expect(problems('{anne.akraba} da gitti.'), [contains('"da"')]);
+        expect(problems('{kerem.ad} mi?'), [contains('"mi"')]);
+        expect(problems('{kerem.ad} dedi ki'), isEmpty);
+        expect(problems('{kerem.ad} bile geldi'), isEmpty);
+      });
+
       test('bilinmeyen ek yakalanır', () {
         expect(problems('{kerem.ad|a} git'), [contains('bilinmeyen ek')]);
       });

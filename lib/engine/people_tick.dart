@@ -114,6 +114,10 @@ class PeopleTick {
   /// günlüğe düşer.
   static const int newsRelevance = 40;
 
+  /// "İş buldu" haberi bu yaşa kadar düşer; daha yaşlı kişinin işi haber
+  /// olmaz.
+  static const int newJobNewsMaxAge = 35;
+
   late PeopleBook _book;
   late int _now;
   late List<PersonNews> _news;
@@ -243,7 +247,12 @@ class PeopleTick {
     } else if (p.occupation == null && age >= 22 && random.nextDouble() < 0.3) {
       final job = _jobFor(p, c);
       p = p.copyWith(occupation: job);
-      _report(p, NewsKind.isBuldu, detail: job);
+      // Ev hanımlığı "iş bulmak" değildir; orta yaştakinin işi de haber
+      // olmaz, hep o işteymiş gibi görünür ("Kayınvaliden iş buldu: polis"
+      // olmaz).
+      if (job != 'ev_hanimi' && age <= newJobNewsMaxAge) {
+        _report(p, NewsKind.isBuldu, detail: job);
+      }
     }
 
     // Anne, baba, eş ve çocuğun evliliği kendi olaylarıyla gelir.

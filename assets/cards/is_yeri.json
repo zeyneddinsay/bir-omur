@@ -26,7 +26,7 @@
     "minAge": 19,
     "maxAge": 64,
     "repeat": "once",
-    "conditions": { "career": "any" },
+    "conditions": { "careers": ["plaza", "yazilimci", "emlakci", "memur", "hemsire"] },
     "roles": {
       "is": { "roles": ["isArkadasi"], "traits": ["dedikoducu"] }
     },
@@ -47,7 +47,7 @@
           }
         }
       },
-      "result": "Fısıltı çay ocağında kaldı. {is.ad} biraz bozuldu ama ofiste ağzı sıkı biri diye bilinir oldun."
+      "result": "Fısıltı çay ocağında kaldı. {is.ad} biraz bozuldu ama iş yerinde ağzı sıkı biri diye bilinir oldun."
     },
     "right": {
       "label": "Kime kime söyledin?",
@@ -230,7 +230,7 @@
           }
         }
       },
-      "successResult": "Salon güldü, {patron.ad} da gülmek zorunda kaldı: 'Haklısın, konuşuruz.' Herkes sana hayran.",
+      "successResult": "Salon güldü, {patron.ad} bile gülmek zorunda kaldı: 'Haklısın, konuşuruz.' Herkes sana hayran.",
       "failResult": "Salon buz kesti. {patron.ad} 'Ailede saygı da olur' dedi; bu yıl gözü hep üstünde."
     }
   },
@@ -302,7 +302,7 @@
     "right": {
       "label": "Geç kalırım",
       "effects": { "performance": -3 },
-      "result": "Yarım saat geç girdin. Müdür saatine baktı, bir şey demedi; demese de anladın."
+      "result": "Yarım saat geç girdin. Kimse bir şey demedi; saate kayan bakışlardan anladın."
     }
   },
   {
@@ -365,7 +365,7 @@
       "ev": { "roles": ["evSahibi"], "minGap": 12 }
     },
     "speaker": "ev",
-    "text": "Ev sahibin {ev.ad}: 'Kirayı ben artırmıyorum {oyuncu.hitap.evlat}, piyasa artırıyor.'",
+    "text": "Ev sahibin {ev.ad}: 'Kirayı ben artırmıyorum, piyasa artırıyor.'",
     "left": {
       "label": "Peki, kabul",
       "effects": {
@@ -432,7 +432,7 @@
           }
         }
       },
-      "result": "Ustayı çağırıp kombiyi kendi cebinden yaptırdın. Ev ısındı, {ev.ad} de pek memnun."
+      "result": "Ustayı çağırıp kombiyi kendi cebinden yaptırdın. Ev ısındı; ev sahibin bu işe pek memnun."
     },
     "right": {
       "label": "Kiracı hakkımı ararım",
@@ -534,7 +534,7 @@
     "repeat": "once",
     "conditions": { "gender": "kadin" },
     "roles": {
-      "komsu": { "roles": ["komsu"], "sameCity": true }
+      "komsu": { "roles": ["komsu"], "gender": "kadin", "sameCity": true }
     },
     "speaker": "komsu",
     "text": "{komsu.ad} {komsu.hitap.amca}: 'Altın günü bu ay sende! Herkes bir gram getirecek, börekler senden.'",

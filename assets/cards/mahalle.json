@@ -194,7 +194,7 @@
       "ogretmen": { "formerRoles": ["ogretmen"], "sameCity": true }
     },
     "speaker": "ogretmen",
-    "text": "Çarşıda eski öğretmenin {ogretmen.ad} {ogretmen.hitap.bey}! Seni hemen tanıdı: 'Arka sıranın yaramazı!'",
+    "text": "Çarşıda karşına eski öğretmenin çıktı: {ogretmen.ad} Öğretmen! Seni hemen tanıdı: 'Arka sıranın yaramazı!'",
     "left": {
       "label": "Elini öp",
       "effects": {
@@ -210,7 +210,7 @@
           }
         }
       },
-      "result": "Eğilip elini öptün. {ogretmen.ad} {ogretmen.hitap.bey} gözlerini silip 'Ne güzel büyümüşsün' dedi."
+      "result": "Eğilip elini öptün. {ogretmen.ad} Öğretmen gözlerini silip 'Ne güzel büyümüşsün' dedi."
     },
     "right": {
       "label": "Selam verip geç",

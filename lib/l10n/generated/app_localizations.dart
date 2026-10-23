@@ -1693,7 +1693,7 @@ abstract class AppLocalizations {
   /// No description provided for @storyCameAnyway.
   ///
   /// In tr, this message translates to:
-  /// **'{name} de gelmiş, en arkada durmuş.'**
+  /// **'Küs olduğun {name} bile gelmiş, en arkada durmuş.'**
   String storyCameAnyway(String name);
 
   /// No description provided for @storyStrangers.

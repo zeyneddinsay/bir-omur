@@ -285,6 +285,10 @@ abstract final class Interactions {
   /// Kardeşle oyun bu yaşa kadar (ikisi için de).
   static const int playMaxAge = 14;
 
+  /// Bu yaşın altındaki oyuncuya sonuç metninin çocuk hâli gösterilir
+  /// (`bulus.iyi.cocuk`): çocuk çay bahçesinde oturup hesap ödemez.
+  static const int childTextMaxAge = 12;
+
   /// Bu yıl yapılanları tutan anahtar: `p3:bulus`.
   static String usedKey(String personId, InteractionKind kind) =>
       '$personId:${kind.name}';

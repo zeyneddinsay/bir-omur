@@ -57,7 +57,7 @@
       "result": "Beyefendi bir ısırık aldı: 'İşte bu!' Ertesi sabah yanında iki arkadaşıyla geldi."
     },
     "right": {
-      "label": "Hepsi bugünün abi",
+      "label": "Hepsi bugünün efendim",
       "effects": { "business": -1, "reputation": 1 },
       "result": "Beyefendi pek ikna olmadı ama dürüstlüğün mahallede konuşuldu."
     }
@@ -209,7 +209,7 @@
       "calisan": { "roles": ["calisan"] }
     },
     "speaker": "calisan",
-    "text": "{calisan.ad} çay getirirken boğazını temizledi: 'Kusura bakma {oyuncu.hitap.abi}, kira arttı. Bir zam olsa...'",
+    "text": "{calisan.ad} çay getirirken boğazını temizledi: 'Kusura bakma ama ev kirası arttı. Bir zam olsa...'",
     "left": {
       "label": "Haklısın, yaparız",
       "effects": {
@@ -300,7 +300,7 @@
     "minAge": 16,
     "maxAge": 90,
     "repeat": "once",
-    "conditions": { "business": "any" },
+    "conditions": { "businessTypes": ["simit", "berber", "oto_yikama"] },
     "roles": {
       "rakip": { "roles": ["rakip"], "sameCity": true }
     },
@@ -340,7 +340,7 @@
     "minAge": 16,
     "maxAge": 90,
     "repeat": "once",
-    "conditions": { "business": "any" },
+    "conditions": { "businessTypes": ["simit", "berber", "oto_yikama"] },
     "roles": {
       "rakip": { "roles": ["rakip"], "sameCity": true, "maxHostility": 30 }
     },
@@ -394,7 +394,7 @@
         "roles": ["komsu"],
         "gender": "kadin",
         "minAge": 50,
-        "minGap": 12,
+        "minGap": 20,
         "sameCity": true
       }
     },
@@ -447,7 +447,7 @@
       "komsu": { "roles": ["komsu"], "sameCity": true }
     },
     "speaker": "komsu",
-    "text": "{komsu.ad}: 'Ay sonu biraz sıkıştım. Deftere yazsan, maaş yatınca hemen getiririm.'",
+    "text": "{komsu.ad}: 'Ay sonu biraz sıkıştım. Deftere yazsan, ay başında hemen getiririm.'",
     "left": {
       "label": "Yazarım, dert etme",
       "roll": { "stat": "luck", "threshold": 45 },
@@ -478,7 +478,7 @@
         }
       },
       "successResult": "Ay sonunda {komsu.ad} borcunu kuruşu kuruşuna getirdi. Mahallede güvenilir esnafsın artık.",
-      "failResult": "Maaş yattı ama {komsu.ad} gelmedi. Defterdeki o satır hâlâ orada duruyor."
+      "failResult": "Ay başı geldi geçti, {komsu.ad} gelmedi. Defterdeki o satır hâlâ orada duruyor."
     },
     "right": {
       "label": "Veresiye defteri kapalı",
@@ -532,7 +532,7 @@
       "akraba": { "kin": ["kuzen", "yegen", "kardes"], "roles": ["calisan"] }
     },
     "speaker": "akraba",
-    "text": "{akraba.akraba} {akraba.ad} üç aydır dükkâna öğlen geliyor. 'Trafik vardı' diyor; evi iki sokak ötede.",
+    "text": "{akraba.akraba} {akraba.ad} üç aydır işe öğlen geliyor. 'Trafik vardı' diyor; evi iki sokak ötede.",
     "left": {
       "label": "Bir uyarayım",
       "effects": {
@@ -548,7 +548,7 @@
           }
         }
       },
-      "result": "{akraba.ad|i} kenara çekip konuştun. Ertesi gün sekizde dükkândaydı ama sana küskündü."
+      "result": "{akraba.ad|i} kenara çekip konuştun. Ertesi gün sekizde işinin başındaydı ama sana küskündü."
     },
     "right": {
       "label": "Ses etmem",

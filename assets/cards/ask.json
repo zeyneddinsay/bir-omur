@@ -225,7 +225,7 @@
     },
     "speaker": "es",
     "text": "Bebek geldi! Büyükler kendi büyüklerinin adını, gençler bugünün adlarını öneriyor. {es.ad} sana bakıyor.",
-    "variants": ["Yine bebek sesi! {es.ad} yorgun ama gülümsüyor. Ad yine masada: büyüklerin dediği mi, bugünün adı mı?", "Ev yine kalabalıklaştı: yeni bebek geldi. {es.ad}: 'Bu sefer adı kolay olsun.'", "Kalabalık bir aile oldunuz. Yeni bebek {es.ad|in} kucağında uyuyor; ablalar, ağabeyler sıraya girmiş."],
+    "variants": ["Yine bebek sesi! {es.ad} yorgun ama gülümsüyor. Ad yine masada: büyüklerin dediği mi, bugünün adı mı?", "Ev yine kalabalıklaştı: yeni bebek geldi. {es.ad}: 'Bu sefer adı kolay olsun.'", "Kalabalık bir aile oldunuz. Yeni bebek {es.ad|in} kucağında uyuyor; büyük kardeşleri sıraya girmiş."],
     "left": {
       "label": "Büyüklerin dediği",
       "effects": { "happiness": 8 },

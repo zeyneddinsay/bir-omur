@@ -21,13 +21,22 @@ class InteractionBook {
   /// Anı türü → kişinin gözünden kısa etiket.
   final Map<String, String> memoryLabels;
 
-  /// [outcome] için metin; kişinin özelliğine özel metin varsa o seçilir.
-  /// [variant] seçeneklerden hangisinin geleceğini belirler.
+  /// Çocuk oyuncuya özel metnin anahtar eki: `bulus.iyi.cocuk`.
+  static const String childKey = 'cocuk';
+
+  /// [outcome] için metin; oyuncu çocuksa ([child]) çocuğa özel metin, yoksa
+  /// kişinin özelliğine özel metin varsa o seçilir. [variant] seçeneklerden
+  /// hangisinin geleceğini belirler.
   String? textFor(
     String outcome,
     int variant, {
     Iterable<String> traits = const [],
+    bool child = false,
   }) {
+    if (child) {
+      final special = texts['$outcome.$childKey'];
+      if (special != null) return special[variant % special.length];
+    }
     for (final trait in traits) {
       final special = texts['$outcome.$trait'];
       if (special != null) return special[variant % special.length];

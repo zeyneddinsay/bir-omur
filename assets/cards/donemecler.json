@@ -295,7 +295,7 @@
       "merhum": { "kin": ["kardes"], "deceased": true }
     },
     "text": "{merhum.akraba} vefat etti. Çocukluğunuzun bütün fotoğraflarında o da var; şimdi onlara bakmak zor.",
-    "variants": ["{merhum.akraba} da gitti. Çocukken paylaştığınız odanın kapısı gözünün önünden gitmiyor."],
+    "variants": ["Bu kez {merhum.akraba} gitti. Çocukken paylaştığınız oda, yan yana iki yatak; hepsi gözünün önünde."],
     "left": {
       "label": "Cenazeyi ben kaldırırım",
       "effects": { "reputation": 2, "happiness": -8 },
@@ -318,7 +318,7 @@
       "merhum": { "kin": ["anne", "baba"], "deceased": true }
     },
     "text": "{merhum.akraba} vefat etti. Telefon sabah erkenden çaldı; o günden geriye yalnızca parçalar kaldı.",
-    "variants": ["{merhum.akraba} da gitti. Evin anahtarı artık sende; kapıyı açmak hiç bu kadar zor olmamıştı."],
+    "variants": ["Bu kez {merhum.akraba} gitti. Evin anahtarı artık sende; kapıyı açmak hiç bu kadar zor olmamıştı."],
     "left": {
       "label": "Her işi ben üstlenirim",
       "effects": { "reputation": 3, "health": -3, "happiness": -8 },

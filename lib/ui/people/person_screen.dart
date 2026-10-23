@@ -193,6 +193,7 @@ class PersonScreen extends ConsumerWidget {
       result.outcome,
       result.variant,
       traits: [for (final t in p.traits) t.name],
+      child: c.age < Interactions.childTextMaxAge,
     );
     return text == null ? null : PersonText.render(text, p, c);
   }

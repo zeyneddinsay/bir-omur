@@ -6,7 +6,10 @@ import 'turkish.dart';
 /// `assets/interactions.json` denetimi. Dönen her satır bir hatadır.
 List<String> validateInteractions(InteractionBook book) {
   final problems = <String>[];
-  final traits = {for (final t in Trait.values) t.name};
+  final traits = {
+    for (final t in Trait.values) t.name,
+    InteractionBook.childKey,
+  };
 
   for (final outcome in Interactions.outcomes) {
     final options = book.texts[outcome];

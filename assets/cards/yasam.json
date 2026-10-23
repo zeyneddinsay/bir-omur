@@ -210,6 +210,7 @@
     "minAge": 62,
     "maxAge": 95,
     "repeat": "once",
+    "conditions": { "gender": "erkek" },
     "text": "Kahvehanede tavla masası boşaldı. Yan masadaki emekli öğretmen pulları diziyor: 'Bir el atalım mı?'",
     "left": {
       "label": "Mars ederim",
@@ -349,16 +350,16 @@
     "maxAge": 100,
     "repeat": "once",
     "conditions": { "flags": ["emekli"] },
-    "text": "Aylık yatmış. Banka kuyruğunda herkes fiyatları konuşuyor; önündeki teyze sana da bir tane anlatacak.",
+    "text": "Aylık yatmış. Banka kuyruğunda herkes fiyatları konuşuyor; önündeki yaşıtın sana da bir tane anlatacak.",
     "left": {
       "label": "Dinlerim",
       "effects": { "happiness": 2, "reputation": 1 },
-      "result": "Teyzenin fiyat hikâyesini sonuna kadar dinledin. Kuyruktan çıkarken yarım mahalleyle tanışmıştın."
+      "result": "Yaşıtının fiyat hikâyesini sonuna kadar dinledin. Kuyruktan çıkarken yarım mahalleyle tanışmıştın."
     },
     "right": {
       "label": "Mobil bankacılık",
       "effects": { "knowledge": 1 },
-      "result": "Kuyruktan çıkıp işini telefondan hallettin. Arkandaki teyze sana hayranlıkla baktı."
+      "result": "Kuyruktan çıkıp işini telefondan hallettin. Kuyruktaki yaşıtların sana hayranlıkla baktı."
     }
   },
   {
@@ -372,7 +373,7 @@
       "eski": { "formerRoles": ["isArkadasi"], "sameCity": true }
     },
     "speaker": "eski",
-    "text": "Eski iş arkadaşın {eski.ad} ile metroda karşılaştınız. 'Eski ekibi topluyorum, bir akşam yemeği?' dedi.",
+    "text": "Eski iş arkadaşın {eski.ad} ile yolda karşılaştınız. 'Eski ekibi topluyorum, bir akşam yemeği?' dedi.",
     "left": {
       "label": "Ben de gelirim",
       "effects": {
@@ -393,7 +394,7 @@
     "right": {
       "label": "Bakarız artık",
       "effects": { "happiness": -1 },
-      "result": "'Bakarız' dedin; ikiniz de bakmayacağınızı biliyordunuz. {eski.ad} inerken el salladı."
+      "result": "'Bakarız' dedin; ikiniz de bakmayacağınızı biliyordunuz. {eski.ad} uzaklaşırken el salladı."
     }
   },
   {
@@ -476,7 +477,7 @@
       "dost": { "bond": ["arkadas", "yakinArkadas"], "minAge": 20 }
     },
     "speaker": "dost",
-    "text": "{dost.ad} evleniyor ve seni sağdıç ya da nedime yapmak istiyor: 'Sensiz olmaz bu iş.'",
+    "text": "{dost.ad} evleniyor ve nikâh şahidi olarak seni istiyor: 'Sensiz olmaz bu iş.'",
     "left": {
       "label": "Onur duyarım",
       "effects": {
@@ -493,7 +494,7 @@
           }
         }
       },
-      "result": "Kıyafet, hazırlık, koşturma; cebin hafifledi. Ama {dost.ad} düğün fotoğraflarının hepsinde yanında."
+      "result": "Kıyafet, hazırlık, koşturma; cebin hafifledi. Ama düğün fotoğraflarının hepsinde {dost.ad|in} yanındasın."
     },
     "right": {
       "label": "Misafir olayım",

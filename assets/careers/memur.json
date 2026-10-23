@@ -35,7 +35,7 @@
       "right": { "label": "Mevzuatı anlatırım", "stat": "knowledge" }
     },
     {
-      "question": "Müdür bey 'Bu dosya bugün çıkacak' dedi, sistem çöktü.",
+      "question": "Müdür 'Bu dosya bugün çıkacak' dedi, sistem çöktü.",
       "left": { "label": "Elle yazarım", "stat": "health" },
       "right": { "label": "Bilgi işlemi ararım", "stat": "knowledge" }
     }

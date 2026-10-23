@@ -33,7 +33,7 @@
       "komsu": { "roles": ["komsu"], "sameCity": true }
     },
     "speaker": "komsu",
-    "text": "{komsu.ad} beşiğinin başında: 'Aman ne tatlı! Kaşları babasına, burnu dayısına çekmiş.' Tartışma uzuyor.",
+    "text": "{komsu.ad} beşiğinin başında: 'Aman ne tatlı! Kaşları babasına, burnu annesine çekmiş.' Tartışma uzuyor.",
     "left": {
       "label": "Gülümse",
       "effects": { "happiness": 2 },

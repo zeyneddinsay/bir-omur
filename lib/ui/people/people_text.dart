@@ -1,4 +1,5 @@
 import '../../content/person_text.dart';
+import '../../content/turkish.dart';
 import '../../engine/engine.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../models/models.dart';
@@ -177,9 +178,10 @@ extension PeopleNames on AppLocalizations {
       },
       NewsKind.evlendi => news_evlendi(name),
       NewsKind.tasindi => news_tasindi(name, news.detail ?? p.city),
+      // İki noktadan sonra küçük harf: "iş buldu: polis".
       NewsKind.isBuldu => news_isBuldu(
         name,
-        occupations[news.detail] ?? news.detail ?? '',
+        lowerTr(occupations[news.detail] ?? news.detail ?? ''),
       ),
       NewsKind.emekliOldu => news_emekliOldu(name),
       NewsKind.vefat => news_vefat(name),
