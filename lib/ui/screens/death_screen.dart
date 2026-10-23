@@ -268,7 +268,7 @@ class _LifeStorySection extends StatelessWidget {
       [
         l10n.storyFuneral(mourners),
         if (friends.isNotEmpty && mourners > 0)
-          l10n.storyFuneralFriends(friends.map((p) => p.name).join(', ')),
+          l10n.storyFuneralFriends(friends.map(_who).join(', ')),
         if (story.cameAnyway case final p?) l10n.storyCameAnyway(_who(p)),
         if (rich && mourners > 0) l10n.storyStrangers,
         if (story.absentChildren.isNotEmpty)
@@ -285,7 +285,7 @@ class _LifeStorySection extends StatelessWidget {
       if (story.closest.length > 1 ||
           (story.closest.isNotEmpty && story.closest.first != missed))
         l10n.storyClosest(story.closest.map(_who).join(', ')),
-      if (friends.isNotEmpty) l10n.storyTrueFriend(friends.first.name),
+      if (friends.isNotEmpty) l10n.storyTrueFriend(_who(friends.first)),
       if (missed != null) l10n.storyMissed(_who(missed)),
       if (businesses.isNotEmpty) l10n.storyBusinesses(businesses.join(', ')),
     ];

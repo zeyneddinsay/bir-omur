@@ -11,8 +11,8 @@
       "arayan": { "minAge": 12 }
     },
     "speaker": "arayan",
-    "text": "{arayan.ad} aradı. Bir süre ikiniz de sustunuz. Sonra: 'Duydum. Nasılsın, gerçekten?'",
-    "variants": ["{arayan.ad} aradı: 'Ne zaman istersen ara, gece yarısı bile olsa. Biliyorsun, değil mi?'", "{arayan.ad} kapında, elinde bir tencere yemek: 'Hiçbir şey sorma, sadece ye.'"],
+    "text": "{arayan.akraba} aradı. Bir süre ikiniz de sustunuz. Sonra: 'Duydum. Nasılsın, gerçekten?'",
+    "variants": ["{arayan.akraba} aradı: 'Ne zaman istersen ara, gece yarısı bile olsa. Biliyorsun, değil mi?'", "{arayan.akraba} kapında, elinde bir tencere yemek: 'Hiçbir şey sorma, sadece ye.'"],
     "left": {
       "label": "Açıp dertleşirim",
       "effects": {
@@ -28,7 +28,7 @@
           }
         }
       },
-      "result": "Saatlerce konuştunuz. İçindeki düğüm biraz gevşedi; o geceyi {arayan.ad|le} hiç unutmayacaksın."
+      "result": "Saatlerce konuştunuz. İçindeki düğüm biraz gevşedi; o geceyi {arayan.akraba|le} hiç unutmayacaksın."
     },
     "right": {
       "label": "İyiyim, sağ ol",
@@ -45,7 +45,7 @@
           }
         }
       },
-      "result": "Kısa kestin. {arayan.ad} üstelemedi; yalnızca 'Ben buradayım' dedi."
+      "result": "Kısa kestin. {arayan.akraba} üstelemedi; yalnızca 'Ben buradayım' dedi."
     }
   },
   {
@@ -111,7 +111,7 @@
       "dost": { "memory": "zor_gunde_dertlesti", "memoryYears": 5, "minCloseness": 40 }
     },
     "speaker": "dost",
-    "text": "{dost.ad} ile yıllar sonra aynı masadasınız. 'O zor yılı hatırlıyor musun?' diyor. Hatırlıyorsun.",
+    "text": "{dost.akraba} ile bir akşam çay içiyorsunuz. 'O zor yılı hatırlıyor musun?' diyor. Hatırlıyorsun.",
     "left": {
       "label": "İyi ki aradın",
       "effects": {
@@ -127,14 +127,14 @@
           }
         }
       },
-      "result": "{dost.ad|e} o yıl aradığı için teşekkür ettin. Bir süre kimse konuşmadı; gerek de yoktu."
+      "result": "{dost.akraba|e} o yıl aradığı için teşekkür ettin. Bir süre kimse konuşmadı; gerek de yoktu."
     },
     "right": {
       "label": "Hiç açmayalım o yılı",
       "effects": {
         "happiness": 1
       },
-      "result": "Konuyu kapattınız. Ama kalkarken {dost.ad|in} omzunu her zamankinden uzun sıktın."
+      "result": "Konuyu kapattınız. Ama kalkarken {dost.akraba|in} omzunu her zamankinden uzun sıktın."
     }
   }
 ]

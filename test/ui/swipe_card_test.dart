@@ -6,6 +6,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../helpers/test_cards.dart';
+import '../helpers/people.dart';
 import '../helpers/test_character.dart';
 
 Widget _wrap(Widget child) => MaterialApp(
@@ -129,5 +130,66 @@ void main() {
     await tester.tap(right);
     await tester.pumpAndSettle();
     expect(chosen, ChoiceSide.right);
+  });
+
+  testWidgets('akraba önizlemede adıyla değil akrabalığıyla anılır', (
+    tester,
+  ) async {
+    final card = testCard(
+      'ilk_bayram',
+      text: 'İlk bayramın.',
+      roles: {
+        'buyuk': {
+          'kin': ['nine'],
+        },
+      },
+      left: {
+        'label': 'Onun kucağında uyu',
+        'effects': {
+          'people': {
+            'buyuk': {
+              'memory': {
+                'kind': 'kucak',
+                'label': 'Kucağımda uyudu',
+                'tone': 'olumlu',
+                'severity': 1,
+              },
+            },
+          },
+        },
+      },
+    );
+    final c = withPeople(testCharacter(age: 1), [
+      testPerson(
+        'p1',
+        name: 'Meral',
+        gender: Gender.kadin,
+        kin: Kinship.nine,
+        side: Side.baba,
+        age: 60,
+        playerAge: 1,
+      ),
+    ]);
+    await tester.pumpWidget(
+      _wrap(
+        SwipeCard(
+          card: card,
+          text: card.text,
+          character: c,
+          people: const {'buyuk': 'p1'},
+          onChoose: (_) {},
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    final left = find.byKey(const Key('choose_left'));
+    expect(
+      find.descendant(of: left, matching: find.text('Babaannen')),
+      findsOne,
+    );
+    expect(
+      find.descendant(of: left, matching: find.text('Meral')),
+      findsNothing,
+    );
   });
 }

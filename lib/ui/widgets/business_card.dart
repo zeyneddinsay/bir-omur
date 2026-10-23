@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../content/person_text.dart';
 import '../../engine/engine.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../models/models.dart';
@@ -248,7 +249,9 @@ class _BusinessCard extends ConsumerWidget {
             if (partner != null)
               Padding(
                 padding: const EdgeInsets.only(top: 4),
-                child: Text(l10n.businessPartnerNow(partner.name)),
+                child: Text(
+                  l10n.businessPartnerNow(PersonText.labelOf(partner)),
+                ),
               )
             else if (candidates.isNotEmpty && canAct) ...[
               const SizedBox(height: 4),
@@ -261,7 +264,7 @@ class _BusinessCard extends ConsumerWidget {
                   leading: const Icon(Icons.handshake_outlined),
                   title: Text(
                     l10n.businessPartnerOffer(
-                      p.name,
+                      PersonText.labelOf(p),
                       l10n.money(BusinessRules.partnerCapital(b)),
                     ),
                   ),

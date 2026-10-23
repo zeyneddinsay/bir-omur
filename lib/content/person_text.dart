@@ -104,6 +104,14 @@ abstract final class PersonText {
   static String render(String template, Person p, Character c) =>
       capitalizeFirst(renderTemplate(template, (path) => resolve(path, p, c)));
 
+  /// Arayüzde bir kişinin anılışı: akrabaysa akrabalığıyla ve adıyla
+  /// ("Babaannen Meral"), değilse yalnızca adıyla. Akraba hiçbir yerde
+  /// yalnızca adıyla anılmaz.
+  static String labelOf(Person p) => switch (kinWord(p)) {
+    final kin? => '${capitalizeFirst(kin)} ${p.name}',
+    null => p.name,
+  };
+
   /// İlk harfi Türkçe kurala göre büyütür ("dedenin" → "Dedenin").
   static String capitalizeFirst(String text) {
     if (text.isEmpty) return text;

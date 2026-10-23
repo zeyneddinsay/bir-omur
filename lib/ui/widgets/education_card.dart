@@ -318,8 +318,8 @@ String _closingLine(
   final person = c.people[people.values.first];
   if (person == null) return '';
   return person.isAlive
-      ? l10n.note_iplikAyrildi(person.name)
-      : l10n.note_iplikVefat(person.name);
+      ? l10n.note_iplikAyrildi(PersonText.labelOf(person))
+      : l10n.note_iplikVefat(PersonText.labelOf(person));
 }
 
 /// "Dünya küçük: Kerem artık patronun. Onu okuldan tanıyorsun."

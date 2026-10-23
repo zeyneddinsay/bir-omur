@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../content/person_text.dart';
 import '../../engine/engine.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../models/models.dart';
@@ -347,7 +348,7 @@ class InterviewSheet extends ConsumerWidget {
                 key: Key('interview_ref_${p.id}'),
                 contentPadding: EdgeInsets.zero,
                 leading: const Icon(Icons.handshake_outlined),
-                title: Text(l10n.interviewReference(p.name)),
+                title: Text(l10n.interviewReference(PersonText.labelOf(p))),
                 onTap: () => answer(ChoiceSide.left, referenceId: p.id),
               ),
           ],

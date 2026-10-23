@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../content/person_text.dart';
 import '../../engine/engine.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../models/models.dart';
@@ -94,13 +95,19 @@ List<PreviewItem> previewItems(
     };
     if (person == null) continue;
     final positive = felt ? memory.tone == MemoryTone.olumlu : true;
+    // Akraba adıyla değil akrabalığıyla anılır: "Babaannen", "Eşin".
+    final kin = PersonText.kinWord(person);
     items.add(
       PreviewItem(
         icon: positive ? Icons.favorite_border : Icons.heart_broken_outlined,
         positive: positive,
-        text: person.name,
+        text: kin == null ? person.name : PersonText.capitalizeFirst(kin),
         strong: felt && memory.severity >= 3,
-        tooltip: l10n.previewMemoryTooltip(person.name),
+        tooltip: l10n.previewMemoryTooltip(
+          kin == null
+              ? person.name
+              : '${PersonText.capitalizeFirst(kin)} ${person.name}',
+        ),
       ),
     );
   }
