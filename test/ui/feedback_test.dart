@@ -46,8 +46,10 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
+    await tester.ensureVisible(find.byKey(const Key('gender_kadin')));
     await tester.tap(find.byKey(const Key('gender_kadin')));
     await tester.pump();
+    await tester.ensureVisible(find.byKey(const Key('birth_button')));
     await tester.tap(find.byKey(const Key('birth_button')));
     await tester.pumpAndSettle();
     expect(recorder.sounds, isEmpty, reason: 'doğumda ses yok');

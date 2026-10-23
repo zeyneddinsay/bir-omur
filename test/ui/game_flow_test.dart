@@ -42,8 +42,10 @@ Future<void> _bornAs(
   await tester.pumpWidget(_app());
   await tester.pumpAndSettle();
   await tester.enterText(find.byKey(const Key('birth_name')), name);
+  await tester.ensureVisible(find.byKey(const Key('gender_kadin')));
   await tester.tap(find.byKey(const Key('gender_kadin')));
   await tester.pump();
+  await tester.ensureVisible(find.byKey(const Key('birth_button')));
   await tester.tap(find.byKey(const Key('birth_button')));
   await tester.pumpAndSettle();
 }
@@ -94,8 +96,10 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byKey(const Key('resume_button')), findsNothing);
     await tester.enterText(find.byKey(const Key('birth_name')), 'Defne');
+    await tester.ensureVisible(find.byKey(const Key('gender_kadin')));
     await tester.tap(find.byKey(const Key('gender_kadin')));
     await tester.pump();
+    await tester.ensureVisible(find.byKey(const Key('birth_button')));
     await tester.tap(find.byKey(const Key('birth_button')));
     await tester.pumpAndSettle();
     await _finishCards(tester);
@@ -141,6 +145,7 @@ void main() {
     FilledButton button() =>
         tester.widget<FilledButton>(find.byKey(const Key('birth_button')));
     expect(button().onPressed, isNull);
+    await tester.ensureVisible(find.byKey(const Key('gender_erkek')));
     await tester.tap(find.byKey(const Key('gender_erkek')));
     await tester.pump();
     expect(button().onPressed, isNotNull);

@@ -46,6 +46,15 @@ class AppLocalizationsTr extends AppLocalizations {
   String get birthButton => 'Doğ';
 
   @override
+  String get birthTagline => 'Bir hayat, binlerce küçük karar';
+
+  @override
+  String get birthPickGender => 'Başlamak için cinsiyet seç';
+
+  @override
+  String get albumSubtitle => 'Önceki hayatların ve rozetlerin';
+
+  @override
   String get resumeTitle => 'Yarım kalan bir hayat var';
 
   @override

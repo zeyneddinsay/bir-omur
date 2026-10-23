@@ -160,6 +160,24 @@ abstract class AppLocalizations {
   /// **'Doğ'**
   String get birthButton;
 
+  /// No description provided for @birthTagline.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bir hayat, binlerce küçük karar'**
+  String get birthTagline;
+
+  /// No description provided for @birthPickGender.
+  ///
+  /// In tr, this message translates to:
+  /// **'Başlamak için cinsiyet seç'**
+  String get birthPickGender;
+
+  /// No description provided for @albumSubtitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Önceki hayatların ve rozetlerin'**
+  String get albumSubtitle;
+
   /// No description provided for @resumeTitle.
   ///
   /// In tr, this message translates to:

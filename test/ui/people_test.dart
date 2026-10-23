@@ -31,8 +31,10 @@ Future<ProviderContainer> _bornAndGrown(
   );
   await tester.pumpAndSettle();
   await tester.enterText(find.byKey(const Key('birth_name')), 'Elif');
+  await tester.ensureVisible(find.byKey(const Key('gender_kadin')));
   await tester.tap(find.byKey(const Key('gender_kadin')));
   await tester.pump();
+  await tester.ensureVisible(find.byKey(const Key('birth_button')));
   await tester.tap(find.byKey(const Key('birth_button')));
   await tester.pumpAndSettle();
   final container = ProviderScope.containerOf(

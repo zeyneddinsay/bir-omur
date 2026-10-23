@@ -261,7 +261,9 @@ abstract final class PortraitDesigner {
         'long' => ('hair_long_back', 'hair_long_front'),
         'bob' => ('hair_bob_back', 'hair_long_front'),
         'bun' => (null, 'hair_bun'),
-        _ => (null, 'hair_curly'),
+        // Kıvırcık kadın saçı arkadan hacimli; erkeklerin kısa kıvırcığıyla
+        // karışmasın.
+        _ => ('hair_bob_back', 'hair_curly'),
       };
     }
 
