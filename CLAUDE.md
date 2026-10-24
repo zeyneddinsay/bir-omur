@@ -261,6 +261,37 @@ D5 adımları (denge, mantık taraması, hikâye akışı, cila):
 - [x] Orta yaş olayları (24 Ekim 2026): 45–64 yaşa 34 olay (`orta_yas.json`): boş yuva, çocuğun askere ve ilk evine gidişi, torun baskısı ve bakımı, yaşlanan anne-baba, miras tarlası, genç müdür, yirminci yıl, emeklilik, ikinci balayı, sağlık ve hobi. Olaysız yıl 50'lerde %11'den %0'a, genel %1.
 - [x] İleri yaş olayları ve borç (24 Ekim 2026): 78–110 yaşa 34 olay (`ileri_yas.json`; torun ve torun çocukları, dört kuşak, ilaç ve işitme cihazı, yürüteç, huzurevi ve bakıcı, yaşıtın cenazesi, eşyaların paylaştırılması, yüz yaş). Olaysız yıl 80'lerde ve 90'larda yok denecek kadar az. Eksi bakiyeye faiz en fazla 1 milyonluk borca işler (yılda en çok 150 bin): gelirsiz yaşlılıkta borç katlanmaz. Kapsam testi nadir kartlar için ek tohum dener.
 - [x] Borçlanan yaşlı (24 Ekim 2026, kullanıcı kararı): 65 yaş üstü, kirada ve borcu 500 bini aşan oyuncuyu hayattaki yetişkin bir çocuğu yanına alır (önce aynı şehirdeki, sonra en yakını; `HomeKind.cocukYaninda`, `Housing.moveInWithChild`). Kira ve gider biter, aylık borcu kapatır; eş de gelir, çocuğun hafızasına anı, günlüğe not. Ev sahibi çocuk vefat ederse öbür çocuk alır, kimse kalmadıysa kiraya çıkar. Çocuğu olmayanda borç faizi tavanı geçerli.
+- [x] Emülatör testi 2 (24 Ekim 2026; bir hayat doğumdan 81 yaşta ölüme kadar oynandı). Düzeltmeler:
+  - **Adlar.** Oyuncunun adı kardeşe verilmez. Aynı yıl gelen sınıf arkadaşları birbirinin adını almaz. Oyuncunun kuşağına 24 yeni ad eklendi.
+  - **İş ekranı.**
+    - Mülakat cevaplarında zarın baktığı değer ve kaba ihtimal görünür (`JobMarket.interviewChance`).
+    - Terfi ve zam engelinde eksik değer yazar ("Bilgi en az 40 olmalı (şu an 32)", "performans en az 60").
+    - Mülakat, terfi, zam, işletme ve taşınma sonucu üstteki panelde görünür.
+    - Emekli aylığı Okul / İş başlığında yazar.
+  - **Kişiler ve aşk.**
+    - "Biriyle tanış" sonucunda kiminle tanışıldığı yazar.
+    - Flört, sevgili ve nişanlı İnsanlar'da en üstte, "Aşk" bölümünde durur.
+    - Kapalı aşk adımının altında gereken yakınlık yazar. Kibar ret husumet doğurmaz.
+    - İlişki etiketleri "Aranız iyi" ve "Henüz pek yakın değilsiniz" oldu.
+    - Yeni tanışılan kişi ilk üç yıl başkasıyla evlenmez.
+    - Kadın eş kocasının soyadını alır, boşanınca kızlık soyadına döner.
+    - Evli oyuncu aile evine dönmez.
+  - **Kart şeması.**
+    - `endRoles`: istifa eden iş arkadaşı iş yerinden ayrılır.
+    - Rol yuvasında `marital`, kişi etkisinde `marry`: düğün olayları kişiyi evli yapar ve yalnızca bekâra gelir.
+  - **Yeni bayraklar.**
+    - `yeni_emekli`: emekliliğin ilk sabahı kartı yalnızca emeklilik yılında ya da ertesi yıl gelir.
+    - `cocugunun_yaninda`: çocuğunun evinde yaşayana yalnızlık olayları gelmez.
+  - **Ev.** "Bizim yanımıza gel" daveti kabul edilince oyuncu o çocuğun evine taşınır. Ev sahibi vefat edince ev çocuğuna kalır (aynı soyadlı yeni ev sahibi).
+  - **Yeni olay ve kart metinleri.** Kayınvalide ve kayınpeder için cenaze olayı (`cenaze_kayin`) eklendi. Saç kartları cinsiyetten bağımsız oldu. Staj kartı sınıf demiyor.
+  - **Cenaze.** Kardeş, yetişkin torun ve komşular yakınlık düşük olsa da cenazeye gelir.
+  - **Ekonomi.**
+    - Yıl başı bandı toplam gelir ve giderleri gösterir.
+    - Eksi tutarlar tipografik eksiyle yazılır.
+    - Altın uzun vadede değerini korur (başlangıç fiyatına dönüş, `goldReversion`).
+    - Çalışmış emekli eş haneye 100 bin katar.
+  - **Başlık.** Lise bitince başlıkta "Genç yetişkin" yazar. Lise notunun dil bilgisi düzeltildi.
+  - **D5 denge notu:** zam ve terfiyi hiç istemeyen oyuncunun maaşı 34 yıl aynı kalıyor; nakit erimesiyle emeklilikte borca düşebiliyor (çocuğunun yanına taşınma bunu karşılıyor).
 - [ ] Telefonda deneme (kullanıcı)
 
 ## Bekleyen aşama: F3a — Dağıtıma hazırlık
