@@ -89,6 +89,11 @@ String noteLine(
       'anne|ayrilik' => l10n.note_tekEbeveyn_anneAyrilik,
       _ => l10n.note_tekEbeveyn_babaAyrilik,
     },
+    NoteKind.cocugunYaninda when parts.length == 2 && parts[0] == 'davet' =>
+      l10n.note_cocugunYaninda_davet(switch (character?.people[parts[1]]) {
+        final p? => PersonText.labelOf(p),
+        null => '',
+      }),
     NoteKind.cocugunYaninda => l10n.note_cocugunYaninda(
       _hostWord(character, d),
     ),

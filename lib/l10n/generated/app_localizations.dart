@@ -2530,6 +2530,12 @@ abstract class AppLocalizations {
   /// **'Ev sahibin vefat etti; ev çocuğuna kaldı. Yeni ev sahibin {name}, kira aynı.'**
   String note_yeniEvSahibi(String name);
 
+  /// No description provided for @note_cocugunYaninda_davet.
+  ///
+  /// In tr, this message translates to:
+  /// **'{who} seni yanına aldı. Artık onun evinde, torunların arasında yaşıyorsun.'**
+  String note_cocugunYaninda_davet(String who);
+
   /// No description provided for @note_cocugunYaninda.
   ///
   /// In tr, this message translates to:

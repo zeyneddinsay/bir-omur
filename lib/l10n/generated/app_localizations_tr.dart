@@ -1520,6 +1520,11 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
+  String note_cocugunYaninda_davet(String who) {
+    return '$who seni yanına aldı. Artık onun evinde, torunların arasında yaşıyorsun.';
+  }
+
+  @override
   String note_cocugunYaninda(String who) {
     return 'Borçlar ağırlaşınca $who seni yanına aldı. Artık onun evinde yaşıyorsun; kira derdi bitti.';
   }

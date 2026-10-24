@@ -530,6 +530,8 @@
   "note_kovuldun": "İşten çıkarıldın. Performansın uzun süredir düşüktü.",
   "note_yeniEvSahibi": "Ev sahibin vefat etti; ev çocuğuna kaldı. Yeni ev sahibin {name}, kira aynı.",
   "@note_yeniEvSahibi": { "placeholders": { "name": { "type": "String" } } },
+  "note_cocugunYaninda_davet": "{who} seni yanına aldı. Artık onun evinde, torunların arasında yaşıyorsun.",
+  "@note_cocugunYaninda_davet": { "placeholders": { "who": { "type": "String" } } },
   "note_cocugunYaninda": "Borçlar ağırlaşınca {who} seni yanına aldı. Artık onun evinde yaşıyorsun; kira derdi bitti.",
   "@note_cocugunYaninda": { "placeholders": { "who": { "type": "String" } } },
   "note_tekEbeveyn_anneVefat": "Annen, sen daha bir yaşına girmeden hayatını kaybetti. Seni baban büyütüyor; evde onun fotoğrafı hep duvarda.",

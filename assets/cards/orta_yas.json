@@ -776,7 +776,7 @@
     "minAge": 45,
     "maxAge": 70,
     "repeat": "once",
-    "conditions": { "notFlags": ["evli"] },
+    "conditions": { "notFlags": ["evli", "cocugunun_yaninda"] },
     "text": "Pazar sabahı herkesten erken uyandın. Çay demlendi, sofra kurulmayı bekliyor; ev çok sessiz.",
     "left": {
       "label": "Bir dostu çağırırım",

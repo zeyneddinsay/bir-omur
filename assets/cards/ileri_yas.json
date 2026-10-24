@@ -449,7 +449,7 @@
     "minAge": 78,
     "maxAge": 110,
     "repeat": "once",
-    "conditions": { "flags": ["evlenmis"], "notFlags": ["evli"] },
+    "conditions": { "flags": ["evlenmis"], "notFlags": ["evli", "cocugunun_yaninda"] },
     "text": "Yıllardır kahvaltıyı tek başına ediyorsun. Bu sabah karşı sandalyeye bir tabak daha koydun, düşünmeden.",
     "left": {
       "label": "Komşuyu çağır",

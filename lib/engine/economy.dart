@@ -211,6 +211,9 @@ abstract final class Economy {
   /// Bu yıl ya da geçen yıl başka şehre taşındı (hoş geldin olayları).
   static const String newlyMovedFlag = 'yeni_tasindi';
 
+  /// Yaşlılıkta bir çocuğunun evinde yaşıyor (yalnızlık olayları gelmez).
+  static const String withChildFlag = 'cocugunun_yaninda';
+
   /// Bu yıl ya da geçen yıl emekli oldu (emekliliğin ilk sabahı).
   static const String newlyRetiredFlag = 'yeni_emekli';
 
@@ -220,6 +223,7 @@ abstract final class Economy {
     movedFlag,
     newlyMovedFlag,
     newlyRetiredFlag,
+    withChildFlag,
     carOwnerFlag,
     goldOwnerFlag,
     Careers.retiredFlag,
@@ -301,6 +305,7 @@ abstract final class Economy {
     set(goldOwnerFlag, a.goldGrams > 0);
     set(Careers.retiredFlag, c.isRetired);
     set(renterFlag, c.home.paysRent);
+    set(withChildFlag, c.home == HomeKind.cocukYaninda);
     set(movedFlag, c.counters.moves > 0);
     final moved = c.counters.lastMoveAt;
     set(newlyMovedFlag, moved != null && c.age - moved <= 1);

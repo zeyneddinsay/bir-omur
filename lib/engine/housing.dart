@@ -138,10 +138,15 @@ abstract final class Housing {
   /// yakın olduğu çocuk. Kira ve yaşam gideri biter; aylık borcu yavaş yavaş
   /// kapatır. Eşi de gelir. Çocuğun hafızasına anı yazılır. Uygun çocuk
   /// yoksa null (borç tavanı geçerli kalır).
+  /// Yaşlılıkta çocuğun "Bizim yanımıza gel" davetini kabul eden olay;
+  /// motor oyuncuyu o çocuğun evine taşır.
+  static const String inviteEvent = 'yanlarina_gel';
+
   static (Character, Person)? moveInWithChild(
     Character c,
     PersonFactory f, {
     bool force = false,
+    String? hostId,
   }) {
     if (!force &&
         (c.age < elderAge ||
@@ -158,6 +163,7 @@ abstract final class Housing {
     ];
     if (children.isEmpty) return null;
     int score(Person p) =>
+        (p.id == hostId ? 100000 : 0) +
         (p.city == c.city ? 1000 : 0) +
         Relationships.closeness(p, c.age).round();
     children.sort((a, b) => score(b).compareTo(score(a)));

@@ -233,7 +233,7 @@
     "minAge": 65,
     "maxAge": 100,
     "repeat": "once",
-    "conditions": { "notFlags": ["evli"] },
+    "conditions": { "notFlags": ["evli", "cocugunun_yaninda"] },
     "text": "Akşam ev çok sessiz. Telefon rehberinde uzun zamandır aramadığın isimler var.",
     "left": {
       "label": "Birini ararım",

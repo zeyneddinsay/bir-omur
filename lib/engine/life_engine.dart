@@ -374,6 +374,12 @@ class LifeEngine {
           },
         );
         return (next, [LifeNote(NoteKind.bebek, child.id)]);
+      case Housing.inviteEvent when side == ChoiceSide.left:
+        final host = event.people['cocuk'];
+        if (Housing.moveInWithChild(c, _factory, force: true, hostId: host)
+            case (final moved, final h)) {
+          return (moved, [LifeNote(NoteKind.cocugunYaninda, 'davet|${h.id}')]);
+        }
     }
     return (c, const []);
   }

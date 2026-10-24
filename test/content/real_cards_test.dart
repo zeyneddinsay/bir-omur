@@ -79,6 +79,19 @@ void main() {
 
     /// Ekrana gelen her olayın metni kurulur ve kişileri denetlenir.
     void inspect(LifeState state, int seed) {
+      // "Bizim yanımıza gel" kabul edilince oyuncu çocuğunun evine taşınır.
+      final last = state.character.history.lastOrNull;
+      if (last != null &&
+          last.cardId == Housing.inviteEvent &&
+          last.side == ChoiceSide.left &&
+          last.age == state.character.age &&
+          state.timeSpent == 0 &&
+          state.character.home != HomeKind.cocukYaninda) {
+        problems.add(
+          'tohum $seed: davet kabul edildi ama taşınmadı '
+          '(${state.character.home}, ${state.phase})',
+        );
+      }
       if (state.phase != YearPhase.cards) return;
       final event = state.currentEvent!;
       final card = event.card;

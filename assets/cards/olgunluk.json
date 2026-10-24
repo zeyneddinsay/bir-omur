@@ -721,7 +721,7 @@
     "minAge": 75,
     "maxAge": 105,
     "repeat": "once",
-    "conditions": { "notFlags": ["evli"] },
+    "conditions": { "notFlags": ["evli", "cocugunun_yaninda"] },
     "roles": {
       "cocuk": { "kin": ["cocuk"], "minAge": 35, "minCloseness": 55, "livesTogether": false }
     },

@@ -79,10 +79,15 @@ class LifeStory {
     ?cameAnyway,
   }.toList();
 
-  /// Eş ve yetişkin çocuklar, yakınlık düşük olsa da cenazeye gelir;
-  /// yalnızca küslük (husumet) onları uzak tutar.
+  /// Eş, yetişkin çocuk ve torunlar, kardeşler ve aynı şehirdeki komşular
+  /// yakınlık düşük olsa da cenazeye gelir; yalnızca küslük (husumet) onları
+  /// uzak tutar.
   bool _family(Person p) =>
-      p.kin == Kinship.es || (p.kin == Kinship.cocuk && p.ageAt(_now) >= 18);
+      p.kin == Kinship.es ||
+      p.kin == Kinship.kardes ||
+      ((p.kin == Kinship.cocuk || p.kin == Kinship.torun) &&
+          p.ageAt(_now) >= 18) ||
+      (p.hasRole(RoleKind.komsu) && p.city == c.city);
 
   /// Küs olduğu hâlde gelen: husumeti yüksek ama arada sevgi de kalmış.
   late final Person? cameAnyway = () {
