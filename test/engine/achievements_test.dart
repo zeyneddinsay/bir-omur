@@ -209,16 +209,17 @@ void main() {
           );
         }
 
-        final (fresh1, progress1) = await playOne(1);
-        expect(
-          progress1,
-          isNotEmpty,
-          reason: 'bu tohumda en az bir rozet kazanılmalı',
-        );
+        // Rozet kazanan ilk tohum (içerik değiştikçe tohum kayar).
+        var seed = 1;
+        var (fresh1, progress1) = await playOne(seed);
+        while (progress1.isEmpty && seed < 20) {
+          (fresh1, progress1) = await playOne(++seed);
+        }
+        expect(progress1, isNotEmpty, reason: '20 tohumda hiç rozet yok');
         expect(fresh1, progress1.keys.toSet());
         expect(progress1.values.every((p) => p.count == 1), isTrue);
 
-        final (fresh2, progress2) = await playOne(1);
+        final (fresh2, progress2) = await playOne(seed);
         expect(fresh2, isEmpty, reason: 'aynı hayat aynı rozetleri verir');
         for (final id in progress1.keys) {
           expect(progress2[id]!.count, 2);

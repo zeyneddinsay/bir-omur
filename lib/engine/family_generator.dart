@@ -203,6 +203,7 @@ class FamilyGenerator {
       if (fatherAge != null) ...[
         (Kinship.amca, Gender.erkek, fatherAge, surname, Side.baba),
         (Kinship.hala, Gender.kadin, fatherAge, null, Side.baba),
+        // Halanın ve teyzenin soyadı evliliğe göre aşağıda seçilir.
       ],
       if (motherAge != null) ...[
         (Kinship.dayi, Gender.erkek, motherAge, maternalSurname, Side.anne),
@@ -218,20 +219,31 @@ class FamilyGenerator {
       final jobs = gender == Gender.erkek
           ? _maleJobs(profile.relativeJobs)
           : profile.relativeJobs;
+      final married = random.nextDouble() < 0.75;
+      // Evli kadın akraba eşinin soyadını taşır (ailedeki soyadlarından
+      // farklı, yoksa "Duygu Aydın" anne tarafından sanılır); bekâr hala
+      // babanın, bekâr teyze annenin ailesinin soyadındadır.
+      final familyName = side == Side.baba ? surname : maternalSurname;
+      final others = [
+        for (final s in book.surnames)
+          if (s != surname && s != maternalSurname) s,
+      ];
+      final ownSurname =
+          fixedSurname ??
+          (married
+              ? _pick<String>(others.isEmpty ? book.surnames : others)
+              : familyName);
       _add(
         kin: kin,
         side: side,
         gender: gender,
         age: max(20, parentAge + gap),
-        // Evli kadın akraba eşinin soyadını taşır.
-        surname: fixedSurname ?? _pick(book.surnames),
+        surname: ownSurname,
         occupation: _pick(jobs),
         base: relativeBase,
         health: _between(70, 95),
         wealth: profile.wealth,
-        marital: random.nextDouble() < 0.75
-            ? MaritalStatus.evli
-            : MaritalStatus.bekar,
+        marital: married ? MaritalStatus.evli : MaritalStatus.bekar,
         city: random.nextDouble() < 0.7 ? _city : _pick(cities),
       );
     }

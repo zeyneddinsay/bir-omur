@@ -208,6 +208,13 @@ class AutoPlayer {
   LifeState pickTercih(LifeEngine engine) {
     final placements = engine.tercihPlacements();
     if (placements.isNotEmpty && _random.nextInt(4) > 0) {
+      // Bilgisayara yetiyorsa çoğu zaman onu seçer: nadir yazılım yolunun
+      // olayları da test hayatlarında denensin.
+      final computer = placements.where((p) => p.$1.id == 'bilgisayar');
+      if (computer.isNotEmpty && _random.nextBool()) {
+        final (d, city) = computer.first;
+        return engine.enroll(d.id, city);
+      }
       final (d, city) = placements[_random.nextInt(placements.length)];
       return engine.enroll(d.id, city);
     }
@@ -242,6 +249,9 @@ class AutoPlayer {
     // bölümler (ve yazılım yolu) test hayatlarında kaybolmasın.
     final study = enabled.where((a) => a.id == 'ders_calis').firstOrNull;
     if (study != null && _random.nextBool()) return study.id;
+    // Yazılım kursu nadir yazılımcı ve yazılım işletmesi yolunu açar.
+    final course = enabled.where((a) => a.id == 'yazilim_kursu').firstOrNull;
+    if (course != null && _random.nextBool()) return course.id;
     return enabled[_random.nextInt(enabled.length)].id;
   }
 }

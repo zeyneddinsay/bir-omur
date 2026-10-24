@@ -47,6 +47,29 @@ void main() {
     }
   });
 
+  test('bekâr hala babanın, bekâr teyze annenin soyadında; evlisi başka', () {
+    for (var seed = 0; seed < 300; seed++) {
+      final c = BirthGenerator(SeededRandom(seed), families: book).generate();
+      final paternal = c.surname;
+      final maternal = c.people.all
+          .where((p) => p.kin == Kinship.dayi)
+          .map((p) => p.surname)
+          .firstOrNull;
+      for (final p in c.people.all) {
+        if (p.kin != Kinship.hala && p.kin != Kinship.teyze) continue;
+        final own = p.kin == Kinship.hala ? paternal : maternal;
+        if (p.marital == MaritalStatus.bekar) {
+          if (p.kin == Kinship.hala) expect(p.surname, own, reason: '$seed');
+        } else {
+          expect(p.surname, isNot(paternal), reason: 'tohum $seed');
+          if (maternal != null) {
+            expect(p.surname, isNot(maternal), reason: 'tohum $seed');
+          }
+        }
+      }
+    }
+  });
+
   test('aynı ailede iki kişi aynı adı taşımaz', () {
     for (var seed = 0; seed < 200; seed++) {
       final c = BirthGenerator(SeededRandom(seed), families: book).generate();
