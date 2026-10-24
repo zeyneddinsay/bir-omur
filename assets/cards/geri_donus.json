@@ -342,7 +342,8 @@
               "label": "Şirketime ilk parayı o koydu",
               "tone": "olumlu",
               "severity": 3
-            }
+            },
+            "endRoles": ["isArkadasi"]
           }
         },
         "schedule": { "event": "girisim_sonucu", "inYears": 3, "with": ["is"] }
@@ -351,7 +352,10 @@
     },
     "right": {
       "label": "Sana şans dilerim",
-      "effects": { "happiness": -1 },
+      "effects": {
+        "happiness": -1,
+        "people": { "is": { "endRoles": ["isArkadasi"] } }
+      },
       "result": "Ona başarılar diledin. {is.ad} veda edip çıktı; içinde bir 'ya olsaydı' kaldı."
     }
   },
@@ -477,7 +481,7 @@
     "maxAge": 60,
     "repeat": "once",
     "roles": {
-      "eski": { "bond": ["eskiSevgili"], "minAge": 18 }
+      "eski": { "bond": ["eskiSevgili"], "minAge": 18, "marital": ["bekar"] }
     },
     "speaker": "eski",
     "text": "Posta kutunda bir davetiye: {eski.ad} evleniyor. Zarfın içinde küçük bir not: 'Gelirsen sevinirim.'",
@@ -492,7 +496,8 @@
               "label": "Düğünüme geldi, içtenlikle kutladı",
               "tone": "olumlu",
               "severity": 2
-            }
+            },
+            "marry": true
           }
         }
       },
@@ -500,7 +505,7 @@
     },
     "right": {
       "label": "Bir buket yollarım",
-      "effects": { "money": -1500 },
+      "effects": { "money": -1500, "people": { "eski": { "marry": true } } },
       "result": "Gitmedin ama adına bir buket gitti. Kartta yalnızca 'Mutlu ol' yazıyordu."
     }
   }

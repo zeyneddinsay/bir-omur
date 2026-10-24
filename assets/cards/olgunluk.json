@@ -415,7 +415,7 @@
     "maxAge": 105,
     "repeat": "once",
     "roles": {
-      "torun": { "kin": ["torun"], "minAge": 23, "maxAge": 35 }
+      "torun": { "kin": ["torun"], "minAge": 23, "maxAge": 35, "marital": ["bekar"] }
     },
     "speaker": "torun",
     "text": "{torun.ad} evleniyor ve seni dansa kaldırmak istiyor. Dizlerin itiraz ediyor, kalbin etmiyor.",
@@ -431,7 +431,8 @@
               "label": "Düğünümde benimle dans etti",
               "tone": "olumlu",
               "severity": 3
-            }
+            },
+            "marry": true
           }
         }
       },
@@ -439,7 +440,7 @@
     },
     "right": {
       "label": "Takıyı ben takarım",
-      "effects": { "gold": -5, "happiness": 5 },
+      "effects": { "gold": -5, "happiness": 5, "people": { "torun": { "marry": true } } },
       "result": "Bileziği {torun.ad|e} herkesin önünde taktın; salonda alkış koptu. Altın kutun hafifledi, gönlün doldu."
     }
   },

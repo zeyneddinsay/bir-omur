@@ -158,7 +158,16 @@ class EffectResolver {
         p = Relationships.addMemory(p, memory.at(c.age), now: c.age);
       }
       if (change.bond case final bond?) p = p.copyWith(bond: bond);
+      if (change.endRoles.isNotEmpty) {
+        p = p.copyWith(
+          roles: [
+            for (final r in p.roles)
+              r.active && change.endRoles.contains(r.kind) ? r.ended() : r,
+          ],
+        );
+      }
       if (change.archive) p = p.copyWith(archived: true);
+      if (change.marry) p = p.copyWith(marital: MaritalStatus.evli);
       people = people.update(p);
     }
     return c.copyWith(people: people);

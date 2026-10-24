@@ -405,7 +405,7 @@
     "maxAge": 70,
     "repeat": "once",
     "roles": {
-      "kuzen": { "kin": ["kuzen", "yegen"], "minAge": 20, "maxAge": 40 }
+      "kuzen": { "kin": ["kuzen", "yegen"], "minAge": 20, "maxAge": 40, "marital": ["bekar"] }
     },
     "text": "{kuzen.akraba} {kuzen.ad} evleniyor. Takı masasının önünde sıra var; cebindeki zarf sana biraz ince geldi.",
     "left": {
@@ -419,7 +419,8 @@
               "label": "Düğünüme altın taktı",
               "tone": "olumlu",
               "severity": 1
-            }
+            },
+            "marry": true
           }
         }
       },
@@ -427,7 +428,7 @@
     },
     "right": {
       "label": "Zarf yeter",
-      "effects": { "money": -3000 },
+      "effects": { "money": -3000, "people": { "kuzen": { "marry": true } } },
       "result": "Zarfı uzattın, {kuzen.ad} teşekkür edip sarıldı. Kimse zarfın kalınlığına bakmadı."
     }
   },
@@ -474,7 +475,7 @@
     "maxAge": 50,
     "repeat": "once",
     "roles": {
-      "dost": { "bond": ["arkadas", "yakinArkadas"], "minAge": 20 }
+      "dost": { "bond": ["arkadas", "yakinArkadas"], "minAge": 20, "minCloseness": 50, "marital": ["bekar"] }
     },
     "speaker": "dost",
     "text": "{dost.ad} evleniyor ve nikâh şahidi olarak seni istiyor: 'Sensiz olmaz bu iş.'",
@@ -490,7 +491,8 @@
               "label": "Düğünümde yanımda duran oydu",
               "tone": "olumlu",
               "severity": 3
-            }
+            },
+            "marry": true
           }
         }
       },
@@ -498,7 +500,7 @@
     },
     "right": {
       "label": "Misafir olayım",
-      "effects": { "money": -3000 },
+      "effects": { "money": -3000, "people": { "dost": { "marry": true } } },
       "result": "Misafir masasından {dost.ad|e} el salladın. Bir zarf bıraktın, halayda da en öndeydin."
     }
   },

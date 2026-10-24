@@ -4,6 +4,7 @@ import 'package:bir_omur/engine/engine.dart';
 import 'package:bir_omur/models/models.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../helpers/people.dart';
 import '../helpers/test_cards.dart';
 import '../helpers/test_character.dart';
 
@@ -25,6 +26,23 @@ void main() {
       expect(next.stats.health, 45);
       expect(next.stats.money, -2000);
       expect(next.flags, {'ehliyet_var'});
+    });
+
+    test('endRoles: istifa eden iş arkadaşı çevrede kalır, rolü biter', () {
+      final c = withPeople(testCharacter(age: 30), [
+        testPerson('p1', roles: const [PersonRole(RoleKind.isArkadasi)]),
+      ]);
+      final next = EffectResolver.applyPeopleEffect(
+        c,
+        const Effect(
+          people: {'is': PersonEffect(endRoles: [RoleKind.isArkadasi])},
+        ),
+        {'is': 'p1'},
+      );
+      final p = next.people['p1']!;
+      expect(p.archived, isFalse);
+      expect(p.roles.single.kind, RoleKind.isArkadasi);
+      expect(p.roles.single.active, isFalse);
     });
 
     test('boş etki karakteri değiştirmez', () {

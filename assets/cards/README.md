@@ -106,7 +106,9 @@ Uygun kişi seçilirken yakınlığı ya da husumeti yüksek kişiler iki kat a�
 - **Aile Bağı:** Değiştirilemez; ailenin yakınlığından hesaplanır.
 - **Kişilere etki (`people`):** yuva adı → `memory` (`kind`, `label` kişinin gözünden, `tone`:
   `olumlu`/`olumsuz`, `severity` 1–3, isteğe bağlı `owner`: `kisi`/`oyuncu`/`ikisi`), `heal` (anı türü
-  ya da `*`), `bond`, `archive`.
+  ya da `*`), `bond`, `archive`, `endRoles` (biten roller: istifa eden iş arkadaşı `["isArkadasi"]`; kişi
+  çevrede kalır, "Eskiden: İş arkadaşın" olur), `marry` (kişi evlenir; "evleniyor" diyen olayda yuvaya
+  `"marital": ["bekar"]` de yazılır).
 - **İplik (`schedule`):** `{"event": "id", "inYears": 2, "with": ["kerem"]}`. `with` listesindeki
   yuvalar devam olayına aynı kişiyle taşınır; iki olayda da tanımlı olmalı.
 

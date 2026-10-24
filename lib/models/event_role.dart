@@ -27,6 +27,7 @@ class RoleSlot {
     this.maxHostility,
     this.traits = const {},
     this.notTraits = const {},
+    this.marital = const {},
     this.memory,
     this.memoryYears = 0,
     this.noMemory,
@@ -72,6 +73,10 @@ class RoleSlot {
   /// Hiçbiri olmamalı.
   final Set<Trait> notTraits;
 
+  /// Boş değilse kişinin medeni durumu bunlardan biri olmalı ("evleniyor"
+  /// diyen olay bekâra gelir).
+  final Set<MaritalStatus> marital;
+
   /// Kişinin hafızasında bu türde bir anı olmalı / olmamalı.
   final String? memory;
 
@@ -110,6 +115,7 @@ class RoleSlot {
     'maxHostility',
     'traits',
     'notTraits',
+    'marital',
     'memory',
     'memoryYears',
     'noMemory',
@@ -178,6 +184,7 @@ class RoleSlot {
       maxHostility: bounded('maxHostility', 0, 100),
       traits: enums('traits', Trait.values),
       notTraits: enums('notTraits', Trait.values),
+      marital: enums('marital', MaritalStatus.values),
       memory: r.optionalString('memory'),
       memoryYears: r.optionalInt('memoryYears') ?? 0,
       noMemory: r.optionalString('noMemory'),
@@ -262,7 +269,14 @@ class MemorySpec {
 
 /// Seçeneğin rol yuvasındaki kişiye etkisi.
 class PersonEffect {
-  const PersonEffect({this.memory, this.heal, this.bond, this.archive = false});
+  const PersonEffect({
+    this.memory,
+    this.heal,
+    this.bond,
+    this.archive = false,
+    this.endRoles = const [],
+    this.marry = false,
+  });
 
   final MemorySpec? memory;
 
@@ -275,11 +289,25 @@ class PersonEffect {
   /// Kişi "eski tanıdıklar"a düşer.
   final bool archive;
 
+  /// Biten roller: kişi işten ayrılınca "İş arkadaşın" yerine "Eskiden: İş
+  /// arkadaşın" olur; çevrede kalır.
+  final List<RoleKind> endRoles;
+
+  /// Kişi evlenir (arkadaşın düğünü): artık bekâr sayılmaz.
+  final bool marry;
+
   /// En ağır olumsuz anıyı yumuşatma işareti.
   static const String healHeaviest = '*';
 
   factory PersonEffect.fromJson(JsonReader r) {
-    r.rejectUnknownKeys(const {'memory', 'heal', 'bond', 'archive'});
+    r.rejectUnknownKeys(const {
+      'memory',
+      'heal',
+      'bond',
+      'archive',
+      'endRoles',
+      'marry',
+    });
     final memory = r.optionalObject('memory');
     final bondId = r.optionalString('bond');
     Bond? bond;
@@ -296,11 +324,22 @@ class PersonEffect {
       heal: r.optionalString('heal'),
       bond: bond,
       archive: r.optionalBool('archive'),
+      endRoles: [
+        for (final (i, id) in r.optionalStringList('endRoles').indexed)
+          RoleKind.values.asNameMap()[id] ??
+              (throw CardFormatException(
+                '${r.path}.endRoles[$i]',
+                'bilinmeyen rol "$id"',
+              )),
+      ],
+      marry: r.optionalBool('marry'),
     );
     if (effect.memory == null &&
         effect.heal == null &&
         effect.bond == null &&
-        !effect.archive) {
+        !effect.archive &&
+        effect.endRoles.isEmpty &&
+        !effect.marry) {
       throw CardFormatException(r.path, 'boş kişi etkisi');
     }
     return effect;

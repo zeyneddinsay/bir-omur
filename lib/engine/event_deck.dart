@@ -88,6 +88,9 @@ abstract final class RoleMatcher {
     }
     if (!slot.traits.every(p.hasTrait)) return false;
     if (slot.notTraits.any(p.hasTrait)) return false;
+    if (slot.marital.isNotEmpty && !slot.marital.contains(p.marital)) {
+      return false;
+    }
     if (slot.memory != null &&
         !p.memories.any(
           (m) => m.kind == slot.memory && c.age - m.age >= slot.memoryYears,

@@ -268,6 +268,8 @@ class PeopleTick {
     // Anne, baba, eş ve çocuğun evliliği kendi olaylarıyla gelir.
     // Oyuncunun sevgilisi ya da nişanlısı başkasıyla evlenmez; çocuklar
     // 24 yaşından sonra evlenir.
+    // "Biriyle tanış"la tanışılan kişi ilk üç yıl başkasıyla evlenmez; oyuncuya
+    // bir şans kalır.
     const ownMarriage = {Kinship.anne, Kinship.baba, Kinship.es};
     final minMarriage = p.kin == Kinship.cocuk ? 24 : 22;
     if (p.marital == MaritalStatus.bekar &&
@@ -275,6 +277,7 @@ class PeopleTick {
         age <= 40 &&
         !ownMarriage.contains(p.kin) &&
         !Romance.romanticBonds.contains(p.bond) &&
+        !(p.origin == Origin.kendin && _now - p.metAt < 3) &&
         random.nextDouble() < 0.08) {
       p = p.copyWith(marital: MaritalStatus.evli);
       _report(p, NewsKind.evlendi);

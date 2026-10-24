@@ -409,8 +409,7 @@ abstract final class JobMarket {
     if (promotion == null) return const {};
     return {
       for (final MapEntry(:key, :value) in promotion.requires.min.entries)
-        if (StatKind.fromKey(key) case final kind?
-            when c.stats[kind] < value)
+        if (StatKind.fromKey(key) case final kind? when c.stats[kind] < value)
           kind: value,
     };
   }
