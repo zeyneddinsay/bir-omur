@@ -360,10 +360,10 @@
     "conditions": { "flags": ["gec_evlendi", "evli"] },
     "roles": {
       "cocuk": { "kin": ["cocuk"], "minAge": 30 },
-      "es": { "kin": ["es"], "maxGap": -20, "offstage": true }
+      "es": { "kin": ["es"], "maxGap": -15, "offstage": true }
     },
     "speaker": "cocuk",
-    "text": "{cocuk.akraba}: '{es.ad} senden yirmi yaş küçük. Herkes bu evliliğin miras için olduğunu konuşuyor.'",
+    "text": "{cocuk.akraba}: '{es.ad} senden epey küçük. Herkes bu evliliğin miras için olduğunu konuşuyor.'",
     "left": {
       "label": "Vasiyet yazarım",
       "effects": {

@@ -106,6 +106,9 @@ abstract final class Economy {
   /// Eksi bakiyenin yıllık faizi.
   static const double debtInterestRate = 0.15;
 
+  /// Faizin işlediği borcun üst sınırı (yıllık faiz en fazla 150 bin).
+  static const int interestBearingDebtCap = 1000000;
+
   /// Emeklinin yaşam gideri daha düşüktür.
   static const int retiredLivingCost = 100000;
 
@@ -319,9 +322,13 @@ class EconomyTick {
         ? (money * inflation * Economy.cashErosionShare).round()
         : 0;
     money -= eroded;
-    // Borç bedava değil: eksi bakiyeye faiz işler.
+    // Borç bedava değil: eksi bakiyeye faiz işler. Faiz borcun en fazla
+    // [Economy.interestBearingDebtCap] kadarına işler; gelirsiz yaşlılıkta
+    // borç katlanarak yüz milyonlara çıkmaz.
     final debtInterest = money < 0
-        ? (-money * Economy.debtInterestRate).round()
+        ? (min(-money, Economy.interestBearingDebtCap) *
+                  Economy.debtInterestRate)
+              .round()
         : 0;
     money -= debtInterest;
 

@@ -156,10 +156,22 @@ void main() {
         for (final life in lives)
           for (final r in finalOf(life).history) r.cardId,
       };
-      final missing = [
+      final missing = {
         for (final card in deck.cards)
           if (!seen.contains(card.id)) card.id,
-      ];
+      };
+      // Nadir kartlar (geç evlilik, yazılım işletmesi) rastgelelik akışı
+      // kayınca 300 hayatta kaçabilir: yalnızca onlar için ek tohumlar
+      // denenir. Hiç gelemeyen kart yine yakalanır.
+      for (var seed = count; seed < count + 600 && missing.isNotEmpty; seed++) {
+        final life = simulateLife(
+          deck,
+          seed,
+          careers: content.careers,
+          families: content.families,
+        );
+        missing.removeAll({for (final r in finalOf(life).history) r.cardId});
+      }
       expect(missing, isEmpty);
     });
 

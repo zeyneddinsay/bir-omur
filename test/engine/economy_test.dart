@@ -99,6 +99,13 @@ void main() {
       expect(adultReport.cashEroded, greaterThan(0));
     });
 
+    test('faiz borcun en fazla 1 milyonuna işler', () {
+      final (c, _, report) = EconomyTick(SeededRandom(1))
+          .apply(testCharacter(money: -20000000), Market.initial);
+      expect(report.debtInterest, 150000);
+      expect(c.stats.money, -20150000);
+    });
+
     test('borç erimez ama faiz işler', () {
       final (c, _, report) = EconomyTick(SeededRandom(1))
           .apply(testCharacter(money: -50000), Market.initial);

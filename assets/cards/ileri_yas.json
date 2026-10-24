@@ -1,0 +1,1100 @@
+[
+  {
+    "id": "torun_cocugu_ziyaret",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 78,
+    "maxAge": 110,
+    "repeat": "once",
+    "roles": {
+      "torun": { "kin": ["torun"], "minAge": 26 }
+    },
+    "speaker": "torun",
+    "text": "Torunun {torun.ad} kucağında bir bebekle geldi: 'Tanış bakalım, bu da senin torununun çocuğu!'",
+    "left": {
+      "label": "Kucağıma ver",
+      "effects": {
+        "happiness": 4,
+        "people": {
+          "torun": {
+            "memory": {
+              "kind": "bebegimi_kucagina_aldi",
+              "label": "Bebeğimi ilk o kucağına aldı",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      },
+      "result": "Bebek parmağını sımsıkı tuttu. Dört kuşak aynı odada, kimse konuşmadan bir süre öyle kaldınız."
+    },
+    "right": {
+      "label": "Önce ellerimi yıkayayım",
+      "effects": { "happiness": 2 },
+      "result": "Ellerini iki kez yıkadın, kolonya da sürdün. Bebek kokuyu sevmedi ama sana gülümsedi."
+    }
+  },
+  {
+    "id": "dort_kusak_foto",
+    "type": "genel",
+    "theme": "aile",
+    "minAge": 78,
+    "maxAge": 110,
+    "repeat": "once",
+    "conditions": { "flags": ["dort_kusak"] },
+    "text": "Dört kuşak aynı karede! Fotoğrafçı 'Biraz sıkışın' diyor; en ortaya, en rahat koltuğa seni oturttular.",
+    "left": {
+      "label": "Gülümse",
+      "effects": { "happiness": 4 },
+      "result": "Fotoğraf salonun en görünen duvarına asıldı. Ortadaki sendin, en geniş gülen de."
+    },
+    "right": {
+      "label": "Bastonum da girsin",
+      "effects": { "happiness": 3, "reputation": 1 },
+      "result": "Bastonunu dizlerine yatırdın. Fotoğrafçı 'Bu kareye bu yakıştı' dedi; herkes güldü."
+    }
+  },
+  {
+    "id": "eski_albumu_torunla",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 78,
+    "maxAge": 105,
+    "repeat": "once",
+    "roles": {
+      "torun": { "kin": ["torun"], "minAge": 8, "maxAge": 25 }
+    },
+    "speaker": "torun",
+    "text": "{torun.ad} eski albümü buldu: 'Bu fotoğraftaki kim?' Siyah beyaz karede yirmi yaşındaki sen varsın.",
+    "left": {
+      "label": "Hikâyesini anlatırım",
+      "effects": {
+        "happiness": 3,
+        "people": {
+          "torun": {
+            "memory": {
+              "kind": "albumu_anlatti",
+              "label": "Eski albümü sayfa sayfa anlattı",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      },
+      "result": "Bir fotoğraf derken albümün sonuna geldiniz. {torun.ad} en sevdiği kareyi telefonuna çekti."
+    },
+    "right": {
+      "label": "Eski bir tanıdık",
+      "effects": { "happiness": 1 },
+      "result": "'Eski bir tanıdık' dedin, gülümsedin. {torun.ad} anladı ama oyunu bozmadı."
+    }
+  },
+  {
+    "id": "gazete_roportaj",
+    "type": "genel",
+    "theme": "mahalle",
+    "minAge": 88,
+    "maxAge": 110,
+    "repeat": "once",
+    "text": "Yerel gazeteden genç bir muhabir geldi: 'Mahallenin en büyüğüyle röportaj yapıyoruz. Uzun ömrün sırrı ne?'",
+    "left": {
+      "label": "Az tuz, çok kahkaha",
+      "effects": { "happiness": 2, "reputation": 2 },
+      "result": "Röportaj gazetenin arka sayfasında çıktı. Bakkal küpürü kasanın yanına yapıştırdı."
+    },
+    "right": {
+      "label": "Kin tutmamak",
+      "effects": { "reputation": 3 },
+      "result": "'Kimseye kin tutmadım, ondandır' dedin. Muhabir bu cümleyi başlık yaptı."
+    }
+  },
+  {
+    "id": "hap_kutusu",
+    "type": "genel",
+    "theme": "saglik",
+    "minAge": 78,
+    "maxAge": 105,
+    "repeat": "once",
+    "text": "Eczacı haftalık hap kutusu önerdi: yedi gün, sabah, öğle, akşam. Yirmi bir küçük kapak.",
+    "left": {
+      "label": "Alırım, düzen iyidir",
+      "effects": { "money": -400, "health": 2 },
+      "result": "Pazar akşamları kutuyu doldurmak bir alışkanlık oldu. Hangi hapı içtiğini artık hiç karıştırmıyorsun."
+    },
+    "right": {
+      "label": "Benim aklım yeter",
+      "roll": { "stat": "knowledge", "threshold": 50 },
+      "success": { "happiness": 1 },
+      "fail": { "health": -2 },
+      "successResult": "Hepsini aklında tuttun, bir tanesini bile şaşırmadın. Eczacı şaşırdı, sen gururlandın.",
+      "failResult": "Salı öğlen hapını iki kez içtin. Başın döndü; ertesi gün kutuyu kendin almaya gittin."
+    }
+  },
+  {
+    "id": "isitme_cihazi",
+    "type": "kisi",
+    "theme": "saglik",
+    "minAge": 78,
+    "maxAge": 105,
+    "repeat": "once",
+    "roles": {
+      "cocuk": { "kin": ["cocuk"], "minAge": 45 }
+    },
+    "speaker": "cocuk",
+    "text": "{cocuk.akraba} sesini yükseltip üçüncü kez tekrarladı: 'İşitme cihazı alalım artık. Herkes bağırmaktan yoruldu.'",
+    "left": {
+      "label": "Alalım bakalım",
+      "effects": {
+        "money": -40000,
+        "happiness": 2,
+        "people": {
+          "cocuk": {
+            "memory": {
+              "kind": "cihazi_kabul_etti",
+              "label": "İşitme cihazını sonunda kabul etti",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "Cihazı takınca kuşları duydun, buzdolabının vızıltısını da. Bir ikisinin hiç duyulmaması daha iyiydi."
+    },
+    "right": {
+      "label": "Duyacağımı duyuyorum",
+      "effects": {
+        "happiness": 1,
+        "people": {
+          "cocuk": {
+            "memory": {
+              "kind": "cihazi_reddetti",
+              "label": "İşitme cihazını inatla reddetti",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "Cihaz konusunu kapattın. {cocuk.akraba} iç çekti; telefonda artık daha yavaş ve daha yüksek konuşuyor."
+    }
+  },
+  {
+    "id": "yurutec",
+    "type": "genel",
+    "theme": "saglik",
+    "minAge": 82,
+    "maxAge": 110,
+    "repeat": "once",
+    "text": "Fizyoterapist bastonu kenara koyup bir yürüteç getirdi: 'Dört ayak, iki ayaktan iyidir.'",
+    "left": {
+      "label": "Deneyelim",
+      "effects": { "health": 2 },
+      "result": "İlk tur koridorda, ikincisi bahçede. Akşama yürüteci 'arabam' diye anmaya başladın."
+    },
+    "right": {
+      "label": "Bastonumla devam",
+      "effects": { "happiness": 1, "health": -1 },
+      "result": "Bastonunla yürümeye devam ettin. Biraz daha yavaş, ama kendi bildiğin gibi."
+    }
+  },
+  {
+    "id": "son_eski_sakin",
+    "type": "genel",
+    "theme": "mahalle",
+    "minAge": 80,
+    "maxAge": 110,
+    "repeat": "once",
+    "text": "Apartmanın eski sakinlerinin hepsi taşındı ya da göçtü. Kapılardaki isimlerin hiçbirini tanımıyorsun.",
+    "left": {
+      "label": "Yenilere kendini tanıt",
+      "effects": { "happiness": 2, "reputation": 2 },
+      "result": "Kapı kapı dolaştın, adını söyledin. Artık asansörde herkes sana selam veriyor."
+    },
+    "right": {
+      "label": "Eski isimleri hatırla",
+      "effects": { "happiness": 1 },
+      "result": "Merdiven boşluğunda eski isimleri tek tek saydın. Her kapının bir hikâyesi vardı."
+    }
+  },
+  {
+    "id": "yasit_cenazesi",
+    "type": "kisi",
+    "theme": "genel",
+    "minAge": 78,
+    "maxAge": 110,
+    "repeat": "once",
+    "roles": {
+      "dost": {
+        "bond": ["arkadas", "yakinArkadas"],
+        "minAge": 70,
+        "deceased": true
+      }
+    },
+    "text": "Bir yaşıtın daha gitti: {dost.ad}. Cenazede yaşıtlarınla göz göze geldiniz; kimse bir şey demedi.",
+    "left": {
+      "label": "Ailesine sarıl",
+      "effects": { "happiness": -2, "reputation": 1 },
+      "result": "Ailesine uzun uzun sarıldın. Torunu kulağına 'Hep sizi anlatırdı' diye fısıldadı."
+    },
+    "right": {
+      "label": "Bir köşede onu an",
+      "effects": { "happiness": -2 },
+      "result": "Bir köşede oturup onunla son çayınızı düşündün. İçinden ona teşekkür ettin."
+    }
+  },
+  {
+    "id": "eski_dost_telefon",
+    "type": "kisi",
+    "theme": "genel",
+    "minAge": 78,
+    "maxAge": 105,
+    "repeat": "once",
+    "roles": {
+      "dost": { "bond": ["arkadas", "yakinArkadas"], "minAge": 72 }
+    },
+    "speaker": "dost",
+    "text": "{dost.ad} aradı, sesi titrek ama neşeli: 'Hâlâ buradayız, değil mi? Bir sesini duyayım dedim.'",
+    "left": {
+      "label": "Saatlerce konuş",
+      "effects": {
+        "happiness": 3,
+        "people": {
+          "dost": {
+            "memory": {
+              "kind": "saatlerce_konustuk",
+              "label": "Yaşlılığımızda saatlerce telefonda konuştuk",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      },
+      "result": "Telefon elinde ısındı. Kapattığında gençliğinizden kalan her şeyi bir kez daha yaşamıştınız."
+    },
+    "right": {
+      "label": "Kısa keselim",
+      "effects": {
+        "happiness": 1,
+        "people": {
+          "dost": {
+            "memory": {
+              "kind": "telefonu_kisa_kesti",
+              "label": "Aradığımda telefonu kısa kesti",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "Yorgundun, kısa tuttun. Kapattıktan sonra bir süre telefona bakıp durdun."
+    }
+  },
+  {
+    "id": "esya_paylastirma",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 80,
+    "maxAge": 110,
+    "repeat": "once",
+    "roles": {
+      "cocuk": { "kin": ["cocuk"], "minAge": 45, "offstage": true }
+    },
+    "text": "Eşyalarını kimlere bırakacağını düşündün. {cocuk.akraba} senin eski cep saatini hep çok severdi.",
+    "left": {
+      "label": "Saati şimdi ver",
+      "effects": {
+        "happiness": 2,
+        "people": {
+          "cocuk": {
+            "memory": {
+              "kind": "saatini_verdi",
+              "label": "Cep saatini sağlığında bana verdi",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      },
+      "result": "Saati kutusuyla birlikte verdin. {cocuk.akraba} kurdu, kulağına götürdü ve bir şey diyemedi."
+    },
+    "right": {
+      "label": "Vakti gelince",
+      "effects": { "happiness": 1 },
+      "result": "Saati yerine koydun. Bazı şeylerin zamanı kendiliğinden gelir; acele etmedin."
+    }
+  },
+  {
+    "id": "torunun_bebegi_isim",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 78,
+    "maxAge": 110,
+    "repeat": "once",
+    "roles": {
+      "torun": { "kin": ["torun"], "minAge": 24 }
+    },
+    "speaker": "torun",
+    "text": "{torun.ad} aradı, sesi heyecanlı: 'Bebeğe senin adını vermek istiyoruz. Ne dersin?'",
+    "left": {
+      "label": "Gözlerim doldu, olur",
+      "effects": {
+        "happiness": 5,
+        "people": {
+          "torun": {
+            "memory": {
+              "kind": "adini_bebege_verdik",
+              "label": "Bebeğimize onun adını verdik",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      },
+      "result": "Adın bir kez daha bir bebeğin kulağına fısıldandı. O gece rahat uyudun."
+    },
+    "right": {
+      "label": "Adı siz koyun",
+      "effects": {
+        "happiness": 2,
+        "people": {
+          "torun": {
+            "memory": {
+              "kind": "isim_bize_birakti",
+              "label": "Bebeğin adını bize bıraktı",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "'Sizin bebeğiniz, adını siz koyun' dedin. {torun.ad} yine de ikinci ad olarak seninkini yazdırdı."
+    }
+  },
+  {
+    "id": "huzurevi_teklifi",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 80,
+    "maxAge": 110,
+    "repeat": "once",
+    "conditions": { "notFlags": ["evli"] },
+    "roles": {
+      "cocuk": { "kin": ["cocuk"], "minAge": 45 }
+    },
+    "speaker": "cocuk",
+    "text": "{cocuk.akraba} bir broşür bıraktı: 'Yaşam merkezi diyorlar; bahçesi, doktoru var. Sadece bir bakalım mı?'",
+    "left": {
+      "label": "Bir görelim",
+      "effects": {
+        "happiness": -1,
+        "health": 2,
+        "people": {
+          "cocuk": {
+            "memory": {
+              "kind": "teklifimi_dinledi",
+              "label": "Teklifimi kırmadan dinledi",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "Bahçede yaşıtlarınla tavla oynayan biri seni masaya çağırdı. Karar vermedin, ama içini bir rahatlık kapladı."
+    },
+    "right": {
+      "label": "Evimden çıkmam",
+      "effects": {
+        "happiness": 1,
+        "people": {
+          "cocuk": {
+            "memory": {
+              "kind": "yardimi_geri_cevirdi",
+              "label": "Yardım teklifimi geri çevirdi",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "'Bu evde her köşede bir hatıram var' dedin. {cocuk.akraba} anladı; haftada iki gün uğramaya başladı."
+    }
+  },
+  {
+    "id": "evde_bakici",
+    "type": "genel",
+    "theme": "aile",
+    "minAge": 82,
+    "maxAge": 110,
+    "repeat": "once",
+    "conditions": { "flags": ["cocuklu"], "notFlags": ["evli"] },
+    "text": "Çocukların evde bir bakıcı tutmayı önerdi. Haftada üç gün gelecek; yemeğe, ilaçlara ve sohbete yardım edecek.",
+    "left": {
+      "label": "Tutalım",
+      "effects": { "money": -300000, "health": 2, "happiness": 1 },
+      "result": "Bakıcı ilk hafta senin çayını nasıl sevdiğini öğrendi. İkinci hafta sen onun çocuklarının adlarını."
+    },
+    "right": {
+      "label": "Kendime bakarım",
+      "roll": { "stat": "health", "threshold": 45 },
+      "success": { "happiness": 2 },
+      "fail": { "health": -2 },
+      "successResult": "Bir yıl daha kendi işini kendin gördün. Çocukların her telefonda şaşırıp sevindi.",
+      "failResult": "Kış zor geçti, iki kez hastane yolu gördün. Bahar gelince bakıcı konusunu kendin açtın."
+    }
+  },
+  {
+    "id": "tek_kahvalti",
+    "type": "genel",
+    "theme": "genel",
+    "minAge": 78,
+    "maxAge": 110,
+    "repeat": "once",
+    "conditions": { "flags": ["evlenmis"], "notFlags": ["evli"] },
+    "text": "Yıllardır kahvaltıyı tek başına ediyorsun. Bu sabah karşı sandalyeye bir tabak daha koydun, düşünmeden.",
+    "left": {
+      "label": "Komşuyu çağır",
+      "effects": { "happiness": 2, "reputation": 1 },
+      "result": "Karşı komşu peynir ve zeytinle geldi. O tabak boş kalmadı; ertesi sabah da kalmadı."
+    },
+    "right": {
+      "label": "Tabağı öyle bırak",
+      "effects": { "happiness": -1 },
+      "result": "Tabağı kaldırmadın. Çayını yavaş içtin; ev biraz daha kalabalık gibi geldi."
+    }
+  },
+  {
+    "id": "es_ile_yillar",
+    "type": "kisi",
+    "theme": "ask",
+    "minAge": 80,
+    "maxAge": 110,
+    "repeat": "once",
+    "conditions": { "flags": ["evli"] },
+    "roles": {
+      "es": { "kin": ["es"], "minAge": 60 }
+    },
+    "speaker": "es",
+    "text": "{es.ad}: 'Kaç yıl oldu biliyor musun? Ben saydım. Sen de say bakalım, hadi.'",
+    "left": {
+      "label": "Her gününü sayarım",
+      "effects": {
+        "happiness": 3,
+        "people": {
+          "es": {
+            "memory": {
+              "kind": "yillari_saydi",
+              "label": "Birlikte geçen yılları bir bir saydı",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      },
+      "result": "Yılları değil anıları saydın; {es.ad} her birinde 'O da vardı' diye ekledi."
+    },
+    "right": {
+      "label": "Rakamlar karıştı",
+      "effects": {
+        "happiness": 2,
+        "people": {
+          "es": {
+            "memory": {
+              "kind": "yillari_karistirdi",
+              "label": "Yılları karıştırdı ama elimi bırakmadı",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "Rakamı üç kez yanlış söyledin. {es.ad} güldü: 'Olsun, sen sayma, ben sayarım.'"
+    }
+  },
+  {
+    "id": "es_ilac_hatirlatma",
+    "type": "kisi",
+    "theme": "saglik",
+    "minAge": 78,
+    "maxAge": 110,
+    "repeat": "once",
+    "conditions": { "flags": ["evli"] },
+    "roles": {
+      "es": { "kin": ["es"], "minAge": 60 }
+    },
+    "speaker": "es",
+    "text": "{es.ad} hap saatini senden önce hatırlıyor: 'Mavi olanı içtin mi? Yalan söyleme, gözlerinden anlarım.'",
+    "left": {
+      "label": "İçmedim, ver",
+      "effects": {
+        "health": 2,
+        "people": {
+          "es": {
+            "memory": {
+              "kind": "ilacini_hatirlattim",
+              "label": "İlacını ben hatırlattım, dinledi",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "Mavi hapı suyla birlikte uzattı. 'Bensiz ne yapardın?' dedi; cevabı ikiniz de biliyordunuz."
+    },
+    "right": {
+      "label": "İçtim, inan",
+      "roll": { "stat": "luck", "threshold": 50 },
+      "success": { "happiness": 1 },
+      "fail": { "health": -2 },
+      "successResult": "Gerçekten içmiştin. {es.ad} bu sefer haklı çıkamadığına biraz bozuldu.",
+      "failResult": "İçmemiştin. Akşam tansiyon yükselince {es.ad} hiçbir şey demeden hap kutusunu önüne koydu."
+    }
+  },
+  {
+    "id": "torun_cocugu_resim",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 80,
+    "maxAge": 110,
+    "repeat": "once",
+    "roles": {
+      "torun": { "kin": ["torun"], "minAge": 25 }
+    },
+    "speaker": "torun",
+    "text": "{torun.ad} bir resim getirdi: kendi çocuğu seni çizmiş. Kocaman gözlüklü, kocaman gülüşlü, elinde baston.",
+    "left": {
+      "label": "Buzdolabına as",
+      "effects": { "happiness": 3 },
+      "result": "Resim buzdolabının tam ortasına asıldı. Gelen her misafire önce onu gösteriyorsun."
+    },
+    "right": {
+      "label": "Cüzdanda taşı",
+      "effects": {
+        "happiness": 2,
+        "people": {
+          "torun": {
+            "memory": {
+              "kind": "resmi_cuzdanda",
+              "label": "Çocuğumun resmini cüzdanında taşıyor",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "Resmi dörde katlayıp cüzdanına koydun. Kimliğinin önünde, en kolay çıkan yerde."
+    }
+  },
+  {
+    "id": "yuz_yas",
+    "type": "genel",
+    "theme": "mahalle",
+    "minAge": 95,
+    "maxAge": 110,
+    "repeat": "once",
+    "text": "Yaşın üç haneye dayandı! Kapının önü kalabalık; muhtar elinde çiçekle, biri de pastaya mum dikmeye çalışıyor.",
+    "left": {
+      "label": "Mumları tek nefeste",
+      "roll": { "stat": "health", "threshold": 40 },
+      "success": { "happiness": 5, "reputation": 2 },
+      "fail": { "happiness": 3 },
+      "successResult": "Hepsini tek nefeste söndürdün! Alkış o kadar uzun sürdü ki pasta biraz eridi.",
+      "failResult": "Yarısı söndü, kalanı için torunlar yardıma koştu. Kimse saymadı; herkes alkışladı."
+    },
+    "right": {
+      "label": "Bir mum yeter",
+      "effects": { "happiness": 4 },
+      "result": "Tek bir mum yaktılar, sen üfledin. 'Gerisini siz yaşayın' dedin; salon bir an sustu."
+    }
+  },
+  {
+    "id": "hastane_randevusu",
+    "type": "genel",
+    "theme": "saglik",
+    "minAge": 78,
+    "maxAge": 110,
+    "repeat": "once",
+    "text": "Hastane randevusu için yirmi dakikadır telefonda müzik dinliyorsun. Müzik güzel, ama artık ezberledin.",
+    "left": {
+      "label": "Beklerim",
+      "effects": { "happiness": -1, "health": 1 },
+      "result": "Otuzuncu dakikada bir ses 'Buyurun' dedi. Randevuyu aldın, müziği bir hafta mırıldandın."
+    },
+    "right": {
+      "label": "Yarın ararım",
+      "effects": { "happiness": 1, "health": -1 },
+      "result": "Telefonu kapattın. Ertesi gün aramayı unuttun; randevu bir ay sonraya kaldı."
+    }
+  },
+  {
+    "id": "dogdugun_sokak",
+    "type": "kisi",
+    "theme": "genel",
+    "minAge": 82,
+    "maxAge": 110,
+    "repeat": "once",
+    "roles": {
+      "genc": { "kin": ["cocuk", "torun", "yegen"], "minAge": 25 }
+    },
+    "speaker": "genc",
+    "text": "{genc.akraba} arabayla kapına geldi: 'Hadi, seni doğduğun sokağa götüreyim. Bir kez daha gör.'",
+    "left": {
+      "label": "Götür beni",
+      "effects": {
+        "happiness": 4,
+        "people": {
+          "genc": {
+            "memory": {
+              "kind": "dogdugu_sokaga_goturdum",
+              "label": "Onu doğduğu sokağa götürdüm",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      },
+      "result": "Evin yerinde bir apartman vardı ama köşedeki çeşme duruyordu. Elini suya tuttun, bir çocuk gibi."
+    },
+    "right": {
+      "label": "Hatırladığım gibi kalsın",
+      "effects": { "happiness": 1 },
+      "result": "Gitmedin. O sokak aklında hep çocukluğundaki gibi kalsın istedin."
+    }
+  },
+  {
+    "id": "kardes_son_bayram",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 78,
+    "maxAge": 105,
+    "repeat": "once",
+    "roles": {
+      "kardes": { "kin": ["kardes"], "minAge": 70 }
+    },
+    "speaker": "kardes",
+    "text": "{kardes.akraba} telefonda: 'Bu bayram ikimiz memlekete gidelim. Annemlerin mezarını görelim, belki son kez.'",
+    "left": {
+      "label": "Gidelim",
+      "effects": {
+        "money": -15000,
+        "happiness": 4,
+        "people": {
+          "kardes": {
+            "memory": {
+              "kind": "memlekete_birlikte",
+              "label": "Yaşlılığımızda memlekete birlikte gittik",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      },
+      "result": "Yolda çocukluğunuzun şarkılarını söylediniz. Mezarlıkta el ele, uzun süre sessiz durdunuz."
+    },
+    "right": {
+      "label": "Yol bana ağır gelir",
+      "effects": {
+        "happiness": -1,
+        "people": {
+          "kardes": {
+            "memory": {
+              "kind": "memlekete_gelmedi",
+              "label": "Memlekete benimle gelmedi",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "{kardes.akraba} yalnız gitti ve oradan fotoğraf gönderdi. Ekranı uzun süre okşadın."
+    }
+  },
+  {
+    "id": "eski_mektuplar",
+    "type": "genel",
+    "theme": "genel",
+    "minAge": 78,
+    "maxAge": 110,
+    "repeat": "once",
+    "text": "Çekmecede yıllar önce sana yazılmış mektuplar buldun. Kimisinin yazarı artık yok, kimisinin adresi.",
+    "left": {
+      "label": "Hepsini oku",
+      "effects": { "happiness": 1 },
+      "result": "Bütün öğleden sonra okudun. Bazılarında güldün, bir tanesini göğsüne bastırıp öyle kaldın."
+    },
+    "right": {
+      "label": "Torunlara sakla",
+      "effects": { "happiness": 2 },
+      "result": "Mektupları kurdeleyle bağladın, üstüne 'Okuyun, bizi tanıyın' diye yazdın."
+    }
+  },
+  {
+    "id": "tarif_torun",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 78,
+    "maxAge": 105,
+    "repeat": "once",
+    "roles": {
+      "torun": { "kin": ["torun"], "minAge": 15 }
+    },
+    "speaker": "torun",
+    "text": "{torun.ad} defteriyle geldi: 'Bayram çöreğinin tarifini yazacağım. Bu sefer kaşıkla, gramla anlat!'",
+    "left": {
+      "label": "Birlikte yapalım",
+      "effects": {
+        "happiness": 3,
+        "people": {
+          "torun": {
+            "memory": {
+              "kind": "corek_birlikte",
+              "label": "Bayram çöreğini birlikte yaptık",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      },
+      "result": "Mutfak una bulandı. Gram yazamadınız ama çörek tam senin yaptığın gibi oldu."
+    },
+    "right": {
+      "label": "Yazdırırım, gerisi sır",
+      "effects": {
+        "happiness": 2,
+        "people": {
+          "torun": {
+            "memory": {
+              "kind": "tarifi_yazdirdi",
+              "label": "Tarifi yazdırdı ama bir şeyi sakladı",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "Tarifi yazdırdın, bir malzemeyi söylemedin. {torun.ad} yıllarca o eksiği arayacak."
+    }
+  },
+  {
+    "id": "banyo_kayma",
+    "type": "genel",
+    "theme": "saglik",
+    "minAge": 80,
+    "maxAge": 110,
+    "repeat": "once",
+    "text": "Banyoda ayağın kaydı; neyse ki lavaboya tutundun. Kalbin hâlâ küt küt atıyor.",
+    "left": {
+      "label": "Tutunma barı taktır",
+      "effects": { "money": -3000, "health": 2 },
+      "result": "Usta duvara iki tutunma barı taktı. Artık banyoya girerken içinden ona teşekkür ediyorsun."
+    },
+    "right": {
+      "label": "Bir şey olmadı",
+      "roll": { "stat": "luck", "threshold": 50 },
+      "success": { "happiness": 1 },
+      "fail": { "health": -3 },
+      "successResult": "Gerçekten bir şey olmadı. Ama artık banyo halısını kaymaz olanla değiştirdin.",
+      "failResult": "İki hafta sonra yine kaydın, bu kez bileğin burkuldu. Tutunma barı o hafta takıldı."
+    }
+  },
+  {
+    "id": "komsu_corba",
+    "type": "kisi",
+    "theme": "mahalle",
+    "minAge": 80,
+    "maxAge": 110,
+    "repeat": "once",
+    "roles": {
+      "komsu": { "roles": ["komsu"], "sameCity": true }
+    },
+    "speaker": "komsu",
+    "text": "{komsu.ad} {komsu.hitap.amca} kapına bir tas çorba bırakıyor: 'Tek kişiye yemek mi yapılır? Bizden olsun.'",
+    "left": {
+      "label": "Karşılık veririm",
+      "effects": {
+        "happiness": 2,
+        "people": {
+          "komsu": {
+            "memory": {
+              "kind": "corbaya_karsilik",
+              "label": "Çorbama hep tatlıyla karşılık verdi",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "Tası boş göndermedin; içine lokum koydun. Artık iki kapı arasında bir tas gidip geliyor."
+    },
+    "right": {
+      "label": "Utanarak kabul",
+      "effects": {
+        "happiness": 2,
+        "people": {
+          "komsu": {
+            "memory": {
+              "kind": "corbami_kabul_etti",
+              "label": "Çorbamı utana sıkıla kabul etti",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "Teşekkür ederken sesin titredi. Çorba sıcaktı; içindeki iyilik daha da sıcak."
+    }
+  },
+  {
+    "id": "bulmaca",
+    "type": "genel",
+    "theme": "genel",
+    "minAge": 78,
+    "maxAge": 110,
+    "repeat": "once",
+    "text": "Her sabah gazetenin bulmacasını bitiriyorsun. Bugün yedi harfli bir kelimede takıldın: 'Uzun yaşam'.",
+    "left": {
+      "label": "Torunlara sor",
+      "effects": { "happiness": 2, "knowledge": 1 },
+      "result": "Torunlar telefondan baktı, hep birlikte 'ömürlük' dediniz. Bulmaca bitti, sohbet bitmedi."
+    },
+    "right": {
+      "label": "Akşama kadar düşün",
+      "effects": { "knowledge": 2, "happiness": 1 },
+      "result": "Akşam yemeğinde birden 'Ömürlük!' diye bağırdın. Masadakiler kaşıklarını bıraktı."
+    }
+  },
+  {
+    "id": "ses_kaydi",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 80,
+    "maxAge": 110,
+    "repeat": "once",
+    "roles": {
+      "torun": { "kin": ["torun"], "minAge": 14 }
+    },
+    "speaker": "torun",
+    "text": "{torun.ad} telefonu uzattı: 'Sesini kaydedeyim. Gençliğini anlat; ileride hep dinleriz.'",
+    "left": {
+      "label": "Anlatırım",
+      "effects": {
+        "happiness": 3,
+        "people": {
+          "torun": {
+            "memory": {
+              "kind": "sesini_kaydettim",
+              "label": "Gençliğini anlattı, sesini sakladım",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      },
+      "result": "Kırk dakika anlattın. Kayıt bitince {torun.ad} 'Bir daha, bir daha' diye tutturdu."
+    },
+    "right": {
+      "label": "Sesim kötü çıkar",
+      "effects": { "happiness": 1 },
+      "result": "Kayda girmedin ama sofrada anlattın. {torun.ad} gizlice yine de kaydetti."
+    }
+  },
+  {
+    "id": "bakim_konusmasi",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 84,
+    "maxAge": 110,
+    "repeat": "once",
+    "roles": {
+      "cocuk": { "kin": ["cocuk"], "minAge": 50 }
+    },
+    "speaker": "cocuk",
+    "text": "Çocukların sana kimin bakacağını konuşuyor. {cocuk.akraba} yanına oturdu: 'Sen ne istersin? Önce o.'",
+    "left": {
+      "label": "Kimseye yük olmayayım",
+      "effects": {
+        "happiness": -1,
+        "people": {
+          "cocuk": {
+            "memory": {
+              "kind": "yuk_olmayayim_dedi",
+              "label": "Kimseye yük olmak istemedi",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "'Yük olmayayım' dedin. {cocuk.akraba} elini tuttu: 'Sen yük değilsin, sen bizim evimizsin.'"
+    },
+    "right": {
+      "label": "Hepinizi sırayla görmek",
+      "effects": {
+        "happiness": 2,
+        "people": {
+          "cocuk": {
+            "memory": {
+              "kind": "sirayla_gorelim",
+              "label": "Hepimizi sırayla görmek istedi",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "Bir takvim yapıldı: her ay bir başka evde. Bavulun hep yarı açık ama yüzün hep gülüyor."
+    }
+  },
+  {
+    "id": "muhtar_ziyareti",
+    "type": "genel",
+    "theme": "mahalle",
+    "minAge": 85,
+    "maxAge": 110,
+    "repeat": "once",
+    "text": "Muhtar elinde bir kutu lokumla geldi: 'Mahallenin büyüklerini ziyaret ediyoruz. Bir ihtiyacınız var mı?'",
+    "left": {
+      "label": "Kaldırımı anlat",
+      "effects": { "reputation": 1, "happiness": 1 },
+      "result": "Bozuk kaldırımı anlattın. İki hafta sonra taşlar yenilendi; adını kimseye söylemedin."
+    },
+    "right": {
+      "label": "Çay koy, sohbet et",
+      "effects": { "happiness": 3 },
+      "result": "İhtiyaç listesi kısa, sohbet uzun sürdü. Muhtar giderken 'Bir dahaki sefere tavla' dedi."
+    }
+  },
+  {
+    "id": "dusme_saati",
+    "type": "kisi",
+    "theme": "saglik",
+    "minAge": 82,
+    "maxAge": 110,
+    "repeat": "once",
+    "roles": {
+      "cocuk": { "kin": ["cocuk"], "minAge": 45 }
+    },
+    "speaker": "cocuk",
+    "text": "{cocuk.akraba} bileğine bir saat taktı: 'Düşersen bize haber veriyor. Lütfen çıkarma, olur mu?'",
+    "left": {
+      "label": "Takarım",
+      "effects": {
+        "health": 1,
+        "people": {
+          "cocuk": {
+            "memory": {
+              "kind": "saati_takti",
+              "label": "Düşme saatini çıkarmadan taktı",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "Saat bileğinde kaldı. Bir gece yanlışlıkla bastın; {cocuk.akraba} telaşla aradı, sonra ikiniz de güldünüz."
+    },
+    "right": {
+      "label": "Kelepçe gibi",
+      "effects": {
+        "happiness": 1,
+        "people": {
+          "cocuk": {
+            "memory": {
+              "kind": "saati_cikardi",
+              "label": "Düşme saatini çıkarıp çekmeceye koydu",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "Saati çekmeceye koydun. {cocuk.akraba} her aradığında ilk iş onu soruyor."
+    }
+  },
+  {
+    "id": "yegen_ziyaret",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 78,
+    "maxAge": 105,
+    "repeat": "once",
+    "roles": {
+      "yegen": { "kin": ["yegen"], "minAge": 30 }
+    },
+    "speaker": "yegen",
+    "text": "Yeğenin {yegen.ad} yıllar sonra çıkageldi: 'Hiç unutmadım, okul harçlığımı hep sen verirdin.'",
+    "left": {
+      "label": "Gözlerim doldu",
+      "effects": {
+        "happiness": 3,
+        "people": {
+          "yegen": {
+            "memory": {
+              "kind": "yillar_sonra_geldim",
+              "label": "Yıllar sonra kapısını çaldım",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      },
+      "result": "Sarıldınız. {yegen.ad} giderken cebine bir şey sıkıştırdı: o eski harçlığın misliyle."
+    },
+    "right": {
+      "label": "Hâlâ veririm!",
+      "effects": {
+        "money": -1000,
+        "happiness": 3,
+        "people": {
+          "yegen": {
+            "memory": {
+              "kind": "yine_harclik_verdi",
+              "label": "Kırk yaşımda bana yine harçlık verdi",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "Cebinden bir harçlık çıkarıp avucuna sıkıştırdın. {yegen.ad} kahkahayı bastı, ama aldı."
+    }
+  },
+  {
+    "id": "radyo_istek",
+    "type": "genel",
+    "theme": "genel",
+    "minAge": 80,
+    "maxAge": 110,
+    "repeat": "once",
+    "text": "Yerel radyonun istek programı seni yayına aldı: 'Bu şarkıyı kime armağan ediyorsunuz?'",
+    "left": {
+      "label": "Bütün sevdiklerime",
+      "effects": { "happiness": 3 },
+      "result": "Saydığın isimler şarkıdan uzun sürdü. Spiker sonunda 'Hepsi duydu eminim' dedi."
+    },
+    "right": {
+      "label": "Gençliğime",
+      "effects": { "happiness": 2 },
+      "result": "'Gençliğime' dedin. Şarkı çalarken mutfakta bir an yirmi yaşındaydın."
+    }
+  },
+  {
+    "id": "mahallenin_cocuklari",
+    "type": "genel",
+    "theme": "mahalle",
+    "minAge": 78,
+    "maxAge": 110,
+    "repeat": "once",
+    "conditions": { "notFlags": ["cocuklu"] },
+    "text": "Mahallenin çocukları sana kendi büyükleri gibi sarılıyor. Okuldan dönerken kapını çalmadan geçmiyorlar.",
+    "left": {
+      "label": "Cebimde şeker olsun",
+      "effects": { "money": -500, "happiness": 3, "reputation": 1 },
+      "result": "Cebin hiç boş kalmadı. Mahallede 'Şekerin olduğu ev' diye anılır oldun."
+    },
+    "right": {
+      "label": "Masal anlatırım",
+      "effects": { "happiness": 2, "knowledge": 1 },
+      "result": "Merdivende masal saatleri başladı. Çocuklar her seferinde aynı yerde aynı soruyu soruyor."
+    }
+  }
+]
