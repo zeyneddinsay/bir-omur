@@ -146,7 +146,7 @@
     "minAge": 50,
     "maxAge": 72,
     "repeat": "once",
-    "conditions": { "flags": ["emekli"] },
+    "conditions": { "flags": ["yeni_emekli"] },
     "text": "Emekliliğin ilk pazartesi sabahı. Saat yedide gözlerin açıldı; gidecek bir yer yok.",
     "left": {
       "label": "Uzun bir kahvaltı",

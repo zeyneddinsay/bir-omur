@@ -340,6 +340,8 @@
   "@money_varlik": { "placeholders": { "what": { "type": "String" } } },
 
   "lastYearTitle": "Yıl başı",
+  "workPension": "Emekli aylığın: yılda {amount}",
+  "@workPension": { "placeholders": { "amount": { "type": "String" } } },
   "lastYearIncome": "Gelir {amount}",
   "@lastYearIncome": { "placeholders": { "amount": { "type": "String" } } },
   "lastYearExpenses": "Giderler {amount}",

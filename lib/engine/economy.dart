@@ -204,11 +204,15 @@ abstract final class Economy {
   /// Bu yıl ya da geçen yıl başka şehre taşındı (hoş geldin olayları).
   static const String newlyMovedFlag = 'yeni_tasindi';
 
+  /// Bu yıl ya da geçen yıl emekli oldu (emekliliğin ilk sabahı).
+  static const String newlyRetiredFlag = 'yeni_emekli';
+
   static const Set<String> derivedFlags = {
     homeOwnerFlag,
     renterFlag,
     movedFlag,
     newlyMovedFlag,
+    newlyRetiredFlag,
     carOwnerFlag,
     goldOwnerFlag,
     Careers.retiredFlag,
@@ -293,6 +297,8 @@ abstract final class Economy {
     set(movedFlag, c.counters.moves > 0);
     final moved = c.counters.lastMoveAt;
     set(newlyMovedFlag, moved != null && c.age - moved <= 1);
+    final retired = c.counters.retiredAt;
+    set(newlyRetiredFlag, retired != null && c.age - retired <= 1);
     if (flags.length == c.flags.length && flags.containsAll(c.flags)) return c;
     return c.copyWith(flags: flags);
   }

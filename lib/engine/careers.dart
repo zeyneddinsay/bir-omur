@@ -129,7 +129,11 @@ abstract final class Careers {
     final job = c.careerJob;
     final lastSalary = job == null ? 0 : book.salaryOf(job);
     final pension = max(minPension, (lastSalary * pensionShare).round());
-    return leaveJob(c).copyWith(pension: pension);
+    final left = leaveJob(c);
+    return left.copyWith(
+      pension: pension,
+      counters: left.counters.copyWith(retiredAt: c.age),
+    );
   }
 
   /// Performansın altında kalan yılın sonunda kovulur.

@@ -174,6 +174,11 @@ void main() {
         careers: book,
       );
       expect(c.hasFlag(Careers.retiredFlag), isTrue);
+      // Emekliliğin ilk iki yılı "yeni emekli" (emekliliğin ilk sabahı).
+      expect(c.counters.retiredAt, c.age);
+      expect(c.hasFlag(Economy.newlyRetiredFlag), isTrue);
+      final later = Economy.syncDerivedFlags(c.copyWith(age: c.age + 2));
+      expect(later.hasFlag(Economy.newlyRetiredFlag), isFalse);
     });
   });
 

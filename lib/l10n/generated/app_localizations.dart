@@ -1678,6 +1678,12 @@ abstract class AppLocalizations {
   /// **'Yıl başı'**
   String get lastYearTitle;
 
+  /// No description provided for @workPension.
+  ///
+  /// In tr, this message translates to:
+  /// **'Emekli aylığın: yılda {amount}'**
+  String workPension(String amount);
+
   /// No description provided for @lastYearIncome.
   ///
   /// In tr, this message translates to:

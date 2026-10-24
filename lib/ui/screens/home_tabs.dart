@@ -228,6 +228,12 @@ class _WorkHeader extends StatelessWidget {
             stageLabel(l10n, c, engine.careers),
             style: theme.textTheme.bodySmall,
           ),
+          if (c.isRetired && c.pension > 0)
+            Text(
+              l10n.workPension(l10n.money(c.pension)),
+              key: const Key('work_pension'),
+              style: theme.textTheme.bodyMedium,
+            ),
         ],
       ),
     );

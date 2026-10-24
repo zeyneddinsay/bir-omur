@@ -975,6 +975,11 @@ class AppLocalizationsTr extends AppLocalizations {
   String get lastYearTitle => 'Yıl başı';
 
   @override
+  String workPension(String amount) {
+    return 'Emekli aylığın: yılda $amount';
+  }
+
+  @override
   String lastYearIncome(String amount) {
     return 'Gelir $amount';
   }
