@@ -40,6 +40,7 @@ class EconomyReport {
     this.debtInterest = 0,
     this.goldPriceChange = 0,
     this.wageRaise = 0,
+    this.familyCover = 0,
   });
 
   final double inflation;
@@ -61,6 +62,9 @@ class EconomyReport {
 
   /// Bu yılın asgari ücret zammı (reel; 0,02 = %2): maaşlar ve aylıklar.
   final double wageRaise;
+
+  /// 18 yaşından küçüğün eksi bakiyesini ailesinin kapattığı tutar.
+  final int familyCover;
 }
 
 /// Ekonomi kuralları ve sabitleri. Tutarlar bugünün TL'siyle.
@@ -369,6 +373,10 @@ class EconomyTick {
     );
 
     var money = c.stats.money;
+    // Çocuğun eksiye düşen harçlığını ailesi kapatır (bakkal veresiyesi,
+    // kantin): 18 yaşından önce borç ve faiz yok.
+    final familyCover = money < 0 && c.age < Economy.erosionMinAge ? -money : 0;
+    money += familyCover;
     // Çocuğun kumbarası erimez (karar, 23 Ekim 2026): 18 yaşına kadar
     // enflasyon nakde dokunmaz.
     final eroded = money > 0 && c.age >= Economy.erosionMinAge
@@ -439,6 +447,7 @@ class EconomyTick {
         debtInterest: debtInterest,
         goldPriceChange: goldChange,
         wageRaise: wageRaise,
+        familyCover: familyCover,
       ),
     );
   }

@@ -314,6 +314,19 @@ void main() {
     },
   );
 
+  test('çocuğun eksi bakiyesini ailesi kapatır; yetişkine faiz işler', () {
+    final (child, _, report) = EconomyTick(
+      SeededRandom(1),
+    ).apply(testCharacter(age: 12, money: -2000), Market.initial);
+    expect(report.familyCover, 2000);
+    expect(child.stats.money, 0);
+    final (adult, _, adultReport) = EconomyTick(
+      SeededRandom(1),
+    ).apply(testCharacter(age: 30, money: -2000), Market.initial);
+    expect(adultReport.familyCover, 0);
+    expect(adult.stats.money, lessThan(-2000));
+  });
+
   test('eş: çalışan katar, çalışmayan gider; emekli olan aylığından katar', () {
     int income(String? occupation, int age) => Economy.spouseIncomeOf(
       withPeople(testCharacter(age: 60), [

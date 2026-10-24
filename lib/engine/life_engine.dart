@@ -667,6 +667,11 @@ class LifeEngine {
       MoneyEntry(
         age: age,
         source: MoneySource.aileDestegi,
+        amount: report.familyCover,
+      ),
+      MoneyEntry(
+        age: age,
+        source: MoneySource.aileDestegi,
         amount: aged.stats.money - afterEconomy.stats.money,
       ),
       MoneyEntry(
