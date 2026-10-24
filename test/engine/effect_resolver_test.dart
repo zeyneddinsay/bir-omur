@@ -35,7 +35,9 @@ void main() {
       final next = EffectResolver.applyPeopleEffect(
         c,
         const Effect(
-          people: {'is': PersonEffect(endRoles: [RoleKind.isArkadasi])},
+          people: {
+            'is': PersonEffect(endRoles: [RoleKind.isArkadasi]),
+          },
         ),
         {'is': 'p1'},
       );

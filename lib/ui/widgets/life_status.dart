@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 import '../../engine/engine.dart';
@@ -214,15 +216,24 @@ class LastYearBanner extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     final theme = Theme.of(context);
     String tl(int v) => l10n.money(v);
+    // Ayrıntılı döküm Varlıklar sekmesinde; burada yalnızca toplamlar.
+    final spouse = economy.spouseIncome;
+    final int income = (career?.income ?? 0) + max(0, spouse);
+    final int expenses =
+        economy.rentPaid +
+        economy.loanPaid +
+        economy.livingCost +
+        economy.childCost +
+        economy.carCost +
+        economy.debtInterest +
+        max(0, -spouse);
     final parts = [
       if (career case final c? when c.fired)
         c.severance > 0
             ? l10n.lastYearFiredSeverance(tl(c.severance))
             : l10n.lastYearFired,
-      if (career case final c? when c.income > 0)
-        l10n.lastYearIncome('+${tl(c.income)}'),
-      if (economy.rentPaid > 0) l10n.lastYearRent('−${tl(economy.rentPaid)}'),
-      if (economy.loanPaid > 0) l10n.lastYearLoan('−${tl(economy.loanPaid)}'),
+      if (income > 0) l10n.lastYearIncome('+${tl(income)}'),
+      if (expenses > 0) l10n.lastYearExpenses('−${tl(expenses)}'),
       if (economy.cashEroded > 0)
         l10n.lastYearInflation(
           (economy.inflation * 100).round(),

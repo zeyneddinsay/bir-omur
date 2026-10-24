@@ -121,7 +121,11 @@ class LifeAction {
       ActionSpecial.evArkadasi =>
         (c.home == HomeKind.aile || c.home == HomeKind.kira) &&
             Romance.spouse(c) == null,
-      ActionSpecial.aileyeDon => c.home.paysRent && Housing.hasParentInCity(c),
+      // Evli oyuncu eşiyle anne-babasının evine dönmez.
+      ActionSpecial.aileyeDon =>
+        c.home.paysRent &&
+            Housing.hasParentInCity(c) &&
+            Romance.spouse(c) == null,
       ActionSpecial.evAl => a.houses == 0,
       ActionSpecial.evSat => a.houses > 0,
       ActionSpecial.arabaAl =>

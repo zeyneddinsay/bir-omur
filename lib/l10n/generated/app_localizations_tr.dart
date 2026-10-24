@@ -980,13 +980,8 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String lastYearRent(String amount) {
-    return 'Kira $amount';
-  }
-
-  @override
-  String lastYearLoan(String amount) {
-    return 'Kredi $amount';
+  String lastYearExpenses(String amount) {
+    return 'Giderler $amount';
   }
 
   @override
@@ -1955,6 +1950,9 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
+  String get group_ask => 'Aşk';
+
+  @override
   String get group_aile => 'Aile';
 
   @override
@@ -2082,13 +2080,13 @@ class AppLocalizationsTr extends AppLocalizations {
   String get bond_eskiEs => 'Eski eşin';
 
   @override
-  String get color_dost => 'Dost';
+  String get color_dost => 'Aranız iyi';
 
   @override
   String get color_kiskancYakin => 'Sever ama kıskanır';
 
   @override
-  String get color_tanidik => 'Tanıdık';
+  String get color_tanidik => 'Henüz pek yakın değilsiniz';
 
   @override
   String get color_dusman => 'Husumetli';
@@ -2292,6 +2290,11 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get blocked_yakinlikDusuk => 'Bunu konuşacak kadar yakın değilsiniz';
+
+  @override
+  String blockedCloseness(int min, int now) {
+    return 'Yakınlık en az $min olmalı (şu an $now); birlikte vakit geçirin';
+  }
 
   @override
   String get blocked_buYil => 'Bu yıl zaten yaptın';

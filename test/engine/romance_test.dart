@@ -53,16 +53,22 @@ void main() {
   });
 
   test('evlilik: eş, kayın aile ve evli bayrağı; boşanmada para bölünür', () {
-    final c = withPeople(testCharacter(age: 30, money: 1000000), [
-      testPerson(
-        'p1',
-        name: 'Elif',
-        gender: Gender.kadin,
-        age: 28,
-        playerAge: 30,
-        bond: Bond.nisanli,
-      ),
-    ]);
+    final c = withPeople(
+      Character.fromJson({
+        ...testCharacter(age: 30, money: 1000000).toJson(),
+        'surname': 'Acar',
+      }),
+      [
+        testPerson(
+          'p1',
+          name: 'Elif',
+          gender: Gender.kadin,
+          age: 28,
+          playerAge: 30,
+          bond: Bond.nisanli,
+        ),
+      ],
+    );
     final married = Romance.syncFlags(Romance.marry(c, 'p1', factory));
     expect(married.people['p1']!.kin, Kinship.es);
     expect(married.people['p1']!.bond, isNull);
@@ -73,11 +79,22 @@ void main() {
       ),
       isNotEmpty,
     );
+    // Kadın eş kocasının soyadını alır; kayın aile kendi soyadıyla gelir.
+    expect(married.people['p1']!.surname, 'Acar');
+    expect(
+      married.people.all
+          .where(
+            (p) => p.kin == Kinship.kayinvalide || p.kin == Kinship.kayinpeder,
+          )
+          .map((p) => p.surname),
+      everyElement('Yılmaz'),
+    );
     final (divorced, split) = Romance.breakUp(married, 'p1');
     expect(split, 500000);
     expect(divorced.stats.money, 500000);
     expect(divorced.people['p1']!.kin, isNull);
     expect(divorced.people['p1']!.bond, Bond.eskiEs);
+    expect(divorced.people['p1']!.surname, 'Yılmaz');
     expect(Romance.syncFlags(divorced).hasFlag(Romance.marriedFlag), isFalse);
   });
 

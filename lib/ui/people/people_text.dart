@@ -8,6 +8,7 @@ import 'people_view.dart';
 /// Kişilerle ilgili motor kimliklerini ARB metinlerine çevirir.
 extension PeopleNames on AppLocalizations {
   String groupName(PeopleGroup group) => switch (group) {
+    PeopleGroup.ask => group_ask,
     PeopleGroup.aile => group_aile,
     PeopleGroup.okul => group_okul,
     PeopleGroup.arkadaslar => group_arkadaslar,

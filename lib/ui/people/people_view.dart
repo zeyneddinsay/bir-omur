@@ -2,7 +2,7 @@ import '../../engine/engine.dart';
 import '../../models/models.dart';
 
 /// İnsanlar sekmesindeki bölümler, gösterim sırasıyla.
-enum PeopleGroup { aile, okul, arkadaslar, isEv, mahalle, eski, vefat }
+enum PeopleGroup { ask, aile, okul, arkadaslar, isEv, mahalle, eski, vefat }
 
 /// Kişiyi İnsanlar sekmesinde nereye koyacağımız. Saf hesap; arayüz yalnızca
 /// metne çevirir.
@@ -51,6 +51,8 @@ abstract final class PeopleView {
     if (!p.isAlive) return PeopleGroup.vefat;
     if (p.kin != null) return PeopleGroup.aile;
     if (p.archived) return PeopleGroup.eski;
+    // Flört, sevgili ve nişanlı en üstte, kendi bölümünde.
+    if (Romance.romanticBonds.contains(p.bond)) return PeopleGroup.ask;
     if (friendBonds.contains(p.bond)) return PeopleGroup.arkadaslar;
     if (_hasActive(p, schoolRoles)) return PeopleGroup.okul;
     if (_hasActive(p, workHomeRoles)) return PeopleGroup.isEv;

@@ -190,6 +190,29 @@ void main() {
         );
       }
     });
+
+    test('altın 80 yılda değerini korur: çok düşmez, uçmaz', () {
+      final finals = <int>[];
+      for (var seed = 0; seed < 300; seed++) {
+        final random = SeededRandom(seed);
+        var market = Market.initial;
+        for (var year = 0; year < 80; year++) {
+          (_, market, _) = EconomyTick(random).apply(testCharacter(), market);
+        }
+        finals.add(market.goldPrice);
+      }
+      finals.sort();
+      printOnFailure('en düşük ${finals.first}, en yüksek ${finals.last}');
+      // Hayatların %95'inde fiyat başlangıcın yarısı ile iki katı arasında.
+      final inside = finals
+          .where(
+            (p) =>
+                p >= Economy.initialGoldPrice / 2 &&
+                p <= Economy.initialGoldPrice * 2,
+          )
+          .length;
+      expect(inside / finals.length, greaterThan(0.95));
+    });
   });
 
   test('net servet varlıkları toplar, kalan krediyi düşer', () {

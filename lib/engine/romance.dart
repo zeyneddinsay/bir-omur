@@ -165,6 +165,11 @@ abstract final class Romance {
           clearBond: true,
           marital: MaritalStatus.evli,
           city: c.city,
+          // Kadın eş kocasının soyadını alır; kayın aile kendi soyadıyla gelir
+          // (aşağıda p.surname).
+          surname: p.gender == Gender.kadin && c.surname.isNotEmpty
+              ? c.surname
+              : null,
           // Eş artık ev sahibin ya da ev arkadaşın değildir.
           roles: [
             for (final r in p.roles)
@@ -223,8 +228,19 @@ abstract final class Romance {
   static (Character, int split) breakUp(Character c, String personId) {
     final p = c.people[personId]!;
     final divorce = p.kin == Kinship.es;
+    // Boşanan kadın kızlık soyadına döner (anne ve babasınınki).
+    final maiden = divorce && p.gender == Gender.kadin
+        ? c.people.all
+              .where(
+                (x) =>
+                    x.kin == Kinship.kayinvalide || x.kin == Kinship.kayinpeder,
+              )
+              .map((x) => x.surname)
+              .lastOrNull
+        : null;
     final book = divorce ? clearInLaws(c.people) : c.people;
     final next = p.copyWith(
+      surname: maiden,
       clearKin: divorce,
       bond: divorce ? Bond.eskiEs : Bond.eskiSevgili,
       marital: divorce ? MaritalStatus.bekar : null,

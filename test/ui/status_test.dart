@@ -87,7 +87,7 @@ void main() {
     expect(find.byKey(const Key('sheet_background')), findsOneWidget);
   });
 
-  testWidgets('geçen yıl şeridi gelir, kira, enflasyon ve terfiyi yazar', (
+  testWidgets('geçen yıl şeridi gelir, giderler, enflasyon ve terfiyi yazar', (
     tester,
   ) async {
     var closed = false;
@@ -98,6 +98,8 @@ void main() {
             inflation: 0.32,
             cashEroded: 48000,
             rentPaid: 120000,
+            livingCost: 150000,
+            spouseIncome: 300000,
           ),
           career: const CareerReport(income: 180000, promoted: true),
           onClose: () => closed = true,
@@ -112,8 +114,9 @@ void main() {
           ),
         )
         .data!;
-    expect(text, contains('Gelir +180.000 TL'));
-    expect(text, contains('Kira −120.000 TL'));
+    // Eşin katkısı gelire, kira ve yaşam gideri giderlere eklenir.
+    expect(text, contains('Gelir +480.000 TL'));
+    expect(text, contains('Giderler −270.000 TL'));
     expect(text, contains('Enflasyon %32'));
     expect(text, contains('Terfi aldın!'));
 

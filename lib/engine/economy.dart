@@ -74,6 +74,9 @@ abstract final class Economy {
   static const double goldMinChange = -0.15;
   static const double goldMaxChange = 0.15;
 
+  /// Altın fiyatının başlangıç değerine dönme gücü (log fark başına).
+  static const double goldReversion = 0.12;
+
   /// Evin bugünkü değeri (orta şehir); reel olarak sabit kalır. 2026
   /// Türkiye ortalaması yaklaşık 5 milyon.
   static const int houseValue = 5000000;
@@ -307,9 +310,18 @@ class EconomyTick {
     final inflation =
         Economy.minInflation +
         random.nextDouble() * (Economy.maxInflation - Economy.minInflation);
+    // Altın gerçek değerini korur: yıllık oynaklık ±%15, ama fiyat başlangıç
+    // değerinden uzaklaştıkça geri çekilir (yoksa 40 yılda %75 düşebiliyordu;
+    // nakdi eriyen oyuncuya altın tuzak olurdu).
+    final reversion =
+        Economy.goldReversion *
+        log(Economy.initialGoldPrice / max(1, market.goldPrice));
     final goldChange =
-        Economy.goldMinChange +
-        random.nextDouble() * (Economy.goldMaxChange - Economy.goldMinChange);
+        (Economy.goldMinChange +
+                random.nextDouble() *
+                    (Economy.goldMaxChange - Economy.goldMinChange) +
+                reversion)
+            .clamp(Economy.goldMinChange, Economy.goldMaxChange);
     final nextMarket = Market(
       goldPrice: max(1, (market.goldPrice * (1 + goldChange)).round()),
       inflation: inflation,

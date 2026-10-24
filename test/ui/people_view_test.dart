@@ -22,10 +22,12 @@ void main() {
       testPerson('x', roles: [classmate.single.ended()]),
       testPerson('x', roles: classmate, archived: true),
       testPerson('x', kin: Kinship.kardes, age: -2),
+      testPerson('x', bond: Bond.flort, gender: Gender.kadin, age: 29),
     ]);
     final groups = PeopleView.grouped(c);
     List<String> ids(PeopleGroup g) => [for (final p in groups[g]!) p.id];
     expect(groups.keys, [
+      PeopleGroup.ask,
       PeopleGroup.aile,
       PeopleGroup.okul,
       PeopleGroup.arkadaslar,
@@ -39,6 +41,7 @@ void main() {
     expect(ids(PeopleGroup.mahalle), ['p4']);
     expect(ids(PeopleGroup.arkadaslar), ['p5']);
     expect(ids(PeopleGroup.eski), containsAll(['p6', 'p7']));
+    expect(ids(PeopleGroup.ask), ['p9']);
   });
 
   test('bağ metni: akrabalık, rol, eski rol, arkadaşlık', () {

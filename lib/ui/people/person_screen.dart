@@ -160,6 +160,7 @@ class PersonScreen extends ConsumerWidget {
               else
                 for (final option in options)
                   _InteractionTile(
+                    closeness: Relationships.closeness(p, now),
                     option: option,
                     divorce:
                         option.kind == InteractionKind.ayril &&
@@ -259,10 +260,12 @@ class _InteractionTile extends StatelessWidget {
   const _InteractionTile({
     required this.option,
     required this.onTap,
+    required this.closeness,
     this.divorce = false,
   });
 
   final InteractionOption option;
+  final int closeness;
   final VoidCallback onTap;
 
   /// Eşte "Ayrıl" yerine "Boşan".
@@ -286,6 +289,12 @@ class _InteractionTile extends StatelessWidget {
         divorce ? l10n.interaction_bosan : l10n.interactionName(option.kind),
       ),
       subtitle: Text(switch (option.blocked) {
+        Blocked.yakinlikDusuk
+            when Interactions.closenessNeeded(option.kind) != null =>
+          l10n.blockedCloseness(
+            Interactions.closenessNeeded(option.kind)!,
+            closeness,
+          ),
         final reason? => l10n.blockedReason(reason),
         null => cost,
       }),

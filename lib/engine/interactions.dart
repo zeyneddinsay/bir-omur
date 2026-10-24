@@ -155,6 +155,17 @@ class InteractionResult {
 /// Etkileşim kuralları. Tutarlar bugünün TL'siyle; D2'de ekonomi gerçek
 /// rakamlara çekilince güncellenir.
 abstract final class Interactions {
+  /// Etkileşimin istediği en az yakınlık (dertleşme, aşk adımları); arayüz
+  /// kapalı seçeneğin altında "yakınlık en az 50 olmalı" diye gösterir.
+  static int? closenessNeeded(InteractionKind kind) => switch (kind) {
+    InteractionKind.dertles => confideMin,
+    InteractionKind.acil => Romance.confessMin,
+    InteractionKind.ciddi => Romance.seriousMin,
+    InteractionKind.teklif => Romance.proposeMin,
+    InteractionKind.cocukIste => Romance.childMin,
+    _ => null,
+  };
+
   static const int giftCost = 1500;
   static const int travelCost = 3000;
   static const int pocketMoney = 600;
@@ -371,17 +382,7 @@ abstract final class Interactions {
       blocked = Blocked.para;
     } else if (!near && _needsSameCity(kind)) {
       blocked = Blocked.uzak;
-    } else if (kind == InteractionKind.dertles &&
-        Relationships.closeness(p, now) < confideMin) {
-      blocked = Blocked.yakinlikDusuk;
-    } else if (Relationships.closeness(p, now) <
-        switch (kind) {
-          InteractionKind.acil => Romance.confessMin,
-          InteractionKind.ciddi => Romance.seriousMin,
-          InteractionKind.teklif => Romance.proposeMin,
-          InteractionKind.cocukIste => Romance.childMin,
-          _ => 0,
-        }) {
+    } else if (Relationships.closeness(p, now) < (closenessNeeded(kind) ?? 0)) {
       blocked = Blocked.yakinlikDusuk;
     } else if (kind == InteractionKind.ciddi &&
         now - (Romance.datingSince(p) ?? now) < Romance.datingYears) {
@@ -687,7 +688,8 @@ class _Resolver {
       _happy(5);
       return 'acil.evet';
     }
-    _remember('acilmadi', MemoryTone.olumsuz, 1);
+    // Kibar bir ret husumet doğurmaz; yalnızca oyuncunun hatırladığı bir an.
+    _remember('acilmadi', MemoryTone.olumsuz, 1, owner: MemoryOwner.oyuncu);
     _happy(-4);
     return 'acil.hayir';
   }

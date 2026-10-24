@@ -130,6 +130,7 @@ class Person {
       roles.any((r) => r.kind == kind && (!activeOnly || r.active));
 
   Person copyWith({
+    String? surname,
     String? city,
     Kinship? kin,
     bool clearKin = false,
@@ -152,7 +153,7 @@ class Person {
   }) => Person(
     id: id,
     name: name,
-    surname: surname,
+    surname: surname ?? this.surname,
     gender: gender,
     bornAt: bornAt,
     city: city ?? this.city,

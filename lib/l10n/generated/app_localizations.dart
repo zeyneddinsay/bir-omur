@@ -1684,17 +1684,11 @@ abstract class AppLocalizations {
   /// **'Gelir {amount}'**
   String lastYearIncome(String amount);
 
-  /// No description provided for @lastYearRent.
+  /// No description provided for @lastYearExpenses.
   ///
   /// In tr, this message translates to:
-  /// **'Kira {amount}'**
-  String lastYearRent(String amount);
-
-  /// No description provided for @lastYearLoan.
-  ///
-  /// In tr, this message translates to:
-  /// **'Kredi {amount}'**
-  String lastYearLoan(String amount);
+  /// **'Giderler {amount}'**
+  String lastYearExpenses(String amount);
 
   /// No description provided for @lastYearInflation.
   ///
@@ -3190,6 +3184,12 @@ abstract class AppLocalizations {
   /// **'Torunun {name} dünyaya geldi!'**
   String news_torunDogdu(String name);
 
+  /// No description provided for @group_ask.
+  ///
+  /// In tr, this message translates to:
+  /// **'Aşk'**
+  String get group_ask;
+
   /// No description provided for @group_aile.
   ///
   /// In tr, this message translates to:
@@ -3439,7 +3439,7 @@ abstract class AppLocalizations {
   /// No description provided for @color_dost.
   ///
   /// In tr, this message translates to:
-  /// **'Dost'**
+  /// **'Aranız iyi'**
   String get color_dost;
 
   /// No description provided for @color_kiskancYakin.
@@ -3451,7 +3451,7 @@ abstract class AppLocalizations {
   /// No description provided for @color_tanidik.
   ///
   /// In tr, this message translates to:
-  /// **'Tanıdık'**
+  /// **'Henüz pek yakın değilsiniz'**
   String get color_tanidik;
 
   /// No description provided for @color_dusman.
@@ -3783,6 +3783,12 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Bunu konuşacak kadar yakın değilsiniz'**
   String get blocked_yakinlikDusuk;
+
+  /// No description provided for @blockedCloseness.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yakınlık en az {min} olmalı (şu an {now}); birlikte vakit geçirin'**
+  String blockedCloseness(int min, int now);
 
   /// No description provided for @blocked_buYil.
   ///
