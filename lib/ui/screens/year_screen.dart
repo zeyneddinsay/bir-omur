@@ -182,6 +182,11 @@ class _YearScreenState extends ConsumerState<YearScreen> {
               LastYearBanner(
                 economy: economy,
                 career: engine.lastCareer,
+                scholarship: c.ledger
+                    .where(
+                      (e) => e.age == c.age && e.source == MoneySource.burs,
+                    )
+                    .fold(0, (sum, e) => sum + e.amount),
                 onClose: () => setState(() => _closedSummaryAge = c.age),
               ),
             // Son seçimin sonucu; alttaki düğmeleri örtmesin diye SnackBar

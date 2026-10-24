@@ -205,10 +205,14 @@ class LastYearBanner extends StatelessWidget {
     required this.economy,
     required this.career,
     required this.onClose,
+    this.scholarship = 0,
   });
 
   final EconomyReport economy;
   final CareerReport? career;
+
+  /// Bu yılın bursu (KYK ya da başarı bursu); gelire eklenir.
+  final int scholarship;
   final VoidCallback onClose;
 
   /// Maaşa (asgari ücret ve kıdem) ya da emekli aylığına gelen zam, bir
@@ -234,7 +238,7 @@ class LastYearBanner extends StatelessWidget {
     String tl(int v) => l10n.tl(v);
     // Ayrıntılı döküm Varlıklar sekmesinde; burada yalnızca toplamlar.
     final spouse = economy.spouseIncome;
-    final int income = (career?.income ?? 0) + max(0, spouse);
+    final income = (career?.income ?? 0) + max<int>(0, spouse) + scholarship;
     final int expenses =
         economy.rentPaid +
         economy.loanPaid +

@@ -102,6 +102,7 @@ void main() {
             spouseIncome: 300000,
           ),
           career: const CareerReport(income: 180000, promoted: true),
+          scholarship: 42000,
           onClose: () => closed = true,
         ),
       ),
@@ -114,8 +115,8 @@ void main() {
           ),
         )
         .data!;
-    // Eşin katkısı gelire, kira ve yaşam gideri giderlere eklenir.
-    expect(text, contains('Gelir +480.000 TL'));
+    // Eşin katkısı ve burs gelire, kira ve yaşam gideri giderlere eklenir.
+    expect(text, contains('Gelir +522.000 TL'));
     expect(text, contains('Giderler −270.000 TL'));
     expect(text, contains('Enflasyon %32'));
     expect(text, contains('Terfi aldın!'));

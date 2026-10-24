@@ -165,9 +165,7 @@ extension PeopleNames on AppLocalizations {
       // "Deden Hüseyin emekli oldu".
       final shared =
           c != null &&
-          c.people.all.any(
-            (o) => o.id != p.id && PersonText.kinWord(o) == kin,
-          );
+          c.people.all.any((o) => o.id != p.id && PersonText.kinWord(o) == kin);
       return shared ? PersonText.labelOf(p) : PersonText.capitalizeFirst(kin);
     }
     if (PeopleView.friendBonds.contains(p.bond)) {
