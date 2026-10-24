@@ -211,6 +211,12 @@ class LifeEngine {
   /// Son yaşlanmadaki iş dökümü (gelir, terfi, emeklilik). Kaydedilmez.
   CareerReport? get lastCareer => _lastCareer;
 
+  int _lastBusiness = 0;
+
+  /// Son yaşlanmada işletmelerin net sonucu (kâr, kredi, ortak payı, batış).
+  /// Yıl içindeki kuruluş ya da satış sayılmaz. Kaydedilmez.
+  int get lastBusiness => _lastBusiness;
+
   /// Yeni bir hayat başlatır ve 0 yaşının kartlarını çeker.
   LifeState startLife({String? name, Gender? gender}) {
     final character = BirthGenerator(
@@ -698,6 +704,7 @@ class LifeEngine {
       afterCareer,
       report.inflation,
     );
+    _lastBusiness = afterBusiness.stats.money - afterCareer.stats.money;
     final (studied, notes, queue) = _schoolYear(afterBusiness, _state.queue);
     notes.insertAll(0, businessNotes);
     final soldier = Military.inService(studied);

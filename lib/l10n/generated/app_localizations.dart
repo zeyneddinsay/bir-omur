@@ -673,13 +673,13 @@ abstract class AppLocalizations {
   /// No description provided for @actionBlocked_gelir.
   ///
   /// In tr, this message translates to:
-  /// **'Gelirin kirayı ve geçimi karşılamıyor (önce iş ya da birikim)'**
+  /// **'Kira ve geçim için düzenli gelir ya da üç yıllık birikim gerekir'**
   String get actionBlocked_gelir;
 
   /// No description provided for @moveBlocked_gelir.
   ///
   /// In tr, this message translates to:
-  /// **'Orada ailen yok; gelirin kirayı ve geçimi karşılamıyor'**
+  /// **'Orada ailen yok; kira ve geçim için düzenli gelir ya da üç yıllık birikim gerekir'**
   String get moveBlocked_gelir;
 
   /// No description provided for @ageUpButton.
@@ -2865,6 +2865,12 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Emin misin? Çalışanların eski çalışanın olur.'**
   String get businessDisposeConfirm;
+
+  /// No description provided for @businessDisposeConfirmAlone.
+  ///
+  /// In tr, this message translates to:
+  /// **'Emin misin? Bu iş artık senin olmaz.'**
+  String get businessDisposeConfirmAlone;
 
   /// No description provided for @businessDisposeYes.
   ///

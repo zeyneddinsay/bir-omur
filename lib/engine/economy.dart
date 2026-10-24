@@ -178,7 +178,9 @@ abstract final class Economy {
     final base = c.home == HomeKind.aile && c.age > 18 && _parentsGone(c)
         ? livingCost
         : livingCostFor(c.home);
-    return c.isRetired && base > retiredLivingCost ? retiredLivingCost : base;
+    // Emekli ve 65 yaşını geçmiş (yaşlılık aylığı alan) daha az harcar.
+    final elder = c.isRetired || c.age >= Careers.retireAge;
+    return elder && base > retiredLivingCost ? retiredLivingCost : base;
   }
 
   /// Anne ve baba biliniyor ama hiçbiri oyuncunun şehrinde yaşamıyor.
@@ -386,7 +388,10 @@ class EconomyTick {
     // Borç bedava değil: eksi bakiyeye faiz işler. Faiz borcun en fazla
     // [Economy.interestBearingDebtCap] kadarına işler; gelirsiz yaşlılıkta
     // borç katlanarak yüz milyonlara çıkmaz.
-    final debtInterest = money < 0
+    // 65 yaşını geçmiş, işi olmayanın borcu donar: banka yaşlıya kredi
+    // açmaz, borç faizle katlanıp son yıllar aynı satırlarla geçmez.
+    final frozen = c.age >= Careers.retireAge && c.job == null;
+    final debtInterest = money < 0 && !frozen
         ? (min(-money, Economy.interestBearingDebtCap) *
                   Economy.debtInterestRate)
               .round()

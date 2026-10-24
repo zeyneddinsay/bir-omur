@@ -177,51 +177,66 @@ class _YearScreenState extends ConsumerState<YearScreen> {
               highlightMoney: leaning != null && affectsMoney(leaning),
             ),
             const Divider(height: 1),
-            if (engine.lastEconomy case final economy?
-                when _closedSummaryAge != c.age)
-              LastYearBanner(
-                economy: economy,
-                career: engine.lastCareer,
-                scholarship: c.ledger
-                    .where(
-                      (e) => e.age == c.age && e.source == MoneySource.burs,
-                    )
-                    .fold(0, (sum, e) => sum + e.amount),
-                business: c.ledger
-                    .where(
-                      (e) => e.age == c.age && e.source == MoneySource.isletme,
-                    )
-                    .fold(0, (sum, e) => sum + e.amount),
-                onClose: () => setState(() => _closedSummaryAge = c.age),
+            // Üstteki şerit ve sonuç paneli ekranın en fazla dörtte birini
+            // kaplar; küçük ekranda (360×640) alttaki sekme ve "Yaşlan" ezilmez.
+            ConstrainedBox(
+              constraints: BoxConstraints(
+                maxHeight: MediaQuery.sizeOf(context).height * 0.25,
               ),
-            // Son seçimin sonucu; alttaki düğmeleri örtmesin diye SnackBar
-            // yerine burada durur.
-            // Son aksiyonun sonucu, son kartınkinden yenidir.
-            if (ref.watch(lastActionProvider) case final action?
-                when !identical(action, _closedAction))
-              ActionResultPanel(
-                title: action.note != null
-                    ? noteLine(
-                        l10n,
-                        action.note!,
-                        engine.careers,
-                        deck: engine.deck,
-                        character: c,
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (engine.lastEconomy case final economy?
+                        when _closedSummaryAge != c.age)
+                      LastYearBanner(
+                        economy: economy,
+                        career: engine.lastCareer,
+                        scholarship: c.ledger
+                            .where(
+                              (e) =>
+                                  e.age == c.age &&
+                                  e.source == MoneySource.burs,
+                            )
+                            .fold(0, (sum, e) => sum + e.amount),
+                        business: engine.lastBusiness,
+                        onClose: () =>
+                            setState(() => _closedSummaryAge = c.age),
+                      ),
+                    // Son seçimin sonucu; alttaki düğmeleri örtmesin diye SnackBar
+                    // yerine burada durur.
+                    // Son aksiyonun sonucu, son kartınkinden yenidir.
+                    if (ref.watch(lastActionProvider) case final action?
+                        when !identical(action, _closedAction))
+                      ActionResultPanel(
+                        title: action.note != null
+                            ? noteLine(
+                                l10n,
+                                action.note!,
+                                engine.careers,
+                                deck: engine.deck,
+                                character: c,
+                              )
+                            : l10n.actionName(action.actionId) ??
+                                  action.actionId,
+                        before: action.before,
+                        after: action.after,
+                        onClose: () => setState(() => _closedAction = action),
                       )
-                    : l10n.actionName(action.actionId) ?? action.actionId,
-                before: action.before,
-                after: action.after,
-                onClose: () => setState(() => _closedAction = action),
-              )
-            // Ben sekmesinde günlük aynı cümleyi zaten gösterir; tekrar etmez.
-            else if (state.lastOutcome case final outcome?
-                when !identical(outcome, _closedOutcome) &&
-                    (state.phase == YearPhase.cards || _tab != HomeTab.me))
-              OutcomePanel(
-                outcome: outcome,
-                character: c,
-                onClose: () => setState(() => _closedOutcome = outcome),
+                    // Ben sekmesinde günlük aynı cümleyi zaten gösterir; tekrar etmez.
+                    else if (state.lastOutcome case final outcome?
+                        when !identical(outcome, _closedOutcome) &&
+                            (state.phase == YearPhase.cards ||
+                                _tab != HomeTab.me))
+                      OutcomePanel(
+                        outcome: outcome,
+                        character: c,
+                        onClose: () => setState(() => _closedOutcome = outcome),
+                      ),
+                  ],
+                ),
               ),
+            ),
             Expanded(
               child: switch (state.phase) {
                 YearPhase.cards => _cardPhase(state, l10n),

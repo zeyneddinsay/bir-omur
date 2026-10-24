@@ -84,7 +84,16 @@ void main() {
       }
 
       void expectClean(String what) {
-        expect(tester.takeException(), isNull, reason: '${where()} $what');
+        final error = tester.takeException();
+        if (error != null) {
+          // ignore: avoid_print
+          print(error is FlutterError ? error.toStringDeep() : '$error');
+          // ignore: avoid_print
+          print(
+            'EKRAN: ${find.byWidgetPredicate((w) => w.key is ValueKey<String>).evaluate().map((e) => (e.widget.key! as ValueKey<String>).value).toList()}',
+          );
+        }
+        expect(error, isNull, reason: '${where()} $what');
         final raw = find.textContaining(template).evaluate().map((e) {
           final w = e.widget;
           return w is Text ? w.data ?? w.textSpan?.toPlainText() : '$w';
@@ -267,22 +276,140 @@ void main() {
         return find.byKey(const Key('person_screen')).evaluate().isNotEmpty;
       }
 
+      /// Aşk için: flört, sevgili, nişanlı, eş ya da arkadaş satırı.
+      Future<bool> openLoveInterest() async {
+        await tab('people');
+        // Önce aşk kişisi: flört, sevgili, eş ya da son tanışılan.
+        final c = state()?.character;
+        final target = c?.people.all
+            .where(
+              (p) =>
+                  p.isAlive &&
+                  p.gender != c.gender &&
+                  (p.kin == Kinship.es ||
+                      Romance.romanticBonds.contains(p.bond) ||
+                      (p.bond == Bond.arkadas && p.origin == Origin.kendin)),
+            )
+            .lastOrNull;
+        final list = find.byKey(const Key('people_list'));
+        if (target != null && list.evaluate().isNotEmpty) {
+          final row = find.byKey(Key('person_${target.id}'));
+          await tester.drag(list, const Offset(0, 20000));
+          await tester.pumpAndSettle();
+          try {
+            await tester.scrollUntilVisible(
+              row,
+              400,
+              scrollable: find
+                  .descendant(of: list, matching: find.byType(Scrollable))
+                  .first,
+              maxScrolls: 40,
+            );
+            await tester.pumpAndSettle();
+            await tapKey(row.evaluate().first.widget.key!, 'aşk kişisi');
+            if (find.byKey(const Key('person_screen')).evaluate().isNotEmpty) {
+              return true;
+            }
+          } on Object {
+            // Bulunamadı: aşağıdaki aramaya geç.
+          }
+        }
+        const words = [
+          'Flörtün',
+          'Sevgilin',
+          'Nişanlın',
+          'Eşin',
+          'Arkadaşın',
+        ];
+        for (final word in words) {
+          // Liste tembel kurulur: aranan satır görünene kadar kaydırılır.
+          final list = find.byKey(const Key('people_list'));
+          if (list.evaluate().isNotEmpty) {
+            await tester.drag(list, const Offset(0, 20000));
+            await tester.pumpAndSettle();
+            try {
+              await tester.scrollUntilVisible(
+                find.textContaining(word),
+                400,
+                scrollable: find
+                    .descendant(of: list, matching: find.byType(Scrollable))
+                    .first,
+                maxScrolls: 25,
+              );
+            } on Object {
+              continue;
+            }
+            await tester.pumpAndSettle();
+          }
+          final rows = find.ancestor(
+            of: find.textContaining(word),
+            matching: find.byWidgetPredicate(
+              (w) =>
+                  w is ListTile &&
+                  '${w.key}'.contains("'person_") &&
+                  !'${w.key}'.contains('person_screen'),
+            ),
+          );
+          if (rows.evaluate().isNotEmpty) {
+            final all = rows.evaluate().toList();
+            final pick = word == 'Arkadaşın'
+                ? all[random.nextInt(all.length)]
+                : all.first;
+            await tapKey(pick.widget.key!, 'aşk kişisi');
+            return find.byKey(const Key('person_screen')).evaluate().isNotEmpty;
+          }
+        }
+        return openPerson();
+      }
+
       Future<void> social({bool romance = false}) async {
-        if (!await openPerson()) return;
+        if (!await (romance ? openLoveInterest() : openPerson())) return;
         const romantic = [
           'interaction_acil',
           'interaction_ciddi',
           'interaction_teklif',
           'interaction_cocukIste',
         ];
-        var keys = keyed('interaction_')
-            .where((k) => (k as ValueKey<String>).value != 'interaction_result')
-            .toList();
+        // Kişi ekranı tembel kurulur: aşağıdaki seçenekler (aşk adımları) ekran
+        // kaydırılınca çıkar. Bütün seçenekler kaydırarak toplanır.
+        final screen = find.descendant(
+          of: find.byKey(const Key('person_screen')),
+          matching: find.byType(Scrollable),
+        );
+        final seen = <Key>{};
+        for (var i = 0; i < 6; i++) {
+          seen.addAll(
+            keyed('interaction_').where(
+              (k) => (k as ValueKey<String>).value != 'interaction_result',
+            ),
+          );
+          if (screen.evaluate().isEmpty) break;
+          await tester.drag(screen.first, const Offset(0, -500));
+          await tester.pumpAndSettle();
+        }
+        if (screen.evaluate().isNotEmpty) {
+          await tester.drag(screen.first, const Offset(0, 20000));
+          await tester.pumpAndSettle();
+        }
+        var keys = seen.toList();
         if (romance) {
           final love = keys
               .where((k) => romantic.contains((k as ValueKey<String>).value))
               .toList();
-          if (love.isNotEmpty) keys = love;
+          if (love.isNotEmpty) {
+            keys = love;
+          } else {
+            // Henüz yakın değil: kullanıcı gibi önce buluşup yakınlaşır.
+            final warm = keys
+                .where(
+                  (k) => const [
+                    'interaction_bulus',
+                    'interaction_hediye',
+                  ].contains((k as ValueKey<String>).value),
+                )
+                .toList();
+            if (warm.isNotEmpty) keys = warm;
+          }
         }
         // Ayrılık ve uzaklaşma seyrek; yoksa her hayat yalnız biter.
         keys = keys.where((k) {
@@ -294,6 +421,18 @@ void main() {
         if (keys.isEmpty) return;
         final key = keys[random.nextInt(keys.length)];
         count('etkileşim ${(key as ValueKey<String>).value}');
+        if (screen.evaluate().isNotEmpty) {
+          try {
+            await tester.scrollUntilVisible(
+              find.byKey(key),
+              300,
+              scrollable: screen.first,
+              maxScrolls: 20,
+            );
+          } on Object {
+            return;
+          }
+        }
         await tapKey(key, 'etkileşim');
         await resolvePopups();
       }
@@ -530,6 +669,18 @@ void main() {
             case 'romance':
               if (random.nextDouble() < 0.3) {
                 await tab('activities');
+                // Liste tembel kurulur: aşağıdaki satır kaydırılınca çıkar.
+                try {
+                  await tester.scrollUntilVisible(
+                    find.byKey(const Key('action_tanis')),
+                    300,
+                    scrollable: find.byType(Scrollable).last,
+                    maxScrolls: 10,
+                  );
+                } on Object {
+                  // Bu yaşta "Biriyle tanış" yok.
+                }
+                await settle('kaydır');
                 if (await tapKey(const Key('action_tanis'), 'tanış')) {
                   count('tanış');
                 }

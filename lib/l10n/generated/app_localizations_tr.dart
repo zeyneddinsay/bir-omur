@@ -366,11 +366,11 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get actionBlocked_gelir =>
-      'Gelirin kirayı ve geçimi karşılamıyor (önce iş ya da birikim)';
+      'Kira ve geçim için düzenli gelir ya da üç yıllık birikim gerekir';
 
   @override
   String get moveBlocked_gelir =>
-      'Orada ailen yok; gelirin kirayı ve geçimi karşılamıyor';
+      'Orada ailen yok; kira ve geçim için düzenli gelir ya da üç yıllık birikim gerekir';
 
   @override
   String get ageUpButton => 'Yaşlan';
@@ -1736,6 +1736,10 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get businessDisposeConfirm =>
       'Emin misin? Çalışanların eski çalışanın olur.';
+
+  @override
+  String get businessDisposeConfirmAlone =>
+      'Emin misin? Bu iş artık senin olmaz.';
 
   @override
   String get businessDisposeYes => 'Evet';

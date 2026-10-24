@@ -327,6 +327,14 @@ void main() {
     expect(adult.stats.money, lessThan(-2000));
   });
 
+  test('işi olmayan 65 yaş üstünün borcuna faiz işlemez', () {
+    final (old, _, report) = EconomyTick(
+      SeededRandom(1),
+    ).apply(testCharacter(age: 70, money: -500000), Market.initial);
+    expect(report.debtInterest, 0);
+    expect(old.stats.money, -500000 - report.livingCost);
+  });
+
   test('eş: çalışan katar, çalışmayan gider; emekli olan aylığından katar', () {
     int income(String? occupation, int age) => Economy.spouseIncomeOf(
       withPeople(testCharacter(age: 60), [

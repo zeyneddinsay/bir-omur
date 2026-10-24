@@ -281,6 +281,7 @@ class _BusinessCard extends ConsumerWidget {
                   onPressed: canAct && BusinessRules.canSell(b)
                       ? () => _confirm(
                           context,
+                          hasStaff: b.staff.isNotEmpty || b.managerId != null,
                           () => controller.disposeBusiness(b.id, sell: true),
                         )
                       : null,
@@ -295,6 +296,7 @@ class _BusinessCard extends ConsumerWidget {
                   onPressed: canAct
                       ? () => _confirm(
                           context,
+                          hasStaff: b.staff.isNotEmpty || b.managerId != null,
                           () => controller.disposeBusiness(b.id, sell: false),
                         )
                       : null,
@@ -314,13 +316,18 @@ class _BusinessCard extends ConsumerWidget {
 
   static Future<void> _confirm(
     BuildContext context,
-    VoidCallback action,
-  ) async {
+    VoidCallback action, {
+    required bool hasStaff,
+  }) async {
     final l10n = AppLocalizations.of(context);
     final yes = await showDialog<bool>(
       context: context,
       builder: (dialog) => AlertDialog(
-        content: Text(l10n.businessDisposeConfirm),
+        content: Text(
+          hasStaff
+              ? l10n.businessDisposeConfirm
+              : l10n.businessDisposeConfirmAlone,
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(dialog).pop(false),
