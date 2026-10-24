@@ -80,6 +80,12 @@ class JobCard extends ConsumerWidget {
               key: const Key('job_title'),
             ),
             Text(l10n.jobSalary(l10n.tl(salary))),
+            if (_salaryParts(l10n, c, job) case final parts?)
+              Text(
+                parts,
+                key: const Key('job_salary_parts'),
+                style: theme.textTheme.bodySmall,
+              ),
             const SizedBox(height: 8),
             Row(
               children: [
@@ -209,6 +215,17 @@ class JobCard extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  /// Maaşın zamları: "Kıdem 12 yıl: +%18 · Asgari ücret zamları: +%9".
+  static String? _salaryParts(AppLocalizations l10n, Character c, Job job) {
+    final seniority = ((Careers.seniorityFactor(job) - 1) * 100).round();
+    final wage = ((c.wageIndex - 1) * 100).round();
+    final parts = [
+      if (job.yearsInJob > 0) l10n.jobSeniority(job.yearsInJob, seniority),
+      if (wage > 0) l10n.jobWageIndex(wage),
+    ];
+    return parts.isEmpty ? null : parts.join(' · ');
   }
 
   /// Terfi şartında eksik göstergeler: "Bilgi en az 40 olmalı (şu an 29)".

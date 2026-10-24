@@ -291,7 +291,12 @@ D5 adımları (denge, mantık taraması, hikâye akışı, cila):
     - Altın uzun vadede değerini korur (başlangıç fiyatına dönüş, `goldReversion`).
     - Çalışmış emekli eş haneye 100 bin katar.
   - **Başlık.** Lise bitince başlıkta "Genç yetişkin" yazar. Lise notunun dil bilgisi düzeltildi.
-  - **D5 denge notu:** zam ve terfiyi hiç istemeyen oyuncunun maaşı 34 yıl aynı kalıyor; nakit erimesiyle emeklilikte borca düşebiliyor (çocuğunun yanına taşınma bunu karşılıyor).
+  - **D5 denge notu:** zam ve terfiyi hiç istemeyen oyuncunun maaşı 34 yıl aynı kalıyordu; nakit erimesiyle emeklilikte borca düşebiliyordu. Aşağıdaki kıdem ve asgari ücret kararıyla çözüldü.
+- [x] Kıdem ve asgari ücret zammı (24 Ekim 2026, kullanıcı kararı):
+  - **Kıdem.** Bütün mesleklerde aynı işte geçen her yıl maaşa %1 ekler, en fazla %25 (`Job.yearsInJob`, `Careers.seniorityFactor`). Terfi kıdemi sıfırlamaz; kıdem tazminatı da buna bakar.
+  - **Asgari ücret.** Ücret endeksi (`Character.wageIndex`) 18 yaştan sonra her yıl reel olarak %0–2 artar. Endeks bütün maaşları ve ilanları, eşin katkısını, emekli ve yaşlılık aylığını yükseltir.
+  - **Arayüz.** İş kartında "Kıdem 12 yıl: +%12 · Asgari ücret zamları: +%9" yazar. Yıl başı bandında "Maaşına %2,4 zam" ya da "Aylığına %1,2 zam" yazar.
+  - **Denge.** Medyan servet 4,7 milyondan 11,8 milyona çıktı; en alttaki %10 4,1 milyonda. En az bir kez borca düşen %26.
 - [ ] Telefonda deneme (kullanıcı)
 
 ## Bekleyen aşama: F3a — Dağıtıma hazırlık

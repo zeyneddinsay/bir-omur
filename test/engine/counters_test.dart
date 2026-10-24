@@ -71,7 +71,8 @@ void main() {
       (c, _) = tick.apply(c);
       (c, _) = tick.apply(c);
       expect(c.counters.yearsWorked, 2);
-      expect(c.counters.lifetimeIncome, 100000 + 100000);
+      // İkinci yıl bir yıllık kıdem zammı (%1) eklenir.
+      expect(c.counters.lifetimeIncome, 100000 + 101000);
     });
 
     test('kartla terfi sayılır, kademe düşmesi sayılmaz', () {

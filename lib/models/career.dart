@@ -383,6 +383,7 @@ class Job {
     required this.careerId,
     required this.tier,
     this.yearsInTier = 0,
+    this.yearsInJob = 0,
     this.company,
     this.performance = 50,
     this.tempo = Tempo.normal,
@@ -396,6 +397,10 @@ class Job {
   /// 1'den başlar.
   final int tier;
   final int yearsInTier;
+
+  /// Bu işte (aynı kurumda) geçen yıl; terfide sıfırlanmaz. Kıdem zammı
+  /// ve kıdem tazminatı buna bakar.
+  final int yearsInJob;
 
   /// Kurgusal şirket ya da kurum adı; yoksa null (eski kayıt, kartla iş).
   final String? company;
@@ -414,6 +419,7 @@ class Job {
   Job copyWith({
     int? tier,
     int? yearsInTier,
+    int? yearsInJob,
     int? performance,
     Tempo? tempo,
     double? raise,
@@ -423,6 +429,7 @@ class Job {
     careerId: careerId,
     tier: tier ?? this.tier,
     yearsInTier: yearsInTier ?? this.yearsInTier,
+    yearsInJob: yearsInJob ?? this.yearsInJob,
     company: company,
     performance: performance ?? this.performance,
     tempo: tempo ?? this.tempo,
@@ -435,6 +442,7 @@ class Job {
     'career': careerId,
     'tier': tier,
     'years': yearsInTier,
+    'seniority': yearsInJob,
     'company': ?company,
     'performance': performance,
     'tempo': tempo.name,
@@ -447,6 +455,7 @@ class Job {
     careerId: json['career'] as String,
     tier: json['tier'] as int,
     yearsInTier: json['years'] as int,
+    yearsInJob: json['seniority'] as int? ?? json['years'] as int,
     company: json['company'] as String?,
     performance: json['performance'] as int? ?? 50,
     tempo: Tempo.values.asNameMap()[json['tempo']] ?? Tempo.normal,
@@ -461,6 +470,7 @@ class Job {
       other.careerId == careerId &&
       other.tier == tier &&
       other.yearsInTier == yearsInTier &&
+      other.yearsInJob == yearsInJob &&
       other.company == company &&
       other.performance == performance &&
       other.tempo == tempo &&
@@ -473,6 +483,7 @@ class Job {
     careerId,
     tier,
     yearsInTier,
+    yearsInJob,
     company,
     performance,
     tempo,

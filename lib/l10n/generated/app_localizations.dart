@@ -1696,6 +1696,18 @@ abstract class AppLocalizations {
   /// **'Giderler {amount}'**
   String lastYearExpenses(String amount);
 
+  /// No description provided for @lastYearRaise.
+  ///
+  /// In tr, this message translates to:
+  /// **'Maaşına %{percent} zam'**
+  String lastYearRaise(String percent);
+
+  /// No description provided for @lastYearPensionRaise.
+  ///
+  /// In tr, this message translates to:
+  /// **'Aylığına %{percent} zam'**
+  String lastYearPensionRaise(String percent);
+
   /// No description provided for @lastYearInflation.
   ///
   /// In tr, this message translates to:
@@ -2223,6 +2235,18 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Yıllık maaş: {money}'**
   String jobSalary(String money);
+
+  /// No description provided for @jobSeniority.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kıdem {years} yıl: +%{percent}'**
+  String jobSeniority(int years, int percent);
+
+  /// No description provided for @jobWageIndex.
+  ///
+  /// In tr, this message translates to:
+  /// **'Asgari ücret zamları: +%{percent}'**
+  String jobWageIndex(int percent);
 
   /// No description provided for @jobPerformance.
   ///

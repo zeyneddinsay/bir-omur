@@ -297,6 +297,23 @@ void main() {
     expect(engine.market.goldPrice, isNot(Economy.initialGoldPrice));
   });
 
+  test(
+    'asgari ücret zammı: 18 yaştan sonra yılda %0–2; emekli aylığı da artar',
+    () {
+      for (var seed = 0; seed < 50; seed++) {
+        final (c, _, report) = EconomyTick(SeededRandom(seed))
+            .apply(testCharacter(age: 40, pension: 300000), Market.initial);
+        expect(report.wageRaise, inInclusiveRange(0, 0.02));
+        expect(c.wageIndex, closeTo(1 + report.wageRaise, 1e-9));
+        expect(c.pension, (300000 * (1 + report.wageRaise)).round());
+      }
+      final (child, _, report) = EconomyTick(SeededRandom(1))
+          .apply(testCharacter(age: 10), Market.initial);
+      expect(report.wageRaise, 0);
+      expect(child.wageIndex, 1);
+    },
+  );
+
   test('eş: çalışan katar, çalışmayan gider; emekli olan aylığından katar', () {
     int income(String? occupation, int age) => Economy.spouseIncomeOf(
       withPeople(testCharacter(age: 60), [

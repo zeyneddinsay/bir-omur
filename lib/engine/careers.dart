@@ -25,9 +25,13 @@ class CareerBook {
   Career require(String id) =>
       _byId[id] ?? (throw StateError('Meslek bulunamadı: $id'));
 
-  /// İşin kademe maaşı ve zammı (şehir çarpanı hariç; emekli aylığı için).
+  /// İşin kademe maaşı, zammı ve kıdemi (şehir çarpanı ve ücret endeksi
+  /// hariç; emekli aylığı için).
   int salaryOf(Job job) =>
-      (require(job.careerId).tier(job.tier).salary * (1 + job.raise)).round();
+      (require(job.careerId).tier(job.tier).salary *
+              (1 + job.raise) *
+              Careers.seniorityFactor(job))
+          .round();
 }
 
 /// Bir yılın iş dökümü; arayüz terfiyi ve emekliliği bildirir.
@@ -39,6 +43,7 @@ class CareerReport {
     this.promoted = false,
     this.retired = false,
     this.fired = false,
+    this.seniorityRaise = 0,
   });
 
   final int income;
@@ -53,6 +58,10 @@ class CareerReport {
 
   /// Performansı dibe vurduğu için kovuldu.
   final bool fired;
+
+  /// Bu yılki kıdem zammı (0,015 = %1,5); asgari ücret zammı ayrıca
+  /// [EconomyReport.wageRaise].
+  final double seniorityRaise;
 }
 
 /// Gelir, meslek ve emeklilik kuralları. Tutarlar bugünün TL'siyle.
@@ -128,7 +137,10 @@ abstract final class Careers {
     if (!canRetire(c)) return leaveJob(c);
     final job = c.careerJob;
     final lastSalary = job == null ? 0 : book.salaryOf(job);
-    final pension = max(minPension, (lastSalary * pensionShare).round());
+    final pension = max(
+      (minPension * c.wageIndex).round(),
+      (lastSalary * c.wageIndex * pensionShare).round(),
+    );
     final left = leaveJob(c);
     return left.copyWith(
       pension: pension,
@@ -167,7 +179,15 @@ abstract final class Careers {
     Tempo.normal => c,
   };
 
-  /// Yılın maaşı: kademe, zam, şehir ve (oynak meslekte) çarpan.
+  /// Kıdem zammı: aynı işte geçen her yıl için %1, en fazla %25.
+  static const double seniorityStep = 0.01;
+  static const double seniorityMax = 0.25;
+
+  static double seniorityFactor(Job job) =>
+      1 + min(seniorityMax, job.yearsInJob * seniorityStep);
+
+  /// Yılın maaşı: kademe, istenen zam, kıdem, ücret endeksi (asgari ücret),
+  /// şehir ve (oynak meslekte) çarpan.
   static int salaryFor(
     Character c,
     Job job,
@@ -176,6 +196,8 @@ abstract final class Careers {
   }) =>
       (career.tier(job.tier).salary *
               (1 + job.raise) *
+              seniorityFactor(job) *
+              c.wageIndex *
               factor *
               (career.isPublic ? 1 : Cities.typeOf(c.city).salary))
           .round();
@@ -219,7 +241,7 @@ abstract final class Careers {
   /// aylığı. İşsiz yetişkine kendiliğinden gelir yoktur; ara işler bir
   /// aksiyondur.
   static int baseIncome(Character c) {
-    if (c.age >= retireAge) return oldAgeAllowance;
+    if (c.age >= retireAge) return (oldAgeAllowance * c.wageIndex).round();
     if (c.stage == LifeStage.lise) {
       return c.background == FamilyBackground.dar ? 0 : highSchoolAllowance;
     }
@@ -266,6 +288,7 @@ class CareerTick {
     var source = MoneySource.maas;
     var worked = false;
     var severance = 0;
+    var seniorityRaise = 0.0;
     if (c.isRetired) {
       income = c.pension;
       source = MoneySource.emekliAyligi;
@@ -291,7 +314,7 @@ class CareerTick {
         // kademedeki her yıl için bir aylık kıdem tazminatı.
         final yearly = Careers.salaryFor(c, job, career);
         income = yearly ~/ 2;
-        severance = yearly ~/ 12 * job.yearsInTier;
+        severance = yearly ~/ 12 * job.yearsInJob;
         worked = true;
         c = Careers.leaveJob(c);
         fired = true;
@@ -305,8 +328,18 @@ class CareerTick {
         final next = job.copyWith(
           performance: performance,
           yearsInTier: job.yearsInTier + 1,
+          yearsInJob: job.yearsInJob + 1,
         );
-        income = Careers.salaryFor(c, next, career, factor: factor);
+        // Bu yılın maaşı geçen yılın kıdemiyle; kıdem yıl sonunda artar.
+        income = Careers.salaryFor(c, job, career, factor: factor);
+        if (job.yearsInJob > 0) {
+          seniorityRaise =
+              Careers.seniorityFactor(job) /
+                  Careers.seniorityFactor(
+                    job.copyWith(yearsInJob: job.yearsInJob - 1),
+                  ) -
+              1;
+        }
         worked = true;
         c = c.copyWith(job: next);
         c = Careers.tempoEffect(c, next.tempo);
@@ -345,6 +378,7 @@ class CareerTick {
         severance: severance,
         retired: retired,
         fired: fired,
+        seniorityRaise: seniorityRaise,
       ),
     );
   }

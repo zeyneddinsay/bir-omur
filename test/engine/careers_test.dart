@@ -183,6 +183,35 @@ void main() {
   });
 
   group('CareerTick', () {
+    test(
+      'kıdem zammı yılda %1, en fazla %25; asgari ücret endeksi çarpar',
+      () {
+        int paid(int seniority, {double wageIndex = 1}) {
+          final c = testCharacter(
+            age: 40,
+            money: 0,
+            knowledge: 60,
+            job: Job(careerId: 'test_meslek', tier: 1, yearsInJob: seniority),
+          ).copyWith(wageIndex: wageIndex);
+          return CareerTick(SeededRandom(1), _book()).apply(c).$2.income;
+        }
+
+        expect(paid(0), 100000);
+        expect(paid(10), 110000);
+        expect(paid(25), 125000);
+        expect(paid(35), 125000);
+        expect(paid(10, wageIndex: 1.2), 132000);
+        final (next, report) = CareerTick(SeededRandom(1), _book()).apply(
+          testCharacter(
+            age: 40,
+            job: const Job(careerId: 'test_meslek', tier: 1, yearsInJob: 10),
+          ),
+        );
+        expect(next.job!.yearsInJob, 11);
+        expect(report.seniorityRaise, closeTo(1.10 / 1.09 - 1, 1e-9));
+      },
+    );
+
     test('maaş ödenir, kademede geçen yıl artar', () {
       final (c, report) = CareerTick(
         SeededRandom(1),

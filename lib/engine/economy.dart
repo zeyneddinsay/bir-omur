@@ -39,6 +39,7 @@ class EconomyReport {
     this.spouseIncome = 0,
     this.debtInterest = 0,
     this.goldPriceChange = 0,
+    this.wageRaise = 0,
   });
 
   final double inflation;
@@ -57,6 +58,9 @@ class EconomyReport {
   /// Eksi bakiyenin yıllık faizi.
   final int debtInterest;
   final double goldPriceChange;
+
+  /// Bu yılın asgari ücret zammı (reel; 0,02 = %2): maaşlar ve aylıklar.
+  final double wageRaise;
 }
 
 /// Ekonomi kuralları ve sabitleri. Tutarlar bugünün TL'siyle.
@@ -124,6 +128,11 @@ abstract final class Economy {
   /// Çalışmayan eşin gideri.
   static const int spouseCost = 150000;
 
+  /// Asgari ücretin her yılki reel artışı (bugünün parasıyla): bütün
+  /// maaşlar, eşin katkısı ve emekli aylıkları bununla yükselir.
+  static const double wageMinGrowth = 0.0;
+  static const double wageMaxGrowth = 0.02;
+
   /// Çalışmış, emekli eşin aylığından hanenin bütçesine (kira, mutfak)
   /// kattığı.
   static const int retiredSpouseIncome = 100000;
@@ -150,9 +159,13 @@ abstract final class Economy {
     // Emekli eş aylığıyla kendi giderini karşılar; çalışmış olan aylığından
     // haneye de katar (yaşlı çift kirada batmasın).
     if (spouse.occupation == 'emekli' || spouse.ageAt(c.age) >= 65) {
-      return idle.contains(spouse.occupation) ? 0 : retiredSpouseIncome;
+      return idle.contains(spouse.occupation)
+          ? 0
+          : (retiredSpouseIncome * c.wageIndex).round();
     }
-    return idle.contains(spouse.occupation) ? -spouseCost : spouseNetIncome;
+    return idle.contains(spouse.occupation)
+        ? -spouseCost
+        : (spouseNetIncome * c.wageIndex).round();
   }
 
   /// Oyuncunun bu yılki yaşam gideri: aile evinde anne ya da baba yoksa
@@ -340,6 +353,16 @@ class EconomyTick {
                     (Economy.goldMaxChange - Economy.goldMinChange) +
                 reversion)
             .clamp(Economy.goldMinChange, Economy.goldMaxChange);
+    // Asgari ücret zammı: maaşlar ve emekli aylığı birlikte yükselir.
+    final wageRaise = c.age < Economy.erosionMinAge
+        ? 0.0
+        : Economy.wageMinGrowth +
+              random.nextDouble() *
+                  (Economy.wageMaxGrowth - Economy.wageMinGrowth);
+    c = c.copyWith(
+      wageIndex: c.wageIndex * (1 + wageRaise),
+      pension: (c.pension * (1 + wageRaise)).round(),
+    );
     final nextMarket = Market(
       goldPrice: max(1, (market.goldPrice * (1 + goldChange)).round()),
       inflation: inflation,
@@ -415,6 +438,7 @@ class EconomyTick {
         spouseIncome: spouseIncome,
         debtInterest: debtInterest,
         goldPriceChange: goldChange,
+        wageRaise: wageRaise,
       ),
     );
   }

@@ -130,6 +130,7 @@ class Character {
     this.job,
     this.lastJob,
     this.pension = 0,
+    this.wageIndex = 1.0,
     this.counters = LifeCounters.zero,
     this.isAlive = true,
     List<MoneyEntry> ledger = const [],
@@ -217,6 +218,11 @@ class Character {
 
   bool get isRetired => pension > 0;
 
+  /// Ücret endeksi: asgari ücretle birlikte bütün maaşların ve aylıkların
+  /// bugünün parasıyla (reel) yükselişi. Doğumda 1; 18 yaştan sonra her yıl
+  /// %0–2 artar.
+  final double wageIndex;
+
   /// Ömür boyu sayaçlar (hayatın sayıları).
   final LifeCounters counters;
   final bool isAlive;
@@ -246,6 +252,7 @@ class Character {
     bool clearJob = false,
     Job? lastJob,
     int? pension,
+    double? wageIndex,
     PeopleBook? people,
     LifeCounters? counters,
     bool? isAlive,
@@ -276,6 +283,7 @@ class Character {
       job: clearJob ? null : (job ?? this.job),
       lastJob: lastJob ?? (clearJob ? this.job ?? this.lastJob : this.lastJob),
       pension: pension ?? this.pension,
+      wageIndex: wageIndex ?? this.wageIndex,
       counters: counters ?? this.counters,
       isAlive: isAlive ?? this.isAlive,
       ledger: ledger ?? this.ledger,
@@ -319,6 +327,7 @@ class Character {
     'job': ?job?.toJson(),
     'lastJob': ?lastJob?.toJson(),
     'pension': pension,
+    'wageIndex': wageIndex,
     'counters': counters.toJson(),
     'alive': isAlive,
     'city': city,
@@ -365,6 +374,7 @@ class Character {
           ? null
           : Job.fromJson(json['lastJob'] as Map<String, dynamic>),
       pension: json['pension'] as int,
+      wageIndex: (json['wageIndex'] as num?)?.toDouble() ?? 1.0,
       counters: LifeCounters.fromJson(
         json['counters'] as Map<String, dynamic>?,
       ),

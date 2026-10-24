@@ -211,6 +211,22 @@ class LastYearBanner extends StatelessWidget {
   final CareerReport? career;
   final VoidCallback onClose;
 
+  /// Maaşa (asgari ücret ve kıdem) ya da emekli aylığına gelen zam, bir
+  /// ondalıkla ("2,4"); zam yoksa null.
+  static String? _raisePercent(EconomyReport economy, CareerReport? career) {
+    if (career == null || career.income <= 0) return null;
+    final paid =
+        career.source == MoneySource.maas ||
+        career.source == MoneySource.emekliAyligi;
+    if (!paid) return null;
+    final raise = (1 + economy.wageRaise) * (1 + career.seniorityRaise) - 1;
+    final tenths = (raise * 1000).round();
+    if (tenths <= 0) return null;
+    return tenths % 10 == 0
+        ? '${tenths ~/ 10}'
+        : '${tenths ~/ 10},${tenths % 10}';
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
@@ -233,6 +249,10 @@ class LastYearBanner extends StatelessWidget {
             ? l10n.lastYearFiredSeverance(tl(c.severance))
             : l10n.lastYearFired,
       if (income > 0) l10n.lastYearIncome('+${tl(income)}'),
+      if (_raisePercent(economy, career) case final p?)
+        career?.source == MoneySource.emekliAyligi
+            ? l10n.lastYearPensionRaise(p)
+            : l10n.lastYearRaise(p),
       if (expenses > 0) l10n.lastYearExpenses('−${tl(expenses)}'),
       if (economy.cashEroded > 0)
         l10n.lastYearInflation(

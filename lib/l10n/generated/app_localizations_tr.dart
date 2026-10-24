@@ -990,6 +990,16 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
+  String lastYearRaise(String percent) {
+    return 'Maaşına %$percent zam';
+  }
+
+  @override
+  String lastYearPensionRaise(String percent) {
+    return 'Aylığına %$percent zam';
+  }
+
+  @override
   String lastYearInflation(int percent, String amount) {
     return 'Enflasyon %$percent; nakdinden $amount eridi';
   }
@@ -1328,6 +1338,16 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String jobSalary(String money) {
     return 'Yıllık maaş: $money';
+  }
+
+  @override
+  String jobSeniority(int years, int percent) {
+    return 'Kıdem $years yıl: +%$percent';
+  }
+
+  @override
+  String jobWageIndex(int percent) {
+    return 'Asgari ücret zamları: +%$percent';
   }
 
   @override
