@@ -708,6 +708,14 @@ class LifeEngine {
       ),
     );
     settled = Housing.rehomeIfHostGone(settled, _factory);
+    // Ev sahibi vefat ettiyse ev çocuğuna kalır.
+    if (Housing.inheritLandlord(settled, _factory) case (
+      final inherited,
+      final heir,
+    )) {
+      settled = inherited;
+      notes.add(LifeNote(NoteKind.yeniEvSahibi, heir.id));
+    }
     // Borçlanan yaşlıyı bir çocuğu yanına alır: kira ve gider biter.
     if (Housing.moveInWithChild(settled, _factory) case (
       final moved,

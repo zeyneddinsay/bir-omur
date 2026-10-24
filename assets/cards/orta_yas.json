@@ -915,7 +915,7 @@
     "minAge": 42,
     "maxAge": 56,
     "repeat": "once",
-    "text": "Aynada artık tek tük beyaz tel değil, koca bir beyaz bölge var. Kuaför 'Kapatalım mı?' diye soruyor.",
+    "text": "Aynada artık tek tük beyaz tel değil, koca bir beyaz bölge var. Saçını kesen usta 'Kapatalım mı?' diye soruyor.",
     "left": {
       "label": "Boyatırım",
       "effects": { "money": -1500, "happiness": 2 },

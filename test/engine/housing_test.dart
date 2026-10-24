@@ -22,6 +22,19 @@ void main() {
     expect(Economy.syncDerivedFlags(c).hasFlag(Economy.renterFlag), isTrue);
   });
 
+  test('ev sahibi vefat edince ev çocuğuna kalır: aynı soyadlı yeni ev sahibi', () {
+    var c = Housing.rentAlone(testCharacter(age: 50), factory);
+    final landlord = withRole(c, RoleKind.evSahibi)!;
+    expect(Housing.inheritLandlord(c, factory), isNull);
+    c = c.copyWith(people: c.people.update(landlord.copyWith(diedAt: 50)));
+    final (next, heir) = Housing.inheritLandlord(c, factory)!;
+    expect(heir.isAlive, isTrue);
+    expect(heir.surname, landlord.surname);
+    expect(heir.hasRole(RoleKind.evSahibi), isTrue);
+    expect(next.people[landlord.id]!.hasRole(RoleKind.evSahibi), isFalse);
+    expect(Housing.inheritLandlord(next, factory), isNull);
+  });
+
   test('ev arkadaşıyla kira yarı; ev arkadaşı aynı cinsiyette ve yaşıt', () {
     final c = Housing.shareFlat(testCharacter(age: 22), factory);
     expect(c.home, HomeKind.evArkadasi);

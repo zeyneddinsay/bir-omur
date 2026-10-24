@@ -250,11 +250,11 @@
     "minAge": 2,
     "maxAge": 5,
     "repeat": "once",
-    "text": "İlk kez berber koltuğundasın; altına bir yastık koymuşlar. Makasın sesi kulağına çok yakın.",
+    "text": "İlk kez saç kestirmeye geldin; koltuğa bir yastık koymuşlar. Makasın sesi kulağına çok yakın.",
     "left": {
       "label": "Kıpırdamadan otur",
       "effects": { "reputation": 1 },
-      "result": "Heykel gibi oturdun. Berber seni herkese örnek gösterdi, cebine de bir şeker koydu."
+      "result": "Heykel gibi oturdun. Makasın sahibi seni herkese örnek gösterdi, cebine de bir şeker koydu."
     },
     "right": {
       "label": "Kaçmaya çalış",

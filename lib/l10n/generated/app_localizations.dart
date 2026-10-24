@@ -2518,6 +2518,12 @@ abstract class AppLocalizations {
   /// **'İşten çıkarıldın. Performansın uzun süredir düşüktü.'**
   String get note_kovuldun;
 
+  /// No description provided for @note_yeniEvSahibi.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ev sahibin vefat etti; ev çocuğuna kaldı. Yeni ev sahibin {name}, kira aynı.'**
+  String note_yeniEvSahibi(String name);
+
   /// No description provided for @note_cocugunYaninda.
   ///
   /// In tr, this message translates to:

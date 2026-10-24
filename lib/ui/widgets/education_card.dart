@@ -91,6 +91,9 @@ String noteLine(
     NoteKind.cocugunYaninda => l10n.note_cocugunYaninda(
       _hostWord(character, d),
     ),
+    NoteKind.yeniEvSahibi => l10n.note_yeniEvSahibi(
+      character?.people[d]?.name ?? '',
+    ),
     NoteKind.kovuldun => l10n.note_kovuldun,
     NoteKind.istifa => l10n.note_istifa,
     NoteKind.emekliOldun => l10n.note_emekliOldun,

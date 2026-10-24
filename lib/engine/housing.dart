@@ -434,6 +434,42 @@ abstract final class Housing {
     return c.copyWith(people: book);
   }
 
+  /// Kiracının ev sahibi vefat ettiyse ev çocuğuna kalır: aynı soyadlı yeni
+  /// bir ev sahibi gelir (kira olayları sürer). Dönen kişi yeni ev sahibi;
+  /// günlüğe yazılır.
+  static (Character, Person)? inheritLandlord(Character c, PersonFactory f) {
+    if (c.home != HomeKind.kira) return null;
+    bool isLandlord(Person p) =>
+        p.kin == null &&
+        p.roles.any((r) => r.active && r.kind == RoleKind.evSahibi);
+    final landlords = c.people.all.where(isLandlord).toList();
+    if (landlords.any((p) => p.isAlive)) return null;
+    final dead = landlords.lastOrNull;
+    if (dead == null) return null;
+    var book = c.people.update(
+      dead.copyWith(
+        roles: [
+          for (final r in dead.roles)
+            r.kind == RoleKind.evSahibi ? r.ended() : r,
+        ],
+      ),
+    );
+    final deadAge = dead.ageAt(dead.diedAt ?? c.age);
+    final (next, heir) = f.add(
+      book,
+      now: c.age,
+      age: max(25, deadAge - f.between(24, 34)),
+      city: c.city,
+      origin: Origin.kendin,
+      base: 15,
+      roles: const [PersonRole(RoleKind.evSahibi)],
+      wealth: WealthLevel.rahat,
+    );
+    final named = heir.copyWith(surname: dead.surname);
+    book = next.update(named);
+    return (c.copyWith(people: book), named);
+  }
+
   static Character _addLandlord(Character c, PersonFactory f) {
     final (book, _) = f.addOrReuse(
       c.people,

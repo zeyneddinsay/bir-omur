@@ -1510,6 +1510,11 @@ class AppLocalizationsTr extends AppLocalizations {
       'İşten çıkarıldın. Performansın uzun süredir düşüktü.';
 
   @override
+  String note_yeniEvSahibi(String name) {
+    return 'Ev sahibin vefat etti; ev çocuğuna kaldı. Yeni ev sahibin $name, kira aynı.';
+  }
+
+  @override
   String note_cocugunYaninda(String who) {
     return 'Borçlar ağırlaşınca $who seni yanına aldı. Artık onun evinde yaşıyorsun; kira derdi bitti.';
   }

@@ -49,6 +49,10 @@ enum NoteKind {
   /// kimliği.
   cocugunYaninda,
 
+  /// Ev sahibi vefat etti, ev çocuğuna kaldı; detay yeni ev sahibinin
+  /// kimliği.
+  yeniEvSahibi,
+
   /// Doğumda: tek ebeveynli ailede öbür ebeveynin neden olmadığı; detay
   /// `anne|vefat`, `baba|ayrilik` gibi.
   tekEbeveyn,

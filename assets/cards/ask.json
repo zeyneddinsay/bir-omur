@@ -688,6 +688,54 @@
     }
   },
   {
+    "id": "cenaze_kayin",
+    "type": "donemec",
+    "theme": "aile",
+    "minAge": 20,
+    "maxAge": 110,
+    "repeat": { "cooldown": 1 },
+    "roles": {
+      "merhum": { "kin": ["kayinvalide", "kayinpeder"], "deceased": true },
+      "es": { "kin": ["es"] }
+    },
+    "text": "{merhum.akraba} vefat etti. {es.ad} bir haftadır pek konuşmuyor; çayı sen demliyorsun, kapıyı sen açıyorsun.",
+    "left": {
+      "label": "Hep yanında olurum",
+      "effects": {
+        "happiness": -3,
+        "people": {
+          "es": {
+            "memory": {
+              "kind": "acimda_yanimdaydi",
+              "label": "Acımda hep yanımdaydı",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      },
+      "result": "Bir hafta işe gitmedin. {es.ad} gece uyandığında seni hep yanında buldu."
+    },
+    "right": {
+      "label": "İşleri ben hallederim",
+      "effects": {
+        "reputation": 2,
+        "health": -2,
+        "people": {
+          "es": {
+            "memory": {
+              "kind": "cenazede_ustlendi",
+              "label": "Cenazede her işi o üstlendi",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "Mezarlıktan taziyeye her şeyi sen ayarladın. {es.ad} yalnızca yasını tuttu, sana minnetle baktı."
+    }
+  },
+  {
     "id": "cenaze_es",
     "type": "donemec",
     "theme": "aile",
