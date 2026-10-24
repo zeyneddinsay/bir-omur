@@ -1225,19 +1225,19 @@ abstract class AppLocalizations {
   /// No description provided for @jobTrendDown.
   ///
   /// In tr, this message translates to:
-  /// **'Bu tempoyla performansın her yıl yaklaşık {n} puan düşüyor{knowledge, select, low{: bilgin işin gerektirdiğinin altında. Yüklen ya da ders çalış} other{}}.'**
+  /// **'Bu tempoyla performansın her yıl ortalama {n} puan düşer{knowledge, select, low{: bilgin işin gerektirdiğinin altında. Yüklen ya da ders çalış} other{}}. Şansa göre yıldan yıla 5 puan oynar.'**
   String jobTrendDown(int n, String knowledge);
 
   /// No description provided for @jobTrendUp.
   ///
   /// In tr, this message translates to:
-  /// **'Bu tempoyla performansın her yıl yaklaşık {n} puan artıyor.'**
+  /// **'Bu tempoyla performansın her yıl ortalama {n} puan artar; şansa göre yıldan yıla 5 puan oynar.'**
   String jobTrendUp(int n);
 
   /// No description provided for @jobTrendFlat.
   ///
   /// In tr, this message translates to:
-  /// **'Bu tempoyla performansın yerinde sayıyor.'**
+  /// **'Bu tempoyla performansın ortalamada yerinde sayar; şansa göre yıldan yıla 5 puan oynar.'**
   String get jobTrendFlat;
 
   /// No description provided for @jobRetired.

@@ -713,16 +713,17 @@ class AppLocalizationsTr extends AppLocalizations {
       'low': ': bilgin işin gerektirdiğinin altında. Yüklen ya da ders çalış',
       'other': '',
     });
-    return 'Bu tempoyla performansın her yıl yaklaşık $n puan düşüyor$_temp0.';
+    return 'Bu tempoyla performansın her yıl ortalama $n puan düşer$_temp0. Şansa göre yıldan yıla 5 puan oynar.';
   }
 
   @override
   String jobTrendUp(int n) {
-    return 'Bu tempoyla performansın her yıl yaklaşık $n puan artıyor.';
+    return 'Bu tempoyla performansın her yıl ortalama $n puan artar; şansa göre yıldan yıla 5 puan oynar.';
   }
 
   @override
-  String get jobTrendFlat => 'Bu tempoyla performansın yerinde sayıyor.';
+  String get jobTrendFlat =>
+      'Bu tempoyla performansın ortalamada yerinde sayar; şansa göre yıldan yıla 5 puan oynar.';
 
   @override
   String get jobRetired => 'Emekli';
