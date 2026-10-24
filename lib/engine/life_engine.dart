@@ -1285,8 +1285,12 @@ class LifeEngine {
     );
   }
 
-  PersonFactory get _factory =>
-      PersonFactory(_random, families, avoidName: _state.character.name);
+  PersonFactory get _factory => PersonFactory(
+    _random,
+    families,
+    avoidName: _state.character.name,
+    avoidSurname: _state.character.surname,
+  );
 
   /// YKS tercihinde puanın yettiği bölüm ve şehirler; tercih beklemiyorsa
   /// boş.

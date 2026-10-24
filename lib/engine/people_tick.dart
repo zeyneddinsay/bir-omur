@@ -509,7 +509,11 @@ class PeopleTick {
     ];
     final names = fresh.isEmpty ? all : fresh;
     final name = names[random.nextInt(names.length)];
-    final surname = families.surnames[random.nextInt(families.surnames.length)];
+    final surnames = [
+      for (final s in families.surnames)
+        if (s != c.surname) s,
+    ];
+    final surname = surnames[random.nextInt(surnames.length)];
     final traits = <Trait>{};
     final target = random.nextDouble() < 0.7 ? 2 : 1;
     while (traits.length < target) {

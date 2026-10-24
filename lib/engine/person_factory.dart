@@ -6,13 +6,32 @@ import '../models/models.dart';
 /// komşu, bakkal, iş arkadaşı, üniversite ve bölük arkadaşı. Ad, kuşağına
 /// göre [FamilyBook]'tan seçilir.
 class PersonFactory {
-  PersonFactory(this.random, this.families, {this.avoidName});
+  PersonFactory(
+    this.random,
+    this.families, {
+    this.avoidName,
+    this.avoidSurname,
+  });
 
   final Random random;
   final FamilyBook families;
 
   /// Oyuncunun adı: yeni kişilere verilmez (aynı adlı üç kişi karışır).
   final String? avoidName;
+
+  /// Oyuncunun soyadı: akraba olmayan yeni kişilere verilmez (sınıftaki
+  /// "Sude Taş" akraba sanılır).
+  final String? avoidSurname;
+
+  /// [avoidSurname] dışında rastgele bir soyadı.
+  String pickSurname() {
+    final pool = [
+      for (final s in families.surnames)
+        if (s != avoidSurname) s,
+    ];
+    final from = pool.isEmpty ? families.surnames : pool;
+    return from[random.nextInt(from.length)];
+  }
 
   /// [names] içinden [avoidName] ve [taken] dışındaki bir ad. Hayattaki
   /// tanıdıkların adı yeni birine verilmez: çocukluk arkadaşı Eymen ile
@@ -148,7 +167,7 @@ class PersonFactory {
       families.namesFor(g, NameEra.forAgeGap(age - now)),
       taken: takenNames(book),
     );
-    final surname = families.surnames[random.nextInt(families.surnames.length)];
+    final surname = pickSurname();
     final traits = <Trait>{?requiredTrait};
     final target = random.nextDouble() < 0.7 ? 2 : 1;
     while (traits.length < target) {

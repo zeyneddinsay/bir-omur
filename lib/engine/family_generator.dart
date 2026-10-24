@@ -109,7 +109,7 @@ class FamilyGenerator {
       fatherAge: hasFather ? fatherAge : null,
       motherAge: hasMother ? motherAge : null,
     );
-    _addNeighbors();
+    _addNeighbors(surname, maternalSurname);
 
     return FamilyResult(
       profile: profile,
@@ -249,12 +249,18 @@ class FamilyGenerator {
     }
   }
 
-  void _addNeighbors() {
+  void _addNeighbors(String surname, String maternalSurname) {
+    // Komşu ve bakkal ailenin soyadını taşımaz (akraba sanılır).
+    final strangers = [
+      for (final s in book.surnames)
+        if (s != surname && s != maternalSurname) s,
+    ];
+    final pool = strangers.isEmpty ? book.surnames : strangers;
     _add(
       kin: null,
       gender: Gender.kadin,
       age: _between(45, 62),
-      surname: _pick(book.surnames),
+      surname: _pick<String>(pool),
       occupation: random.nextBool() ? 'ev_hanimi' : 'emekli',
       base: neighborBase,
       health: _between(65, 90),
@@ -269,7 +275,7 @@ class FamilyGenerator {
       kin: null,
       gender: Gender.erkek,
       age: _between(48, 66),
-      surname: _pick(book.surnames),
+      surname: _pick<String>(pool),
       occupation: 'bakkal',
       base: grocerBase,
       health: _between(65, 90),

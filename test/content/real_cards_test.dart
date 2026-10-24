@@ -310,6 +310,22 @@ void main() {
       }
     });
 
+    test('akraba olmayanlar oyuncunun soyadını taşımaz', () {
+      final odd = <String>[];
+      for (final life in lives) {
+        final c = finalOf(life);
+        if (c.surname.isEmpty) continue;
+        for (final p in c.people.all) {
+          if (p.kin == null &&
+              p.bond != Bond.eskiEs &&
+              p.surname == c.surname) {
+            odd.add('${p.name} ${p.surname} (${p.origin.name})');
+          }
+        }
+      }
+      expect(odd, isEmpty, reason: odd.take(10).join(', '));
+    });
+
     test('okul arkadaşlarının adları birbirini tekrarlamaz', () {
       var people = 0;
       var repeats = 0;
