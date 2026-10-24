@@ -2236,6 +2236,12 @@ abstract class AppLocalizations {
   /// **'Yıllık maaş: {money}'**
   String jobSalary(String money);
 
+  /// No description provided for @jobHealthWarning.
+  ///
+  /// In tr, this message translates to:
+  /// **'Sağlığın düşüyor: yüklenmek her yıl sağlığından götürüyor. Tempoyu düşürmeyi düşün.'**
+  String get jobHealthWarning;
+
   /// No description provided for @jobSeniority.
   ///
   /// In tr, this message translates to:

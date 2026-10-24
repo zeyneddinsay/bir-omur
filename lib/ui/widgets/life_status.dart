@@ -218,7 +218,8 @@ class LastYearBanner extends StatelessWidget {
   /// Maaşa (asgari ücret ve kıdem) ya da emekli aylığına gelen zam, bir
   /// ondalıkla ("2,4"); zam yoksa null.
   static String? _raisePercent(EconomyReport economy, CareerReport? career) {
-    if (career == null || career.income <= 0) return null;
+    // Emekli olunan yıl aylık yeni bağlanır; zam değildir.
+    if (career == null || career.income <= 0 || career.retired) return null;
     final paid =
         career.source == MoneySource.maas ||
         career.source == MoneySource.emekliAyligi;

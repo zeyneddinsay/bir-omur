@@ -125,6 +125,43 @@ void main() {
     expect(closed, isTrue);
   });
 
+  testWidgets('zam: maaşa asgari ücret ve kıdem; emekli olunan yıl zam yazmaz', (
+    tester,
+  ) async {
+    String bannerText() => tester
+        .widget<Text>(
+          find.descendant(
+            of: find.byKey(const Key('last_year_banner')),
+            matching: find.byType(Text),
+          ),
+        )
+        .data!;
+    await tester.pumpWidget(
+      _wrap(
+        LastYearBanner(
+          economy: const EconomyReport(inflation: 0.2, wageRaise: 0.02),
+          career: const CareerReport(income: 500000, seniorityRaise: 0.01),
+          onClose: () {},
+        ),
+      ),
+    );
+    expect(bannerText(), contains('Maaşına %3 zam'));
+    await tester.pumpWidget(
+      _wrap(
+        LastYearBanner(
+          economy: const EconomyReport(inflation: 0.2, wageRaise: 0.02),
+          career: const CareerReport(
+            income: 300000,
+            source: MoneySource.emekliAyligi,
+            retired: true,
+          ),
+          onClose: () {},
+        ),
+      ),
+    );
+    expect(bannerText(), isNot(contains('zam')));
+  });
+
   testWidgets('söylenecek bir şey yoksa şerit görünmez', (tester) async {
     await tester.pumpWidget(
       _wrap(

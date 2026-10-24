@@ -297,6 +297,14 @@ D5 adımları (denge, mantık taraması, hikâye akışı, cila):
   - **Asgari ücret.** Ücret endeksi (`Character.wageIndex`) 18 yaştan sonra her yıl reel olarak %0–2 artar. Endeks bütün maaşları ve ilanları, eşin katkısını, emekli ve yaşlılık aylığını yükseltir.
   - **Arayüz.** İş kartında "Kıdem 12 yıl: +%12 · Asgari ücret zamları: +%9" yazar. Yıl başı bandında "Maaşına %2,4 zam" ya da "Aylığına %1,2 zam" yazar.
   - **Denge.** Medyan servet 4,7 milyondan 11,8 milyona çıktı; en alttaki %10 4,1 milyonda. En az bir kez borca düşen %26.
+- [x] Emülatör testi 3 (24 Ekim 2026; kadın karakter Ecrin doğumdan 65 yaşta ölüme kadar oynandı: yurtta üniversite, garsonluk, terfi ve zam, ayrılık, evlilik, çocuk). Düzeltmeler:
+  - **Yas ve akrabalar.** Aynı akrabalıktan biri vefat edince (iki dededen biri) öbürü o yıl neşeli olaylarda rol almaz. Günlükte aynı akrabalıktan birden çok kişi adıyla ayrılır ("Deden Hüseyin").
+  - **Para.** 18 yaşından küçüğün eksi bakiyesini ailesi kapatır. Yıl başı bandında burs da gelir sayılır. Emekli olunan yıl bantta "zam" yazmaz.
+  - **İş kartı.** Performans gidişi "ortalama" ve "yıldan yıla 5 puan oynar" diye yazar (sapma yalnızca 100 tavanından geliyor). Yüklen temposunda sağlık 50'nin altına inince uyarı çıkar.
+  - **Kişiler.** Akraba olmayanlar (sınıf arkadaşı, komşu, bakkal) oyuncunun ve annesinin ailesinin soyadını taşımaz.
+  - **Kartlar.**
+    - Eski sevgilinin düğün davetiyesi ayrılıktan en az 3 yıl sonra gelir.
+    - Çocuk sayısını ya da yaşını varsayan metinler düzeltildi ("Çocuklar büyüdü", "Çocukların ... önerdi").
 - [ ] Telefonda deneme (kullanıcı)
 
 ## Bekleyen aşama: F3a — Dağıtıma hazırlık

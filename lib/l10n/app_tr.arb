@@ -470,6 +470,7 @@
   "jobTitleLine": "{title} · {company}",
   "@jobTitleLine": { "placeholders": { "title": { "type": "String" }, "company": { "type": "String" } } },
   "jobSalary": "Yıllık maaş: {money}",
+  "jobHealthWarning": "Sağlığın düşüyor: yüklenmek her yıl sağlığından götürüyor. Tempoyu düşürmeyi düşün.",
   "jobSeniority": "Kıdem {years} yıl: +%{percent}",
   "@jobSeniority": { "placeholders": { "years": { "type": "int" }, "percent": { "type": "int" } } },
   "jobWageIndex": "Asgari ücret zamları: +%{percent}",

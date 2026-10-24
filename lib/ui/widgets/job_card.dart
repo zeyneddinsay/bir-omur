@@ -118,6 +118,19 @@ class JobCard extends ConsumerWidget {
                 ),
               ),
             ),
+            // Yüklenmek her yıl sağlıktan götürür; sağlık düşükse açıkça söylenir.
+            if (job.tempo == Tempo.yukle && c.stats.health < 50)
+              Padding(
+                padding: const EdgeInsets.only(top: 4),
+                child: Text(
+                  l10n.jobHealthWarning,
+                  key: const Key('job_health_warning'),
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.error,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
             if (job.performance < 30)
               Padding(
                 padding: const EdgeInsets.only(top: 4),

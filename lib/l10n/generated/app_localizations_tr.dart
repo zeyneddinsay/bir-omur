@@ -1342,6 +1342,10 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
+  String get jobHealthWarning =>
+      'Sağlığın düşüyor: yüklenmek her yıl sağlığından götürüyor. Tempoyu düşürmeyi düşün.';
+
+  @override
   String jobSeniority(int years, int percent) {
     return 'Kıdem $years yıl: +%$percent';
   }
