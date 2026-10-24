@@ -481,7 +481,7 @@
     "maxAge": 60,
     "repeat": "once",
     "roles": {
-      "eski": { "bond": ["eskiSevgili"], "minAge": 18, "marital": ["bekar"] }
+      "eski": { "bond": ["eskiSevgili"], "minAge": 18, "marital": ["bekar"], "memory": "ayrildik", "memoryYears": 3 }
     },
     "speaker": "eski",
     "text": "Posta kutunda bir davetiye: {eski.ad} evleniyor. Zarfın içinde küçük bir not: 'Gelirsen sevinirim.'",
