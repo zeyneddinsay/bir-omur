@@ -238,6 +238,10 @@ class AutoPlayer {
         if (ok) action,
     ];
     if (enabled.isEmpty || _random.nextInt(4) == 0) return null;
+    // Öğrenci yarı yarıya ders çalışır: eğlence aksiyonları çoğalınca
+    // bölümler (ve yazılım yolu) test hayatlarında kaybolmasın.
+    final study = enabled.where((a) => a.id == 'ders_calis').firstOrNull;
+    if (study != null && _random.nextBool()) return study.id;
     return enabled[_random.nextInt(enabled.length)].id;
   }
 }

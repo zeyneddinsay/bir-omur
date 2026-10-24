@@ -328,7 +328,10 @@ abstract final class Romance {
   }) {
     final chosen =
         name ??
-        f.pickName(f.families.namesFor(gender, NameEra.forAgeGap(age - now)));
+        f.pickName(
+          f.families.namesFor(gender, NameEra.forAgeGap(age - now)),
+          taken: PersonFactory.takenNames(book),
+        );
     final trait = Trait.values[f.random.nextInt(Trait.values.length)];
     final seed = f.random.nextInt(1 << 30);
     return book.add(

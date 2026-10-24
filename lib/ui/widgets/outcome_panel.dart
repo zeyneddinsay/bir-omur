@@ -147,3 +147,69 @@ class OutcomePanel extends StatelessWidget {
     );
   }
 }
+
+/// Son yapılan aksiyonun özeti: adı ve göstergelerde, parada ne değiştiği.
+class ActionResultPanel extends StatelessWidget {
+  const ActionResultPanel({
+    super.key,
+    required this.title,
+    required this.before,
+    required this.after,
+    required this.onClose,
+  });
+
+  final String title;
+  final Character before;
+  final Character after;
+  final VoidCallback onClose;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final changed = OutcomePanel.changes(l10n, before, after);
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
+      child: Container(
+        key: const Key('action_result'),
+        decoration: BoxDecoration(
+          color: theme.cardTheme.color,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: scheme.onSurface.withValues(alpha: 0.12)),
+        ),
+        padding: const EdgeInsets.fromLTRB(12, 10, 4, 10),
+        child: Row(
+          children: [
+            Icon(Icons.check_circle_outline, size: 20, color: scheme.primary),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  if (changed.isNotEmpty) ...[
+                    const SizedBox(height: 6),
+                    PreviewChips(items: changed, dense: true),
+                  ],
+                ],
+              ),
+            ),
+            IconButton(
+              tooltip: l10n.outcomeClose,
+              visualDensity: VisualDensity.compact,
+              iconSize: 18,
+              onPressed: onClose,
+              icon: const Icon(Icons.close),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

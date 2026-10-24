@@ -142,6 +142,11 @@ abstract final class Careers {
     Tempo.yukle => 10,
   };
 
+  /// Şansı saymadan, bu tempo ve bilgiyle performansın yıllık beklenen
+  /// değişimi; iş kartı oyuncuya gidişi bununla anlatır.
+  static int expectedPerformanceChange(Character c, Tempo tempo) =>
+      tempoPerformance(tempo) + ((c.stats.knowledge - 50) / 10).round();
+
   /// Yılın performansı: tempo, bilgi ve biraz şans.
   static int nextPerformance(Character c, Job job, Random random) {
     final knowledge = ((c.stats.knowledge - 50) / 10).round();

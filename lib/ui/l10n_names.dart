@@ -39,6 +39,7 @@ extension L10nNames on AppLocalizations {
 
   String stageName(LifeStage stage) => switch (stage) {
     LifeStage.bebek => stageBebek,
+    LifeStage.cocukluk => stageCocukluk,
     LifeStage.ilkokul => stageIlkokul,
     LifeStage.ortaokul => stageOrtaokul,
     LifeStage.lise => stageLise,
@@ -52,6 +53,11 @@ extension L10nNames on AppLocalizations {
   /// (testler her aksiyonun bir adı olduğunu denetler).
   String? actionName(String id) => switch (id) {
     'oyun_oyna' => action_oyun_oyna,
+    'resim_yap' => action_resim_yap,
+    'top_oyna' => action_top_oyna,
+    'bilgisayar_oyunu' => action_bilgisayar_oyunu,
+    'arkadaslarla_takil' => action_arkadaslarla_takil,
+    'enstruman' => action_enstruman,
     'ders_calis' => action_ders_calis,
     'fazla_mesai' => action_fazla_mesai,
     'kitap_oku' => action_kitap_oku,

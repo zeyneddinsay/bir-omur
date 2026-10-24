@@ -11,6 +11,7 @@ extension PeopleNames on AppLocalizations {
     PeopleGroup.aile => group_aile,
     PeopleGroup.okul => group_okul,
     PeopleGroup.arkadaslar => group_arkadaslar,
+    PeopleGroup.isEv => group_isEv,
     PeopleGroup.mahalle => group_mahalle,
     PeopleGroup.eski => group_eski,
     PeopleGroup.vefat => group_vefat,
@@ -64,12 +65,18 @@ extension PeopleNames on AppLocalizations {
     Bond.eskiEs => bond_eskiEs,
   };
 
-  String colorName(RelationColor color) => switch (color) {
-    RelationColor.dost => color_dost,
-    RelationColor.kiskancYakin => color_kiskancYakin,
-    RelationColor.tanidik => color_tanidik,
-    RelationColor.dusman => color_dusman,
-  };
+  /// İlişkinin rengi. Akrabada "Dost", "Tanıdık" demek tuhaf kaçar; aile
+  /// için ayrı sözcükler kullanılır.
+  String colorName(RelationColor color, {bool kin = false}) =>
+      switch ((color, kin)) {
+        (RelationColor.dost, false) => color_dost,
+        (RelationColor.dost, true) => color_kin_dost,
+        (RelationColor.kiskancYakin, _) => color_kiskancYakin,
+        (RelationColor.tanidik, false) => color_tanidik,
+        (RelationColor.tanidik, true) => color_kin_tanidik,
+        (RelationColor.dusman, false) => color_dusman,
+        (RelationColor.dusman, true) => color_kin_dusman,
+      };
 
   String traitName(Trait trait) => switch (trait) {
     Trait.kiskanc => trait_kiskanc,
@@ -148,7 +155,26 @@ extension PeopleNames on AppLocalizations {
     return bondName(p.bond ?? Bond.tanidik);
   }
 
-  /// Yıl günlüğünde bir haber. Akrabaysa "Deden", değilse adıyla anılır.
+  /// Haberde kişinin anılışı: akrabaysa "Deden"; değilse bağıyla ya da
+  /// rolüyle birlikte adı: "Komşun Fatma", "Eski bölük arkadaşın Mustafa".
+  /// Yalnızca "Fatma vefat etti" yazılınca kim olduğu anlaşılmaz.
+  String newsName(Person p) {
+    if (PersonText.kinWord(p) case final kin?) {
+      return PersonText.capitalizeFirst(kin);
+    }
+    if (PeopleView.friendBonds.contains(p.bond)) {
+      return '${bondName(p.bond!)} ${p.name}';
+    }
+    if (PeopleView.mainRole(p) case final role?) {
+      final word = roleName(role.kind);
+      return role.active
+          ? '$word ${p.name}'
+          : '${newsFormer(lowerTr(word))} ${p.name}';
+    }
+    return '$newsAcquaintance ${p.name}';
+  }
+
+  /// Yıl günlüğünde bir haber; kişi [newsName] ile anılır.
   String newsLine(
     PersonNews news,
     Character c, {
@@ -156,10 +182,7 @@ extension PeopleNames on AppLocalizations {
   }) {
     final p = c.people[news.personId];
     if (p == null) return '';
-    final name = switch (PersonText.kinWord(p)) {
-      final kin? => PersonText.capitalizeFirst(kin),
-      null => p.name,
-    };
+    final name = newsName(p);
     final fullName = '${p.name} ${p.surname}'.trim();
     return switch (news.kind) {
       NewsKind.kardesDogdu =>

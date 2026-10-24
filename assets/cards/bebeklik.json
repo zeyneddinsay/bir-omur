@@ -444,7 +444,7 @@
     "minAge": 4,
     "maxAge": 6,
     "repeat": "once",
-    "text": "Anaokulunda kostüm günü. Herkes süper kahraman olmuş; sen de dolaptan ne bulduysan giymişsin.",
+    "text": "Mahallede çocuk şenliği, bir de kostüm yarışması var. Herkes süper kahraman olmuş; sen de dolaptan ne bulduysan giymişsin.",
     "left": {
       "label": "Ben bir bulutum",
       "effects": { "happiness": 3 },
@@ -453,7 +453,7 @@
     "right": {
       "label": "Bir şey olmadım",
       "effects": { "happiness": -1 },
-      "result": "Köşede kostümsüz durdun. Sınıf fotoğrafında tek sıradan giyinen sendin."
+      "result": "Köşede kostümsüz durdun. Şenliğin fotoğrafında tek sıradan giyinen sendin."
     }
   },
   {

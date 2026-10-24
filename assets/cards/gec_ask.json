@@ -416,37 +416,36 @@
     }
   },
   {
-    "id": "ev_esin_uzerine",
+    "id": "birikim_esle",
     "type": "kisi",
     "theme": "para",
     "minAge": 70,
     "maxAge": 115,
     "repeat": "once",
     "conditions": {
-      "flags": ["gec_evlendi", "evli", "cocuklu"],
-      "min": { "house": 1 }
+      "flags": ["gec_evlendi", "evli", "cocuklu"]
     },
     "roles": {
-      "es": { "kin": ["es"], "maxGap": -15 }
+      "es": { "kin": ["es"] }
     },
     "speaker": "es",
-    "text": "{es.ad}: 'Evi benim üzerime yapsan... Yarın sana bir şey olursa sokakta kalmayayım.'",
+    "text": "{es.ad}: 'Birikimini benimle ortak hesaba geçirsen... Yarın sana bir şey olursa ortada kalmayayım.'",
     "left": {
       "label": "Tamam, yaparız",
       "effects": {
-        "addFlags": ["ev_esin_uzerine"],
+        "addFlags": ["mal_esin_uzerine"],
         "people": {
           "es": {
             "memory": {
-              "kind": "evi_uzerime_yapti",
-              "label": "Evi benim üzerime yaptı",
+              "kind": "birikimi_paylasti",
+              "label": "Birikimini benimle paylaştı",
               "tone": "olumlu",
               "severity": 2
             }
           }
         }
       },
-      "result": "Tapu dairesinden el ele çıktınız. Akşama haber çocuklarına kadar gitmişti bile."
+      "result": "Bankadan el ele çıktınız. Akşama haber çocuklarına kadar gitmişti bile."
     },
     "right": {
       "label": "Çocuklarım ne der?",
@@ -454,8 +453,8 @@
         "people": {
           "es": {
             "memory": {
-              "kind": "evi_vermedi",
-              "label": "Evi bana güvenip vermedi",
+              "kind": "birikimi_vermedi",
+              "label": "Birikimini bana güvenip açmadı",
               "tone": "olumsuz",
               "severity": 1
             }

@@ -31,8 +31,13 @@ class PersonScreen extends ConsumerWidget {
     final c = state.character;
     final now = c.age;
     final controller = ref.read(lifeProvider.notifier);
+    // Yaşına uymayan seçenekler hiç görünmez: altı satır "çok küçüksün"
+    // çocuğa uygun olanı ("Elini öp") aşağıya iter.
     final options = state.phase == YearPhase.actions
-        ? controller.engine.interactionsWith(p.id)
+        ? [
+            for (final o in controller.engine.interactionsWith(p.id))
+              if (o.blocked != Blocked.yas) o,
+          ]
         : const <InteractionOption>[];
     final result = state.lastInteraction;
     final resultText = result != null && result.personId == p.id
@@ -54,6 +59,7 @@ class PersonScreen extends ConsumerWidget {
                   spec: PortraitDesigner.ofPerson(
                     p,
                     playerAge: p.isAlive ? now : p.diedAt!,
+                    family: c,
                   ),
                   size: 80,
                 ),
@@ -93,7 +99,10 @@ class PersonScreen extends ConsumerWidget {
               RelationBars(person: p, now: now),
               const SizedBox(height: 8),
               Text(
-                l10n.colorName(Relationships.colorOf(p, now)),
+                l10n.colorName(
+                  Relationships.colorOf(p, now),
+                  kin: p.kin != null,
+                ),
                 key: const Key('person_color'),
                 style: theme.textTheme.labelLarge,
               ),
@@ -112,8 +121,11 @@ class PersonScreen extends ConsumerWidget {
                 key: const Key('interaction_result'),
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.secondaryContainer,
+                  color: theme.cardTheme.color,
                   borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: theme.colorScheme.onSurface.withValues(alpha: 0.12),
+                  ),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

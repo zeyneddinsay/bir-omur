@@ -181,7 +181,7 @@ void main() {
       expect(rift.inheritance, Inheritance.kavga);
     });
 
-    test('vasiyet varsa miras sessizce bölüşülür; evi eşe yapmak kavgadır', () {
+    test('vasiyet varsa miras sessizce bölüşülür; birikimi eşle paylaşmak kavgadır', () {
       expect(
         LifeStory(
           life(
@@ -194,7 +194,7 @@ void main() {
       expect(
         LifeStory(
           life(
-            flags: {LifeStory.lateMarriageFlag, LifeStory.houseToSpouseFlag},
+            flags: {LifeStory.lateMarriageFlag, LifeStory.savingsToSpouseFlag},
           ),
         ).inheritance,
         Inheritance.kavga,

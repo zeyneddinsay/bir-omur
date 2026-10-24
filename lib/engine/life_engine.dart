@@ -217,9 +217,32 @@ class LifeEngine {
       _random,
       families: families,
     ).generate(name: name, gender: gender);
+    final (withParent, note) = _singleParent(character);
     return _state = _beginYear(
-      Relationships.syncFamilyBond(character),
+      Relationships.syncFamilyBond(withParent),
       const ScheduleQueue(),
+      notes: [?note],
+    );
+  }
+
+  /// Tek ebeveynli ailede öbür ebeveynin neden olmadığı doğumda anlatılır:
+  /// sen çok küçükken vefat etti ya da ayrıldılar ve uzakta yaşıyor. Kalan
+  /// ebeveyn dul ya da boşanmış olur. Sebep tohumdan gelir; zar akışını
+  /// kaydırmaz.
+  (Character, LifeNote?) _singleParent(Character c) {
+    final parents = c.people.all.where(
+      (p) => p.kin == Kinship.anne || p.kin == Kinship.baba,
+    );
+    if (parents.length != 1) return (c, null);
+    final present = parents.single;
+    final missing = present.kin == Kinship.anne ? 'baba' : 'anne';
+    final died = seed % 10 < 6;
+    final updated = present.copyWith(
+      marital: died ? MaritalStatus.dul : MaritalStatus.bosanmis,
+    );
+    return (
+      c.copyWith(people: c.people.update(updated)),
+      LifeNote(NoteKind.tekEbeveyn, '$missing|${died ? 'vefat' : 'ayrilik'}'),
     );
   }
 
@@ -262,11 +285,16 @@ class LifeEngine {
     }
 
     // Seçim koşulları değiştirdiyse (celp, istifa) artık uymayan olaylar düşer.
+    // Askere giden o yılı askerde geçirir: yılın kalan olayları (pazarda
+    // çay, mahalle) düşer; iplikler aşağıda ertesi yıla kalır.
+    final leftForService =
+        Military.inService(character) && !Military.inService(_state.character);
     final remaining = [
-      for (final e in _state.pendingCards.skip(1))
-        if (e.card.conditions.isMetBy(character) &&
-            !_callerBecameFamily(e, character))
-          e,
+      if (!leftForService)
+        for (final e in _state.pendingCards.skip(1))
+          if (e.card.conditions.isMetBy(character) &&
+              !_callerBecameFamily(e, character))
+            e,
     ];
     // Bu yıla uymayan iplik (celpten sonra mezuna kalma) ertesi yıla kalır.
     for (final e in _state.pendingCards.skip(1)) {
@@ -1674,6 +1702,15 @@ class LifeEngine {
   /// Dönemeç ve iplik dışında yılda 1–2 olay; ilk yaşlarda bir olay.
   int _eventCountFor(int age) {
     if (age < 3) return 1;
-    return _random.nextInt(100) < 55 ? 1 : 2;
+    // Seyrek yıl sıkıcıdır (emülatör testi, 23 Ekim 2026): çoğu yıl iki
+    // olay; dönemeçlerle birlikte üst sınır yine [EventDeck.maxPerYear].
+    final roll = _random.nextInt(100);
+    // Yetişkinlikte havuz incelir: eski oran (tek ya da iki olay).
+    if (age >= 30) return roll < 55 ? 1 : 2;
+    return roll < 25
+        ? 1
+        : roll < 80
+        ? 2
+        : 3;
   }
 }

@@ -81,7 +81,7 @@ class AppLocalizationsTr extends AppLocalizations {
       'Bu hayat oyunun eski bir sürümünden kaldı. Bir Ömür artık insanlarla, anılarla ve yeni olaylarla işliyor; eski hayat bu düzene taşınamıyor. Albümün ve rozetlerin yerinde.';
 
   @override
-  String get outdatedSaveDismiss => 'Anladım, yeni hayata başla';
+  String get outdatedSaveDismiss => 'Anladım';
 
   @override
   String get statHealth => 'Sağlık';
@@ -117,6 +117,9 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get stageBebek => 'Bebeklik';
+
+  @override
+  String get stageCocukluk => 'Erken çocukluk';
 
   @override
   String get stageIlkokul => 'İlkokul';
@@ -159,7 +162,7 @@ class AppLocalizationsTr extends AppLocalizations {
       count,
       locale: localeName,
       other: '$count kart daha',
-      one: 'son kart',
+      zero: 'son kart',
     );
     return 'Bu yıl $_temp0';
   }
@@ -296,6 +299,9 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
+  String get timeNone => 'Bu yıl vaktin yok; yalnızca olaylar gelir';
+
+  @override
   String get timeInfoTooltip => 'Vakit nedir?';
 
   @override
@@ -361,6 +367,21 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get action_oyun_oyna => 'Oyun oyna';
+
+  @override
+  String get action_resim_yap => 'Resim yap';
+
+  @override
+  String get action_top_oyna => 'Sokakta top oyna';
+
+  @override
+  String get action_bilgisayar_oyunu => 'Bilgisayar oyunu oyna';
+
+  @override
+  String get action_arkadaslarla_takil => 'Arkadaşlarla takıl';
+
+  @override
+  String get action_enstruman => 'Enstrüman çal';
 
   @override
   String get action_ders_calis => 'Ders çalış';
@@ -670,6 +691,30 @@ class AppLocalizationsTr extends AppLocalizations {
   String get jobStudent => 'Üniversite öğrencisi';
 
   @override
+  String get jobMilitary => 'Askerde';
+
+  @override
+  String get jobMilitaryHint =>
+      'Askerdesin. İşin seni bekliyor; dönünce kaldığın yerden devam edeceksin.';
+
+  @override
+  String jobTrendDown(int n, String knowledge) {
+    String _temp0 = intl.Intl.selectLogic(knowledge, {
+      'low': ': bilgin işin gerektirdiğinin altında. Yüklen ya da ders çalış',
+      'other': '',
+    });
+    return 'Bu tempoyla performansın her yıl yaklaşık $n puan düşüyor$_temp0.';
+  }
+
+  @override
+  String jobTrendUp(int n) {
+    return 'Bu tempoyla performansın her yıl yaklaşık $n puan artıyor.';
+  }
+
+  @override
+  String get jobTrendFlat => 'Bu tempoyla performansın yerinde sayıyor.';
+
+  @override
   String get jobRetired => 'Emekli';
 
   @override
@@ -943,6 +988,14 @@ class AppLocalizationsTr extends AppLocalizations {
   String get lastYearRetired => 'Emekli oldun.';
 
   @override
+  String get lastYearFired => 'İşten çıkarıldın';
+
+  @override
+  String lastYearFiredSeverance(String money) {
+    return 'İşten çıkarıldın (kıdem tazminatı +$money)';
+  }
+
+  @override
   String get closeTooltip => 'Kapat';
 
   @override
@@ -1165,7 +1218,13 @@ class AppLocalizationsTr extends AppLocalizations {
       'Puanının yettiği bölümler. Bir bölüme, sonra şehre dokun.';
 
   @override
-  String get tercihNone => 'Puanın bu yıl hiçbir bölüme yetmedi.';
+  String get tercihNone =>
+      'Puanın bu yıl örgün bölümlere yetmedi; açıköğretim her zaman açık.';
+
+  @override
+  String tercihNext(String department, int score) {
+    return 'Bir sonraki basamak: $department için en az $score puan.';
+  }
 
   @override
   String tercihCities(int count) {
@@ -1434,6 +1493,22 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get note_kovuldun =>
       'İşten çıkarıldın. Performansın uzun süredir düşüktü.';
+
+  @override
+  String get note_tekEbeveyn_anneVefat =>
+      'Annen, sen daha bir yaşına girmeden hayatını kaybetti. Seni baban büyütüyor; evde onun fotoğrafı hep duvarda.';
+
+  @override
+  String get note_tekEbeveyn_babaVefat =>
+      'Baban, sen daha bir yaşına girmeden hayatını kaybetti. Seni annen büyütüyor; evde onun fotoğrafı hep duvarda.';
+
+  @override
+  String get note_tekEbeveyn_anneAyrilik =>
+      'Annenle baban sen doğduktan kısa süre sonra ayrıldı. Annen uzak bir şehirde yeni bir hayat kurdu; seni baban büyütüyor.';
+
+  @override
+  String get note_tekEbeveyn_babaAyrilik =>
+      'Annenle baban sen doğduktan kısa süre sonra ayrıldı. Baban uzak bir şehirde yeni bir hayat kurdu; seni annen büyütüyor.';
 
   @override
   String get note_istifa => 'İstifa ettin.';
@@ -1837,6 +1912,14 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
+  String newsFormer(String role) {
+    return 'Eskiden $role olan';
+  }
+
+  @override
+  String get newsAcquaintance => 'Tanıdığın';
+
+  @override
   String news_yegenDogdu(String name) {
     return 'Yeğenin $name dünyaya geldi.';
   }
@@ -1854,6 +1937,9 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get group_arkadaslar => 'Arkadaşlar';
+
+  @override
+  String get group_isEv => 'İş ve ev';
 
   @override
   String get group_mahalle => 'Mahalle';
@@ -1981,6 +2067,15 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get color_dusman => 'Husumetli';
+
+  @override
+  String get color_kin_dost => 'Aranız iyi';
+
+  @override
+  String get color_kin_tanidik => 'Aranız mesafeli';
+
+  @override
+  String get color_kin_dusman => 'Küssünüz';
 
   @override
   String get trait_kiskanc => 'Kıskanç';

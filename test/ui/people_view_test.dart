@@ -73,7 +73,7 @@ void main() {
     );
   });
 
-  test('günlük haberi: akraba akrabalıkla, diğerleri adıyla anılır', () {
+  test('günlük haberi: akraba akrabalıkla, diğerleri bağı ya da rolüyle', () {
     final c = withPeople(testCharacter(age: 30), [
       testPerson('x', kin: Kinship.dede, age: 80),
       testPerson('x', name: 'Kerem'),
@@ -81,10 +81,13 @@ void main() {
     String line(PersonNews n) =>
         l10n.newsLine(n, c, occupations: const {'memur': 'Memur'});
     expect(line(const PersonNews(NewsKind.vefat, 'p1')), 'Deden vefat etti.');
-    expect(line(const PersonNews(NewsKind.evlendi, 'p2')), 'Kerem evlendi.');
+    expect(
+      line(const PersonNews(NewsKind.evlendi, 'p2')),
+      'Tanıdığın Kerem evlendi.',
+    );
     expect(
       line(const PersonNews(NewsKind.isBuldu, 'p2', detail: 'memur')),
-      'Kerem iş buldu: memur.',
+      'Tanıdığın Kerem iş buldu: memur.',
     );
   });
 }

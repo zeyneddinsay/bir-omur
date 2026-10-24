@@ -223,7 +223,7 @@ abstract class AppLocalizations {
   /// No description provided for @outdatedSaveDismiss.
   ///
   /// In tr, this message translates to:
-  /// **'Anladım, yeni hayata başla'**
+  /// **'Anladım'**
   String get outdatedSaveDismiss;
 
   /// No description provided for @statHealth.
@@ -279,6 +279,12 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Bebeklik'**
   String get stageBebek;
+
+  /// No description provided for @stageCocukluk.
+  ///
+  /// In tr, this message translates to:
+  /// **'Erken çocukluk'**
+  String get stageCocukluk;
 
   /// No description provided for @stageIlkokul.
   ///
@@ -349,7 +355,7 @@ abstract class AppLocalizations {
   /// No description provided for @cardsLeft.
   ///
   /// In tr, this message translates to:
-  /// **'Bu yıl {count, plural, =1{son kart} other{{count} kart daha}}'**
+  /// **'Bu yıl {count, plural, =0{son kart} other{{count} kart daha}}'**
   String cardsLeft(int count);
 
   /// No description provided for @rollSuccess.
@@ -562,6 +568,12 @@ abstract class AppLocalizations {
   /// **'{count, plural, =0{Bu yılın vakti bitti} other{Bu yıl {count} vakit hakkın kaldı}}'**
   String timeLeft(int count);
 
+  /// No description provided for @timeNone.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu yıl vaktin yok; yalnızca olaylar gelir'**
+  String get timeNone;
+
   /// No description provided for @timeInfoTooltip.
   ///
   /// In tr, this message translates to:
@@ -669,6 +681,36 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Oyun oyna'**
   String get action_oyun_oyna;
+
+  /// No description provided for @action_resim_yap.
+  ///
+  /// In tr, this message translates to:
+  /// **'Resim yap'**
+  String get action_resim_yap;
+
+  /// No description provided for @action_top_oyna.
+  ///
+  /// In tr, this message translates to:
+  /// **'Sokakta top oyna'**
+  String get action_top_oyna;
+
+  /// No description provided for @action_bilgisayar_oyunu.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bilgisayar oyunu oyna'**
+  String get action_bilgisayar_oyunu;
+
+  /// No description provided for @action_arkadaslarla_takil.
+  ///
+  /// In tr, this message translates to:
+  /// **'Arkadaşlarla takıl'**
+  String get action_arkadaslarla_takil;
+
+  /// No description provided for @action_enstruman.
+  ///
+  /// In tr, this message translates to:
+  /// **'Enstrüman çal'**
+  String get action_enstruman;
 
   /// No description provided for @action_ders_calis.
   ///
@@ -1156,6 +1198,36 @@ abstract class AppLocalizations {
   /// **'Üniversite öğrencisi'**
   String get jobStudent;
 
+  /// No description provided for @jobMilitary.
+  ///
+  /// In tr, this message translates to:
+  /// **'Askerde'**
+  String get jobMilitary;
+
+  /// No description provided for @jobMilitaryHint.
+  ///
+  /// In tr, this message translates to:
+  /// **'Askerdesin. İşin seni bekliyor; dönünce kaldığın yerden devam edeceksin.'**
+  String get jobMilitaryHint;
+
+  /// No description provided for @jobTrendDown.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu tempoyla performansın her yıl yaklaşık {n} puan düşüyor{knowledge, select, low{: bilgin işin gerektirdiğinin altında. Yüklen ya da ders çalış} other{}}.'**
+  String jobTrendDown(int n, String knowledge);
+
+  /// No description provided for @jobTrendUp.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu tempoyla performansın her yıl yaklaşık {n} puan artıyor.'**
+  String jobTrendUp(int n);
+
+  /// No description provided for @jobTrendFlat.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu tempoyla performansın yerinde sayıyor.'**
+  String get jobTrendFlat;
+
   /// No description provided for @jobRetired.
   ///
   /// In tr, this message translates to:
@@ -1624,6 +1696,18 @@ abstract class AppLocalizations {
   /// **'Emekli oldun.'**
   String get lastYearRetired;
 
+  /// No description provided for @lastYearFired.
+  ///
+  /// In tr, this message translates to:
+  /// **'İşten çıkarıldın'**
+  String get lastYearFired;
+
+  /// No description provided for @lastYearFiredSeverance.
+  ///
+  /// In tr, this message translates to:
+  /// **'İşten çıkarıldın (kıdem tazminatı +{money})'**
+  String lastYearFiredSeverance(String money);
+
   /// No description provided for @closeTooltip.
   ///
   /// In tr, this message translates to:
@@ -1981,8 +2065,14 @@ abstract class AppLocalizations {
   /// No description provided for @tercihNone.
   ///
   /// In tr, this message translates to:
-  /// **'Puanın bu yıl hiçbir bölüme yetmedi.'**
+  /// **'Puanın bu yıl örgün bölümlere yetmedi; açıköğretim her zaman açık.'**
   String get tercihNone;
+
+  /// No description provided for @tercihNext.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bir sonraki basamak: {department} için en az {score} puan.'**
+  String tercihNext(String department, int score);
 
   /// No description provided for @tercihCities.
   ///
@@ -2409,6 +2499,30 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'İşten çıkarıldın. Performansın uzun süredir düşüktü.'**
   String get note_kovuldun;
+
+  /// No description provided for @note_tekEbeveyn_anneVefat.
+  ///
+  /// In tr, this message translates to:
+  /// **'Annen, sen daha bir yaşına girmeden hayatını kaybetti. Seni baban büyütüyor; evde onun fotoğrafı hep duvarda.'**
+  String get note_tekEbeveyn_anneVefat;
+
+  /// No description provided for @note_tekEbeveyn_babaVefat.
+  ///
+  /// In tr, this message translates to:
+  /// **'Baban, sen daha bir yaşına girmeden hayatını kaybetti. Seni annen büyütüyor; evde onun fotoğrafı hep duvarda.'**
+  String get note_tekEbeveyn_babaVefat;
+
+  /// No description provided for @note_tekEbeveyn_anneAyrilik.
+  ///
+  /// In tr, this message translates to:
+  /// **'Annenle baban sen doğduktan kısa süre sonra ayrıldı. Annen uzak bir şehirde yeni bir hayat kurdu; seni baban büyütüyor.'**
+  String get note_tekEbeveyn_anneAyrilik;
+
+  /// No description provided for @note_tekEbeveyn_babaAyrilik.
+  ///
+  /// In tr, this message translates to:
+  /// **'Annenle baban sen doğduktan kısa süre sonra ayrıldı. Baban uzak bir şehirde yeni bir hayat kurdu; seni annen büyütüyor.'**
+  String get note_tekEbeveyn_babaAyrilik;
 
   /// No description provided for @note_istifa.
   ///
@@ -3022,6 +3136,18 @@ abstract class AppLocalizations {
   /// **'{name} vefat etti.'**
   String news_vefat(String name);
 
+  /// No description provided for @newsFormer.
+  ///
+  /// In tr, this message translates to:
+  /// **'Eskiden {role} olan'**
+  String newsFormer(String role);
+
+  /// No description provided for @newsAcquaintance.
+  ///
+  /// In tr, this message translates to:
+  /// **'Tanıdığın'**
+  String get newsAcquaintance;
+
   /// No description provided for @news_yegenDogdu.
   ///
   /// In tr, this message translates to:
@@ -3051,6 +3177,12 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Arkadaşlar'**
   String get group_arkadaslar;
+
+  /// No description provided for @group_isEv.
+  ///
+  /// In tr, this message translates to:
+  /// **'İş ve ev'**
+  String get group_isEv;
 
   /// No description provided for @group_mahalle.
   ///
@@ -3297,6 +3429,24 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Husumetli'**
   String get color_dusman;
+
+  /// No description provided for @color_kin_dost.
+  ///
+  /// In tr, this message translates to:
+  /// **'Aranız iyi'**
+  String get color_kin_dost;
+
+  /// No description provided for @color_kin_tanidik.
+  ///
+  /// In tr, this message translates to:
+  /// **'Aranız mesafeli'**
+  String get color_kin_tanidik;
+
+  /// No description provided for @color_kin_dusman.
+  ///
+  /// In tr, this message translates to:
+  /// **'Küssünüz'**
+  String get color_kin_dusman;
 
   /// No description provided for @trait_kiskanc.
   ///

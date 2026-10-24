@@ -44,6 +44,10 @@ enum NoteKind {
   zam,
   zamReddi,
   zamZamaniDegil,
+
+  /// Doğumda: tek ebeveynli ailede öbür ebeveynin neden olmadığı; detay
+  /// `anne|vefat`, `baba|ayrilik` gibi.
+  tekEbeveyn,
   kovuldun,
   istifa,
   emekliOldun,

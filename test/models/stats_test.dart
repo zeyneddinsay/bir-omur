@@ -52,7 +52,9 @@ void main() {
     test('her yaş doğru evreye düşer', () {
       const expected = {
         0: LifeStage.bebek,
-        6: LifeStage.bebek,
+        2: LifeStage.bebek,
+        3: LifeStage.cocukluk,
+        6: LifeStage.cocukluk,
         7: LifeStage.ilkokul,
         10: LifeStage.ilkokul,
         11: LifeStage.ortaokul,

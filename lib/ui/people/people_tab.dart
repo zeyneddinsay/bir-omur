@@ -69,6 +69,7 @@ class PersonTile extends StatelessWidget {
           spec: PortraitDesigner.ofPerson(
             p,
             playerAge: alive ? now : p.diedAt!,
+            family: character,
           ),
           size: 44,
         ),

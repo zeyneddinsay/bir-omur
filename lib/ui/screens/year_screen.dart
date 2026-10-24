@@ -40,6 +40,9 @@ class _YearScreenState extends ConsumerState<YearScreen> {
   /// Kapatılan sonuç paneli; yeni bir seçimde panel yine görünür.
   ChoiceOutcome? _closedOutcome;
 
+  /// Kapatılan aksiyon sonucu.
+  ActionResult? _closedAction;
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
@@ -114,7 +117,11 @@ class _YearScreenState extends ConsumerState<YearScreen> {
                                   const SizedBox(width: 6),
                                   Flexible(
                                     child: Text(
-                                      l10n.timeLeft(state.timeLeft),
+                                      // Hiç vakti olmayan yaşta (0–5 ve
+                                      // askerlik) "bitti" denmez.
+                                      state.timeSpent + state.timeLeft == 0
+                                          ? l10n.timeNone
+                                          : l10n.timeLeft(state.timeLeft),
                                       key: const Key('actions_left'),
                                       maxLines: 2,
                                       style: Theme.of(context)
@@ -178,8 +185,19 @@ class _YearScreenState extends ConsumerState<YearScreen> {
               ),
             // Son seçimin sonucu; alttaki düğmeleri örtmesin diye SnackBar
             // yerine burada durur.
-            if (state.lastOutcome case final outcome?
-                when !identical(outcome, _closedOutcome))
+            // Son aksiyonun sonucu, son kartınkinden yenidir.
+            if (ref.watch(lastActionProvider) case final action?
+                when !identical(action, _closedAction))
+              ActionResultPanel(
+                title: l10n.actionName(action.actionId) ?? action.actionId,
+                before: action.before,
+                after: action.after,
+                onClose: () => setState(() => _closedAction = action),
+              )
+            // Ben sekmesinde günlük aynı cümleyi zaten gösterir; tekrar etmez.
+            else if (state.lastOutcome case final outcome?
+                when !identical(outcome, _closedOutcome) &&
+                    (state.phase == YearPhase.cards || _tab != HomeTab.me))
               OutcomePanel(
                 outcome: outcome,
                 character: c,
@@ -253,7 +271,7 @@ class _YearScreenState extends ConsumerState<YearScreen> {
         Padding(
           padding: const EdgeInsets.only(top: 10),
           child: Text(
-            l10n.cardsLeft(state.pendingCards.length),
+            l10n.cardsLeft(state.pendingCards.length - 1),
             style: Theme.of(context).textTheme.labelMedium?.copyWith(
               color: Theme.of(context).colorScheme.onSurface
                   .withValues(alpha: 0.6),
@@ -274,7 +292,11 @@ class _YearScreenState extends ConsumerState<YearScreen> {
             speakerName: EventText.speakerName(card, event.people, c),
             portrait: speaker == null
                 ? PortraitDesigner.forCharacter(c)
-                : PortraitDesigner.ofPerson(speaker, playerAge: c.age),
+                : PortraitDesigner.ofPerson(
+                    speaker,
+                    playerAge: c.age,
+                    family: c,
+                  ),
             character: c,
             people: event.people,
             render: (template) => EventText.render(template, event.people, c),

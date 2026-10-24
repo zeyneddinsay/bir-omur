@@ -2,7 +2,7 @@ import '../../engine/engine.dart';
 import '../../models/models.dart';
 
 /// İnsanlar sekmesindeki bölümler, gösterim sırasıyla.
-enum PeopleGroup { aile, okul, arkadaslar, mahalle, eski, vefat }
+enum PeopleGroup { aile, okul, arkadaslar, isEv, mahalle, eski, vefat }
 
 /// Kişiyi İnsanlar sekmesinde nereye koyacağımız. Saf hesap; arayüz yalnızca
 /// metne çevirir.
@@ -19,6 +19,26 @@ abstract final class PeopleView {
     RoleKind.muhtar,
   };
 
+  /// İş ve ev hayatındaki roller: patron, iş arkadaşı, ev sahibi…
+  static const Set<RoleKind> workHomeRoles = {
+    RoleKind.patron,
+    RoleKind.amir,
+    RoleKind.usta,
+    RoleKind.mudur,
+    RoleKind.isArkadasi,
+    RoleKind.calisan,
+    RoleKind.musteri,
+    RoleKind.ortak,
+    RoleKind.rakip,
+    RoleKind.evSahibi,
+    RoleKind.kiraci,
+    RoleKind.evArkadasi,
+    RoleKind.odaArkadasi,
+  };
+
+  /// Askerden dönüşten sonra bu kadar yıl bölük arkadaşları "Arkadaşlar"da.
+  static const int recentComradeYears = 3;
+
   static const Set<Bond> friendBonds = {
     Bond.arkadas,
     Bond.yakinArkadas,
@@ -27,13 +47,20 @@ abstract final class PeopleView {
     Bond.nisanli,
   };
 
-  static PeopleGroup groupOf(Person p) {
+  static PeopleGroup groupOf(Person p, {int? now}) {
     if (!p.isAlive) return PeopleGroup.vefat;
     if (p.kin != null) return PeopleGroup.aile;
     if (p.archived) return PeopleGroup.eski;
     if (friendBonds.contains(p.bond)) return PeopleGroup.arkadaslar;
     if (_hasActive(p, schoolRoles)) return PeopleGroup.okul;
+    if (_hasActive(p, workHomeRoles)) return PeopleGroup.isEv;
     if (_hasActive(p, neighbourhoodRoles)) return PeopleGroup.mahalle;
+    // Yeni dönülen askerlikten bölük arkadaşları hemen "eski" sayılmaz.
+    if (now != null &&
+        p.origin == Origin.askerlik &&
+        now - p.metAt <= recentComradeYears) {
+      return PeopleGroup.arkadaslar;
+    }
     return PeopleGroup.eski;
   }
 
@@ -46,7 +73,7 @@ abstract final class PeopleView {
     final now = c.age;
     final groups = <PeopleGroup, List<Person>>{};
     for (final p in c.people.bornBy(now)) {
-      groups.putIfAbsent(groupOf(p), () => []).add(p);
+      groups.putIfAbsent(groupOf(p, now: now), () => []).add(p);
     }
     for (final MapEntry(key: group, value: people) in groups.entries) {
       if (group == PeopleGroup.aile) {

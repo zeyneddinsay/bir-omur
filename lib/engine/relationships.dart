@@ -21,6 +21,31 @@ enum RelationColor {
 /// anılarından, tabanından ve son görüşmeden hesaplanır. Böylece geçmiş
 /// hiçbir zaman kaybolmaz ve zaman tek başına küsleri barıştırmaz.
 abstract final class Relationships {
+  /// Akrabanın eşi (oyuncunun gözünden): dede–nine aynı taraftan, anne–baba,
+  /// kayınvalide–kayınpeder.
+  static const Map<Kinship, Kinship> _spouseKin = {
+    Kinship.dede: Kinship.nine,
+    Kinship.nine: Kinship.dede,
+    Kinship.anne: Kinship.baba,
+    Kinship.baba: Kinship.anne,
+    Kinship.kayinvalide: Kinship.kayinpeder,
+    Kinship.kayinpeder: Kinship.kayinvalide,
+  };
+
+  /// Eşini son bir yıl içinde kaybetmiş akraba: yas yılında neşeli olaylarda
+  /// rol almaz (babaanne öldüğü yıl dedenin "askerde kar" hikâyesi gelmez).
+  static bool widowedRecently(Character c, Person p) {
+    final partner = _spouseKin[p.kin];
+    if (partner == null) return false;
+    return c.people.all.any(
+      (o) =>
+          o.kin == partner &&
+          o.side == p.side &&
+          o.diedAt != null &&
+          c.age - o.diedAt! <= 1,
+    );
+  }
+
   /// Şiddete göre anının ilk ağırlığı.
   static const Map<int, int> severityPoints = {1: 10, 2: 30, 3: 50};
 

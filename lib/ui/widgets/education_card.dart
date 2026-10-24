@@ -81,6 +81,12 @@ String noteLine(
     NoteKind.zam => l10n.note_zam,
     NoteKind.zamReddi => l10n.note_zamReddi,
     NoteKind.zamZamaniDegil => l10n.note_zamZamaniDegil,
+    NoteKind.tekEbeveyn => switch (d) {
+      'anne|vefat' => l10n.note_tekEbeveyn_anneVefat,
+      'baba|vefat' => l10n.note_tekEbeveyn_babaVefat,
+      'anne|ayrilik' => l10n.note_tekEbeveyn_anneAyrilik,
+      _ => l10n.note_tekEbeveyn_babaAyrilik,
+    },
     NoteKind.kovuldun => l10n.note_kovuldun,
     NoteKind.istifa => l10n.note_istifa,
     NoteKind.emekliOldun => l10n.note_emekliOldun,
@@ -233,9 +239,17 @@ class _TercihSheetState extends ConsumerState<TercihSheet> {
       ),
       const SizedBox(height: 4),
       Text(
-        placements.isEmpty ? l10n.tercihNone : l10n.tercihPrompt,
+        placements.every((p) => p.$1.open)
+            ? l10n.tercihNone
+            : l10n.tercihPrompt,
         style: theme.textTheme.bodySmall,
       ),
+      if (EducationRules.nextGoal(c) case (final d, final need))
+        Text(
+          l10n.tercihNext(departmentName(l10n, d.id), need),
+          key: const Key('tercih_next'),
+          style: theme.textTheme.bodySmall,
+        ),
       if (selected == null)
         for (final MapEntry(key: id, value: options) in byDepartment.entries)
           ListTile(

@@ -1,6 +1,7 @@
 /// Hayatın 8 evresi. [id] kart JSON'undaki `stage` değeridir.
 enum LifeStage {
-  bebek('bebek', 0, 6),
+  bebek('bebek', 0, 2),
+  cocukluk('cocukluk', 3, 6),
   ilkokul('ilkokul', 7, 10),
   ortaokul('ortaokul', 11, 14),
   lise('lise', 15, 18),

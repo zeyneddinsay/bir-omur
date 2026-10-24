@@ -132,6 +132,21 @@ class NewBadges extends Notifier<Set<String>> {
   void set(Set<String> ids) => state = ids;
 }
 
+/// Son yapılan aksiyon ve öncesindeki karakter: arayüz ne olduğunu ve
+/// göstergelerde neyin değiştiğini gösterir. Yeni yılda ya da kartta silinir.
+typedef ActionResult = ({String actionId, Character before, Character after});
+
+final lastActionProvider = NotifierProvider<LastAction, ActionResult?>(
+  LastAction.new,
+);
+
+class LastAction extends Notifier<ActionResult?> {
+  @override
+  ActionResult? build() => null;
+
+  void set(ActionResult? result) => state = result;
+}
+
 final lifeProvider = NotifierProvider<LifeController, LifeState?>(
   LifeController.new,
 );
@@ -209,11 +224,25 @@ class LifeController extends Notifier<LifeState?> {
     }
   }
 
-  void choose(ChoiceSide side) => _update(engine.choose(side));
+  void choose(ChoiceSide side) {
+    ref.read(lastActionProvider.notifier).set(null);
+    _update(engine.choose(side));
+  }
 
-  void doAction(String actionId) => _update(engine.doAction(actionId));
+  void doAction(String actionId) {
+    final before = engine.state.character;
+    _update(engine.doAction(actionId));
+    ref.read(lastActionProvider.notifier).set((
+      actionId: actionId,
+      before: before,
+      after: engine.state.character,
+    ));
+  }
 
-  void advanceYear() => _update(engine.advanceYear());
+  void advanceYear() {
+    ref.read(lastActionProvider.notifier).set(null);
+    _update(engine.advanceYear());
+  }
 
   /// YKS tercihi: bir bölüme yerleşir.
   void enroll(String department, String city) =>
@@ -274,6 +303,7 @@ class LifeController extends Notifier<LifeState?> {
   /// Doğum ekranına döner; yarım hayat kaydı silinir.
   void reset() {
     _engine = null;
+    ref.read(lastActionProvider.notifier).set(null);
     ref.read(newBadgesProvider.notifier).set(const {});
     state = null;
     _write(_store.clearCurrentLife);

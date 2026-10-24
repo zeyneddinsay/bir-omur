@@ -255,6 +255,24 @@ void main() {
           c.hasFlag('asker_anilari') ? Military.comrades : 0,
         );
         expect(c.hasFlag('askerde'), isFalse, reason: 'askerde ölmedi');
+        // Askere gidilen yıl, celpten sonra başka olay gelmez (pazarda çay
+        // içilmez).
+        final history = c.history;
+        for (var i = 0; i < history.length; i++) {
+          final r = history[i];
+          if (r.cardId != 'askerlik_celbi' || r.side == ChoiceSide.up) {
+            continue;
+          }
+          final went = r.side == ChoiceSide.left || r.side == ChoiceSide.right;
+          final sameYearAfter = history
+              .skip(i + 1)
+              .where((x) => x.age == r.age)
+              .map((x) => x.cardId)
+              .toList();
+          if (went && c.hasFlag('asker_anilari')) {
+            expect(sameYearAfter, isEmpty, reason: '${r.age} yaş');
+          }
+        }
       }
     });
 

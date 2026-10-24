@@ -14,12 +14,21 @@ class PersonFactory {
   /// Oyuncunun adı: yeni kişilere verilmez (aynı adlı üç kişi karışır).
   final String? avoidName;
 
-  /// [names] içinden [avoidName] dışındaki bir ad.
-  String pickName(List<String> names) {
-    final pool = [
+  /// [names] içinden [avoidName] ve [taken] dışındaki bir ad. Hayattaki
+  /// tanıdıkların adı yeni birine verilmez: çocukluk arkadaşı Eymen ile
+  /// bölükten gelen Eymen aynı kişi sanılır. Hepsi alınmışsa yalnızca
+  /// oyuncunun adı ayıklanır.
+  String pickName(List<String> names, {Set<String> taken = const {}}) {
+    var pool = [
       for (final n in names)
-        if (n != avoidName) n,
+        if (n != avoidName && !taken.contains(n)) n,
     ];
+    if (pool.isEmpty) {
+      pool = [
+        for (final n in names)
+          if (n != avoidName) n,
+      ];
+    }
     final from = pool.isEmpty ? names : pool;
     return from[random.nextInt(from.length)];
   }
@@ -114,6 +123,11 @@ class PersonFactory {
     );
   }
 
+  /// Kitaptaki herkesin adı (yaşayan, vefat etmiş, arşivde).
+  static Set<String> takenNames(PeopleBook book) => {
+    for (final p in book.all) p.name,
+  };
+
   (PeopleBook, Person) add(
     PeopleBook book, {
     required int now,
@@ -130,7 +144,10 @@ class PersonFactory {
     Bond bond = Bond.tanidik,
   }) {
     final g = gender ?? Gender.values[random.nextInt(Gender.values.length)];
-    final name = pickName(families.namesFor(g, NameEra.forAgeGap(age - now)));
+    final name = pickName(
+      families.namesFor(g, NameEra.forAgeGap(age - now)),
+      taken: takenNames(book),
+    );
     final surname = families.surnames[random.nextInt(families.surnames.length)];
     final traits = <Trait>{?requiredTrait};
     final target = random.nextDouble() < 0.7 ? 2 : 1;

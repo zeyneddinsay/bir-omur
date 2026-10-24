@@ -207,6 +207,41 @@ abstract final class ActionCatalog {
       maxAge: 12,
       effect: Effect(stats: {StatKind.happiness: 5}),
     ),
+    // Çocuk ve ergenin yılı boş kalmasın: vakit var, yapacak şey de olsun.
+    LifeAction(
+      id: 'resim_yap',
+      category: ActionCategory.eglence,
+      minAge: 6,
+      maxAge: 12,
+      effect: Effect(stats: {StatKind.happiness: 3, StatKind.knowledge: 1}),
+    ),
+    LifeAction(
+      id: 'top_oyna',
+      category: ActionCategory.saglik,
+      minAge: 6,
+      maxAge: 17,
+      effect: Effect(stats: {StatKind.health: 3, StatKind.happiness: 2}),
+    ),
+    LifeAction(
+      id: 'bilgisayar_oyunu',
+      category: ActionCategory.eglence,
+      minAge: 10,
+      maxAge: 40,
+      effect: Effect(stats: {StatKind.happiness: 4, StatKind.health: -1}),
+    ),
+    LifeAction(
+      id: 'arkadaslarla_takil',
+      category: ActionCategory.eglence,
+      minAge: 12,
+      maxAge: 25,
+      effect: Effect(stats: {StatKind.happiness: 4, StatKind.reputation: 1}),
+    ),
+    LifeAction(
+      id: 'enstruman',
+      category: ActionCategory.eglence,
+      minAge: 11,
+      effect: Effect(stats: {StatKind.knowledge: 2, StatKind.happiness: 2}),
+    ),
     LifeAction(
       id: 'ders_calis',
       category: ActionCategory.okulIs,

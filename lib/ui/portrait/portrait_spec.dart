@@ -183,13 +183,74 @@ abstract final class PortraitDesigner {
   );
 
   /// Oyuncunun hayatındaki bir kişi: yüzü ömür boyu aynı tohumdan gelir,
-  /// yaşı ilerledikçe saçı ve yüzü değişir.
-  static PortraitSpec ofPerson(Person p, {required int playerAge}) => build(
-    seed: p.portraitSeed,
-    gender: p.gender,
-    age: ageLookFor(max(0, p.ageAt(playerAge))),
-    mood: Mood.neutral,
-  );
+  /// yaşı ilerledikçe saçı grileşir, yüzü yaşlanır. [family] verilirse kan
+  /// bağı olan akrabanın ten rengi ailenin tonundan gelir; dede ve nine her
+  /// zaman yaşlı görünür.
+  static PortraitSpec ofPerson(
+    Person p, {
+    required int playerAge,
+    Character? family,
+  }) {
+    var age = ageLookFor(max(0, p.ageAt(playerAge)));
+    if ((p.kin == Kinship.dede || p.kin == Kinship.nine) &&
+        age.index < AgeLook.yasli.index) {
+      age = AgeLook.yasli;
+    }
+    return build(
+      seed: p.portraitSeed,
+      gender: p.gender,
+      age: age,
+      mood: Mood.neutral,
+      skinTone: family == null ? null : familyTone(family, p),
+    );
+  }
+
+  /// Oyuncunun ten tonu (sıra numarası); [forCharacter] ile aynı tohum.
+  static int playerTone(Character c) =>
+      _toneOf(stableHash('${c.name}|${c.hometown}|${c.gender.id}'));
+
+  /// Tohumdan seçilen ten tonu: [build] tonu ilk çekilişte seçer.
+  static int _toneOf(int seed) => SeededRandom(seed).nextInt(_skinTones.length);
+
+  /// Kan bağı olan akrabanın ten tonu; değilse (eş, kayın, tanıdık) null.
+  /// Baba tarafı oyuncunun tonundadır, anne tarafı ondan en fazla bir ton
+  /// farklıdır; oyuncunun çocukları onunla eşinin arasındadır.
+  static int? familyTone(Character c, Person p) {
+    final player = playerTone(c);
+    final paternal = player;
+    final shift =
+        SeededRandom(stableHash('aile|${c.name}|${c.hometown}')).nextInt(3) - 1;
+    final maternal = (player + shift).clamp(0, _skinTones.length - 1);
+    int bySide(int fallback) => switch (p.side) {
+      Side.anne => maternal,
+      Side.baba => paternal,
+      null => fallback,
+    };
+    switch (p.kin) {
+      case Kinship.anne || Kinship.dayi || Kinship.teyze:
+        return maternal;
+      case Kinship.baba || Kinship.amca || Kinship.hala:
+        return paternal;
+      case Kinship.dede || Kinship.nine:
+        return bySide(paternal);
+      case Kinship.kuzen:
+        return bySide(player);
+      case Kinship.kardes || Kinship.yegen || Kinship.torun:
+        return player;
+      case Kinship.cocuk:
+        final spouse = c.people.all
+            .where((s) => s.kin == Kinship.es)
+            .firstOrNull;
+        if (spouse == null) return player;
+        final other = _toneOf(spouse.portraitSeed);
+        // İki tonun arası; tek basamak farkta kardeşler ikisine dağılır.
+        final low = min(player, other);
+        final high = max(player, other);
+        return low + (high - low + (p.portraitSeed.isEven ? 1 : 0)) ~/ 2;
+      default:
+        return null;
+    }
+  }
 
   static PortraitSpec forSpeaker(String speakerId, {required int playerAge}) {
     final seed = stableHash('konusmaci|$speakerId');
@@ -204,31 +265,64 @@ abstract final class PortraitDesigner {
     return build(seed: seed, gender: gender, age: age);
   }
 
+  /// [skinTone] verilirse ten tonu (sıra numarası) odur: ailede kan bağı
+  /// olanlar aynı tondan gelir.
+  ///
+  /// Kişinin kimliği (ten, saç rengi, yüz, saç modeli, gözlük ve bıyık
+  /// eğilimi) tohumdan yaşa bakmadan, hep aynı sırayla çekilir; yaş yalnızca
+  /// grileşmeyi, kırışıkları, kelleşmeyi, başörtüsü ve kasketi, bebek ve
+  /// çocuk görünümünü değiştirir. Böylece aynı kişi her yaşta aynı saçla
+  /// tanınır.
   static PortraitSpec build({
     required int seed,
     required Gender gender,
     required AgeLook age,
     Mood mood = Mood.happy,
     SpeakerLook? look,
+    int? skinTone,
   }) {
     final r = SeededRandom(seed);
     T pick<T>(List<T> items) => items[r.nextInt(items.length)];
-    bool chance(double p) => r.nextDouble() < p;
     final male = gender == Gender.erkek;
     final baby = age == AgeLook.bebek;
     final child = baby || age == AgeLook.cocuk;
+    final old = age == AgeLook.yasli;
 
-    final (skin, skinShadow) = pick(_skinTones);
-    var hairColor = pick(_hairColors);
-    if (age == AgeLook.olgun && chance(0.5)) hairColor = _greyHair;
-    if (age == AgeLook.yasli) hairColor = chance(0.5) ? _whiteHair : _greyHair;
-
-    final face = baby
-        ? 'face_round'
-        : pick(['face_oval', 'face_round', 'face_long']);
-    final eyes = child ? 'eyes_round' : pick(['eyes_dot', 'eyes_round']);
+    // Kimlik: her çekiliş her yaşta yapılır, sıra hiç değişmez.
+    final toneDraw = r.nextInt(_skinTones.length);
+    final baseHair = pick(_hairColors);
+    final adultFace = pick(['face_oval', 'face_round', 'face_long']);
+    final adultEyes = pick(['eyes_dot', 'eyes_round']);
     final brows = pick(['brows_flat', 'brows_arched', 'brows_thick']);
     final nose = pick(['nose_small', 'nose_button']);
+    final maleStyle = pick([
+      'hair_short',
+      'hair_side_part',
+      'hair_curly',
+      'hair_buzz',
+    ]);
+    final femaleStyle = pick(['long', 'bob', 'bun', 'curly']);
+    final facialRoll = r.nextDouble();
+    final glassesRoll = r.nextDouble();
+    final glassesType = pick(['glasses_round', 'glasses_square']);
+    final headwearRoll = r.nextDouble();
+    final greyRoll = r.nextDouble();
+    final baldRoll = r.nextDouble();
+    final shirt = pick(_shirts);
+    final background = pick(_backgrounds);
+    final scarf = pick(_scarves);
+
+    final (skin, skinShadow) =
+        _skinTones[(skinTone ?? toneDraw).clamp(0, _skinTones.length - 1)];
+    // Olgun yaşta çoğunlukla kır, yaşlıda gri ya da beyaz saç.
+    final hairColor = switch (age) {
+      AgeLook.olgun => greyRoll < 0.75 ? _greyHair : baseHair,
+      AgeLook.yasli => greyRoll < 0.5 ? _whiteHair : _greyHair,
+      _ => baseHair,
+    };
+
+    final face = baby ? 'face_round' : adultFace;
+    final eyes = child ? 'eyes_round' : adultEyes;
     final mouth = baby
         ? 'mouth_baby'
         : switch (mood) {
@@ -243,20 +337,20 @@ abstract final class PortraitDesigner {
     if (baby) {
       hairFront = 'hair_baby_tuft';
     } else if (male) {
-      hairFront = switch (age) {
-        AgeLook.olgun => pick([
-          'hair_short',
-          'hair_side_part',
-          'hair_buzz',
-          'hair_bald_sides',
-        ]),
-        AgeLook.yasli => pick(['hair_bald_sides', 'hair_short', 'hair_buzz']),
-        _ => pick(['hair_short', 'hair_side_part', 'hair_curly', 'hair_buzz']),
+      // Yaşla kelleşme; yaşlıda kıvırcık kısa saça döner.
+      final balding = switch (age) {
+        AgeLook.olgun => baldRoll < 0.25,
+        AgeLook.yasli => baldRoll < 0.45,
+        _ => false,
       };
+      hairFront = balding
+          ? 'hair_bald_sides'
+          : old && maleStyle == 'hair_curly'
+          ? 'hair_short'
+          : maleStyle;
     } else {
-      final style = age == AgeLook.yasli
-          ? pick(['bun', 'bob', 'curly'])
-          : pick(['long', 'bob', 'bun', 'curly']);
+      // Yaşlı kadında uzun saç topuz olur; diğer modeller kalır.
+      final style = old && femaleStyle == 'long' ? 'bun' : femaleStyle;
       (hairBack, hairFront) = switch (style) {
         'long' => ('hair_long_back', 'hair_long_front'),
         'bob' => ('hair_bob_back', 'hair_long_front'),
@@ -270,9 +364,9 @@ abstract final class PortraitDesigner {
     final facialHair = male && !child && age != AgeLook.genc
         ? (look?.mustache ?? false)
               ? 'mustache'
-              : chance(0.12)
+              : facialRoll < 0.12
               ? 'beard'
-              : chance(0.25)
+              : facialRoll < 0.34
               ? 'mustache'
               : null
         : null;
@@ -283,14 +377,13 @@ abstract final class PortraitDesigner {
       AgeLook.yasli => 0.55,
       _ => 0.0,
     };
-    final glasses = (look?.glasses ?? false) || chance(glassesChance)
-        ? pick(['glasses_round', 'glasses_square'])
+    // Aynı eşik: gençken gözlüklü olan yaşlanınca da gözlüklüdür.
+    final glasses = (look?.glasses ?? false) || glassesRoll < glassesChance
+        ? glassesType
         : null;
     final headscarf =
-        !male &&
-        ((look?.headscarf ?? false) || (age == AgeLook.yasli && chance(0.3)));
-    final cap =
-        male && ((look?.cap ?? false) || (age == AgeLook.yasli && chance(0.3)));
+        !male && ((look?.headscarf ?? false) || (old && headwearRoll < 0.3));
+    final cap = male && ((look?.cap ?? false) || (old && headwearRoll < 0.3));
 
     final layers = <String>[
       'bg',
@@ -316,9 +409,9 @@ abstract final class PortraitDesigner {
         PortraitTokens.skin: skin,
         PortraitTokens.skinShadow: skinShadow,
         PortraitTokens.hair: hairColor,
-        PortraitTokens.shirt: pick(_shirts),
-        PortraitTokens.background: pick(_backgrounds),
-        PortraitTokens.accessory: pick(_scarves),
+        PortraitTokens.shirt: shirt,
+        PortraitTokens.background: background,
+        PortraitTokens.accessory: scarf,
       },
     );
   }

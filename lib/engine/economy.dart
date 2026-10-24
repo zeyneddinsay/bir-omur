@@ -67,6 +67,9 @@ abstract final class Economy {
   /// Nakit, yılın enflasyonunun bu oranı kadar erir (%30 enflasyon → %15).
   static const double cashErosionShare = 0.5;
 
+  /// Bu yaştan önce nakit enflasyonla erimez (çocuğun kumbarası).
+  static const int erosionMinAge = 18;
+
   static const int initialGoldPrice = 6500;
   static const double goldMinChange = -0.15;
   static const double goldMaxChange = 0.15;
@@ -310,7 +313,9 @@ class EconomyTick {
     );
 
     var money = c.stats.money;
-    final eroded = money > 0
+    // Çocuğun kumbarası erimez (karar, 23 Ekim 2026): 18 yaşına kadar
+    // enflasyon nakde dokunmaz.
+    final eroded = money > 0 && c.age >= Economy.erosionMinAge
         ? (money * inflation * Economy.cashErosionShare).round()
         : 0;
     money -= eroded;

@@ -487,7 +487,14 @@ class PeopleTick {
     String? occupation,
   }) {
     final gender = Gender.values[random.nextInt(Gender.values.length)];
-    final names = families.namesFor(gender, NameEra.forAgeGap(ageGap));
+    // Tanıdıkların adı yeni sınıf arkadaşına verilmez (iki Fatma karışır).
+    final all = families.namesFor(gender, NameEra.forAgeGap(ageGap));
+    final taken = PersonFactory.takenNames(c.people);
+    final fresh = [
+      for (final n in all)
+        if (!taken.contains(n) && n != c.name) n,
+    ];
+    final names = fresh.isEmpty ? all : fresh;
     final name = names[random.nextInt(names.length)];
     final surname = families.surnames[random.nextInt(families.surnames.length)];
     final traits = <Trait>{};

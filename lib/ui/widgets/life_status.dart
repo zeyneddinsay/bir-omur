@@ -18,6 +18,7 @@ String careerLine(AppLocalizations l10n, Career career, int tier) {
 /// Meslek ve kademe adları içerikten (meslek dosyalarından) gelir.
 String jobLabel(AppLocalizations l10n, Character c, CareerBook careers) {
   if (c.isRetired) return l10n.jobRetired;
+  if (Military.inService(c)) return l10n.jobMilitary;
   if (c.job case final job?) {
     final career = careers.byId(job.careerId);
     if (career == null) return job.careerId;
@@ -165,8 +166,12 @@ class AssetsSummary extends StatelessWidget {
             Text(
               tl(Economy.netWorth(c, market)),
               key: const Key('net_worth'),
+              // Kırmızı yalnızca eksi servete: artıda hata gibi görünmesin.
               style: theme.textTheme.titleMedium?.copyWith(
-                color: theme.colorScheme.primary,
+                fontWeight: FontWeight.w800,
+                color: Economy.netWorth(c, market) < 0
+                    ? theme.colorScheme.error
+                    : null,
               ),
             ),
           ],
@@ -200,6 +205,10 @@ class LastYearBanner extends StatelessWidget {
     final theme = Theme.of(context);
     String tl(int v) => l10n.money(v);
     final parts = [
+      if (career case final c? when c.fired)
+        c.severance > 0
+            ? l10n.lastYearFiredSeverance(tl(c.severance))
+            : l10n.lastYearFired,
       if (career case final c? when c.income > 0)
         l10n.lastYearIncome('+${tl(c.income)}'),
       if (economy.rentPaid > 0) l10n.lastYearRent('−${tl(economy.rentPaid)}'),
@@ -219,8 +228,11 @@ class LastYearBanner extends StatelessWidget {
       margin: const EdgeInsets.fromLTRB(12, 4, 12, 0),
       padding: const EdgeInsets.fromLTRB(12, 8, 4, 8),
       decoration: BoxDecoration(
-        color: theme.colorScheme.secondaryContainer,
+        color: theme.cardTheme.color,
         borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: theme.colorScheme.onSurface.withValues(alpha: 0.12),
+        ),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,

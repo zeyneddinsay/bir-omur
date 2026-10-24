@@ -89,6 +89,16 @@ void main() {
       }
     });
 
+    test('çocuğun kumbarası erimez; 18 yaşında erimeye başlar', () {
+      final (kid, _, kidReport) = EconomyTick(SeededRandom(3))
+          .apply(testCharacter(age: 12, money: 5000), Market.initial);
+      expect(kidReport.cashEroded, 0);
+      expect(kid.stats.money, 5000);
+      final (_, _, adultReport) = EconomyTick(SeededRandom(3))
+          .apply(testCharacter(age: 18, money: 5000), Market.initial);
+      expect(adultReport.cashEroded, greaterThan(0));
+    });
+
     test('borç erimez ama faiz işler', () {
       final (c, _, report) = EconomyTick(SeededRandom(1))
           .apply(testCharacter(money: -50000), Market.initial);

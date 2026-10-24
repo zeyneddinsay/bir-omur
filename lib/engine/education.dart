@@ -175,6 +175,22 @@ abstract final class EducationRules {
     );
   }
 
+  /// Puanın yetmediği en düşük tabanlı örgün bölüm ve en kolay şehirdeki
+  /// taban puanı; hepsine yetiyorsa null. Tercih ekranı "bir sonraki
+  /// basamak" diye gösterir.
+  static (Department, int)? nextGoal(Character c) {
+    final score = c.education.yksScore;
+    if (score == null) return null;
+    (Department, int)? best;
+    for (final d in departments) {
+      if (d.open) continue;
+      final need = Cities.all.map(d.scoreIn).reduce(min);
+      if (score >= need) continue;
+      if (best == null || need < best.$2) best = (d, need);
+    }
+    return best;
+  }
+
   /// Puanın yettiği bölüm ve şehirler; açıköğretim her zaman açık
   /// (memlekette okunur).
   static List<(Department, String)> placements(Character c) {
@@ -182,9 +198,9 @@ abstract final class EducationRules {
     if (score == null) return const [];
     return [
       for (final d in departments)
-        if (d.open) ...[
-          if (score >= d.baseScore) (d, c.city),
-        ] else
+        if (d.open)
+          (d, c.city)
+        else
           for (final city in Cities.all)
             if (score >= d.scoreIn(city)) (d, city),
     ];

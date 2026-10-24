@@ -49,6 +49,19 @@ class JobCard extends ConsumerWidget {
     final salary = Careers.salaryFor(c, job, career);
     final canPromote = engine.canRequest(promotion: true);
     final canRaise = engine.canRequest(promotion: false);
+    // Askerdeki yıl iş askıda: yalnızca bilgi, düğme yok.
+    if (Military.inService(c)) {
+      return Card(
+        key: const Key('job_card'),
+        child: ListTile(
+          leading: const Icon(Icons.military_tech_outlined),
+          title: Text(title),
+          subtitle: Text(l10n.jobMilitaryHint),
+        ),
+      );
+    }
+    final trend = Careers.expectedPerformanceChange(c, job.tempo);
+    final lowKnowledge = c.stats.knowledge < 50;
 
     return Card(
       key: const Key('job_card'),
@@ -82,6 +95,20 @@ class JobCard extends ConsumerWidget {
                   child: Text('${job.performance}', textAlign: TextAlign.end),
                 ),
               ],
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: Text(
+                trend < 0
+                    ? l10n.jobTrendDown(-trend, lowKnowledge ? 'low' : 'ok')
+                    : trend > 0
+                    ? l10n.jobTrendUp(trend)
+                    : l10n.jobTrendFlat,
+                key: const Key('job_trend'),
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: trend < 0 ? theme.colorScheme.error : null,
+                ),
+              ),
             ),
             if (job.performance < 30)
               Padding(

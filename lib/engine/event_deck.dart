@@ -198,6 +198,10 @@ class EventDeck {
               !names.contains(p.name) &&
               !busy.contains(p.id) &&
               (slot.deceased || RoleMatcher.isRested(p, now)) &&
+              // Eşini bu yıl kaybeden akraba neşeli olaylarda rol almaz.
+              (card.mandatory ||
+                  slot.deceased ||
+                  !Relationships.widowedRecently(c, p)) &&
               RoleMatcher.matches(slot, p, c))
             p,
       ];

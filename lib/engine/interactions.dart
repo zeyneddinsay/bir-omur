@@ -766,7 +766,8 @@ class _Resolver {
   }
 
   String _kiss() {
-    _remember('elini_optu', MemoryTone.olumlu, 1);
+    // Her bayram yapılabilen küçük bir jest: anısı hafif sayılır.
+    _remember('elini_optu', MemoryTone.olumlu, 1, bonus: 0.6);
     _happy(2);
     if (now < 18) {
       _money += Interactions.pocketMoney;

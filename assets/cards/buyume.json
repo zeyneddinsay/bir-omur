@@ -1,0 +1,1526 @@
+[
+  {
+    "id": "unutulan_odev",
+    "type": "kisi",
+    "theme": "okul",
+    "minAge": 7,
+    "maxAge": 10,
+    "repeat": "once",
+    "roles": {
+      "ogretmen": { "roles": ["ogretmen"] }
+    },
+    "text": "Ödevini evde unuttun. {ogretmen.ad} Öğretmen defterleri topluyor; sıra sana yaklaşıyor.",
+    "left": {
+      "label": "Doğruyu söylerim",
+      "effects": {
+        "reputation": 1,
+        "people": {
+          "ogretmen": {
+            "memory": {
+              "kind": "odevi_unuttugunu_soyledi",
+              "label": "Ödevini unuttuğunu dürüstçe söyledi",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "'Evde kaldı öğretmenim' dedin. {ogretmen.ad} Öğretmen yarına kadar süre verdi, gözünü de kırptı."
+    },
+    "right": {
+      "label": "Çantada kaldı derim",
+      "roll": { "stat": "luck", "threshold": 50 },
+      "success": { "happiness": 1 },
+      "fail": { "reputation": -2, "happiness": -1 },
+      "successResult": "Zil tam o sırada çaldı; defter toplama yarına kaldı. Akşam ödevini iki kez kontrol ettin.",
+      "failResult": "Öğretmen çantana birlikte bakmayı önerdi. Kulakların kıpkırmızı oldu."
+    }
+  },
+  {
+    "id": "bahcede_yaz",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 7,
+    "maxAge": 11,
+    "repeat": "once",
+    "roles": {
+      "buyuk": { "kin": ["dede", "nine"], "livesTogether": false }
+    },
+    "speaker": "buyuk",
+    "text": "Yaz tatilinin bir haftası {buyuk.akraba|in} yanında. Sabah erkenden seslendi: 'Hadi, domatesler sulanmayı bekler.'",
+    "left": {
+      "label": "Ben de gelirim!",
+      "effects": {
+        "health": 2,
+        "happiness": 2,
+        "people": {
+          "buyuk": {
+            "memory": {
+              "kind": "bahceye_benimle_geldi",
+              "label": "Yaz sabahları bahçeye benimle geldi",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      },
+      "result": "Hortumla domatesleri suladınız, bir tanesini de oracıkta yediniz. O tadı yıllarca aradın."
+    },
+    "right": {
+      "label": "Biraz daha uyuyayım",
+      "effects": { "happiness": 1, "health": 1 },
+      "result": "Öğlene kadar uyudun. {buyuk.akraba} kahvaltını tabağın üstüne bir tabak kapatıp saklamıştı."
+    }
+  },
+  {
+    "id": "odevde_kardes",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 7,
+    "maxAge": 10,
+    "repeat": "once",
+    "roles": {
+      "kardes": { "kin": ["kardes"], "minGap": 3, "livesTogether": true }
+    },
+    "speaker": "kardes",
+    "text": "{kardes.akraba} matematik ödevine baktı, kaşlarını kaldırdı: 'Bu kadar kolay şeyi bilmiyor musun?'",
+    "left": {
+      "label": "Öğret o zaman!",
+      "effects": {
+        "knowledge": 3,
+        "people": {
+          "kardes": {
+            "memory": {
+              "kind": "odevine_yardim_ettim",
+              "label": "Matematik ödevinde ona yardım ettim",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "{kardes.akraba} sabırla anlattı, sen de sonunda çözdün. Bir daha 'kolay' demedi."
+    },
+    "right": {
+      "label": "Sana soran olmadı",
+      "effects": {
+        "happiness": 1,
+        "people": {
+          "kardes": {
+            "memory": {
+              "kind": "yardimimi_istemedi",
+              "label": "Yardım etmek istedim, kapıyı yüzüme kapattı",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "Kapını kapattın, ödevi tek başına bitirdin. Yarısı yanlıştı ama hepsi senindi."
+    }
+  },
+  {
+    "id": "misket_turnuvasi",
+    "type": "genel",
+    "theme": "okul",
+    "minAge": 7,
+    "maxAge": 10,
+    "repeat": "once",
+    "text": "Teneffüste misket turnuvası. Elinde son misketin var; karşında okulun en iyi oyuncusu.",
+    "left": {
+      "label": "Son misketle oynarım",
+      "roll": { "stat": "luck", "threshold": 50 },
+      "success": { "happiness": 3, "reputation": 1 },
+      "fail": { "happiness": -2 },
+      "successResult": "Misket tam ortadan çarptı! Cepler doldu, adın teneffüste bir hafta konuşuldu.",
+      "failResult": "Son misket de gitti. Eve elin cebinde, ıslık çalarak döndün."
+    },
+    "right": {
+      "label": "Misketi saklarım",
+      "effects": { "happiness": 1 },
+      "result": "Mavi damarlı misketi cebinde tuttun. Yıllar sonra bir çekmecede yine karşına çıkacak."
+    }
+  },
+  {
+    "id": "saksiya_giren_top",
+    "type": "kisi",
+    "theme": "mahalle",
+    "minAge": 7,
+    "maxAge": 11,
+    "repeat": "once",
+    "roles": {
+      "komsu": { "roles": ["komsu"], "sameCity": true }
+    },
+    "speaker": "komsu",
+    "text": "{komsu.ad} {komsu.hitap.amca} balkondan seslendi: 'Topunuz yine bizim saksıya girdi!'",
+    "left": {
+      "label": "Özür dilemeye çık",
+      "effects": {
+        "reputation": 1,
+        "people": {
+          "komsu": {
+            "memory": {
+              "kind": "top_icin_ozur",
+              "label": "Topu için kapımı çalıp özür diledi",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "Kapıyı çalıp özür diledin. Top geri geldi, yanında da bir avuç leblebi."
+    },
+    "right": {
+      "label": "Herkes kaçsın!",
+      "effects": {
+        "happiness": 2,
+        "people": {
+          "komsu": {
+            "memory": {
+              "kind": "saksimi_kirip_kactilar",
+              "label": "Saksımı kırıp kaçtılar",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "Köşeyi dönene kadar koştunuz. Top balkonda kaldı; o yaz bir daha geri gelmedi."
+    }
+  },
+  {
+    "id": "agac_rolu",
+    "type": "genel",
+    "theme": "okul",
+    "minAge": 7,
+    "maxAge": 10,
+    "repeat": "once",
+    "text": "Okul gösterisinde sana ağaç rolü düştü. Tek repliğin yok ama yaprakların çok.",
+    "left": {
+      "label": "En iyi ağaç ben olurum",
+      "effects": { "reputation": 2, "happiness": 2 },
+      "result": "Bir saat kıpırdamadan durdun. Perde kapanınca en çok ağaç alkışlandı."
+    },
+    "right": {
+      "label": "Rolümü değiştirsinler",
+      "roll": { "stat": "luck", "threshold": 50 },
+      "success": { "happiness": 3, "knowledge": 1 },
+      "fail": { "happiness": -1 },
+      "successResult": "Öğretmen sana şiir okuma görevini verdi. Sahnede sesin bir kez bile titremedi.",
+      "failResult": "Rol değişmedi; üstelik yaprakların bir de güz rengi oldu."
+    }
+  },
+  {
+    "id": "ilk_haftalik",
+    "type": "kisi",
+    "theme": "para",
+    "minAge": 7,
+    "maxAge": 10,
+    "repeat": "once",
+    "roles": {
+      "veli": { "kin": ["anne", "baba"], "livesTogether": true }
+    },
+    "speaker": "veli",
+    "text": "{veli.akraba} ilk haftalık harçlığını avucuna koydu: 'Ya kantinde harca ya kumbaraya at. Karar senin.'",
+    "left": {
+      "label": "Kumbaraya",
+      "effects": {
+        "money": 200,
+        "knowledge": 1,
+        "people": {
+          "veli": {
+            "memory": {
+              "kind": "ilk_harcligi_biriktirdi",
+              "label": "İlk harçlığını kumbaraya attı",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "Para kumbaranın dibinde tıngırdadı. Her gece yatmadan bir kez salladın."
+    },
+    "right": {
+      "label": "Kantine!",
+      "effects": { "happiness": 2 },
+      "result": "Bir tost, bir ayran. Teneffüsün en mutlu çocuğu sendin; para da bir günde bitti."
+    }
+  },
+  {
+    "id": "kumanda_kavgasi",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 7,
+    "maxAge": 12,
+    "repeat": "once",
+    "roles": {
+      "kardes": { "kin": ["kardes"], "minAge": 4, "livesTogether": true }
+    },
+    "speaker": "kardes",
+    "text": "{kardes.akraba|le} kumanda kavgası. İkinizin de dizisi aynı saatte başlıyor ve kimse geri adım atmıyor.",
+    "left": {
+      "label": "Taş kâğıt makas",
+      "roll": { "stat": "luck", "threshold": 50 },
+      "success": { "happiness": 2 },
+      "fail": { "happiness": -1 },
+      "successResult": "Taş makası kırdı. Dizini izledin; {kardes.akraba} yanında surat asarak oturdu.",
+      "failResult": "Kâğıt taşı sardı. Bir saat {kardes.akraba|in} dizisini izledin; sonuna doğru sen de merak ettin."
+    },
+    "right": {
+      "label": "Bu sefer sen izle",
+      "effects": {
+        "happiness": -1,
+        "people": {
+          "kardes": {
+            "memory": {
+              "kind": "kumandayi_bana_birakti",
+              "label": "Kumandayı bana bıraktı",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "Kumandayı uzattın. {kardes.akraba} o akşam sana mısır patlattı."
+    }
+  },
+  {
+    "id": "atesle_okul",
+    "type": "kisi",
+    "theme": "saglik",
+    "minAge": 7,
+    "maxAge": 10,
+    "repeat": "once",
+    "roles": {
+      "veli": { "kin": ["anne", "baba"], "livesTogether": true }
+    },
+    "speaker": "veli",
+    "text": "Sabah ateşin var. {veli.akraba} termometreye baktı: 'Bugün okul yok, çorba var.'",
+    "left": {
+      "label": "Yorgana gömülürüm",
+      "effects": { "health": 2, "happiness": 1 },
+      "result": "Bütün gün yorganın altında çizgi film izledin. Akşama ateşin de düştü."
+    },
+    "right": {
+      "label": "Ama yarın sınav var!",
+      "effects": {
+        "knowledge": 1,
+        "health": -2,
+        "people": {
+          "veli": {
+            "memory": {
+              "kind": "atesle_ders",
+              "label": "Ateşler içinde ders çalıştı",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "Ateşle kitap okudun; {veli.akraba} başında soğuk bezle bekledi. Sınavı ertesi hafta verdin."
+    }
+  },
+  {
+    "id": "kutuphane_karti",
+    "type": "genel",
+    "theme": "okul",
+    "minAge": 8,
+    "maxAge": 11,
+    "repeat": "once",
+    "text": "Okul kütüphanesinden ilk kartını aldın. Raflar arasında bir saat kayboldun; elinde iki kitap kaldı.",
+    "left": {
+      "label": "Macera kitabı",
+      "effects": { "knowledge": 2, "happiness": 2 },
+      "result": "Korsanlarla bir hafta denize açıldın. Kitabı geri verirken içinden geçen bir şey kaldı."
+    },
+    "right": {
+      "label": "Hayvanlar ansiklopedisi",
+      "effects": { "knowledge": 3 },
+      "result": "Ahtapotun üç kalbi olduğunu öğrendin. Sofrada bunu herkese üç kez anlattın."
+    }
+  },
+  {
+    "id": "misafir_cocuklari",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 7,
+    "maxAge": 10,
+    "repeat": "once",
+    "roles": {
+      "veli": { "kin": ["anne", "baba"], "livesTogether": true }
+    },
+    "speaker": "veli",
+    "text": "Misafirler geldi; çocukları senin oyuncaklarını karıştırıyor. {veli.akraba} göz kırptı: 'Paylaş bakalım.'",
+    "left": {
+      "label": "Paylaşırım",
+      "effects": {
+        "reputation": 2,
+        "happiness": -1,
+        "people": {
+          "veli": {
+            "memory": {
+              "kind": "oyuncaklarini_paylasti",
+              "label": "Misafir çocuklarla oyuncaklarını paylaştı",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "Oyuncakların darmadağın oldu ama misafirler giderken 'Ne güzel çocuk' dediler."
+    },
+    "right": {
+      "label": "En sevdiğimi saklarım",
+      "effects": { "happiness": 1 },
+      "result": "En sevdiğin oyuncağı yatağın altına sakladın. Gerisi paylaşıldı, o güvende kaldı."
+    }
+  },
+  {
+    "id": "disci_koltugu",
+    "type": "genel",
+    "theme": "saglik",
+    "minAge": 7,
+    "maxAge": 10,
+    "repeat": "once",
+    "text": "Dişçi koltuğundasın. Doktor 'Hiç acımayacak' diyor; bunu daha önce de duymuştun.",
+    "left": {
+      "label": "Gözlerimi kaparım",
+      "effects": { "health": 2 },
+      "result": "Gözlerini sıkıca kapadın. Açtığında iş bitmişti, cebine bir de çıkartma konmuştu."
+    },
+    "right": {
+      "label": "Kapıya koşarım",
+      "roll": { "stat": "luck", "threshold": 50 },
+      "success": { "happiness": 1, "health": -1 },
+      "fail": { "health": 1, "happiness": -1 },
+      "successResult": "Kapıya kadar kaçtın; o gün kurtuldun. Diş ertesi hafta yine aynı koltukta çekildi.",
+      "failResult": "Hemşire kapıda yakaladı, geri oturttun. Diş çekildi, gurur da biraz sızladı."
+    }
+  },
+  {
+    "id": "okul_sutu",
+    "type": "kisi",
+    "theme": "okul",
+    "minAge": 7,
+    "maxAge": 10,
+    "repeat": "once",
+    "roles": {
+      "sira": { "roles": ["sinifArkadasi"], "minGap": -1, "maxGap": 1 }
+    },
+    "speaker": "sira",
+    "text": "Okulda süt dağıtılıyor. {sira.ad} sütünü sevmiyor, kutuyu fısıldayarak sana uzatıyor.",
+    "left": {
+      "label": "İkisini de içerim",
+      "effects": {
+        "health": 2,
+        "people": {
+          "sira": {
+            "memory": {
+              "kind": "sutumu_icti",
+              "label": "Sütümü içip beni kurtardı",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "İki kutu süt içtin; {sira.ad} rahatladı. Teneffüste ona bir parça simidini verdin."
+    },
+    "right": {
+      "label": "Sen de iç, büyürsün",
+      "effects": { "reputation": 1 },
+      "result": "{sira.ad} burnunu tıkayıp içti. Sonra 'Fena değilmiş' dedi, yüzü başka şey söylüyordu."
+    }
+  },
+  {
+    "id": "kiraz_agaci",
+    "type": "genel",
+    "theme": "mahalle",
+    "minAge": 7,
+    "maxAge": 11,
+    "repeat": "once",
+    "text": "Komşu bahçedeki kiraz ağacının dalları duvardan sarkıyor. Arkadaşların seni omuzlarına almış bekliyor.",
+    "left": {
+      "label": "Bir avuç toplarım",
+      "roll": { "stat": "luck", "threshold": 50 },
+      "success": { "happiness": 3 },
+      "fail": { "reputation": -2, "happiness": -1 },
+      "successResult": "Cebin kirazla doldu, dudakların kıpkırmızı oldu. Kimse görmedi; ya da görmezden geldi.",
+      "failResult": "Bahçenin sahibi pencerede belirdi. Omuzdan indin, kiraz da eline hiç değmedi."
+    },
+    "right": {
+      "label": "Kapıyı çalıp sorarım",
+      "effects": { "reputation": 2, "happiness": 1 },
+      "result": "Kapıyı çaldın, izin istedin. Bir kâse kirazla döndün; arkadaşların ağızları açık kaldı."
+    }
+  },
+  {
+    "id": "ilk_paylasim",
+    "type": "genel",
+    "theme": "genel",
+    "minAge": 12,
+    "maxAge": 17,
+    "repeat": "once",
+    "text": "İlk paylaşımın üç beğeni aldı. Biri senin, biri kuzeninin; üçüncüsünün kim olduğunu çözemedin.",
+    "left": {
+      "label": "Bir paylaşım daha",
+      "effects": { "happiness": 2, "knowledge": -1 },
+      "result": "Akşama kadar ekrana baktın. Beğeni dördü geçmedi ama dördüncüsü tanımadığın birindi."
+    },
+    "right": {
+      "label": "Hesabı unuturum",
+      "effects": { "knowledge": 1 },
+      "result": "Telefonu bıraktın, bir kitap açtın. Üçüncü beğenenin gizemi aklında kaldı yine de."
+    }
+  },
+  {
+    "id": "grubun_adi",
+    "type": "kisi",
+    "theme": "okul",
+    "minAge": 11,
+    "maxAge": 15,
+    "repeat": "once",
+    "roles": {
+      "a": { "roles": ["sinifArkadasi"], "minGap": -1, "maxGap": 1 }
+    },
+    "speaker": "a",
+    "text": "{a.ad|le} dört kişilik bir grup kurdunuz. Sıra grubun adına geldi; herkes başka bir şey bağırıyor.",
+    "left": {
+      "label": "Benim önerim olsun",
+      "roll": { "stat": "reputation", "threshold": 50 },
+      "success": { "happiness": 2, "reputation": 1 },
+      "fail": { "happiness": -1 },
+      "successResult": "Önerin oyçokluğuyla geçti. Grubun adı yıllarca defterlerin kenarında yazdı.",
+      "failResult": "Önerin tek oy aldı: seninki. Grubun adını hâlâ biraz tuhaf buluyorsun."
+    },
+    "right": {
+      "label": "{a.ad|in} önerisi",
+      "effects": {
+        "people": {
+          "a": {
+            "memory": {
+              "kind": "grubun_adini_destekledi",
+              "label": "Grubun adı için önerimi destekledi",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "{a.ad|in} önerisini destekledin; o da sevinçten sıranın üstüne çıktı."
+    }
+  },
+  {
+    "id": "sinav_haftasi_gecesi",
+    "type": "genel",
+    "theme": "okul",
+    "minAge": 13,
+    "maxAge": 17,
+    "repeat": "once",
+    "text": "Sınav haftası. Gece yarısı, masada üçüncü çay bardağı. Konular bitmedi, göz kapakların bitti.",
+    "left": {
+      "label": "Sabaha kadar çalış",
+      "effects": { "knowledge": 3, "health": -2 },
+      "result": "Güneş doğarken son konuyu bitirdin. Sınavda bildin ama sırada iki kez uyuklayıverdin."
+    },
+    "right": {
+      "label": "Uyu, erken kalk",
+      "effects": { "knowledge": 1, "health": 1 },
+      "result": "Alarmı beşe kurdun. Sabahın sessizliğinde tekrar ettiklerin sınavda gözünün önüne geldi."
+    }
+  },
+  {
+    "id": "odadaki_sinir",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 11,
+    "maxAge": 17,
+    "repeat": "once",
+    "roles": {
+      "kardes": { "kin": ["kardes"], "minAge": 6, "livesTogether": true }
+    },
+    "speaker": "kardes",
+    "text": "{kardes.akraba|le} aynı odadasınız. Odanın ortasına bantla bir çizgi çekti: 'Burası benim bölgem.'",
+    "left": {
+      "label": "Kapı benim tarafta",
+      "effects": {
+        "happiness": 2,
+        "people": {
+          "kardes": {
+            "memory": {
+              "kind": "kapiyi_bana_kapatti",
+              "label": "Odadan çıkışımı yasakladı",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "Kapının senin tarafta kaldığını hatırlattın. Bir hafta boyunca geçiş ücreti aldın."
+    },
+    "right": {
+      "label": "Barış antlaşması",
+      "effects": {
+        "people": {
+          "kardes": {
+            "memory": {
+              "kind": "sinirlari_kaldirdik",
+              "label": "Odadaki sınırı birlikte kaldırdık",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "Bandı birlikte söktünüz. Antlaşma bir kâğıda yazıldı, altına ikiniz de imza attınız."
+    }
+  },
+  {
+    "id": "pazar_listesi",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 11,
+    "maxAge": 15,
+    "repeat": "once",
+    "roles": {
+      "veli": { "kin": ["anne", "baba"], "livesTogether": true }
+    },
+    "speaker": "veli",
+    "text": "{veli.akraba} elinde liste, cebinde para: 'Pazara bu hafta sen gidiyorsun. Domatesler ezik olmasın.'",
+    "left": {
+      "label": "Pazarlık ederim",
+      "roll": { "stat": "luck", "threshold": 50 },
+      "success": {
+        "happiness": 2,
+        "people": {
+          "veli": {
+            "memory": {
+              "kind": "pazardan_ustuyle_dondu",
+              "label": "Pazardan para üstüyle döndü",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "fail": { "happiness": -1 },
+      "successResult": "Sebzeci 'Senin hatırına' deyip indirim yaptı. Eve para üstüyle döndün.",
+      "failResult": "Pazarlık uzadı, kuyruk söylendi. Domatesler de alttan ezik çıktı."
+    },
+    "right": {
+      "label": "Listeye sadık kalırım",
+      "effects": { "reputation": 1 },
+      "result": "Listedeki her şeyi aldın, fazlasını almadın. {veli.akraba} poşetleri sayıp onayladı."
+    }
+  },
+  {
+    "id": "gezi_otobusu",
+    "type": "genel",
+    "theme": "okul",
+    "minAge": 11,
+    "maxAge": 16,
+    "repeat": "once",
+    "text": "Okul gezisi! Otobüsün arka koltukları kapışılıyor; öğretmen herkesi parmakla sayıyor.",
+    "left": {
+      "label": "Arka koltuk benim",
+      "effects": { "happiness": 3, "reputation": -1 },
+      "result": "Yol boyunca şarkı söylediniz. Öğretmen iki kez dönüp 'Arkadakiler!' dedi."
+    },
+    "right": {
+      "label": "Öğretmenin yanı",
+      "effects": { "knowledge": 2 },
+      "result": "Yol boyunca gideceğiniz yerin hikâyesini dinledin. Sınavda tam o konu çıktı."
+    }
+  },
+  {
+    "id": "takim_secmeleri",
+    "type": "genel",
+    "theme": "okul",
+    "minAge": 12,
+    "maxAge": 17,
+    "repeat": "once",
+    "text": "Okul takımına seçmeler var. Beden eğitimi öğretmeni düdüğü çaldı: 'Sıradaki!'",
+    "left": {
+      "label": "Elimden geleni yaparım",
+      "roll": { "stat": "health", "threshold": 55 },
+      "success": { "happiness": 4, "reputation": 2 },
+      "fail": { "happiness": -2 },
+      "successResult": "Takıma girdin! Formanın numarası 7; bütün yıl onu katlayıp saklayacaksın.",
+      "failResult": "Nefesin ikinci turda bitti. Öğretmen omzuna vurdu: 'Seneye yine gel.'"
+    },
+    "right": {
+      "label": "Tribünde tezahürat",
+      "effects": { "happiness": 1, "reputation": 1 },
+      "result": "Sesin kısılana kadar bağırdın. Takım kazanınca seni de omuzlarına aldılar."
+    }
+  },
+  {
+    "id": "harclik_zammi",
+    "type": "kisi",
+    "theme": "para",
+    "minAge": 13,
+    "maxAge": 17,
+    "repeat": "once",
+    "roles": {
+      "veli": { "kin": ["anne", "baba"], "livesTogether": true }
+    },
+    "speaker": "veli",
+    "text": "Harçlığına zam istedin. {veli.akraba} hesap makinesini çıkardı: 'Önce bir dökümünü görelim.'",
+    "left": {
+      "label": "Tablo hazırlarım",
+      "effects": {
+        "knowledge": 2,
+        "money": 300,
+        "people": {
+          "veli": {
+            "memory": {
+              "kind": "harclik_tablosu",
+              "label": "Harçlık için tablo hazırladı, güldük",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "Tablon renkli kalemlerle hazırdı. {veli.akraba} gülmekten zammı onayladı."
+    },
+    "right": {
+      "label": "Herkes fazla alıyor",
+      "effects": {
+        "happiness": -1,
+        "people": {
+          "veli": {
+            "memory": {
+              "kind": "harclik_surat",
+              "label": "Harçlık yüzünden surat astı",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "'Herkes kim?' diye sordu {veli.akraba}. Liste çıkaramadın; zam da çıkmadı."
+    }
+  },
+  {
+    "id": "cay_bahcesinde_yaz",
+    "type": "genel",
+    "theme": "para",
+    "minAge": 15,
+    "maxAge": 17,
+    "repeat": "once",
+    "text": "Yaz tatilinde çay bahçesinde garsonluk teklifi var. Günlük az ama bahşiş iyi olabilir.",
+    "left": {
+      "label": "Hemen başlarım",
+      "effects": { "money": 3000, "health": -1, "reputation": 1 },
+      "result": "Tepsiyi taşımayı üçüncü gün öğrendin. Yaz bitince ilk kazandığın parayı saydın, iki kez."
+    },
+    "right": {
+      "label": "Yaz benim",
+      "effects": { "happiness": 3 },
+      "result": "Yaz sahilde, sokakta, arkadaşlarla geçti. Cebin boş kaldı ama hikâyen çoktu."
+    }
+  },
+  {
+    "id": "yeni_gelen",
+    "type": "kisi",
+    "theme": "okul",
+    "minAge": 11,
+    "maxAge": 15,
+    "repeat": "once",
+    "roles": {
+      "yeni": { "roles": ["sinifArkadasi"], "minGap": -1, "maxGap": 1 }
+    },
+    "speaker": "yeni",
+    "text": "Sınıfa başka şehirden yeni biri geldi: {yeni.ad}. Teneffüste duvarın dibinde tek başına duruyor.",
+    "left": {
+      "label": "Yanına giderim",
+      "effects": {
+        "happiness": 1,
+        "people": {
+          "yeni": {
+            "memory": {
+              "kind": "ilk_gun_yanima_geldi",
+              "label": "İlk gün yanıma gelen o oldu",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      },
+      "result": "'Nerelisin?' diye sordun. Teneffüs bitti, siz hâlâ konuşuyordunuz."
+    },
+    "right": {
+      "label": "Grubuma dönerim",
+      "effects": { "happiness": 1 },
+      "result": "Arkadaşlarının yanına döndün. Gözün bir ara {yeni.ad|e} kaydı; o da bakıyordu."
+    }
+  },
+  {
+    "id": "yanardag_maketi",
+    "type": "genel",
+    "theme": "okul",
+    "minAge": 11,
+    "maxAge": 14,
+    "repeat": "once",
+    "text": "Fen projesi: yanardağ maketi. Teslim yarın, malzemenin yarısı eksik, mutfakta karbonat duruyor.",
+    "left": {
+      "label": "Gece boyunca yaparım",
+      "effects": { "knowledge": 2, "health": -1 },
+      "result": "Yanardağ sınıfta gerçekten patladı. Öğretmen alkışladı, sıranın üstü de köpüğe bulandı."
+    },
+    "right": {
+      "label": "Bir poster yeter",
+      "effects": { "knowledge": 1, "happiness": 1 },
+      "result": "Renkli kalemlerle sade bir poster hazırladın. Kimse alkışlamadı ama kimse ıslanmadı da."
+    }
+  },
+  {
+    "id": "sofrada_telefon",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 12,
+    "maxAge": 17,
+    "repeat": "once",
+    "roles": {
+      "veli": { "kin": ["anne", "baba"], "livesTogether": true }
+    },
+    "speaker": "veli",
+    "text": "{veli.akraba} akşam yemeğinde ilan etti: 'Bu evde artık sofrada telefon yok.' Bütün gözler sana döndü.",
+    "left": {
+      "label": "Telefonu bırakırım",
+      "effects": {
+        "happiness": -1,
+        "people": {
+          "veli": {
+            "memory": {
+              "kind": "sofrada_telefonu_birakti",
+              "label": "Sofrada telefonunu bırakıp sohbet etti",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "Telefonu ters çevirdin. Yemekte günün nasıl geçtiği konuşuldu; bir ara kahkaha bile atıldı."
+    },
+    "right": {
+      "label": "Tek bir mesaj sadece",
+      "effects": {
+        "happiness": 1,
+        "people": {
+          "veli": {
+            "memory": {
+              "kind": "sofrada_ekrana_bakti",
+              "label": "Sofrada telefondan başını kaldırmadı",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "'Tek mesaj' yarım saat sürdü. {veli.akraba} tabakları sessizce kaldırdı."
+    }
+  },
+  {
+    "id": "kardesin_sirri",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 12,
+    "maxAge": 17,
+    "repeat": "once",
+    "roles": {
+      "kardes": { "kin": ["kardes"], "minAge": 10 }
+    },
+    "speaker": "kardes",
+    "text": "{kardes.akraba} kapıyı kapattı, fısıldıyor: 'Bir şey anlatacağım ama kimseye söylemeyeceksin.'",
+    "left": {
+      "label": "Söz, aramızda",
+      "effects": {
+        "people": {
+          "kardes": {
+            "memory": {
+              "kind": "sirrimi_tuttu",
+              "label": "Sırrımı kimseye söylemedi",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      },
+      "result": "Dinledin, sonuna kadar sustun. O sır yıllarca ikinizin arasında kaldı."
+    },
+    "right": {
+      "label": "Ciddiyse söylerim",
+      "effects": {
+        "reputation": 1,
+        "people": {
+          "kardes": {
+            "memory": {
+              "kind": "bana_durust_davrandi",
+              "label": "Sır verdim, bana dürüst davrandı",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "'Ciddi bir şeyse susamam' dedin. {kardes.akraba} düşündü, sonra anlattı; mesele küçükmüş."
+    }
+  },
+  {
+    "id": "bayram_puan_sorusu",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 13,
+    "maxAge": 17,
+    "repeat": "once",
+    "roles": {
+      "akraba": { "kin": ["amca", "dayi", "hala", "teyze"] }
+    },
+    "speaker": "akraba",
+    "text": "Bayram sofrası. {akraba.akraba} çatalını bıraktı: 'Kuzeninin deneme puanı kaç gelmiş, biliyor musun?'",
+    "left": {
+      "label": "Benimki de fena değil",
+      "effects": { "reputation": 1 },
+      "result": "Puanını gülümseyerek söyledin. {akraba.akraba} 'İkisine de helal olsun' deyip konuyu tatlıya bağladı."
+    },
+    "right": {
+      "label": "Afiyet olsun",
+      "effects": { "happiness": 1 },
+      "result": "'Afiyet olsun' deyip baklavaya uzandın. Soru tabağın kenarında asılı kaldı."
+    }
+  },
+  {
+    "id": "zincir_atti",
+    "type": "genel",
+    "theme": "genel",
+    "minAge": 11,
+    "maxAge": 15,
+    "repeat": "once",
+    "text": "Bisikletin zinciri attı. Yolun ortasındasın, ellerin yağ içinde, eve daha çok var.",
+    "left": {
+      "label": "Kendim takarım",
+      "roll": { "stat": "knowledge", "threshold": 45 },
+      "success": { "happiness": 2, "knowledge": 1 },
+      "fail": { "happiness": -1 },
+      "successResult": "Pedalı geri çevirip zinciri yerine oturttun. Eve gururla, kapkara ellerle girdin.",
+      "failResult": "Zincir iki kez daha attı. Sonunda bisikleti yürüterek eve vardın."
+    },
+    "right": {
+      "label": "Yürüterek götürürüm",
+      "effects": { "health": 1 },
+      "result": "Bisikleti yürüterek eve getirdin. Yol uzadı ama mahallenin her köşesini yeniden gördün."
+    }
+  },
+  {
+    "id": "kantin_veresiye",
+    "type": "genel",
+    "theme": "okul",
+    "minAge": 11,
+    "maxAge": 15,
+    "repeat": "once",
+    "text": "Kantinci 'Yarın getirirsin' deyip simidi uzattı. Cebinde tek bir bozuk para yok.",
+    "left": {
+      "label": "Yarın ilk iş öderim",
+      "effects": { "reputation": 2 },
+      "result": "Ertesi sabah ilk teneffüste borcu ödedin. Kantinci o günden sonra sana hep sıcak simit ayırdı."
+    },
+    "right": {
+      "label": "Unutmuş gibi yaparım",
+      "effects": { "happiness": 1, "reputation": -2 },
+      "result": "Bir hafta kantinin önünden geçmedin. Kantinci seni görünce defterini sallayarak güldü."
+    }
+  },
+  {
+    "id": "gorusme_kiyafeti",
+    "type": "genel",
+    "theme": "is",
+    "minAge": 19,
+    "maxAge": 27,
+    "repeat": "once",
+    "conditions": {
+      "career": "none",
+      "notFlags": ["universite_ogrencisi", "askerde"]
+    },
+    "text": "İş görüşmesine bir saat var. Dolaptaki tek şık kıyafet bir düğünden kalma ve biraz dar.",
+    "left": {
+      "label": "Sıksa da giyerim",
+      "effects": { "reputation": 1, "happiness": -1 },
+      "result": "Görüşme boyunca dik oturdun; nefes almaya korktun. Çıkınca ilk iş bir düğmeyi açtın."
+    },
+    "right": {
+      "label": "Sade ve rahat",
+      "effects": { "happiness": 1 },
+      "result": "Ütülü bir gömlekle gittin. Görüşmeci senden çok anlattıklarına baktı; iyi bir işaret."
+    }
+  },
+  {
+    "id": "issizligin_ucuncu_ayi",
+    "type": "genel",
+    "theme": "is",
+    "minAge": 20,
+    "maxAge": 29,
+    "repeat": "once",
+    "conditions": {
+      "career": "none",
+      "notFlags": ["universite_ogrencisi", "askerde"]
+    },
+    "text": "İşsizliğin üçüncü ayı. Herkes işe giderken sen parktaki bankta ilanlara bakıyorsun.",
+    "left": {
+      "label": "Günde on başvuru",
+      "effects": { "knowledge": 1, "happiness": -1 },
+      "result": "Bankta bir hafta boyunca başvurdun. İkisinden cevap geldi; biri 'Sizi arayacağız' dedi."
+    },
+    "right": {
+      "label": "Bir kursa yazılırım",
+      "effects": { "knowledge": 2, "money": -2000 },
+      "result": "Akşam kursuna yazıldın. Sabahları yine ilan, akşamları ders; günler biraz doldu."
+    }
+  },
+  {
+    "id": "komsunun_oglu_bankada",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 21,
+    "maxAge": 29,
+    "repeat": "once",
+    "conditions": { "notFlags": ["askerde"] },
+    "roles": {
+      "akraba": { "kin": ["amca", "dayi", "hala", "teyze"] }
+    },
+    "speaker": "akraba",
+    "text": "{akraba.akraba}: 'Bizim üst kattakilerin oğlu bankada müdür olmuş. Sen hâlâ ne iş yapıyorsun?'",
+    "left": {
+      "label": "Kendi yolumdayım",
+      "effects": { "happiness": 1 },
+      "result": "'Kendi yolumdayım' dedin, sesin sakindi. {akraba.akraba} başka bir yeğeni sormaya geçti."
+    },
+    "right": {
+      "label": "Bir tanıştır bakalım",
+      "effects": {
+        "knowledge": 1,
+        "people": {
+          "akraba": {
+            "memory": {
+              "kind": "tanistir_dedi",
+              "label": "Kariyeri için benden yardım istedi",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "{akraba.akraba} hemen telefonu çıkardı. Müdür olmamışmış; staj yapıyormuş, ama yine de konuştunuz."
+    }
+  },
+  {
+    "id": "eski_ekip_tatili",
+    "type": "kisi",
+    "theme": "genel",
+    "minAge": 20,
+    "maxAge": 29,
+    "repeat": "once",
+    "conditions": { "notFlags": ["askerde"], "min": { "money": 10000 } },
+    "roles": {
+      "dost": { "bond": ["arkadas", "yakinArkadas"], "minAge": 18 }
+    },
+    "speaker": "dost",
+    "text": "{dost.ad} yazdı: 'Eski ekip tatile gidiyor. Çadır, sahil, üç gün. Var mısın?'",
+    "left": {
+      "label": "Varım!",
+      "effects": {
+        "money": -8000,
+        "happiness": 4,
+        "people": {
+          "dost": {
+            "memory": {
+              "kind": "cadirda_uc_gun",
+              "label": "Sahilde çadırda üç gün güldük",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      },
+      "result": "Çadır ilk gece çöktü, ikinci gece yağmur yağdı. Hayatının en güzel üç günüydü."
+    },
+    "right": {
+      "label": "Bu sefer olmaz",
+      "effects": {
+        "happiness": -1,
+        "people": {
+          "dost": {
+            "memory": {
+              "kind": "tatile_gelmedi",
+              "label": "Tatile yine gelmedi",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "Fotoğraflar telefonuna düştükçe içinde bir şey burkuldu. {dost.ad} 'Seneye' diye yazdı."
+    }
+  },
+  {
+    "id": "sabah_otobusu",
+    "type": "genel",
+    "theme": "is",
+    "minAge": 21,
+    "maxAge": 29,
+    "repeat": "once",
+    "conditions": { "career": "any", "notFlags": ["askerde"] },
+    "text": "Sabah otobüsünde ayaktasın; bir elinde tutamak, öbüründe yarısı yenmiş bir simit.",
+    "left": {
+      "label": "Kulaklığı takarım",
+      "effects": { "happiness": 2 },
+      "result": "Şarkılar çaldıkça kalabalık uzaklaştı. İneceğin durağı az kalsın kaçırıyordun."
+    },
+    "right": {
+      "label": "Yanımdakiyle sohbet",
+      "effects": { "reputation": 1, "happiness": 1 },
+      "result": "Yanındaki teyzeyle hava durumundan torunlara kadar konuştunuz. Yol hiç bitmesin istedin."
+    }
+  },
+  {
+    "id": "sirt_kusuyor",
+    "type": "genel",
+    "theme": "saglik",
+    "minAge": 24,
+    "maxAge": 29,
+    "repeat": "once",
+    "conditions": { "career": "any", "notFlags": ["askerde"] },
+    "text": "Bütün gün iş, akşam koltuk. Sırtın artık sabahları sana 'günaydın' demiyor, inliyor.",
+    "left": {
+      "label": "Spora yazılırım",
+      "effects": { "money": -3000, "health": 3 },
+      "result": "İlk hafta her yerin ağrıdı. Üçüncü hafta merdivenleri ikişer ikişer çıkıyordun."
+    },
+    "right": {
+      "label": "Esneme hareketleri",
+      "effects": { "health": 1 },
+      "result": "Her sabah beş dakika esnedin. Sırt tam barışmadı ama küslük biraz azaldı."
+    }
+  },
+  {
+    "id": "maas_gunu_kardes",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 19,
+    "maxAge": 27,
+    "repeat": "once",
+    "conditions": { "career": "any", "notFlags": ["askerde"] },
+    "roles": {
+      "kardes": { "kin": ["kardes"], "maxGap": -3, "minAge": 8 }
+    },
+    "speaker": "kardes",
+    "text": "Maaş günü. {kardes.akraba} mesaj attı: 'Bu ay da mı bana bir şey yok? Sadece soruyorum.'",
+    "left": {
+      "label": "Al bakalım",
+      "effects": {
+        "money": -3000,
+        "happiness": 2,
+        "people": {
+          "kardes": {
+            "memory": {
+              "kind": "maasiyla_hediye_aldi",
+              "label": "Maaşıyla bana hediye aldı",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      },
+      "result": "Akşam eline bir paket tutuşturdun. {kardes.akraba} 'Sadece soruyordum!' diye bağırdı, sonra sarıldı."
+    },
+    "right": {
+      "label": "Önce kira, sonra sen",
+      "effects": {
+        "people": {
+          "kardes": {
+            "memory": {
+              "kind": "hediyeyi_erteledi",
+              "label": "Hediye için hep 'sonra' dedi",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "'Önce kira' diye yazdın. {kardes.akraba} bir emojiyle cevap verdi; anlamı belliydi."
+    }
+  },
+  {
+    "id": "yemekhane_kuyrugu",
+    "type": "genel",
+    "theme": "okul",
+    "minAge": 18,
+    "maxAge": 26,
+    "repeat": "once",
+    "conditions": { "flags": ["universite_ogrencisi"] },
+    "text": "Yemekhanede bugün kuru fasulye. Kuyruk kapıya kadar, ders on dakika sonra başlıyor.",
+    "left": {
+      "label": "Kuyrukta beklerim",
+      "effects": { "health": 2, "knowledge": -1 },
+      "result": "Tabağın dolu, kendin derse geç kaldın. Hoca bakışını fasulyeden daha sert yaptı."
+    },
+    "right": {
+      "label": "Simitle derse",
+      "effects": { "knowledge": 1, "health": -1 },
+      "result": "Simidi koridorda bitirdin, ön sıraya oturdun. Midende bir boşluk, defterinde dolu bir sayfa."
+    }
+  },
+  {
+    "id": "hocanin_kapisi",
+    "type": "genel",
+    "theme": "okul",
+    "minAge": 18,
+    "maxAge": 26,
+    "repeat": "once",
+    "conditions": { "flags": ["universite_ogrencisi"] },
+    "text": "Vize notun sınırda kaldı. Hocanın kapısındasın; elinde üç kez yazıp sildiğin bir e-posta taslağı.",
+    "left": {
+      "label": "Kapıyı çalarım",
+      "roll": { "stat": "reputation", "threshold": 50 },
+      "success": { "knowledge": 2, "happiness": 2 },
+      "fail": { "happiness": -2 },
+      "successResult": "Hoca kâğıdına yeniden baktı; bir soru yanlış okunmuş. Not geçer oldu.",
+      "failResult": "Hoca 'Finalde görüşürüz' dedi, kapıyı nazikçe kapattı. Koridor bir anda uzadı."
+    },
+    "right": {
+      "label": "Finalde telafi",
+      "effects": { "knowledge": 2, "health": -1 },
+      "result": "Kütüphanede bir ay geçirdin. Final kâğıdını verirken elin titremedi."
+    }
+  },
+  {
+    "id": "evden_gelen_koli",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 18,
+    "maxAge": 26,
+    "repeat": "once",
+    "conditions": { "flags": ["universite_ogrencisi"] },
+    "roles": {
+      "veli": { "kin": ["anne", "baba"], "livesTogether": false }
+    },
+    "speaker": "veli",
+    "text": "{veli.akraba} kargoyla koli göndermiş: içinde reçel, peynir, bir kazak ve katlanmış küçük bir not.",
+    "left": {
+      "label": "Hemen ararım",
+      "effects": {
+        "happiness": 3,
+        "people": {
+          "veli": {
+            "memory": {
+              "kind": "koliyi_alinca_aradi",
+              "label": "Koliyi alır almaz aradı",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "Notu okuyup aradın. {veli.akraba} 'Kazak sana olmuş mu?' diye üç kez sordu."
+    },
+    "right": {
+      "label": "Odada paylaşırım",
+      "effects": { "reputation": 2, "happiness": 2 },
+      "result": "Reçel bir gecede bitti. Oda arkadaşların seni bir hafta 'şef' diye çağırdı."
+    }
+  },
+  {
+    "id": "dokuz_gunluk_bayram",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 20,
+    "maxAge": 29,
+    "repeat": "once",
+    "conditions": { "notFlags": ["askerde"] },
+    "roles": {
+      "veli": { "kin": ["anne", "baba"], "livesTogether": false }
+    },
+    "speaker": "veli",
+    "text": "Bayram tatili dokuz gün. {veli.akraba} aradı: 'Gelmiyor musun? Sofrayı kurduk bile, haberin olsun.'",
+    "left": {
+      "label": "Yola çıkarım",
+      "effects": {
+        "money": -2000,
+        "happiness": 3,
+        "people": {
+          "veli": {
+            "memory": {
+              "kind": "bayramda_geldi",
+              "label": "Uzun bayramda kalkıp eve geldi",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      },
+      "result": "Otobüs gece vardı; kapıyı {veli.akraba} açtı. Sofra gerçekten kuruluydu, hem de iki gündür."
+    },
+    "right": {
+      "label": "Bu sefer kalırım",
+      "effects": {
+        "happiness": 1,
+        "people": {
+          "veli": {
+            "memory": {
+              "kind": "bayramda_gelmedi",
+              "label": "Uzun bayramda bile gelmedi",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "Dokuz gün dinlendin. Bayram sabahı görüntülü aradın; ekranda sofra kalabalıktı."
+    }
+  },
+  {
+    "id": "bakkalda_kasa",
+    "type": "kisi",
+    "theme": "is",
+    "minAge": 20,
+    "maxAge": 29,
+    "repeat": "once",
+    "conditions": {
+      "career": "none",
+      "notFlags": ["universite_ogrencisi", "askerde"]
+    },
+    "roles": {
+      "bakkal": { "roles": ["bakkal"], "sameCity": true }
+    },
+    "speaker": "bakkal",
+    "text": "Bakkal {bakkal.ad} {bakkal.hitap.amca}: 'Akşamları kasaya geçer misin? Para az ama çay bizden.'",
+    "left": {
+      "label": "Geçerim",
+      "effects": {
+        "money": 15000,
+        "reputation": 1,
+        "people": {
+          "bakkal": {
+            "memory": {
+              "kind": "kasami_emanet_ettim",
+              "label": "Zor zamanında kasamı ona emanet ettim",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      },
+      "result": "Akşamları kasadaydın. Mahalle seni yeniden tanıdı; veresiye defterini sen tutar oldun."
+    },
+    "right": {
+      "label": "Teşekkür ederim, yok",
+      "effects": { "happiness": 1 },
+      "result": "Nazikçe teşekkür ettin. {bakkal.ad} 'Kapımız açık' dedi, yanına bir paket bisküvi koydu."
+    }
+  },
+  {
+    "id": "nobetci_eczane",
+    "type": "genel",
+    "theme": "saglik",
+    "minAge": 19,
+    "maxAge": 29,
+    "repeat": "once",
+    "conditions": { "notFlags": ["askerde"] },
+    "text": "Gece yarısı diş ağrısı. Nöbetçi eczane şehrin öbür ucunda; taksi pahalı, otobüs bitmiş.",
+    "left": {
+      "label": "Taksiye binerim",
+      "effects": { "money": -1500, "health": 2 },
+      "result": "Taksici yol boyunca kendi diş hikâyelerini anlattı. İlacı içince dünya yerine oturdu."
+    },
+    "right": {
+      "label": "Sabahı beklerim",
+      "effects": { "health": -2, "happiness": -1 },
+      "result": "Yanağında buz torbası, gece hiç bitmedi. Sabah ilk iş dişçinin kapısındaydın."
+    }
+  },
+  {
+    "id": "bitki_bakimi",
+    "type": "genel",
+    "theme": "genel",
+    "minAge": 21,
+    "maxAge": 29,
+    "repeat": "once",
+    "conditions": { "flags": ["kiraci"], "notFlags": ["askerde"] },
+    "text": "Yeni evine aldığın bitki iki haftadır boynunu büküyor. Biri 'çok su verme', öteki 'az veriyorsun' diyor.",
+    "left": {
+      "label": "Bol su",
+      "roll": { "stat": "luck", "threshold": 50 },
+      "success": { "happiness": 2 },
+      "fail": { "happiness": -1 },
+      "successResult": "Bitki iki günde dikildi, bir de yeni yaprak verdi. Ona bir ad bile koydun.",
+      "failResult": "Saksının dibi göle döndü. Bitki son yaprağını sessizce bıraktı."
+    },
+    "right": {
+      "label": "Pencere önüne",
+      "effects": { "happiness": 1 },
+      "result": "Güneşi görünce toparlandı. Sabahları kahveni artık onunla içiyorsun."
+    }
+  },
+  {
+    "id": "kucuk_borc",
+    "type": "kisi",
+    "theme": "para",
+    "minAge": 20,
+    "maxAge": 29,
+    "repeat": "once",
+    "conditions": { "notFlags": ["askerde"], "min": { "money": 20000 } },
+    "roles": {
+      "dost": { "bond": ["arkadas", "yakinArkadas"], "minAge": 18 }
+    },
+    "speaker": "dost",
+    "text": "{dost.ad}: 'Ay sonuna kadar beş bin verebilir misin? Maaş yatınca ilk iş ödüyorum, söz.'",
+    "left": {
+      "label": "Veririm",
+      "effects": {
+        "money": -5000,
+        "people": {
+          "dost": {
+            "memory": {
+              "kind": "darda_borc_verdi",
+              "label": "Darda kalınca bana borç verdi",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      },
+      "result": "Parayı gönderdin. {dost.ad} ay sonunda kuruşu kuruşuna geri yolladı, yanına bir teşekkür ekledi."
+    },
+    "right": {
+      "label": "Şu an olmaz",
+      "effects": {
+        "people": {
+          "dost": {
+            "memory": {
+              "kind": "zor_anda_vermedi",
+              "label": "Zor anımda borç vermedi",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "'Şu an olmaz' dedin. {dost.ad} 'Anlarım' yazdı; bir süre sesi biraz uzak geldi."
+    }
+  },
+  {
+    "id": "kimlik_sirasi",
+    "type": "genel",
+    "theme": "genel",
+    "minAge": 19,
+    "maxAge": 29,
+    "repeat": "once",
+    "conditions": { "notFlags": ["askerde"] },
+    "text": "Kimlik yenileme sırası. Numaran 147, ekranda 92. Yanındaki teyze termosundan çay uzatıyor.",
+    "left": {
+      "label": "Çayı alırım",
+      "effects": { "happiness": 2, "reputation": 1 },
+      "result": "Çayla birlikte teyzenin bütün aile ağacını dinledin. Numaran geldiğinde ayrılmak zor oldu."
+    },
+    "right": {
+      "label": "Kitabımı açarım",
+      "effects": { "knowledge": 1 },
+      "result": "Kitabın yarısını sırada bitirdin. Numaran geldiğinde en heyecanlı yerdeydin."
+    }
+  },
+  {
+    "id": "arkadasin_tasinmasi",
+    "type": "kisi",
+    "theme": "aile",
+    "minAge": 21,
+    "maxAge": 29,
+    "repeat": "once",
+    "conditions": { "notFlags": ["askerde"] },
+    "roles": {
+      "dost": { "bond": ["arkadas", "yakinArkadas"], "minAge": 18, "sameCity": true }
+    },
+    "speaker": "dost",
+    "text": "{dost.ad} taşınıyor: 'Kamyonet tuttum ama taşıyacak kimse yok. Bir tek sen varsın.'",
+    "left": {
+      "label": "Geliyorum",
+      "effects": {
+        "health": -1,
+        "people": {
+          "dost": {
+            "memory": {
+              "kind": "tasinirken_geldi",
+              "label": "Taşınırken koltuğun altına o girdi",
+              "tone": "olumlu",
+              "severity": 2
+            }
+          }
+        }
+      },
+      "result": "Dördüncü kata çekyat çıkardınız. Akşam yere serilip pizza yediniz; belin ertesi gün konuştu."
+    },
+    "right": {
+      "label": "O gün işim var",
+      "effects": {
+        "people": {
+          "dost": {
+            "memory": {
+              "kind": "tasinirken_gelmedi",
+              "label": "Taşınırken yardıma gelmedi",
+              "tone": "olumsuz",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "O gün başka yerdeydin. {dost.ad} fotoğraf attı: koltuk merdivenin ortasında kalmış."
+    }
+  },
+  {
+    "id": "odevi_ver_bakayim",
+    "type": "kisi",
+    "theme": "okul",
+    "minAge": 11,
+    "maxAge": 14,
+    "repeat": "once",
+    "roles": {
+      "a": { "roles": ["sinifArkadasi"], "minGap": -1, "maxGap": 1 }
+    },
+    "speaker": "a",
+    "text": "Zil çalmak üzere. {a.ad} sıranın kenarında: 'Ödevini bir saniye versene, sadece bakacağım.'",
+    "left": {
+      "label": "Al, ama çabuk",
+      "effects": {
+        "reputation": -1,
+        "people": {
+          "a": {
+            "memory": {
+              "kind": "odevini_verdi",
+              "label": "Zor anımda ödevini uzattı",
+              "tone": "olumlu",
+              "severity": 1
+            }
+          }
+        }
+      },
+      "result": "{a.ad} ödevi üç dakikada kopyaladı. Öğretmen iki defterdeki aynı yanlışı fark etti ama sustu."
+    },
+    "right": {
+      "label": "Kendin yapsaydın",
+      "effects": {
+        "reputation": 1,
+        "people": {
+          "a": {
+            "memory": {
+              "kind": "odevini_vermedi",
+              "label": "Ödevini vermedi, sınıfın önünde rezil oldum",
+              "tone": "olumsuz",
+              "severity": 2
+            }
+          }
+        }
+      },
+      "result": "Defterini çantana koydun. {a.ad} o derste tahtaya kalktı; çıkışta sana hiç bakmadı."
+    }
+  }
+]

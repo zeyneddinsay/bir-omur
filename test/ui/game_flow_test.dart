@@ -201,7 +201,11 @@ void main() {
     await tester.tap(find.byKey(const Key('choose_right')));
     await tester.pumpAndSettle();
     await _finishCards(tester);
-    expect(find.text('Bu yılın vakti bitti'), findsOneWidget);
+    // 0–5 yaşta hiç vakit yok; "bitti" denmez.
+    expect(
+      find.text('Bu yıl vaktin yok; yalnızca olaylar gelir'),
+      findsOneWidget,
+    );
     // 6 yaşına kadar yıllar yalnızca olaylarla geçer.
     var steps = 0;
     while (find.text('Bu yıl 2 vakit hakkın kaldı').evaluate().isEmpty) {

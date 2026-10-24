@@ -109,8 +109,8 @@ class LifeStory {
   ];
 
   /// İleri yaşta evlenenin ardından miras. Vasiyet yazdıysa sessizce
-  /// bölüşülür; yazmadıysa ve çocuklarla arası açıksa ya da evi eşinin
-  /// üzerine yaptıysa eşle çocuklar arasında kavga çıkar. Eşi ya da yetişkin
+  /// bölüşülür; yazmadıysa ve çocuklarla arası açıksa ya da birikimini
+  /// eşiyle paylaştıysa eşle çocuklar arasında kavga çıkar. Eşi ya da yetişkin
   /// çocuğu yoksa miras konusu açılmaz.
   late final Inheritance? inheritance = () {
     if (!c.hasFlag(lateMarriageFlag)) return null;
@@ -123,16 +123,16 @@ class LifeStory {
     if (c.hasFlag(willFlag)) return Inheritance.vasiyet;
     final rift =
         absentChildren.isNotEmpty ||
-        c.hasFlag(houseToSpouseFlag) ||
+        c.hasFlag(savingsToSpouseFlag) ||
         children.any((p) => Relationships.hostility(p, _now) >= 30);
     return rift ? Inheritance.kavga : null;
   }();
 
-  /// İleri yaşta evlendi; vasiyet yazdı; evi eşinin üzerine yaptı (kart
+  /// İleri yaşta evlendi; vasiyet yazdı; birikimini eşiyle ortak hesaba geçirdi (kart
   /// bayrakları).
   static const String lateMarriageFlag = 'gec_evlendi';
   static const String willFlag = 'vasiyet_yazdi';
-  static const String houseToSpouseFlag = 'ev_esin_uzerine';
+  static const String savingsToSpouseFlag = 'mal_esin_uzerine';
 
   /// Seni en çok özleyecek kişi: yakınlık ve olumlu anıların toplamı.
   late final Person? mostMissed = () {
