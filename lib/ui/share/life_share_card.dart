@@ -17,7 +17,7 @@ String compactMoney(AppLocalizations l10n, int amount) {
     return sign + l10n.amountMillion(value.replaceAll(',0', ''));
   }
   if (abs >= 1000) return sign + l10n.amountThousand('${(abs / 1000).round()}');
-  return sign + l10n.money(abs);
+  return sign + l10n.tl(abs);
 }
 
 /// Kartta gösterilecek sayılar: sıfır olmayanlardan en fazla üçü ve en

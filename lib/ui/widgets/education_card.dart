@@ -7,6 +7,7 @@ import '../../content/turkish.dart';
 import '../../engine/engine.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../models/models.dart';
+import '../l10n_names.dart';
 import '../people/people_text.dart';
 import '../providers.dart';
 import 'home_card.dart';
@@ -107,8 +108,8 @@ String noteLine(
       final amount = int.tryParse(parts[1]) ?? 0;
       final name = businessTypeName(l10n, parts[0]);
       return amount >= 0
-          ? l10n.note_isletmeKar(name, l10n.money(amount))
-          : l10n.note_isletmeZarar(name, l10n.money(-amount));
+          ? l10n.note_isletmeKar(name, l10n.tl(amount))
+          : l10n.note_isletmeZarar(name, l10n.tl(-amount));
     }(),
     NoteKind.isletmeYili => d,
     NoteKind.isletmeBatti => l10n.note_isletmeBatti(businessTypeName(l10n, d)),
@@ -173,7 +174,7 @@ class EducationCard extends ConsumerWidget {
         ),
       if (e.isGraduate) l10n.eduGraduate(departmentName(l10n, e.department)),
       if (e.isStudent && e.scholarship > 0)
-        l10n.eduScholarship(l10n.money(e.scholarship)),
+        l10n.eduScholarship(l10n.tl(e.scholarship)),
       if (e.apprentice) l10n.eduApprentice,
     ];
     if (lines.isEmpty && !pending) return const SizedBox.shrink();

@@ -3,6 +3,7 @@ import 'package:bir_omur/models/models.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../helpers/families.dart';
+import '../helpers/people.dart';
 import '../helpers/test_character.dart';
 
 Character _apply(Character c, Effect e) => EffectResolver.applyEffect(c, e);
@@ -294,5 +295,24 @@ void main() {
     expect(report.livingCost, Economy.livingCost);
     expect(engine.market.inflation, report.inflation);
     expect(engine.market.goldPrice, isNot(Economy.initialGoldPrice));
+  });
+
+  test('eş: çalışan katar, çalışmayan gider; emekli olan aylığından katar', () {
+    int income(String? occupation, int age) => Economy.spouseIncomeOf(
+      withPeople(testCharacter(age: 60), [
+        testPerson(
+          'p1',
+          gender: Gender.kadin,
+          age: age,
+          playerAge: 60,
+          kin: Kinship.es,
+        ).copyWith(occupation: occupation),
+      ]),
+    );
+    expect(income('hemsire', 50), Economy.spouseNetIncome);
+    expect(income('ev_hanimi', 50), -Economy.spouseCost);
+    expect(income('hemsire', 66), Economy.retiredSpouseIncome);
+    expect(income('emekli', 60), Economy.retiredSpouseIncome);
+    expect(income('ev_hanimi', 66), 0);
   });
 }

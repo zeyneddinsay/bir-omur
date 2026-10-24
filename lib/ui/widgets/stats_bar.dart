@@ -55,7 +55,7 @@ class StatsBar extends StatelessWidget {
               Icon(Icons.payments_outlined, size: 18, color: scheme.primary),
               const SizedBox(width: 6),
               Text(
-                l10n.money(stats.money),
+                l10n.tl(stats.money),
                 key: const Key('money'),
                 style: Theme.of(context).textTheme.titleSmall
                     ?.copyWith(color: stats.money < 0 ? scheme.error : null),

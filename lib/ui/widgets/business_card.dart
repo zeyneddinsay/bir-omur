@@ -5,6 +5,7 @@ import '../../content/person_text.dart';
 import '../../engine/engine.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../models/models.dart';
+import '../l10n_names.dart';
 import '../people/people_text.dart';
 import '../providers.dart';
 
@@ -105,7 +106,7 @@ class _BusinessCard extends ConsumerWidget {
     final canAct = state.phase == YearPhase.actions;
     final partner = b.partnerId == null ? null : c.people[b.partnerId!];
     final candidates = engine.partnerCandidates(b.id);
-    String tl(int v) => v < 0 ? '−${l10n.money(-v)}' : l10n.money(v);
+    String tl(int v) => v < 0 ? '−${l10n.tl(-v)}' : l10n.tl(v);
 
     return Card(
       key: Key('business_${b.id}'),
@@ -183,7 +184,7 @@ class _BusinessCard extends ConsumerWidget {
               type.laborBound
                   ? l10n.businessLaborHint
                   : l10n.businessManagedHint(
-                      l10n.money(BusinessRules.managerWage),
+                      l10n.tl(BusinessRules.managerWage),
                     ),
               style: theme.textTheme.bodySmall,
             ),
@@ -211,7 +212,7 @@ class _BusinessCard extends ConsumerWidget {
                       ? () => controller.advertiseBusiness(b.id)
                       : null,
                   child: Text(
-                    l10n.businessAdvertise(l10n.money(BusinessRules.adCost(b))),
+                    l10n.businessAdvertise(l10n.tl(BusinessRules.adCost(b))),
                   ),
                 ),
                 OutlinedButton(
@@ -222,10 +223,10 @@ class _BusinessCard extends ConsumerWidget {
                   child: Text(
                     type.upgradeTo != null
                         ? l10n.businessUpgrade(
-                            l10n.money(BusinessRules.expandCost(b)),
+                            l10n.tl(BusinessRules.expandCost(b)),
                           )
                         : l10n.businessExpand(
-                            l10n.money(BusinessRules.expandCost(b)),
+                            l10n.tl(BusinessRules.expandCost(b)),
                           ),
                   ),
                 ),
@@ -265,7 +266,7 @@ class _BusinessCard extends ConsumerWidget {
                   title: Text(
                     l10n.businessPartnerOffer(
                       PersonText.labelOf(p),
-                      l10n.money(BusinessRules.partnerCapital(b)),
+                      l10n.tl(BusinessRules.partnerCapital(b)),
                     ),
                   ),
                   onTap: () => controller.takePartner(b.id, p.id),
@@ -365,8 +366,8 @@ class OpenBusinessSheet extends ConsumerWidget {
               subtitle: Text(
                 blocked == null
                     ? l10n.businessSetup(
-                        l10n.money(type.setupCost),
-                        l10n.money(type.revenue - type.fixedCost - type.wages),
+                        l10n.tl(type.setupCost),
+                        l10n.tl(type.revenue - type.fixedCost - type.wages),
                       )
                     : businessBlockedReason(l10n, blocked),
               ),

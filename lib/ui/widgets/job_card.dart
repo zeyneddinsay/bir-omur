@@ -79,7 +79,7 @@ class JobCard extends ConsumerWidget {
                   : l10n.jobTitleLine(title, job.company!),
               key: const Key('job_title'),
             ),
-            Text(l10n.jobSalary(l10n.money(salary))),
+            Text(l10n.jobSalary(l10n.tl(salary))),
             const SizedBox(height: 8),
             Row(
               children: [
@@ -325,7 +325,7 @@ class _ListingTile extends ConsumerWidget {
         [
           '“${listing.ad}”',
           [
-            l10n.listingSalary(l10n.money(salary)),
+            l10n.listingSalary(l10n.tl(salary)),
             if (listing.tier > 1) l10n.listingSenior,
           ].join(' · '),
           if (reason != null) listingBlockedReason(l10n, reason),

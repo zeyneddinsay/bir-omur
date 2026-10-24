@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../engine/engine.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../models/models.dart';
+import '../l10n_names.dart';
 import '../providers.dart';
 
 /// Varlıklar sekmesinde nerede yaşadığın: ev türü, şehir, yıllık gider ve
@@ -39,7 +40,7 @@ class HomeCard extends ConsumerWidget {
             ),
             if (rent > 0 || living > 0)
               Text(
-                l10n.homeCosts(l10n.money(rent), l10n.money(living)),
+                l10n.homeCosts(l10n.tl(rent), l10n.tl(living)),
                 style: theme.textTheme.bodySmall,
               ),
             if (c.age >= Housing.minAge) ...[
@@ -167,7 +168,7 @@ class MoveSheet extends ConsumerWidget {
                 ),
                 subtitle: Text(
                   blocked == null
-                      ? l10n.moveCost(l10n.money(cost))
+                      ? l10n.moveCost(l10n.tl(cost))
                       : moveBlockedReason(l10n, blocked),
                 ),
                 trailing: parentCities.contains(city)

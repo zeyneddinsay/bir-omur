@@ -230,7 +230,7 @@ class _WorkHeader extends StatelessWidget {
           ),
           if (c.isRetired && c.pension > 0)
             Text(
-              l10n.workPension(l10n.money(c.pension)),
+              l10n.workPension(l10n.tl(c.pension)),
               key: const Key('work_pension'),
               style: theme.textTheme.bodyMedium,
             ),
@@ -280,7 +280,7 @@ class _ActionsTab extends ConsumerWidget {
                 blocked == null
                     ? '${switch (action.moneyChangeFor(state.character, controller.engine.market)) {
                         0 => l10n.actionFree,
-                        < 0 && final change => l10n.money(-change),
+                        < 0 && final change => l10n.tl(-change),
                         final change => l10n.moneyGain(change),
                       }} · ${l10n.interactionCost(action.timeCost)}'
                     : l10n.actionBlockedReason(blocked),

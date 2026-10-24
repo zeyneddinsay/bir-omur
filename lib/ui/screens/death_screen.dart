@@ -71,7 +71,7 @@ class DeathScreen extends ConsumerWidget {
                           case final job?)
                         Text(job, key: const Key('death_career')),
                       Text(
-                        l10n.deathNetWorth(l10n.money(summary.netWorth)),
+                        l10n.deathNetWorth(l10n.tl(summary.netWorth)),
                         key: const Key('death_net_worth'),
                       ),
                       const SizedBox(height: 16),

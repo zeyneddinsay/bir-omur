@@ -155,7 +155,7 @@ class _Row extends StatelessWidget {
           Expanded(child: Text(label)),
           const SizedBox(width: 8),
           Text(
-            amount < 0 ? '−${l10n.money(-amount)}' : l10n.moneyGain(amount),
+            amount < 0 ? '−${l10n.tl(-amount)}' : l10n.moneyGain(amount),
             style: style,
           ),
         ],

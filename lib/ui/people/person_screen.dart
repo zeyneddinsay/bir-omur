@@ -5,6 +5,7 @@ import '../../content/person_text.dart';
 import '../../engine/engine.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../models/models.dart';
+import '../l10n_names.dart';
 import '../portrait/portrait.dart';
 import '../portrait/portrait_spec.dart';
 import '../providers.dart';
@@ -227,7 +228,7 @@ class PersonScreen extends ConsumerWidget {
       builder: (dialog) => AlertDialog(
         content: Text(
           divorce
-              ? l10n.divorceConfirm(l10n.money(half))
+              ? l10n.divorceConfirm(l10n.tl(half))
               : l10n.breakUpConfirm(p.name),
         ),
         actions: [
@@ -275,10 +276,7 @@ class _InteractionTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final cost = option.moneyCost > 0
-        ? l10n.interactionCostMoney(
-            option.timeCost,
-            l10n.money(option.moneyCost),
-          )
+        ? l10n.interactionCostMoney(option.timeCost, l10n.tl(option.moneyCost))
         : l10n.interactionCost(option.timeCost);
     return ListTile(
       key: Key('interaction_${option.kind.name}'),

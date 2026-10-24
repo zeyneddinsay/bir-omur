@@ -5,6 +5,10 @@ import '../models/models.dart';
 
 /// Motorun döndürdüğü kimlikleri ARB metinlerine çevirir.
 extension L10nNames on AppLocalizations {
+  /// TL tutarı; eksi tutar tipografik eksiyle ("−116.965 TL"), artı ve
+  /// eksi işaretli diğer satırlarla aynı görünür.
+  String tl(int amount) => money(amount).replaceFirst('-', '−');
+
   String rollOddsName(RollOdds odds) => switch (odds) {
     RollOdds.yuksek => rollOdds_yuksek,
     RollOdds.orta => rollOdds_orta,

@@ -124,6 +124,10 @@ abstract final class Economy {
   /// Çalışmayan eşin gideri.
   static const int spouseCost = 150000;
 
+  /// Çalışmış, emekli eşin aylığından hanenin bütçesine (kira, mutfak)
+  /// kattığı.
+  static const int retiredSpouseIncome = 100000;
+
   static int childCostOf(Character c) =>
       c.people.all
           .where(
@@ -142,9 +146,12 @@ abstract final class Economy {
         .where((p) => p.kin == Kinship.es && p.isAlive)
         .firstOrNull;
     if (spouse == null) return 0;
-    // Emekli eşin aylığı kendi giderini karşılar.
-    if (spouse.occupation == 'emekli' || spouse.ageAt(c.age) >= 65) return 0;
     const idle = {null, 'ev_hanimi', 'ogrenci'};
+    // Emekli eş aylığıyla kendi giderini karşılar; çalışmış olan aylığından
+    // haneye de katar (yaşlı çift kirada batmasın).
+    if (spouse.occupation == 'emekli' || spouse.ageAt(c.age) >= 65) {
+      return idle.contains(spouse.occupation) ? 0 : retiredSpouseIncome;
+    }
     return idle.contains(spouse.occupation) ? -spouseCost : spouseNetIncome;
   }
 

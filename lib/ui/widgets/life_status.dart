@@ -105,7 +105,7 @@ class AssetsSummary extends StatelessWidget {
     final c = engine.state.character;
     final a = c.assets;
     final market = engine.market;
-    String tl(int v) => l10n.money(v);
+    String tl(int v) => l10n.tl(v);
 
     final rows = <(String, String)>[
       (l10n.assetCash, tl(c.stats.money)),
@@ -215,7 +215,7 @@ class LastYearBanner extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final theme = Theme.of(context);
-    String tl(int v) => l10n.money(v);
+    String tl(int v) => l10n.tl(v);
     // Ayrıntılı döküm Varlıklar sekmesinde; burada yalnızca toplamlar.
     final spouse = economy.spouseIncome;
     final int income = (career?.income ?? 0) + max(0, spouse);
