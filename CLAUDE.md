@@ -305,6 +305,23 @@ D5 adımları (denge, mantık taraması, hikâye akışı, cila):
   - **Kartlar.**
     - Eski sevgilinin düğün davetiyesi ayrılıktan en az 3 yıl sonra gelir.
     - Çocuk sayısını ya da yaşını varsayan metinler düzeltildi ("Çocuklar büyüdü", "Çocukların ... önerdi").
+- [x] Yayın öncesi tam test (24 Ekim 2026, kullanıcı isteği):
+  - **Testin yapısı.**
+    - Emülatörde Ali'nin hayatı baştan sona oynandı: işletme açma, askerlik, batma, ara işler, yeniden açma, satış, altın, kayıt ve geri dönüş, Ayarlar, albüm.
+    - Uzun arayüz testi `test/ui/full_play_test.dart` gerçek ekranlarda her düğmeye basarak 10 hayat oynar. Hayatlar altı kişilikle (sosyal, işletmeci, kariyerci, göçebe, aşık, karışık), üç ekran boyunda ve her yıl vaktin tamamı harcanarak oynanır. Her adımda hata, taşma, ham şablon ve oyun kuralları denetlenir. Komut: `flutter test --run-skipped -t uzun test/ui/full_play_test.dart`.
+    - Kaos oyuncusu `test/engine/chaos_play_test.dart`: 60 hayatta her işlemi rastgele dener. Para defterini denetler, kaydı yazıp geri açar.
+  - **Bulunan ve düzeltilen hatalar.**
+    - Aynı olay aynı yıl iki kez gelince (zor günde iki arayan) ikinci kart donuyordu ve oyun kilitleniyordu. Kart anahtarına kalan kart sayısı eklendi.
+    - Müdür maaşı her işletmede 340 bindi. Askerdeki sahibin simit tezgâhı yılda 300 bin zarar edip batıyordu. Müdür maaşı artık cironun %35'i, en fazla 340 bin.
+    - Küçük ekranda (360×640) üst şerit ile sonuç paneli birlikte sekmeyi taşırıyordu. İkisi birlikte en fazla ekranın dörtte birini kaplar ve kaydırılabilir.
+    - Yıl başı bandı yıl içindeki işletme kuruluşunu ve satışını sayıyordu. Artık yalnızca yılın işletme sonucunu sayıyor (`LifeEngine.lastBusiness`).
+    - 65 yaş üstü işi olmayanın borcu donar (faiz yok), yaşam gideri 100 bin. Çocuksuz yaşlı 25 yıl aynı borç satırlarıyla yaşıyordu.
+  - **Küçük düzeltmeler.**
+    - Yeni gelenler rolüyle yazılır ("Tanıştın: Rakibin Tuba (58)").
+    - Çalışansız işletmenin satış onayı farklı bir metinle sorulur.
+    - Ev ve taşınma engeli gereken geliri ya da birikimi söyler.
+    - Deneme sınavı kartı bilgiye bağlandı.
+    - ARB'de tekrar eden anahtar kaldırıldı ve bunu yakalayan bir test eklendi (`test/l10n/arb_test.dart`).
 - [ ] Telefonda deneme (kullanıcı)
 
 ## Bekleyen aşama: F3a — Dağıtıma hazırlık
