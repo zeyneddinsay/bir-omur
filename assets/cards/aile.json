@@ -8,7 +8,7 @@
     "repeat": "once",
     "conditions": { "familyProfile": ["esnaf"] },
     "roles": {
-      "veli": { "kin": ["baba", "anne"] }
+      "veli": { "kin": ["baba"] }
     },
     "speaker": "veli",
     "text": "Yaz tatili başladı. {veli.akraba}: 'Tatil yok, dükkâna geliyorsun. Hem harçlığını çıkarırsın.'",

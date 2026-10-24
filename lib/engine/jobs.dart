@@ -274,28 +274,55 @@ abstract final class JobMarket {
     Random random, {
     Person? reference,
   }) {
+    final passed =
+        _interviewScore(c, answer, random.nextInt(101)) >=
+        _interviewThreshold(c, listing, book, reference);
+    if (!passed) return InterviewResult.olmadi;
+    return reference == null
+        ? InterviewResult.alindi
+        : InterviewResult.torpilleAlindi;
+  }
+
+  /// Mülakatı geçme ihtimali (0–1); arayüz "yüksek / orta / düşük" gösterir.
+  static double interviewChance(
+    Character c,
+    JobListing listing,
+    CareerBook book,
+    InterviewAnswer answer, {
+    Person? reference,
+  }) {
+    final threshold = _interviewThreshold(c, listing, book, reference);
+    var hits = 0;
+    for (var dice = 0; dice <= 100; dice++) {
+      if (_interviewScore(c, answer, dice) >= threshold) hits++;
+    }
+    return hits / 101;
+  }
+
+  static double _interviewScore(Character c, InterviewAnswer answer, int dice) {
+    final kind = answer.stat.statKind;
+    final value = kind == null ? c.luck : c.stats[kind];
+    final luckBonus = kind == null ? 0 : (c.luck - 50) / 10;
+    final reputation = (c.stats.reputation - 50) / 10;
+    final internship = c.hasFlag(internshipFlag) ? 8 : 0;
+    return (value + dice) / 2 + luckBonus + reputation + internship;
+  }
+
+  static int _interviewThreshold(
+    Character c,
+    JobListing listing,
+    CareerBook book,
+    Person? reference,
+  ) {
     final career = book.require(listing.careerId);
     final referenceBonus = reference == null
         ? 0
         : Relationships.closeness(reference, c.age) >= 60
         ? 20
         : 10;
-    final threshold =
-        career.entry.interviewThreshold +
+    return career.entry.interviewThreshold +
         (listing.tier - 1) * 10 -
         referenceBonus;
-    final kind = answer.stat.statKind;
-    final value = kind == null ? c.luck : c.stats[kind];
-    final luckBonus = kind == null ? 0 : (c.luck - 50) / 10;
-    final reputation = (c.stats.reputation - 50) / 10;
-    final internship = c.hasFlag(internshipFlag) ? 8 : 0;
-    final dice = random.nextInt(101);
-    if ((value + dice) / 2 + luckBonus + reputation + internship < threshold) {
-      return InterviewResult.olmadi;
-    }
-    return reference == null
-        ? InterviewResult.alindi
-        : InterviewResult.torpilleAlindi;
   }
 
   /// İşe girer: eski işten ayrılır, patron ve üç iş arkadaşı kişi olarak
@@ -371,6 +398,21 @@ abstract final class JobMarket {
   static String? _occupationFor(CareerBook book, String careerId) {
     final occupations = book.byId(careerId)?.occupations ?? const {};
     return occupations.isEmpty ? null : occupations.first;
+  }
+
+  /// Terfi için eksik kalan gösterge şartları (gereken en az değer); arayüz
+  /// "Bilgi en az 40 olmalı" diye gösterir.
+  static Map<StatKind, int> promotionShortfall(Character c, CareerBook book) {
+    final job = c.job;
+    if (job == null) return const {};
+    final promotion = book.require(job.careerId).tier(job.tier).promotion;
+    if (promotion == null) return const {};
+    return {
+      for (final MapEntry(:key, :value) in promotion.requires.min.entries)
+        if (StatKind.fromKey(key) case final kind?
+            when c.stats[kind] < value)
+          kind: value,
+    };
   }
 
   /// Terfi ya da zam neden istenemez (arayüz gösterir); null ise

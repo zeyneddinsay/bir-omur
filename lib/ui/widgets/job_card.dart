@@ -5,7 +5,9 @@ import '../../content/person_text.dart';
 import '../../engine/engine.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../models/models.dart';
+import '../l10n_names.dart';
 import '../providers.dart';
+import 'choice_preview.dart';
 import 'life_status.dart';
 
 String tempoName(AppLocalizations l10n, Tempo tempo) => switch (tempo) {
@@ -174,24 +176,53 @@ class JobCard extends ConsumerWidget {
                 when r != RequestBlocked.isYok)
               Text(
                 l10n.jobPromotionBlocked(
-                  requestBlockedText(
-                    l10n,
-                    r,
-                    JobMarket.yearsToPromotion(c, engine.careers),
-                  ),
+                  r == RequestBlocked.sart
+                      ? _shortfallText(l10n, c, engine.careers) ??
+                            requestBlockedText(l10n, r, 0)
+                      : requestBlockedText(
+                          l10n,
+                          r,
+                          JobMarket.yearsToPromotion(c, engine.careers),
+                          minPerformance:
+                              career.tier(job.tier).promotion?.minPerformance ??
+                              0,
+                          performance: job.performance,
+                        ),
                 ),
                 style: theme.textTheme.bodySmall,
               ),
             if (engine.requestBlocked(promotion: false) case final r?
                 when r != RequestBlocked.isYok)
               Text(
-                l10n.jobRaiseBlocked(requestBlockedText(l10n, r, 0)),
+                l10n.jobRaiseBlocked(
+                  requestBlockedText(
+                    l10n,
+                    r,
+                    0,
+                    minPerformance: JobMarket.raiseMinPerformance,
+                    performance: job.performance,
+                  ),
+                ),
                 style: theme.textTheme.bodySmall,
               ),
           ],
         ),
       ),
     );
+  }
+
+  /// Terfi şartında eksik göstergeler: "Bilgi en az 40 olmalı (şu an 29)".
+  static String? _shortfallText(
+    AppLocalizations l10n,
+    Character c,
+    CareerBook careers,
+  ) {
+    final missing = JobMarket.promotionShortfall(c, careers);
+    if (missing.isEmpty) return null;
+    return [
+      for (final MapEntry(key: kind, value: min) in missing.entries)
+        l10n.request_statMin(l10n.statName(kind), min, c.stats[kind]),
+    ].join(', ');
   }
 
   static Future<void> _confirmQuit(
@@ -331,6 +362,7 @@ class InterviewSheet extends ConsumerWidget {
         ? null
         : career.interviews[listing.interview % career.interviews.length];
     final references = engine.listingReferences(listing);
+    final c = ref.watch(lifeProvider)?.character;
 
     void answer(ChoiceSide side, {String? referenceId}) {
       controller.applyFor(listing, side, referenceId: referenceId);
@@ -359,6 +391,20 @@ class InterviewSheet extends ConsumerWidget {
                 contentPadding: EdgeInsets.zero,
                 leading: const Icon(Icons.casino_outlined),
                 title: Text(a.label),
+                subtitle: Align(
+                  alignment: AlignmentDirectional.centerStart,
+                  child: RollLine(
+                    roll: Roll(stat: a.stat, threshold: 0),
+                    chance: c == null
+                        ? null
+                        : JobMarket.interviewChance(
+                            c,
+                            listing,
+                            engine.careers,
+                            a,
+                          ),
+                  ),
+                ),
                 onTap: () => answer(side),
               ),
           ] else
@@ -388,13 +434,18 @@ class InterviewSheet extends ConsumerWidget {
 String requestBlockedText(
   AppLocalizations l10n,
   RequestBlocked reason,
-  int years,
-) => switch (reason) {
+  int years, {
+  int minPerformance = 0,
+  int performance = 0,
+}) => switch (reason) {
   RequestBlocked.isYok => '',
   RequestBlocked.sonKademe => l10n.request_sonKademe,
   RequestBlocked.erken => l10n.request_erken(years),
   RequestBlocked.sart => l10n.request_sart,
-  RequestBlocked.performans => l10n.request_performans,
+  RequestBlocked.performans => l10n.request_performans(
+    minPerformance,
+    performance,
+  ),
   RequestBlocked.para => l10n.request_para,
   RequestBlocked.tavan => l10n.request_tavan,
   RequestBlocked.buYil => l10n.request_buYil,

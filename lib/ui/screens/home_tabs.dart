@@ -224,7 +224,10 @@ class _WorkHeader extends StatelessWidget {
             key: const Key('work_status'),
             style: theme.textTheme.titleMedium,
           ),
-          Text(l10n.stageName(c.stage), style: theme.textTheme.bodySmall),
+          Text(
+            stageLabel(l10n, c, engine.careers),
+            style: theme.textTheme.bodySmall,
+          ),
         ],
       ),
     );

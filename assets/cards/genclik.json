@@ -290,7 +290,7 @@
     "maxAge": 26,
     "repeat": "once",
     "conditions": { "flags": ["universite_ogrencisi"] },
-    "text": "Üçüncü sınıf, staj zamanı. Bir şirket yazmış: 'Ücretsiz staj, öğle yemeği bizden, tecrübe ömürlük.'",
+    "text": "Staj zamanı geldi. Bir şirket yazmış: 'Ücretsiz staj, öğle yemeği bizden, tecrübe ömürlük.'",
     "left": {
       "label": "Kabul ederim",
       "effects": {

@@ -288,6 +288,23 @@ void main() {
       }
     });
 
+    test('okul arkadaşlarının adları birbirini tekrarlamaz', () {
+      var people = 0;
+      var repeats = 0;
+      for (final life in lives) {
+        final names = [
+          for (final p in finalOf(life).people.all)
+            if (p.origin == Origin.okul) p.name,
+        ];
+        people += names.length;
+        repeats += names.length - names.toSet().length;
+      }
+      printOnFailure('$repeats / $people tekrar');
+      // Aynı yıl gelen beş sınıf arkadaşı da birbirinin adını alamaz; ad
+      // havuzu tükenmedikçe tekrar olmaz.
+      expect(repeats / people, lessThan(0.01));
+    });
+
     test('her yakın vefatın cenazesi gelir', () {
       var deaths = 0;
       final missed = <String>[];

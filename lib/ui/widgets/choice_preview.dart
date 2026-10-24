@@ -198,17 +198,23 @@ class PreviewChip extends StatelessWidget {
 /// Zarlı seçenekte zarın baktığı değer ve (karakter biliniyorsa) kaba
 /// ihtimal: "Şans zarı · İhtimal orta".
 class RollLine extends StatelessWidget {
-  const RollLine({super.key, required this.roll, this.character});
+  const RollLine({super.key, required this.roll, this.character, this.chance});
 
   final Roll roll;
   final Character? character;
+
+  /// Hazır hesaplanmış ihtimal (mülakat gibi kart dışı zarlar); verilirse
+  /// karakterden hesaplanmaz.
+  final double? chance;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final theme = Theme.of(context);
     final stat = l10n.rollStatName(roll.stat);
-    final odds = character == null
+    final odds = chance != null
+        ? RollOdds.of(chance!)
+        : character == null
         ? null
         : RollOdds.of(EffectResolver.rollChance(character!, roll));
     final oddsColor = switch (odds) {

@@ -30,7 +30,19 @@
     { "name": "Can", "era": "yeni" },
     { "name": "Arda", "era": "yeni" },
     { "name": "Efe", "era": "yeni" },
-    { "name": "Kaan", "era": "yeni" }
+    { "name": "Kaan", "era": "yeni" },
+    { "name": "Emir", "era": "yeni" },
+    { "name": "Mert", "era": "yeni" },
+    { "name": "Berk", "era": "yeni" },
+    { "name": "Yiğit", "era": "yeni" },
+    { "name": "Aras", "era": "yeni" },
+    { "name": "Eren", "era": "yeni" },
+    { "name": "Baran", "era": "yeni" },
+    { "name": "Enes", "era": "yeni" },
+    { "name": "Furkan", "era": "yeni" },
+    { "name": "Oğuz", "era": "yeni" },
+    { "name": "Doruk", "era": "yeni" },
+    { "name": "Batuhan", "era": "yeni" }
   ],
   "female": [
     { "name": "Ayşe", "era": "her" },
@@ -62,7 +74,19 @@
     { "name": "Ece", "era": "yeni" },
     { "name": "İpek", "era": "yeni" },
     { "name": "Melis", "era": "yeni" },
-    { "name": "Selin", "era": "yeni" }
+    { "name": "Selin", "era": "yeni" },
+    { "name": "Nisa", "era": "yeni" },
+    { "name": "Azra", "era": "yeni" },
+    { "name": "Ceren", "era": "yeni" },
+    { "name": "Buse", "era": "yeni" },
+    { "name": "Sude", "era": "yeni" },
+    { "name": "Beren", "era": "yeni" },
+    { "name": "Ecrin", "era": "yeni" },
+    { "name": "İrem", "era": "yeni" },
+    { "name": "Damla", "era": "yeni" },
+    { "name": "Eylül", "era": "yeni" },
+    { "name": "Ela", "era": "yeni" },
+    { "name": "Dilara", "era": "yeni" }
   ],
   "surnames": [
     "Yılmaz", "Kaya", "Demir", "Şahin", "Çelik", "Yıldız", "Yıldırım", "Öztürk",

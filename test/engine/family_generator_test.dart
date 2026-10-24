@@ -70,6 +70,25 @@ void main() {
     }
   });
 
+  test(
+    'ailede (sonradan doğacak kardeş dahil) kimse oyuncunun adını taşımaz',
+    () {
+      for (var seed = 0; seed < 300; seed++) {
+        for (final name in const ['Kerem', 'Elif', 'Mehmet', 'Zeynep']) {
+          final c = BirthGenerator(
+            SeededRandom(seed),
+            families: book,
+          ).generate(name: name);
+          expect(
+            c.people.all.where((p) => p.name == name),
+            isEmpty,
+            reason: 'tohum , ',
+          );
+        }
+      }
+    },
+  );
+
   test('aynı ailede iki kişi aynı adı taşımaz', () {
     for (var seed = 0; seed < 200; seed++) {
       final c = BirthGenerator(SeededRandom(seed), families: book).generate();

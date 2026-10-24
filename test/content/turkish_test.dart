@@ -9,6 +9,107 @@ import 'package:flutter_test/flutter_test.dart';
 /// Ad → [e, i, in, de, den, le] ekli hâlleri (elle hesaplandı).
 const Map<String, List<String>> _expected = {
   // Yeni adlar (assets/names.json)
+  'Emir': ["Emir'e", "Emir'i", "Emir'in", "Emir'de", "Emir'den", "Emir'le"],
+  'Mert': ["Mert'e", "Mert'i", "Mert'in", "Mert'te", "Mert'ten", "Mert'le"],
+  'Berk': ["Berk'e", "Berk'i", "Berk'in", "Berk'te", "Berk'ten", "Berk'le"],
+  'Yiğit': [
+    "Yiğit'e",
+    "Yiğit'i",
+    "Yiğit'in",
+    "Yiğit'te",
+    "Yiğit'ten",
+    "Yiğit'le",
+  ],
+  'Aras': ["Aras'a", "Aras'ı", "Aras'ın", "Aras'ta", "Aras'tan", "Aras'la"],
+  'Eren': ["Eren'e", "Eren'i", "Eren'in", "Eren'de", "Eren'den", "Eren'le"],
+  'Baran': [
+    "Baran'a",
+    "Baran'ı",
+    "Baran'ın",
+    "Baran'da",
+    "Baran'dan",
+    "Baran'la",
+  ],
+  'Enes': ["Enes'e", "Enes'i", "Enes'in", "Enes'te", "Enes'ten", "Enes'le"],
+  'Furkan': [
+    "Furkan'a",
+    "Furkan'ı",
+    "Furkan'ın",
+    "Furkan'da",
+    "Furkan'dan",
+    "Furkan'la",
+  ],
+  'Oğuz': ["Oğuz'a", "Oğuz'u", "Oğuz'un", "Oğuz'da", "Oğuz'dan", "Oğuz'la"],
+  'Doruk': [
+    "Doruk'a",
+    "Doruk'u",
+    "Doruk'un",
+    "Doruk'ta",
+    "Doruk'tan",
+    "Doruk'la",
+  ],
+  'Batuhan': [
+    "Batuhan'a",
+    "Batuhan'ı",
+    "Batuhan'ın",
+    "Batuhan'da",
+    "Batuhan'dan",
+    "Batuhan'la",
+  ],
+  'Nisa': ["Nisa'ya", "Nisa'yı", "Nisa'nın", "Nisa'da", "Nisa'dan", "Nisa'yla"],
+  'Azra': ["Azra'ya", "Azra'yı", "Azra'nın", "Azra'da", "Azra'dan", "Azra'yla"],
+  'Ceren': [
+    "Ceren'e",
+    "Ceren'i",
+    "Ceren'in",
+    "Ceren'de",
+    "Ceren'den",
+    "Ceren'le",
+  ],
+  'Buse': ["Buse'ye", "Buse'yi", "Buse'nin", "Buse'de", "Buse'den", "Buse'yle"],
+  'Sude': ["Sude'ye", "Sude'yi", "Sude'nin", "Sude'de", "Sude'den", "Sude'yle"],
+  'Beren': [
+    "Beren'e",
+    "Beren'i",
+    "Beren'in",
+    "Beren'de",
+    "Beren'den",
+    "Beren'le",
+  ],
+  'Ecrin': [
+    "Ecrin'e",
+    "Ecrin'i",
+    "Ecrin'in",
+    "Ecrin'de",
+    "Ecrin'den",
+    "Ecrin'le",
+  ],
+  'İrem': ["İrem'e", "İrem'i", "İrem'in", "İrem'de", "İrem'den", "İrem'le"],
+  'Damla': [
+    "Damla'ya",
+    "Damla'yı",
+    "Damla'nın",
+    "Damla'da",
+    "Damla'dan",
+    "Damla'yla",
+  ],
+  'Eylül': [
+    "Eylül'e",
+    "Eylül'ü",
+    "Eylül'ün",
+    "Eylül'de",
+    "Eylül'den",
+    "Eylül'le",
+  ],
+  'Ela': ["Ela'ya", "Ela'yı", "Ela'nın", "Ela'da", "Ela'dan", "Ela'yla"],
+  'Dilara': [
+    "Dilara'ya",
+    "Dilara'yı",
+    "Dilara'nın",
+    "Dilara'da",
+    "Dilara'dan",
+    "Dilara'yla",
+  ],
   'Serkan': [
     "Serkan'a",
     "Serkan'ı",
@@ -408,7 +509,7 @@ void main() {
           for (final entry in json[key] as List)
             (entry as Map<String, dynamic>)['name'] as String,
       ];
-      expect(all, hasLength(60));
+      expect(all, hasLength(84));
       final missing = all.where((n) => !_expected.containsKey(n)).toList();
       expect(missing, isEmpty, reason: 'yeni ad eklendiyse beklentisini yaz');
     });

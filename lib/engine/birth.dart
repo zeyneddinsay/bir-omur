@@ -2,6 +2,7 @@ import 'dart:math';
 
 import '../models/models.dart';
 import 'family_generator.dart';
+import '../content/turkish.dart' show lowerTr;
 
 /// Yeni doğan karakteri ve ailesini tohumlu rastgelelikle üretir.
 ///
@@ -74,10 +75,11 @@ class BirthGenerator {
     );
     backgroundStart(background)
         .forEach((kind, delta) => stats = stats.withDelta(kind, delta));
+    final playerName = (trimmed == null || trimmed.isEmpty)
+        ? _pick(families.namesFor(g, NameEra.yeni))
+        : trimmed;
     return Character(
-      name: (trimmed == null || trimmed.isEmpty)
-          ? _pick(families.namesFor(g, NameEra.yeni))
-          : trimmed,
+      name: playerName,
       gender: g,
       age: 0,
       stats: stats,
@@ -88,8 +90,29 @@ class BirthGenerator {
       background: background,
       surname: family.surname,
       familyProfile: family.profile.id,
-      people: family.people,
+      people: _withoutPlayerName(family.people, playerName),
     );
+  }
+
+  /// Ailede oyuncuyla aynı adı taşıyan (sonradan doğacak kardeş dahil)
+  /// kimse kalmaz: "Bir kardeşin daha oldu: Kerem" olmaz. Yeni ad, ailedeki
+  /// adlardan da farklıdır.
+  PeopleBook _withoutPlayerName(PeopleBook book, String name) {
+    var next = book;
+    for (final p in book.all) {
+      if (lowerTr(p.name) != lowerTr(name)) continue;
+      final taken = {for (final o in next.all) o.name, name};
+      final pool = [
+        for (final n in families.namesFor(
+          p.gender,
+          NameEra.forAgeGap(-p.bornAt),
+        ))
+          if (!taken.contains(n)) n,
+      ];
+      if (pool.isEmpty) continue;
+      next = next.update(Person.fromJson({...p.toJson(), 'name': _pick(pool)}));
+    }
+    return next;
   }
 
   /// Aile durumunun doğumdaki etkisi: varlıklı ailede iyi okul, dar

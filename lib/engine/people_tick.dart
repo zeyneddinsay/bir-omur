@@ -120,11 +120,15 @@ class PeopleTick {
 
   late PeopleBook _book;
   late int _now;
+
+  /// Oyuncunun adı: yeni doğan yeğen ve toruna verilmez.
+  late String _playerName;
   late List<PersonNews> _news;
 
   (Character, List<PersonNews>) apply(Character c) {
     _book = c.people;
     _now = c.age;
+    _playerName = c.name;
     _news = [];
 
     _fourGenerations = false;
@@ -287,7 +291,7 @@ class PeopleTick {
       if (nephews < 2 * siblings) {
         final (book, baby) = Romance.addKinPerson(
           _book,
-          PersonFactory(random, families),
+          PersonFactory(random, families, avoidName: _playerName),
           now: _now,
           age: 0,
           city: p.city,
@@ -312,7 +316,7 @@ class PeopleTick {
       if (grandkids < 2 * kids) {
         final (book, baby) = Romance.addKinPerson(
           _book,
-          PersonFactory(random, families),
+          PersonFactory(random, families, avoidName: _playerName),
           now: _now,
           age: 0,
           city: p.city,
@@ -495,7 +499,7 @@ class PeopleTick {
     final gender = Gender.values[random.nextInt(Gender.values.length)];
     // Tanıdıkların adı yeni sınıf arkadaşına verilmez (iki Fatma karışır).
     final all = families.namesFor(gender, NameEra.forAgeGap(ageGap));
-    final taken = PersonFactory.takenNames(c.people);
+    final taken = PersonFactory.takenNames(_book);
     final fresh = [
       for (final n in all)
         if (!taken.contains(n) && n != c.name) n,

@@ -33,6 +33,16 @@ String jobLabel(AppLocalizations l10n, Character c, CareerBook careers) {
   return l10n.jobNone;
 }
 
+/// Başlıktaki evre adı: liseyi bitirip üniversiteye ya da işe geçen 18
+/// yaşındaki "Lise · Üniversite öğrencisi" değil "Genç yetişkin" görünür.
+String stageLabel(AppLocalizations l10n, Character c, CareerBook careers) {
+  final job = jobLabel(l10n, c, careers);
+  if (c.stage == LifeStage.lise && job.isNotEmpty && job != l10n.jobChild) {
+    return l10n.stageName(LifeStage.genc);
+  }
+  return l10n.stageName(c.stage);
+}
+
 /// Son iş: ölüm özeti için; hiç çalışmadıysa null.
 String? lastJobLabel(AppLocalizations l10n, Character c, CareerBook careers) {
   final job = c.careerJob;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../content/event_text.dart';
+import '../../content/person_text.dart';
 import '../../engine/engine.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../models/models.dart';
@@ -169,6 +170,12 @@ class ActionResultPanel extends StatelessWidget {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
     final changed = OutcomePanel.changes(l10n, before, after);
+    // Aksiyonla gelen yeni kişiler ("Biriyle tanış", ev arkadaşı).
+    final newcomers = [
+      for (final p in after.people.all)
+        if (before.people[p.id] == null)
+          l10n.actionNewPerson(PersonText.labelOf(p), p.ageAt(after.age)),
+    ];
     return Padding(
       padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
       child: Container(
@@ -193,6 +200,12 @@ class ActionResultPanel extends StatelessWidget {
                       fontWeight: FontWeight.w700,
                     ),
                   ),
+                  if (newcomers.isNotEmpty)
+                    Text(
+                      l10n.actionMet(newcomers.join(', ')),
+                      key: const Key('action_met'),
+                      style: theme.textTheme.bodyMedium,
+                    ),
                   if (changed.isNotEmpty) ...[
                     const SizedBox(height: 6),
                     PreviewChips(items: changed, dense: true),

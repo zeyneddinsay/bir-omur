@@ -270,6 +270,16 @@ class AppLocalizationsTr extends AppLocalizations {
   String get outcomeClose => 'Kapat';
 
   @override
+  String actionMet(String names) {
+    return 'Tanıştın: $names';
+  }
+
+  @override
+  String actionNewPerson(String name, int age) {
+    return '$name ($age)';
+  }
+
+  @override
   String rollBadge(String stat) {
     return 'Zar: $stat';
   }
@@ -1268,7 +1278,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String note_lise(String school) {
-    return '$school başladın.';
+    return 'Liseye başladın: $school.';
   }
 
   @override
@@ -1379,7 +1389,14 @@ class AppLocalizationsTr extends AppLocalizations {
   String get request_sart => 'diploma ya da belge şartı eksik';
 
   @override
-  String get request_performans => 'performansın yetmiyor';
+  String request_statMin(String stat, int min, int now) {
+    return '$stat en az $min olmalı (şu an $now)';
+  }
+
+  @override
+  String request_performans(int min, int now) {
+    return 'performans en az $min olmalı (şu an $now)';
+  }
 
   @override
   String get request_para => 'terfinin bedeline paran yetmiyor';

@@ -12,6 +12,7 @@ import 'home_tabs.dart';
 import 'settings_screen.dart';
 import '../portrait/portrait.dart';
 import '../portrait/portrait_spec.dart';
+import '../widgets/education_card.dart' show noteLine;
 import '../widgets/life_status.dart';
 import '../widgets/stats_bar.dart';
 import '../widgets/outcome_panel.dart';
@@ -71,7 +72,7 @@ class _YearScreenState extends ConsumerState<YearScreen> {
             Text(
               [
                 l10n.ageLabel(c.age),
-                l10n.stageName(c.stage),
+                stageLabel(l10n, c, engine.careers),
                 jobLabel(l10n, c, engine.careers),
               ].where((s) => s.isNotEmpty).join(' · '),
               key: const Key('age_line'),
@@ -189,7 +190,15 @@ class _YearScreenState extends ConsumerState<YearScreen> {
             if (ref.watch(lastActionProvider) case final action?
                 when !identical(action, _closedAction))
               ActionResultPanel(
-                title: l10n.actionName(action.actionId) ?? action.actionId,
+                title: action.note != null
+                    ? noteLine(
+                        l10n,
+                        action.note!,
+                        engine.careers,
+                        deck: engine.deck,
+                        character: c,
+                      )
+                    : l10n.actionName(action.actionId) ?? action.actionId,
                 before: action.before,
                 after: action.after,
                 onClose: () => setState(() => _closedAction = action),

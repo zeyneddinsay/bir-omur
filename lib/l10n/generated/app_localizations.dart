@@ -538,6 +538,18 @@ abstract class AppLocalizations {
   /// **'Kapat'**
   String get outcomeClose;
 
+  /// No description provided for @actionMet.
+  ///
+  /// In tr, this message translates to:
+  /// **'Tanıştın: {names}'**
+  String actionMet(String names);
+
+  /// No description provided for @actionNewPerson.
+  ///
+  /// In tr, this message translates to:
+  /// **'{name} ({age})'**
+  String actionNewPerson(String name, int age);
+
   /// No description provided for @rollBadge.
   ///
   /// In tr, this message translates to:
@@ -2137,7 +2149,7 @@ abstract class AppLocalizations {
   /// No description provided for @note_lise.
   ///
   /// In tr, this message translates to:
-  /// **'{school} başladın.'**
+  /// **'Liseye başladın: {school}.'**
   String note_lise(String school);
 
   /// No description provided for @note_yksPuani.
@@ -2302,11 +2314,17 @@ abstract class AppLocalizations {
   /// **'diploma ya da belge şartı eksik'**
   String get request_sart;
 
+  /// No description provided for @request_statMin.
+  ///
+  /// In tr, this message translates to:
+  /// **'{stat} en az {min} olmalı (şu an {now})'**
+  String request_statMin(String stat, int min, int now);
+
   /// No description provided for @request_performans.
   ///
   /// In tr, this message translates to:
-  /// **'performansın yetmiyor'**
-  String get request_performans;
+  /// **'performans en az {min} olmalı (şu an {now})'**
+  String request_performans(int min, int now);
 
   /// No description provided for @request_para.
   ///

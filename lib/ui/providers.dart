@@ -134,7 +134,12 @@ class NewBadges extends Notifier<Set<String>> {
 
 /// Son yapılan aksiyon ve öncesindeki karakter: arayüz ne olduğunu ve
 /// göstergelerde neyin değiştiğini gösterir. Yeni yılda ya da kartta silinir.
-typedef ActionResult = ({String actionId, Character before, Character after});
+typedef ActionResult = ({
+  String actionId,
+  Character before,
+  Character after,
+  LifeNote? note,
+});
 
 final lastActionProvider = NotifierProvider<LastAction, ActionResult?>(
   LastAction.new,
@@ -236,6 +241,7 @@ class LifeController extends Notifier<LifeState?> {
       actionId: actionId,
       before: before,
       after: engine.state.character,
+      note: null,
     ));
   }
 
@@ -246,49 +252,73 @@ class LifeController extends Notifier<LifeState?> {
 
   /// YKS tercihi: bir bölüme yerleşir.
   void enroll(String department, String city) =>
-      _update(engine.enroll(department, city));
+      _noted(() => engine.enroll(department, city));
 
   /// YKS tercihi: yerleşmeden başka bir yol.
-  void declineTercih(TercihKind kind) => _update(engine.declineTercih(kind));
+  void declineTercih(TercihKind kind) =>
+      _noted(() => engine.declineTercih(kind));
 
   /// İlana başvurur ve mülakata girer.
   void applyFor(JobListing listing, ChoiceSide side, {String? referenceId}) =>
-      _update(engine.applyFor(listing, side, referenceId: referenceId));
+      _noted(() => engine.applyFor(listing, side, referenceId: referenceId));
 
-  void requestPromotion() => _update(engine.requestPromotion());
+  void requestPromotion() => _noted(engine.requestPromotion);
 
-  void requestRaise() => _update(engine.requestRaise());
+  void requestRaise() => _noted(engine.requestRaise);
 
-  void quitJob() => _update(engine.quitJob());
+  void quitJob() => _noted(engine.quitJob);
 
-  void retireEarly() => _update(engine.retireEarly());
+  void retireEarly() => _noted(engine.retireEarly);
+
+  /// Sonucu yalnızca günlüğe not düşen işlemler (mülakat, terfi, zam): yeni
+  /// not üstte sonuç paneli olarak da görünür; oyuncu düğmeye bastığında
+  /// ne olduğunu hemen görür.
+  void _noted(LifeState Function() op) {
+    final before = engine.state.character;
+    final noteCount = engine.state.notes.length;
+    _update(op());
+    final notes = engine.state.notes;
+    ref
+        .read(lastActionProvider.notifier)
+        .set(
+          notes.length > noteCount
+              ? (
+                  actionId: '',
+                  before: before,
+                  after: engine.state.character,
+                  note: notes.last,
+                )
+              : null,
+        );
+  }
 
   void setTempo(Tempo tempo) => _update(engine.setTempo(tempo));
 
-  void openBusiness(String type) => _update(engine.openBusiness(type));
+  void openBusiness(String type) => _noted(() => engine.openBusiness(type));
 
   void setBusinessPresent(String id, bool present) =>
-      _update(engine.setBusinessPresent(id, present));
+      _noted(() => engine.setBusinessPresent(id, present));
 
   void setBusinessPrice(String id, PriceLevel price) =>
       _update(engine.setBusinessPrice(id, price));
 
-  void advertiseBusiness(String id) => _update(engine.advertiseBusiness(id));
+  void advertiseBusiness(String id) =>
+      _noted(() => engine.advertiseBusiness(id));
 
-  void expandBusiness(String id) => _update(engine.expandBusiness(id));
+  void expandBusiness(String id) => _noted(() => engine.expandBusiness(id));
 
   void takePartner(String id, String personId) =>
-      _update(engine.takePartner(id, personId));
+      _noted(() => engine.takePartner(id, personId));
 
   void hireKnown(String id, String personId) =>
-      _update(engine.hireKnown(id, personId));
+      _noted(() => engine.hireKnown(id, personId));
 
   void disposeBusiness(String id, {required bool sell}) =>
-      _update(engine.disposeBusiness(id, sell: sell));
+      _noted(() => engine.disposeBusiness(id, sell: sell));
 
   /// Başka şehre taşınır (Varlıklar sekmesi).
   void moveTo(String city, {bool withFamily = false}) =>
-      _update(engine.moveTo(city, withFamily: withFamily));
+      _noted(() => engine.moveTo(city, withFamily: withFamily));
 
   /// İnsanlar sekmesinden bir kişiyle etkileşim (Ara dahil).
   void interact(InteractionRequest request) =>
