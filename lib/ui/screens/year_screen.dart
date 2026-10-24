@@ -187,6 +187,11 @@ class _YearScreenState extends ConsumerState<YearScreen> {
                       (e) => e.age == c.age && e.source == MoneySource.burs,
                     )
                     .fold(0, (sum, e) => sum + e.amount),
+                business: c.ledger
+                    .where(
+                      (e) => e.age == c.age && e.source == MoneySource.isletme,
+                    )
+                    .fold(0, (sum, e) => sum + e.amount),
                 onClose: () => setState(() => _closedSummaryAge = c.age),
               ),
             // Son seçimin sonucu; alttaki düğmeleri örtmesin diye SnackBar
@@ -295,8 +300,12 @@ class _YearScreenState extends ConsumerState<YearScreen> {
         ),
         Expanded(
           child: SwipeCard(
-            // Her yeni kart sıfırdan başlasın.
-            key: ValueKey('${state.character.age}-${card.id}'),
+            // Her yeni kart sıfırdan başlasın. Aynı olay aynı yıl iki kez
+            // gelebilir (zor günde iki arayan); kalan kart sayısı ayırır.
+            // Yoksa ikinci kart öncekinin "seçildi" durumunda donar.
+            key: ValueKey(
+              '${state.character.age}-${card.id}-${state.pendingCards.length}',
+            ),
             card: card,
             text: EventText.render(
               EventText.cardText(card, c),

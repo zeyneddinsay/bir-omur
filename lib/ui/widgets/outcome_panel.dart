@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../content/event_text.dart';
 import '../../content/person_text.dart';
+import '../people/people_text.dart';
+import '../people/people_view.dart';
 import '../../engine/engine.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../models/models.dart';
@@ -174,7 +176,13 @@ class ActionResultPanel extends StatelessWidget {
     final newcomers = [
       for (final p in after.people.all)
         if (before.people[p.id] == null)
-          l10n.actionNewPerson(PersonText.labelOf(p), p.ageAt(after.age)),
+          l10n.actionNewPerson(
+            // Rolü olan rolüyle: "Rakibin Duygu", "Ev sahibin Kemal".
+            p.kin == null && PeopleView.mainRole(p) != null
+                ? l10n.newsName(p, c: after)
+                : PersonText.labelOf(p),
+            p.ageAt(after.age),
+          ),
     ];
     return Padding(
       padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),

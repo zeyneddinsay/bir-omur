@@ -184,7 +184,7 @@ class _BusinessCard extends ConsumerWidget {
               type.laborBound
                   ? l10n.businessLaborHint
                   : l10n.businessManagedHint(
-                      l10n.tl(BusinessRules.managerWage),
+                      l10n.tl(BusinessRules.managerWageFor(type)),
                     ),
               style: theme.textTheme.bodySmall,
             ),

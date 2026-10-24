@@ -103,6 +103,7 @@ void main() {
           ),
           career: const CareerReport(income: 180000, promoted: true),
           scholarship: 42000,
+          business: -50000,
           onClose: () => closed = true,
         ),
       ),
@@ -117,7 +118,8 @@ void main() {
         .data!;
     // Eşin katkısı ve burs gelire, kira ve yaşam gideri giderlere eklenir.
     expect(text, contains('Gelir +522.000 TL'));
-    expect(text, contains('Giderler −270.000 TL'));
+    // İşletmenin zararı da gidere eklenir.
+    expect(text, contains('Giderler −320.000 TL'));
     expect(text, contains('Enflasyon %32'));
     expect(text, contains('Terfi aldın!'));
 

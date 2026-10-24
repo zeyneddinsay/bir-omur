@@ -92,6 +92,12 @@ abstract final class BusinessRules {
   /// Müdürün yıllık maaşı (başında durulmazken ve ek şubelerde).
   static const int managerWage = 340000;
 
+  /// Bu işletmenin müdür (ya da tezgâhta duran usta) maaşı: cironun
+  /// %35'i, en fazla [managerWage]. Simit tezgâhına 340 bin maaşlı müdür
+  /// tutulmaz; askerdeki ya da başka işteki sahibi batmasın.
+  static int managerWageFor(BusinessType t) =>
+      min(managerWage, (t.revenue * 0.35).round());
+
   /// Ortak, kuruluşun bu oranı kadar sermaye koyar ve kârın bu oranını alır.
   static const double partnerShare = 0.3;
 
@@ -354,7 +360,8 @@ abstract final class BusinessRules {
         luck *
         (advertised ? 1 + adBoost : 1);
     final costs =
-        (t.fixedCost + t.wages) * b.branches + managers(c, b, t) * managerWage;
+        (t.fixedCost + t.wages) * b.branches +
+        managers(c, b, t) * managerWageFor(t);
     return (revenue - costs).round();
   }
 

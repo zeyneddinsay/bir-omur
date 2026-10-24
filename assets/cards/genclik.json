@@ -29,6 +29,7 @@
     "minAge": 16,
     "maxAge": 18,
     "repeat": "once",
+    "conditions": { "min": { "knowledge": 45 } },
     "roles": {
       "rakip": { "roles": ["sinifArkadasi"], "minGap": -1, "maxGap": 1 }
     },

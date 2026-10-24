@@ -1,0 +1,3 @@
+tags:
+  uzun:
+    skip: "Uzun oyun testi: flutter test --run-skipped -t uzun"
