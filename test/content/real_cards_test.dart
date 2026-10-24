@@ -126,6 +126,15 @@ void main() {
           EventText.speakerName(card, event.people, c) == null) {
         problems.add('$where: konuşan bulunamadı');
       }
+      // Aynı akrabalıktan biri bu yıl vefat ettiyse öbürü neşeli olayda yok.
+      if (!card.mandatory) {
+        for (final slot in card.roles.where((s) => !s.deceased)) {
+          final p = c.people[event.people[slot.name] ?? ''];
+          if (p != null && Relationships.namesakeMourned(c, p)) {
+            problems.add('$where: yas yılında ${slot.name}');
+          }
+        }
+      }
       for (final slot in card.roles) {
         final p = c.people[event.people[slot.name] ?? ''];
         if (p == null) {

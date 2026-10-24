@@ -46,6 +46,21 @@ abstract final class Relationships {
     );
   }
 
+  /// Aynı akrabalıkta (aynı cinsiyetten) biri son bir yıl içinde vefat etti:
+  /// öbür dede o yıl neşeli olaylarda rol almaz ("Deden artık yok"un
+  /// ardından "Deden yine askerlik hikâyesini anlatıyor" gelmez).
+  static bool namesakeMourned(Character c, Person p) {
+    if (p.kin == null) return false;
+    return c.people.all.any(
+      (o) =>
+          o.id != p.id &&
+          o.kin == p.kin &&
+          o.gender == p.gender &&
+          o.diedAt != null &&
+          c.age - o.diedAt! <= 1,
+    );
+  }
+
   /// Şiddete göre anının ilk ağırlığı.
   static const Map<int, int> severityPoints = {1: 10, 2: 30, 3: 50};
 

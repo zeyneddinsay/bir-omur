@@ -159,9 +159,16 @@ extension PeopleNames on AppLocalizations {
   /// Haberde kişinin anılışı: akrabaysa "Deden"; değilse bağıyla ya da
   /// rolüyle birlikte adı: "Komşun Fatma", "Eski bölük arkadaşın Mustafa".
   /// Yalnızca "Fatma vefat etti" yazılınca kim olduğu anlaşılmaz.
-  String newsName(Person p) {
+  String newsName(Person p, {Character? c}) {
     if (PersonText.kinWord(p) case final kin?) {
-      return PersonText.capitalizeFirst(kin);
+      // Aynı akrabalıkta başka biri de varsa (iki dede, üç kardeş) adıyla:
+      // "Deden Hüseyin emekli oldu".
+      final shared =
+          c != null &&
+          c.people.all.any(
+            (o) => o.id != p.id && PersonText.kinWord(o) == kin,
+          );
+      return shared ? PersonText.labelOf(p) : PersonText.capitalizeFirst(kin);
     }
     if (PeopleView.friendBonds.contains(p.bond)) {
       return '${bondName(p.bond!)} ${p.name}';
@@ -183,7 +190,7 @@ extension PeopleNames on AppLocalizations {
   }) {
     final p = c.people[news.personId];
     if (p == null) return '';
-    final name = newsName(p);
+    final name = newsName(p, c: c);
     final fullName = '${p.name} ${p.surname}'.trim();
     return switch (news.kind) {
       NewsKind.kardesDogdu =>
