@@ -707,6 +707,15 @@ class LifeEngine {
         ),
       ),
     );
+    settled = Housing.rehomeIfHostGone(settled, _factory);
+    // Borçlanan yaşlıyı bir çocuğu yanına alır: kira ve gider biter.
+    if (Housing.moveInWithChild(settled, _factory) case (
+      final moved,
+      final host,
+    )) {
+      settled = moved;
+      notes.add(LifeNote(NoteKind.cocugunYaninda, host.id));
+    }
     var nextQueue = queue;
     // Zor gün yılı: arayanların olayları bu yıl gelir; aramayan arkadaşlar
     // unutulmaz.

@@ -170,7 +170,7 @@ abstract final class Economy {
       );
 
   static int livingCostFor(HomeKind home) => switch (home) {
-    HomeKind.aile => 0,
+    HomeKind.aile || HomeKind.cocukYaninda => 0,
     HomeKind.yurt => dormCost,
     _ => livingCost,
   };

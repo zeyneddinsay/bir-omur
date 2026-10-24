@@ -802,6 +802,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get home_kendiEvi => 'Kendi evinde yaşıyorsun';
 
   @override
+  String get home_cocukYaninda => 'Çocuğunun yanında yaşıyorsun';
+
+  @override
   String homeCity(String city, String type) {
     return '$city ($type)';
   }
@@ -1493,6 +1496,11 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get note_kovuldun =>
       'İşten çıkarıldın. Performansın uzun süredir düşüktü.';
+
+  @override
+  String note_cocugunYaninda(String who) {
+    return 'Borçlar ağırlaşınca $who seni yanına aldı. Artık onun evinde yaşıyorsun; kira derdi bitti.';
+  }
 
   @override
   String get note_tekEbeveyn_anneVefat =>

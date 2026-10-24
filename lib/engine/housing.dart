@@ -4,6 +4,7 @@ import '../models/models.dart';
 import 'business.dart';
 import 'economy.dart';
 import 'person_factory.dart';
+import 'relationships.dart';
 
 /// Ev, araba ve taşınma kararları (Varlıklar sekmesi). Canlı doküman:
 /// "Ev, şehir ve taşınma".
@@ -124,6 +125,82 @@ abstract final class Housing {
   }
 
   /// Aileye dönüş: kira biter.
+  /// Borçlanan yaşlının yanına taşınma eşiği: bu yaştan sonra, kirada ve bu
+  /// kadar borçluyken bir çocuğu onu yanına alır.
+  static const int elderAge = 65;
+  static const int elderDebtLimit = 500000;
+
+  /// Yanına alacak çocuk en az bu yaşta (kendi evini kurmuş).
+  static const int hostChildMinAge = 25;
+
+  /// Borçlanan yaşlı (65+, kirada, borcu [elderDebtLimit] üstünde) hayattaki
+  /// yetişkin bir çocuğunun yanına taşınır: önce aynı şehirdeki, sonra en
+  /// yakın olduğu çocuk. Kira ve yaşam gideri biter; aylık borcu yavaş yavaş
+  /// kapatır. Eşi de gelir. Çocuğun hafızasına anı yazılır. Uygun çocuk
+  /// yoksa null (borç tavanı geçerli kalır).
+  static (Character, Person)? moveInWithChild(
+    Character c,
+    PersonFactory f, {
+    bool force = false,
+  }) {
+    if (!force &&
+        (c.age < elderAge ||
+            !c.home.paysRent ||
+            c.stats.money > -elderDebtLimit)) {
+      return null;
+    }
+    final children = [
+      for (final p in c.people.all)
+        if (p.kin == Kinship.cocuk &&
+            p.isAlive &&
+            p.ageAt(c.age) >= hostChildMinAge)
+          p,
+    ];
+    if (children.isEmpty) return null;
+    int score(Person p) =>
+        (p.city == c.city ? 1000 : 0) +
+        Relationships.closeness(p, c.age).round();
+    children.sort((a, b) => score(b).compareTo(score(a)));
+    var host = children.first.copyWith(
+      roles: [...children.first.roles, const PersonRole(RoleKind.evSahibi)],
+      lastContactAt: c.age,
+    );
+    host = Relationships.addMemory(
+      host,
+      Memory(
+        kind: 'yanima_aldim',
+        label: 'Yaşlanınca beni yanına aldım',
+        age: c.age,
+        tone: MemoryTone.olumlu,
+        severity: 1,
+      ),
+      now: c.age,
+    );
+    var next = _leaveCurrentHome(c);
+    next = next.copyWith(
+      people: next.people.update(host),
+      home: HomeKind.cocukYaninda,
+      assets: next.assets.copyWith(rent: 0),
+    );
+    if (host.city != c.city) {
+      next = settle(next.copyWith(city: host.city), f);
+    }
+    return (Economy.syncDerivedFlags(next), host);
+  }
+
+  /// Yanında yaşadığı çocuk vefat ettiyse başka bir yetişkin çocuğu onu
+  /// yanına alır; kimse kalmadıysa yeniden kiraya çıkar.
+  static Character rehomeIfHostGone(Character c, PersonFactory f) {
+    if (c.home != HomeKind.cocukYaninda) return c;
+    final hosted = c.people.all.any(
+      (p) =>
+          p.isAlive && p.kin == Kinship.cocuk && p.hasRole(RoleKind.evSahibi),
+    );
+    if (hosted) return c;
+    if (moveInWithChild(c, f, force: true) case (final moved, _)) return moved;
+    return rentAlone(c, f);
+  }
+
   static Character backToFamily(Character c) =>
       _leaveCurrentHome(c).copyWith(home: HomeKind.aile);
 

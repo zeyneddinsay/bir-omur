@@ -14,7 +14,11 @@ enum HomeKind {
   kira('kira'),
 
   /// Kendi evinde; kira yok, yaşam gideri var.
-  kendiEvi('kendi_evi');
+  kendiEvi('kendi_evi'),
+
+  /// Yaşlılıkta yetişkin bir çocuğunun evinde; kira ve gider yok. Ev
+  /// sahibi çocuk [RoleKind.evSahibi] rolünü taşır.
+  cocukYaninda('cocuk_yaninda');
 
   const HomeKind(this.id);
 

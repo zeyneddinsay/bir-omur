@@ -101,4 +101,73 @@ void main() {
     final high = testCharacter(knowledge: 80);
     expect(Careers.expectedPerformanceChange(high, Tempo.normal), 5);
   });
+
+  group('borçlanan yaşlı çocuğunun yanına taşınır', () {
+    Character elder({int age = 70, int money = -600000, bool child = true}) =>
+        withPeople(testCharacter(age: age, money: money, home: HomeKind.kira), [
+          if (child)
+            testPerson(
+              'x',
+              name: 'Selin',
+              gender: Gender.kadin,
+              kin: Kinship.cocuk,
+              age: 45,
+              playerAge: age,
+            ),
+          testPerson(
+            'x',
+            name: 'Mert',
+            kin: Kinship.cocuk,
+            age: 42,
+            playerAge: age,
+            city: 'İzmir',
+          ),
+        ]);
+
+    final f = PersonFactory(SeededRandom(2), families);
+
+    test('aynı şehirdeki çocuk yanına alır; kira ve gider biter', () {
+      final (moved, host) = Housing.moveInWithChild(elder(), f)!;
+      expect(host.name, 'Selin', reason: 'aynı şehirdeki önce');
+      expect(moved.home, HomeKind.cocukYaninda);
+      expect(moved.assets.rent, 0);
+      expect(Economy.livingCostOf(moved), 0);
+      expect(Economy.rentDue(moved), 0);
+      final selin = moved.people[host.id]!;
+      expect(selin.hasRole(RoleKind.evSahibi), isTrue);
+      expect(PeopleTick.livesTogether(moved, selin), isTrue);
+      expect(selin.memories.last.kind, 'yanima_aldim');
+    });
+
+    test('başka şehirdeki çocuğun şehrine taşınılır', () {
+      final (moved, host) = Housing.moveInWithChild(elder(child: false), f)!;
+      expect(host.name, 'Mert');
+      expect(moved.city, 'İzmir');
+    });
+
+    test('ev sahibi çocuk vefat edince öbür çocuk yanına alır', () {
+      final (moved, host) = Housing.moveInWithChild(elder(), f)!;
+      final gone = moved.copyWith(
+        people: moved.people.update(
+          moved.people[host.id]!.copyWith(diedAt: moved.age),
+        ),
+      );
+      final rehomed = Housing.rehomeIfHostGone(gone, f);
+      expect(rehomed.home, HomeKind.cocukYaninda);
+      final newHost = rehomed.people.all.firstWhere(
+        (p) => p.isAlive && p.hasRole(RoleKind.evSahibi),
+      );
+      expect(newHost.name, 'Mert');
+    });
+
+    test('65 yaş altı, borcu az ya da çocuğu yoksa taşınılmaz', () {
+      expect(Housing.moveInWithChild(elder(age: 60), f), isNull);
+      expect(Housing.moveInWithChild(elder(money: -100000), f), isNull);
+      final childless = withPeople(
+        testCharacter(age: 75, money: -900000, home: HomeKind.kira),
+        const [],
+      );
+      expect(Housing.moveInWithChild(childless, f), isNull);
+    });
+  });
 }

@@ -74,6 +74,7 @@ String homeName(AppLocalizations l10n, HomeKind home) => switch (home) {
   HomeKind.evArkadasi => l10n.home_evArkadasi,
   HomeKind.kira => l10n.home_kira,
   HomeKind.kendiEvi => l10n.home_kendiEvi,
+  HomeKind.cocukYaninda => l10n.home_cocukYaninda,
 };
 
 String cityTypeName(AppLocalizations l10n, CityType type) => switch (type) {

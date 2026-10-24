@@ -116,7 +116,8 @@ class LifeAction {
   static bool _specialAvailable(ActionSpecial s, Character c) {
     final a = c.assets;
     return switch (s) {
-      ActionSpecial.evdenCik => c.home == HomeKind.aile,
+      ActionSpecial.evdenCik =>
+        c.home == HomeKind.aile || c.home == HomeKind.cocukYaninda,
       ActionSpecial.evArkadasi =>
         (c.home == HomeKind.aile || c.home == HomeKind.kira) &&
             Romance.spouse(c) == null,

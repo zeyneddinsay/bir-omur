@@ -1378,6 +1378,12 @@ abstract class AppLocalizations {
   /// **'Kendi evinde yaşıyorsun'**
   String get home_kendiEvi;
 
+  /// No description provided for @home_cocukYaninda.
+  ///
+  /// In tr, this message translates to:
+  /// **'Çocuğunun yanında yaşıyorsun'**
+  String get home_cocukYaninda;
+
   /// No description provided for @homeCity.
   ///
   /// In tr, this message translates to:
@@ -2499,6 +2505,12 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'İşten çıkarıldın. Performansın uzun süredir düşüktü.'**
   String get note_kovuldun;
+
+  /// No description provided for @note_cocugunYaninda.
+  ///
+  /// In tr, this message translates to:
+  /// **'Borçlar ağırlaşınca {who} seni yanına aldı. Artık onun evinde yaşıyorsun; kira derdi bitti.'**
+  String note_cocugunYaninda(String who);
 
   /// No description provided for @note_tekEbeveyn_anneVefat.
   ///

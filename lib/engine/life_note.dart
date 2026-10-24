@@ -45,6 +45,10 @@ enum NoteKind {
   zamReddi,
   zamZamaniDegil,
 
+  /// Yaşlılıkta borçlanınca bir çocuğunun yanına taşındı; detay çocuğun
+  /// kimliği.
+  cocugunYaninda,
+
   /// Doğumda: tek ebeveynli ailede öbür ebeveynin neden olmadığı; detay
   /// `anne|vefat`, `baba|ayrilik` gibi.
   tekEbeveyn,

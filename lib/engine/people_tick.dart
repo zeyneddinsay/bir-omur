@@ -172,6 +172,12 @@ class PeopleTick {
   /// aranmaz, onlarla "buluşulmaz".
   static bool livesTogether(Character c, Person p) {
     if (!p.isAlive || p.city != c.city || p.bornAt > c.age) return false;
+    // Yaşlılıkta yanına taşındığı çocuk aynı evde.
+    if (c.home == HomeKind.cocukYaninda &&
+        p.kin == Kinship.cocuk &&
+        p.hasRole(RoleKind.evSahibi)) {
+      return true;
+    }
     // Eş ve 18 yaşından küçük çocuklar oyuncunun evinde (yurtta değilse).
     if (c.home != HomeKind.yurt) {
       if (p.kin == Kinship.es) return true;

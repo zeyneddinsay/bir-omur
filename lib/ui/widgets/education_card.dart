@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../content/event_text.dart';
 import '../../content/person_text.dart';
+import '../../content/turkish.dart';
 import '../../engine/engine.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../models/models.dart';
@@ -87,6 +88,9 @@ String noteLine(
       'anne|ayrilik' => l10n.note_tekEbeveyn_anneAyrilik,
       _ => l10n.note_tekEbeveyn_babaAyrilik,
     },
+    NoteKind.cocugunYaninda => l10n.note_cocugunYaninda(
+      _hostWord(character, d),
+    ),
     NoteKind.kovuldun => l10n.note_kovuldun,
     NoteKind.istifa => l10n.note_istifa,
     NoteKind.emekliOldun => l10n.note_emekliOldun,
@@ -360,4 +364,12 @@ String _personWord(Character? c, String id) {
   if (p == null) return '';
   final kin = PersonText.kinWord(p);
   return kin == null ? p.name : PersonText.capitalizeFirst(kin);
+}
+
+/// Cümle içinde akrabanın anılışı: "kızın Selin".
+String _hostWord(Character? c, String id) {
+  final p = c?.people[id];
+  if (p == null) return '';
+  final label = PersonText.labelOf(p);
+  return lowerTr(label[0]) + label.substring(1);
 }
