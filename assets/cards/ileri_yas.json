@@ -427,7 +427,7 @@
     "maxAge": 110,
     "repeat": "once",
     "conditions": { "flags": ["cocuklu"], "notFlags": ["evli"] },
-    "text": "Çocukların evde bir bakıcı tutmayı önerdi. Haftada üç gün gelecek; yemeğe, ilaçlara ve sohbete yardım edecek.",
+    "text": "Evde bir bakıcı tutma fikri açıldı. Haftada üç gün gelecek; yemeğe, ilaçlara ve sohbete yardım edecek.",
     "left": {
       "label": "Tutalım",
       "effects": { "money": -300000, "health": 2, "happiness": 1 },
@@ -438,7 +438,7 @@
       "roll": { "stat": "health", "threshold": 45 },
       "success": { "happiness": 2 },
       "fail": { "health": -2 },
-      "successResult": "Bir yıl daha kendi işini kendin gördün. Çocukların her telefonda şaşırıp sevindi.",
+      "successResult": "Bir yıl daha kendi işini kendin gördün. Her telefonda şaşırıp sevindiler.",
       "failResult": "Kış zor geçti, iki kez hastane yolu gördün. Bahar gelince bakıcı konusunu kendin açtın."
     }
   },
@@ -908,7 +908,7 @@
       "cocuk": { "kin": ["cocuk"], "minAge": 50 }
     },
     "speaker": "cocuk",
-    "text": "Çocukların sana kimin bakacağını konuşuyor. {cocuk.akraba} yanına oturdu: 'Sen ne istersin? Önce o.'",
+    "text": "Evde sana kimin bakacağı konuşuluyor. {cocuk.akraba} yanına oturdu: 'Sen ne istersin? Önce o.'",
     "left": {
       "label": "Kimseye yük olmayayım",
       "effects": {
